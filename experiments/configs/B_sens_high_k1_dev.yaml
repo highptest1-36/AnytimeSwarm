@@ -1,0 +1,13 @@
+# Tier B sensitivity (descriptive): high disturbance, fast computer (kappa 1), deviation-triggered replanning.
+frozen: true
+heldout_seeds: {start: 3000, n: 30}
+grid:
+  name: heldout_B_sens
+  split: heldout
+  scales: [small, medium, large]
+  exec: [high, mid]
+  lat: [none]
+  kappas: [1, 50]
+  triggers: [event, "deviation:30"]
+  methods: ["alns_fixed@40", alns_stagnation, anytime, anytime_risk]
+  workers: 4

@@ -8,6 +8,10 @@ about 2 Hz), arm and take off, then fly the task queue received in /atswarm/plan
     TRANSIT  a carrot moves along the straight leg at the UAV's scenario cruise speed (velocity feed-forward);
              the task is reached when the measured position is within ACCEPT_RADIUS_M of it
     SERVICE  hover at the task until max(arrival, release) + nominal service time
+Disturbances (--exec nominal|low|mid|high): the same common random numbers as tier B (journal_core.execution) set
+the cruise ground speed of every (UAV, task) leg (speed error and the wind triangle; wind magnitude scaled by
+S_X/S_T so that wind / airspeed is unchanged) and the actual service duration of every task. Acceleration, tracking
+and timing are those of the PX4 vehicle in Gazebo. The planner's estimates in fleet_state stay nominal.
 Execution semantics are those of tier B: the committed task (being flown to or served) is never changed by a new
 plan; while the planner works (UavCommand HOLD) a UAV finishes its current task and then waits; at departure a task
 whose nominal finish estimate already misses its deadline is skipped (TaskReport SKIP).
@@ -22,7 +26,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import ACCEPT_RADIUS_M, altitude, gz_scenario, spawn_xy  # noqa: E402
+from common import ACCEPT_RADIUS_M, S_T, S_X, altitude, gz_scenario, spawn_xy  # noqa: E402
+from dataclasses import replace  # noqa: E402
+from journal_core.execution import EXEC_LEVELS  # noqa: E402
 
 import rclpy  # noqa: E402
 from rclpy.executors import ExternalShutdownException  # noqa: E402
@@ -52,6 +58,7 @@ class Vehicle:
         self.spawn_e, self.spawn_n = spawn_xy(k, n)
         self.alt = altitude(k)
         self.speed = uav.speed
+        self.v_leg, self.svc_dur = uav.speed, 0.0
         self.energy = uav.capacity
         self.pos = self.status = None
         self.phase, self.alive, self.ticks = UavState.INIT, True, 0
@@ -148,17 +155,18 @@ class Vehicle:
             cn, ce = self.carrot
             dn, de = tn - cn, te - ce
             d = math.hypot(dn, de)
-            step = self.speed * dt
+            step = self.v_leg * dt
             if d <= step:
                 self.carrot, vn, ve = (tn, te), 0.0, 0.0
             else:
                 self.carrot = (cn + dn / d * step, ce + de / d * step)
-                vn, ve = dn / d * self.speed, de / d * self.speed
+                vn, ve = dn / d * self.v_leg, de / d * self.v_leg
             self.setpoint(*self.carrot, vn, ve)
             if self.pos is not None and self.carrot == (tn, te) and \
                     math.hypot(self.pos.x - tn, self.pos.y - te) < ACCEPT_RADIUS_M:
                 self.phase = UavState.SERVICE
                 self.svc_start = max(now, t.release)
+                self.svc_dur = self.node.xm.service(self.task, t.service)
                 self.started_report = False
             return
         if self.phase == UavState.SERVICE:
@@ -169,7 +177,7 @@ class Vehicle:
                 self.started_report = True
             if self.started_report:
                 self.energy -= self.hover * dt
-            if now >= self.svc_start + t.service:
+            if now >= self.svc_start + self.svc_dur:
                 self.node.report(self.task, self.k, TaskReport.FINISH, now)
                 self.task, self.phase = None, UavState.IDLE
                 if not self.node.hold:
@@ -190,6 +198,7 @@ class Vehicle:
                 self.node.report(j, self.k, TaskReport.SKIP, now)
                 continue
             self.task, self.phase = j, UavState.TRANSIT
+            self.v_leg = self.node.xm.ground_speed(self.uav.id, j, t.x - x, t.y - y, self.speed)
             if self.pos is not None:
                 self.carrot = (self.pos.x, self.pos.y)
             return
@@ -224,9 +233,11 @@ class Vehicle:
 
 
 class Executor(Node):
-    def __init__(self, profile, seed):
+    def __init__(self, profile, seed, exec_level="nominal"):
         super().__init__("atswarm_uav_executor")
         self.sc = gz_scenario(profile, seed)
+        lv = EXEC_LEVELS[exec_level]
+        self.xm = replace(lv, wind_mps=lv.wind_mps * S_X / S_T).for_mission(self.sc.seed)
         n = len(self.sc.uavs)
         self.tasks, self.done = {}, set()
         self.started, self.hold, self.t0 = False, False, None
@@ -301,9 +312,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--profile", default="arrivals")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--exec", default="nominal", choices=sorted(EXEC_LEVELS))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)
-    node = Executor(args.profile, args.seed)
+    node = Executor(args.profile, args.seed, args.exec)
     try:
         rclpy.spin(node)
     except (KeyboardInterrupt, ExternalShutdownException):

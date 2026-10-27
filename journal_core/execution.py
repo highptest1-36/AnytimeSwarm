@@ -70,6 +70,21 @@ class ExecutionModel:
             t = 2.0 * math.sqrt(L / a)                                           # never reaches cruise speed
         return t, v * t                                                          # energy = metres flown through air
 
+    def ground_speed(self, uav_id: int, task_id: int, dx: float, dy: float, airspeed: float) -> float:
+        """Cruise ground speed of the leg (same draws and wind triangle as leg(), without the acceleration term).
+        Used by the tier C executor: the PX4 vehicle then supplies the real acceleration and tracking dynamics."""
+        L = math.hypot(dx, dy)
+        if L == 0.0:
+            return airspeed
+        eps = _rng(self.mission_seed, self.seed, 1, uav_id, task_id).normal(0.0, self.speed_cv) if self.speed_cv else 0.0
+        v = airspeed * (1.0 + float(np.clip(eps, -0.3, 0.3)))
+        wx, wy = getattr(self, "_wind", (0.0, 0.0))
+        ux, uy = dx / L, dy / L
+        w_par = wx * ux + wy * uy
+        w_perp = abs(wx * uy - wy * ux)
+        vg = math.sqrt(max(v * v - w_perp * w_perp, (0.2 * v) ** 2)) + w_par
+        return max(vg, 0.2 * v)
+
     def service(self, task_id: int, nominal_s: float) -> float:
         if not self.service_cv:
             return nominal_s

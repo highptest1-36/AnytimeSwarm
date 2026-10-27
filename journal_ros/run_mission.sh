@@ -7,22 +7,22 @@
 #
 # Options: --profile arrivals|failures|deadlines  --seed N  --method <planner>  --budget-ms B  --kappa-b K
 #          --trigger event|deviation:<s>|periodic:<s>  --gui  --rviz  --speed F (PX4_SIM_SPEED_FACTOR)
-#          --out FILE.json  --latency-mean-s L  --error-level gz
+#          --out FILE.json  --latency-mean-s L  --exec nominal|low|mid|high (disturbance level, as tier B)
 # The script stops every process it started when the mission manager exits (or on Ctrl+C).
 set -uo pipefail
 J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
 PROFILE=arrivals; SEED=0; METHOD=anytime; BUDGET=250; KAPPA=10; TRIGGER=event; GUI=0; RVIZ=0; SPEED=1
-OUT=""; LAT=0; ELEVEL=gz
+OUT=""; LAT=""; EXEC=nominal
 while [ $# -gt 0 ]; do
   case $1 in
     --profile) PROFILE=$2; shift 2;; --seed) SEED=$2; shift 2;; --method) METHOD=$2; shift 2;;
     --budget-ms) BUDGET=$2; shift 2;; --kappa-b) KAPPA=$2; shift 2;; --trigger) TRIGGER=$2; shift 2;;
     --gui) GUI=1; shift;; --rviz) RVIZ=1; shift;; --speed) SPEED=$2; shift 2;; --out) OUT=$2; shift 2;;
-    --latency-mean-s) LAT=$2; shift 2;; --error-level) ELEVEL=$2; shift 2;;
+    --latency-mean-s) LAT=$2; shift 2;; --exec) EXEC=$2; shift 2;;
     *) echo "unknown option $1"; exit 2;;
   esac
 done
-TAG="gz-${PROFILE}-${SEED}_${METHOD}_k${KAPPA}_${TRIGGER//:/}"
+TAG="gz-${PROFILE}-${SEED}_${METHOD}_k${KAPPA}_${TRIGGER//:/}_${EXEC}"
 [ -z "$OUT" ] && OUT="$J/results/tier_c/manual/${TAG}.json"
 case $OUT in /*) ;; *) OUT="$J/$OUT";; esac
 LOG=$J/results/tier_c/logs/$TAG
@@ -72,7 +72,7 @@ done
 ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock \
   > "$LOG/clock_bridge.log" 2>&1 & PIDS+=($!)
 SIMT="--ros-args -p use_sim_time:=true"
-$PY $J/journal_ros/uav_executor.py --profile "$PROFILE" --seed "$SEED" $SIMT > "$LOG/executor.log" 2>&1 & PIDS+=($!)
+$PY $J/journal_ros/uav_executor.py --profile "$PROFILE" --seed "$SEED" --exec "$EXEC" $SIMT > "$LOG/executor.log" 2>&1 & PIDS+=($!)
 if [ "$GUI" = 1 ] || [ "$RVIZ" = 1 ]; then
   $PY $J/journal_ros/viz.py --profile "$PROFILE" --seed "$SEED" $SIMT > "$LOG/viz.log" 2>&1 & PIDS+=($!)
 fi
@@ -80,7 +80,7 @@ if [ "$RVIZ" = 1 ]; then
   rviz2 -d $J/journal_ros/atswarm.rviz $SIMT > "$LOG/rviz.log" 2>&1 & PIDS+=($!)
 fi
 $PY $J/journal_ros/mission_manager.py --profile "$PROFILE" --seed "$SEED" --method "$METHOD" --budget-ms "$BUDGET" \
-  --kappa-b "$KAPPA" --trigger "$TRIGGER" --latency-mean-s "$LAT" --error-level "$ELEVEL" --out "$OUT" $SIMT \
+  --kappa-b "$KAPPA" --trigger "$TRIGGER" ${LAT:+--latency-mean-s $LAT} --error-level "$EXEC" --out "$OUT" $SIMT \
   2>&1 | tee "$LOG/mission.log"
 [ "$GUI" = 1 ] && sleep 8          # let the UAVs land on screen
 cleanup

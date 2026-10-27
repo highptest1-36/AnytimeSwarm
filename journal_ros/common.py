@@ -60,12 +60,17 @@ def gz_scenario(profile: str, seed: int) -> Scenario:
     b["scales"] = dict(b["scales"]) | {"gz": dict(GZ_SCALE)}
     sc = generate_scenario(b, "gz", profile, seed)
     cfg = tier_c_config()
-    tasks = [Task(t.id, t.x * S_X, t.y * S_X, t.announce * S_T, t.release * S_T, t.deadline * S_T,
+    tasks = [Task(int(t.id), t.x * S_X, t.y * S_X, t.announce * S_T, t.release * S_T, t.deadline * S_T,
                   t.service * S_T, t.reward) for t in sc.tasks]
     uavs = [UAV(u.id, u.x * S_X, u.y * S_X, u.speed * S_X / S_T, u.capacity * S_X) for u in sc.uavs]
     events = []
     for e in sc.events:
         d = dict(e.data)
+        if "task_ids" in d:
+            d["task_ids"] = [int(j) for j in d["task_ids"]]
+        for k in ("task_id", "uav_id"):
+            if k in d:
+                d[k] = int(d[k])
         if e.kind == "deadline":
             d["new_deadline"] = d["new_deadline"] * S_T
         events.append(Event(e.time * S_T, e.kind, d))

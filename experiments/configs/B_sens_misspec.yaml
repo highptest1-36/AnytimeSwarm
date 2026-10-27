@@ -1,0 +1,13 @@
+# Tier B sensitivity (descriptive): AnytimeSwarm-R with a misspecified error model.
+frozen: true
+heldout_seeds: {start: 3000, n: 30}
+grid:
+  name: heldout_B_misspec
+  split: heldout
+  scales: [small, medium, large]
+  exec: [low, mid]
+  lat: [none]
+  kappas: [10, 50]
+  triggers: [event]
+  methods: [anytime, anytime_risk, "anytime_risk~zero", "anytime_risk~low", "anytime_risk~mid", "anytime_risk~high"]
+  workers: 4

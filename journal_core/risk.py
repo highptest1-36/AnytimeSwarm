@@ -61,7 +61,7 @@ class ErrorModel:
 
     @classmethod
     def load_all(cls, path) -> dict:
-        return {k: cls(**v) for k, v in json.loads(Path(path).read_text()).items()}
+        return {k: cls(**v) for k, v in json.loads(Path(path).read_text()).items() if isinstance(v, dict)}
 
 
 class RiskDelayModel(DelayModel):

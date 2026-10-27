@@ -47,7 +47,7 @@ REL_QOS = QoSProfile(reliability=ReliabilityPolicy.RELIABLE, durability=Durabili
 
 
 class Mission(Node):
-    def __init__(self, a):
+    def __init__(self, a):  # noqa: C901
         super().__init__("atswarm_mission_manager")
         self.a = a
         self.cfg = tier_c_config()
@@ -59,6 +59,11 @@ class Mission(Node):
         self.err = ErrorModel()
         if a.error_model and Path(a.error_model).exists():
             self.err = ErrorModel.load_all(a.error_model).get(a.error_level, ErrorModel())
+        self.lat_mean = a.latency_mean_s
+        if self.lat_mean is None:          # measured on development flights (experiments/c_calibrate_errors.py)
+            self.lat_mean = 0.0
+            if a.error_model and Path(a.error_model).exists():
+                self.lat_mean = float(json.loads(Path(a.error_model).read_text()).get("latency_mean_s", 0.0))
         self.tasks = {t.id: t for t in self.sc.tasks}
         self.deadline = {t.id: t.deadline for t in self.sc.tasks}
         self.announced = {t.id for t in self.sc.tasks if t.announce <= 0}
@@ -142,8 +147,9 @@ class Mission(Node):
             t, s = self.tasks[j], self.status[j]
             if s in (Task.OPEN, Task.ASSIGNED) and self.t0 is not None and self.deadline[j] < self.now():
                 s = self.status[j] = Task.MISSED
-            m.tasks.append(Task(id=j, x=t.x, y=t.y, release=t.release, deadline=self.deadline[j], service=t.service,
-                                reward=t.reward, status=s, uav=self.assigned_to.get(j, -1)))
+            m.tasks.append(Task(id=int(j), x=float(t.x), y=float(t.y), release=float(t.release),
+                                deadline=float(self.deadline[j]), service=float(t.service), reward=float(t.reward),
+                                status=int(s), uav=int(self.assigned_to.get(j, -1))))
         self.pub_tasks.publish(m)
 
     def command(self, kind, uav=0, t=0.0):
@@ -195,7 +201,7 @@ class Mission(Node):
             return
         self.command(UavCommand.HOLD, 0, t)
         a = self.a
-        kw = {"err": self.err, "latency_mean_s": a.latency_mean_s} if a.method == "anytime_risk" else {}
+        kw = {"err": self.err, "latency_mean_s": self.lat_mean} if a.method == "anytime_risk" else {}
         base, _, b = a.method.partition("@")
         budget = float(b) if b else a.budget_ms
         res = solve(base, P, old, budget, self.cfg, seed=a.seed * 1000 + len(self.replans), predictor=self.pred,
@@ -212,7 +218,7 @@ class Mission(Node):
         for k, u in enumerate(uavs):
             entries, skipped, _, _ = P.schedule(k, res["solution"].routes[k], start_time=t_pub, skip_infeasible=True)
             self.dropped_by_delay += len(skipped)
-            r = Route(uav_id=u.id, task_ids=[P.task_ids[j] for j, *_ in entries],
+            r = Route(uav_id=int(u.id), task_ids=[int(P.task_ids[j]) for j, *_ in entries],
                       planned_finish=[float(e[4]) for e in entries])
             msg.routes.append(r)
             pl = [(locked[u.id], P.ready[k])] if locked[u.id] is not None else []
@@ -330,7 +336,7 @@ class Mission(Node):
         pm = np.array([r["planning_ms"] for r in self.replans]) if self.replans else np.zeros(1)
         wall = time.monotonic() - self.wall0
         m = {"scenario": self.sc.name, "profile": self.a.profile, "seed": self.a.seed, "method": self.a.method,
-             "budget_ms": self.a.budget_ms, "kappa_b": self.a.kappa_b, "kappa_c": self.kappa_c,
+             "budget_ms": self.a.budget_ms, "exec_level": self.a.error_level, "kappa_b": self.a.kappa_b, "kappa_c": self.kappa_c,
              "trigger": self.a.trigger, "n_tasks": n, "served": len(self.served), "completion_rate": len(self.served) / n,
              "utility_rate": R / R_tot, "late_served": len(self.late), "dropped_by_delay": self.dropped_by_delay,
              "dropped_in_exec": self.skips, "reassignments": self.reassign, "distance_km": self.dist / 1000.0,
@@ -363,8 +369,8 @@ def main():
     ap.add_argument("--kappa-b", type=float, default=10.0, help="tier B equivalent kappa (kappa_C = kappa_B * S_T)")
     ap.add_argument("--trigger", default="event", help="event | deviation:<tier B s> | periodic:<tier B s>")
     ap.add_argument("--error-model", default=str(JOURNAL / "models" / "error_model_tierc_dev.json"))
-    ap.add_argument("--error-level", default="gz")
-    ap.add_argument("--latency-mean-s", type=float, default=0.0)
+    ap.add_argument("--error-level", default="nominal", help="execution level: key of the tier C error model")
+    ap.add_argument("--latency-mean-s", type=float, default=None, help="default: value of the tier C model file")
     ap.add_argument("--out", default=str(JOURNAL / "results" / "tier_c" / "run.json"))
     args, ros_args = ap.parse_known_args()
     rclpy.init(args=[sys.argv[0]] + ros_args)

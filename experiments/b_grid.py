@@ -8,7 +8,8 @@
 Seeds: --split dev (0-9, development) or --split heldout (journal held-out seeds, ONLY with a frozen config whose
 `frozen: true` flag is set). Scales: --scales (default small,medium,large; xl = 40 UAVs / 280 tasks).
 Planner: the frozen conference planner + predictor; `anytime_risk` uses the dev-fitted error model of the execution
-level (models/error_model_dev.json) and the expected latency of the latency level.
+level (models/error_model_dev.json) and the expected latency of the latency level. `anytime_risk~<level>` uses the
+error model of another level (misspecification study), `anytime_risk~zero` the zero model (no execution error).
 Timing: missions are distributed over --workers processes; inside one (configuration) all missions run before the
 next configuration starts, so methods are interleaved in time and share the same machine load. The machine-idle
 guard (RAVEN on Windows, PX4/Gazebo in WSL) is checked before each configuration.
@@ -41,7 +42,7 @@ from anytimeswarm.utils import env_info, load_config  # noqa: E402
 
 FROZEN_CFG = ORIGINAL / "configs" / "frozen_2026-10-24.yaml"
 FROZEN_MODEL = ORIGINAL / "models" / "improvement_model.json"
-XL = {"n_uav": 40, "n_tasks": 280}
+XL = {"n_uav": 40, "n_tasks": 280, "stream": 3}   # conference xlarge definition (own RNG stream)
 _W = {}
 
 
@@ -57,9 +58,11 @@ def _one(job):
     cfg = _W["cfg"]
     base, _, opt = method.partition("@")
     budget = float(opt) if opt else B
+    base, _, err_level = base.partition("~")
     kw = {}
     if base == "anytime_risk":
-        kw = {"err": _W["err"].get(xl, ErrorModel()), "latency_mean_s": expected_latency(LATENCY_LEVELS[ll])}
+        lv = err_level or xl
+        kw = {"err": _W["err"].get(lv, ErrorModel()), "latency_mean_s": expected_latency(LATENCY_LEVELS[ll])}
     r = run_mission_kin(copy.deepcopy(sc), cfg, base, budget, kappa=kappa, xm=EXEC_LEVELS[xl], lat=LATENCY_LEVELS[ll],
                         predictor=_W["pred"], seed=sc.seed, trigger=trig, solve_kwargs=kw)
     r["method"] = method

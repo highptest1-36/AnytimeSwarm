@@ -1,0 +1,13 @@
+# Tier B scalability (H5): 40 UAVs / 280 tasks.
+frozen: true
+heldout_seeds: {start: 3000, n: 30}
+grid:
+  name: heldout_B_xl
+  split: heldout
+  scales: [xl]
+  exec: [mid]
+  lat: [none, high]
+  kappas: [10, 50]
+  triggers: [event]
+  methods: [alns_fixed, "alns_fixed@180", alns_stagnation, anytime, anytime_risk]   # 180 ms = conference XL compute match
+  workers: 4

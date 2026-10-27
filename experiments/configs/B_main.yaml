@@ -1,0 +1,13 @@
+# Tier B primary matrix (H1-H3). Protocol: docs/05_PROTOCOL_JOURNAL.md. Frozen before any held-out run.
+frozen: true
+heldout_seeds: {start: 3000, n: 30}
+grid:
+  name: heldout_B_main
+  split: heldout
+  scales: [small, medium, large]
+  exec: [low, mid]
+  lat: [none, high]
+  kappas: [10, 50]
+  triggers: [event, "periodic:60"]
+  methods: [regret_repair, alns_fixed, "alns_fixed@40", alns_stagnation, anytime, anytime_nodelay, anytime_risk, "anytime_risk~zero"]
+  workers: 4

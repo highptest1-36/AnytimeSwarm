@@ -1,0 +1,1 @@
+[batch] calib_dev_ profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=nominal

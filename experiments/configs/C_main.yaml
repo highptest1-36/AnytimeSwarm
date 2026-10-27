@@ -1,0 +1,9 @@
+# Tier C (PX4 SITL + Gazebo) primary experiment (H4). Run with journal_ros/run_batch.sh (see docs/05).
+frozen: true
+heldout_seeds: {start: 4000, n: 10}
+profiles: [arrivals, failures, deadlines]
+exec: mid
+kappa_b: 50
+trigger: event
+speed_factor: 2
+methods: [alns_fixed, "alns_fixed@40", anytime, anytime_risk]
