@@ -1,0 +1,5 @@
+# keep LF everywhere: scripts run inside WSL bash
+* text=auto eol=lf
+*.pdf binary
+*.png binary
+*.pkl binary
