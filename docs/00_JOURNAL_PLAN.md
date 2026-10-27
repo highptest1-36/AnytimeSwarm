@@ -155,7 +155,15 @@ Kết quả 27/10/2026 (đạt 5/5, trừ cất cánh — để sang G2 cùng Of
 3. Chạy dev split (02 → 05) và so với `results/` gốc: lời giải ở cùng số vòng lặp phải trùng (ALNS cooling theo vòng
    lặp nên quỹ đạo tất định); runtime khác thì giải thích bằng CPU/OS.
 4. Viết validator khả thi độc lập (không import `Problem.schedule`) kiểm tra deadline, năng lượng, reserve, thời gian.
-Tiêu chí: báo cáo `docs/01_REPRODUCTION.md`, toàn bộ lời giải qua validator.
+Tiêu chí: báo cáo `docs/02_REPRODUCTION.md`, toàn bộ lời giải qua validator.
+
+Tiến độ 27/10:
+- Môi trường: `~/venvs/atswarm311` (CPython 3.11.9, đúng phiên bản gói như bản hội nghị) và `~/venvs/atswarm`
+  (Python 3.12 của ROS + cùng phiên bản gói, thấy rclpy). Unit test 22/22 đạt.
+- Stage A (tất định, `tools/g0_stage_a.sh`, `results/g0/stage_a.txt`): 90 kịch bản dev giống bản gốc đến từng bit;
+  531 snapshot giống 99,978% số lá, mọi khác biệt (315) nằm ở trường `energy`, lệch 1 ulp (≤ 7e-12), do libm
+  Windows/Linux; Python 3.11 và 3.12 trên Linux cho kết quả giống hệt nhau.
+- Stage B (có đo thời gian, `tools/g0_stage_b.sh`, chạy dưới guard Linux `tools/run_guarded.py`): đang chạy.
 
 ### G2 — Multi-UAV SITL + điều khiển
 1. Offboard cho 1 UAV, ENU ↔ NED đúng. Xong ngày 27/10: `demo/offboard_waypoints.py`, 1 UAV và 2 UAV bay hết route,
@@ -173,8 +181,15 @@ Tiêu chí: 2 UAV bay hết một route cố định, log có thời điểm đ�
 2. `atswarm_planner` gọi `solve`; quy tắc sự kiện đến khi đang tính: xếp hàng (như bản gốc), áp dụng cho mọi phương pháp;
    `plan_version` chặn kế hoạch cũ.
 3. Kiểm tra: UAV đang làm task đã khóa vẫn bay trong lúc planner tính; heartbeat không gián đoạn.
-4. Tầng B: `journal_core/kinematic_sim.py` mở rộng executor gốc (gia/giảm tốc, nhiễu vận tốc, gió, trễ truyền thông
-   theo phân phối) chạy thời gian ảo; kiểm tra rằng ở nhiễu = 0, trễ = 0 kết quả trùng executor gốc.
+4. Tầng B: `journal_core/kinematic_executor.py` + `journal_core/execution.py` mở rộng executor gốc (gia/giảm tốc
+   hình thang, gió hằng theo nhiệm vụ, sai số tốc độ theo cặp (UAV, task), sai số thời gian phục vụ, trễ phát hành
+   lognormal + mất gói/timeout), chạy thời gian ảo. Xong 27/10: `tests/test_kinematic.py` 9/9, trong đó nhiễu = 0 và
+   trễ = 0 cho kết quả trùng executor gốc. Nhiễu dùng số ngẫu nhiên chung (CRN) giữa các phương pháp. Planner chỉ thấy
+   telemetry: UAV đang bay được báo bằng ước lượng danh định từ vị trí thật, không thấy tương lai.
+   Quan sát sơ bộ (kiểm tra sanity, planner tất định, 2 nhiệm vụ medium): mức nhiễu "low" đã làm utility giảm từ
+   0,96 xuống 0,82, sai số thời điểm hoàn thành p95 khoảng 50 s, vì sai số tích lũy dọc route giữa hai lần replan
+   (replan chỉ khi có sự kiện). Hệ quả cho journal: cần xét thêm replan theo độ lệch (deviation-triggered), khi đó số
+   lần gọi planner tăng và việc phân bổ thời gian tính càng quan trọng. Đây là ứng viên đóng góp mới, quyết định sau pilot.
 Tiêu chí: một nhiệm vụ 3 UAV/15 task chạy hết vòng kín với AnytimeSwarm và alns_fixed.
 
 ### G4 — Pilot (chỉ seed dev)
