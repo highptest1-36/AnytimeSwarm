@@ -23,3 +23,5 @@ journal_ros/run_batch.sh: OK
 journal_ros/run_mission.sh: OK
 experiments/b_grid.py: OK
 [heldout] 2026-10-27T20:45:47+00:00 tier B B_main
+[ok] 34560 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_main.csv
+[heldout] 2026-10-27T23:20:31+00:00 tier B B_xl

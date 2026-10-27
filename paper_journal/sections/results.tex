@@ -45,4 +45,64 @@ new timing traces, reached the same compute price by the pre-registered rule, an
 equal-computation comparison agreed in sign and significance in \val{JReproMatched} comparisons. The frozen predictor
 was used unchanged in all later experiments.
 
-\todo{held-out results: tier B primary matrix, triggers, 40 UAVs, sensitivity, tier C}
+\subsection{Tier B: stopping rules under uncertain execution}\label{sec:tierb}
+The primary matrix comprises \val{JNRunsMain} mission runs, that is, \val{JNMain} held-out missions in
+\val{JNConfigsMain} configurations with eight methods. Table~\ref{tab:main} lists utility, lost tasks and computation per
+method, and Fig.~\ref{fig:main} relates utility to computation and shows the difference in every configuration.
+
+Search pays off clearly under uncertain execution. Regret-2 repair reached a utility of \val{JURepair}\%, and
+AnytimeSwarm-R reached \val{JURisk}\%, which is \val{JDmRepair} percentage points (pp) or \val{JURelRepair}\% more. The
+full budget of 250\,ms was the weakest search method, with \val{JUFixed}\%, and AnytimeSwarm-R served \val{JDFixed}\,pp
+more reward than it. The loss of the long budget stems from late plans. A task counts as lost to delay when it is part of
+the computed plan but can no longer be served on time when the plan is released. With $\kappa_B=50$, the full budget
+lost \val{JLostKFiftyFixed} tasks per mission in this way, against \val{JLostKFiftyRisk} for AnytimeSwarm-R, that is,
+\val{JLostRedFixed}\% fewer. Without its delay cost, AnytimeSwarm lost \val{JLostKFiftyNoDelay} tasks per mission, so the
+delay cost keeps its role when execution is uncertain.
+
+Among the remaining search methods, the differences are small. All six search methods lie within \val{JUSpreadSearch}\,pp
+of each other. AnytimeSwarm-R reached the highest mean utility with the least computation of the adaptive rules,
+\val{JMsRisk}\,ms per call against \val{JMsAS}\,ms for AnytimeSwarm and \val{JMsStag}\,ms for the stagnation rule. The
+reduction of \val{JMsRedAS}\% relative to AnytimeSwarm is significant (\val{JDMsAS}\,ms per call), so the second
+hypothesis holds. The primary hypothesis does not hold at the pre-registered level. The pooled advantage of
+AnytimeSwarm-R was \val{JDFixedForty}\,pp over ALNS with 40\,ms, \val{JDAS}\,pp over AnytimeSwarm and \val{JDStag}\,pp
+over the stagnation rule, with Holm-adjusted $p$-values of \val{JPFixedForty}, \val{JPAS} and \val{JPStag}. Only the
+first interval excludes zero before correction. Per configuration, AnytimeSwarm-R was significantly better than ALNS with
+40\,ms in \val{JWinFixedForty} of the \val{JNConfigsMain} configurations, better than the stagnation rule in
+\val{JWinStag} and never significantly different from AnytimeSwarm. It was significantly worse than none of the baselines
+in any configuration (Fig.~\ref{fig:main}b). The ablation that keeps only the latency term reached \val{JURiskZero}\%,
+close to AnytimeSwarm, so the small advantage of AnytimeSwarm-R, if real, comes from the error model and not from the
+expected latency.
+
+The fixed budget of 40\,ms is a strong reference, because it was matched to the mean computation of AnytimeSwarm on
+development data. Its weakness lies in the allocation across fleet scales. AnytimeSwarm-R used \val{JMsScSmallRisk}\,ms
+per call on the small scale and \val{JMsScLargeRisk}\,ms on the large scale. On the large scale, it served
+\val{JDScLargeFixedForty}\,pp more reward than the budget of 40\,ms and was on a par with the full budget
+(\val{JDScLargeFixed}\,pp). On the small scale, it served \val{JDScSmallFixed}\,pp more than the full budget and was on a
+par with the budget of 40\,ms (\val{JDScSmallFixedForty}\,pp). A single fixed budget is therefore either too long for
+small fleets or too short for large ones, whereas the adaptive rules find a suitable amount of computation on each scale
+without tuning. The advantage over ALNS with 40\,ms was \val{JDFFKappa10}\,pp for $\kappa_B=10$ and
+\val{JDFFKappa50}\,pp for $\kappa_B=50$, and \val{JDFFExecLow}\,pp under low and \val{JDFFExecMid}\,pp under mid
+disturbances.
+
+\inputtable{tab_main}
+
+\begin{figure}[t]
+\centering
+\fig{fig_main}{\linewidth}
+\caption{Tier B primary matrix, held-out seeds 3000--3029: (a) mean utility against mean planning time per call over
+all \val{JNConfigsMain} configurations (regret-2 repair, at \val{JURepair}\% and 1\,ms, is not shown); (b) paired
+difference of AnytimeSwarm-R minus ALNS with 40\,ms and minus AnytimeSwarm per configuration (execution level, latency
+level, $\kappa_B$, trigger) with 95\% bootstrap intervals over \val{JNMain} missions.}\label{fig:main}
+\end{figure}
+
+\subsection{Replanning triggers}\label{sec:res-triggers}
+The trigger mattered more than the stopping rule. Replanning every 60\,s in addition to the events raised the number of
+planning calls from \val{JCallsEvent} to \val{JCallsPeriodic} per mission and the utility of every method, by
+\val{JTrigMin}\,pp to \val{JTrigMax}\,pp, with all intervals above zero (\val{JTrigRisk}\,pp for AnytimeSwarm-R,
+\val{JTrigFixedForty}\,pp for ALNS with 40\,ms). The third hypothesis therefore holds. Periodic replanning probably helps
+because it corrects the accumulated deviations of the executed routes, which the event trigger only notices at the next
+event. The advantage of AnytimeSwarm-R over ALNS with 40\,ms was \val{JDFixedFortyEvent}\,pp with the event trigger and
+\val{JDFixedFortyPeriodic}\,pp with the periodic trigger. The two values are close, and the protocol did not test their
+difference.
+
+\todo{held-out results: 40 UAVs, sensitivity, tier C}

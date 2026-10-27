@@ -97,7 +97,8 @@ def error_models():
         for lv in ["low", "mid", "high"]:
             if lv in d:
                 m = d[lv]
-                rows.append(f"{tier} & {lv} & {m['n']} & {m['b0']:.2f} & {m['b1']:.4f} & {m['s0']:.2f} & {m['s1']:.4f} \\\\")
+                cells = [f"{m['b0']:.2f}", f"{m['b1']:.4f}", f"{m['s0']:.2f}", f"{m['s1']:.4f}"]
+                rows.append(f"{tier} & {lv} & {m['n']} & " + " & ".join(c.replace("-", "$-$") for c in cells) + " \\\\")
         if tier == "C":
             put("LatC", f"{d['latency_mean_s']:.3f}")
             put("LatCpn", f"{d['latency_p95_s']:.3f}")
@@ -223,21 +224,51 @@ def tier_b_main():
             put(f"DFF{col.split('_')[0].capitalize()}{str(v).replace('.0', '').capitalize()}", ci(m, lo, hi))
             m, lo, hi, _ = boot(pooled(sub, OURS, "anytime"))
             put(f"DAS{col.split('_')[0].capitalize()}{str(v).replace('.0', '').capitalize()}", ci(m, lo, hi))
+    # by fleet scale (descriptive): utility differences and computation per call
+    for sc in ["small", "medium", "large"]:
+        sub = df[df.scale == sc]
+        for base, kb in [("alns_fixed@40", "FixedForty"), ("anytime", "AS"), ("alns_fixed", "Fixed")]:
+            m, lo, hi, _ = boot(pooled(sub, OURS, base))
+            put(f"DSc{sc.capitalize()}{kb}", ci(m, lo, hi))
+        ms = sub.groupby("method").plan_ms_mean.mean()
+        for m, k in [(OURS, "Risk"), ("anytime", "AS"), ("alns_stagnation", "Stag")]:
+            put(f"MsSc{sc.capitalize()}{k}", f"{ms[m]:.0f}")
+    # tasks lost because a plan arrived too late, slow machine (kappa 50)
+    lost = df[df.kappa == 50.0].groupby("method").dropped_by_delay.mean()
+    for m, k in key.items():
+        if m in lost.index:
+            put(f"LostKFifty{k}", f"{lost[m]:.2f}")
+    # relative forms of the headline differences
+    put("LostRedFixed", f"{(1 - lost[OURS] / lost['alns_fixed']) * 100:.0f}")
+    put("MsRedAS", f"{(1 - g.loc[OURS, 'ms'] / g.loc['anytime', 'ms']) * 100:.0f}")
+    put("MsRedStag", f"{(1 - g.loc[OURS, 'ms'] / g.loc['alns_stagnation', 'ms']) * 100:.0f}")
+    put("MsRedFixed", f"{(1 - g.loc[OURS, 'ms'] / g.loc['alns_fixed', 'ms']) * 100:.0f}")
+    put("URelRepair", f"{(g.loc[OURS, 'u'] / g.loc['regret_repair', 'u'] - 1) * 100:.1f}")
+    put("URelFixed", f"{(g.loc[OURS, 'u'] / g.loc['alns_fixed', 'u'] - 1) * 100:.1f}")
+    put("USpreadSearch", pp(g.drop(index="regret_repair").u.max() - g.drop(index="regret_repair").u.min()))
     fig_main(df)
 
 
 def fig_main(df):
-    meths = ["regret_repair", "alns_fixed", "alns_fixed@40", "alns_stagnation", "anytime_nodelay", "anytime",
-             "anytime_risk"]
-    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.4))
+    # regret-2 repair (about 3 pp lower) is left out of panel (a) so that the search methods can be told apart
+    meths = ["alns_fixed", "alns_fixed@40", "alns_stagnation", "anytime_nodelay", "anytime", "anytime_risk"]
+    offs = {"alns_fixed": (-6, 5, "right"), "alns_fixed@40": (-6, -9, "right"), "alns_stagnation": (6, -9, "left"),
+            "anytime": (-7, -1, "right"), "anytime_nodelay": (6, 1, "left"), "anytime_risk": (-7, 3, "right")}
+    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.6))
     ax = axes[0]
     g = df[df.method.isin(meths)].groupby("method").agg(u=("utility_rate", "mean"), ms=("plan_ms_mean", "mean"))
     for m, r in g.iterrows():
         c = "C3" if m == OURS else ("C1" if m == "anytime" else "C0")
         ax.scatter(r.ms, r.u * 100, s=36, color=c, zorder=3)
-        ax.annotate(NAMES[m].replace("\\,", " "), (r.ms, r.u * 100), textcoords="offset points", xytext=(4, 3),
-                    fontsize=7)
+        dx, dy, ha = offs[m]
+        ax.annotate(NAMES[m].replace("\\,", " "), (r.ms, r.u * 100), textcoords="offset points", xytext=(dx, dy),
+                    fontsize=7, ha=ha, va="center")
+    lo_u, hi_u = g.u.min() * 100, g.u.max() * 100
+    ax.set_ylim(lo_u - 0.25 * (hi_u - lo_u), hi_u + 0.25 * (hi_u - lo_u))
     ax.set_xscale("log")
+    ax.set_xlim(15, 600)
+    ax.set_xticks([20, 50, 100, 200, 500], ["20", "50", "100", "200", "500"])
+    ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax.set_xlabel("planning time per call (ms)")
     ax.set_ylabel("utility (%)")
     ax.set_title("(a) utility vs. computation", fontsize=9)
@@ -264,7 +295,7 @@ def fig_main(df):
     ax.invert_yaxis()
     ax.set_xlabel("AnytimeSwarm-R minus baseline (pp)")
     ax.set_title("(b) per configuration, 95% CI", fontsize=9)
-    ax.legend(fontsize=7, loc="lower right")
+    ax.legend(fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.21), ncol=2, frameon=False)
     fig.tight_layout()
     fig.savefig(P / "figures" / "fig_main.pdf")
     plt.close(fig)

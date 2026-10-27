@@ -259,4 +259,10 @@ B.~Efron, R.~J. Tibshirani, An Introduction to the Bootstrap, Chapman and Hall,
 S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
   Journal of Statistics 6~(2) (1979) 65--70.
 
+\bibitem{fawcett2006roc}
+T.~Fawcett, An introduction to {ROC} analysis, Pattern Recognition Letters
+  27~(8) (2006) 861--874.
+\newblock \href {https://doi.org/10.1016/j.patrec.2005.10.010}
+  {\path{doi:10.1016/j.patrec.2005.10.010}}.
+
 \end{thebibliography}
