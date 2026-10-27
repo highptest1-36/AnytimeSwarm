@@ -212,3 +212,11 @@ bash $J/setup/05_smoke_test.sh 2       # 2 UAV headless, liệt kê topic, đo R
 bash $J/setup/test_demo_1uav.sh 120    # 1 UAV headless bay route mặc định, log vào setup/logs/
 bash $J/setup/test_demo_2uav.sh 120    # 2 UAV headless bay 2 route
 ```
+
+## 11. Xem AnytimeSwarm điều phối một nhiệm vụ
+
+Gazebo, ROS 2 và PX4 khác nhau thế nào, chạy thí nghiệm có nhìn được không: xem
+[04_QUAN_SAT_THI_NGHIEM.md](04_QUAN_SAT_THI_NGHIEM.md). Lệnh nhanh (tầng B, mở cửa sổ so sánh hai planner):
+```bash
+cd $J && ~/venvs/atswarm/bin/python demo/live_mission.py
+```

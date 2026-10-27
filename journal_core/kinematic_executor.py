@@ -34,6 +34,21 @@ class KinematicExecutor(MissionExecutor):
         self.xm = xm.for_mission(scenario.seed)
         self.dropped_in_exec = 0
         self.planned_fin: dict[int, float] = {}       # task -> planner's finish estimate at its last publication
+        self.trajectory = []                           # (uav, task, x0, y0, x1, y1, depart, arrive, start, finish)
+
+    def advance(self, t: float) -> None:
+        # record every leg completed by t (with its arrival time) before the conference code folds it into the state
+        for uid, u in self.uav.items():
+            if not u["alive"]:
+                continue
+            px, py = u["x"], u["y"]
+            for j, dep, arr, start, fin, _leg, _e in u["sched"]:
+                if fin > t:
+                    break
+                task = self.tasks[j]
+                self.trajectory.append((uid, j, px, py, task.x, task.y, dep, arr, start, fin))
+                px, py = task.x, task.y
+        super().advance(t)
 
     # ------------------------------------------------------------------ planner's view (telemetry)
     def _estimate_locked(self, uid, e, t):
@@ -164,4 +179,7 @@ def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: f
     if keep_log:
         m["_replans"] = ex.replans
         m["_executed"] = ex.executed
+        m["_trajectory"] = ex.trajectory
+        m["_served"] = dict(ex.served)
+        m["_late"] = sorted(ex.late)
     return m
