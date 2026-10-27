@@ -70,3 +70,17 @@ INFO  [logger] logger started (mode=all)
 INFO  [logger] Start file log (type: full)
 INFO  [logger] [logger] ./log/2026-10-27/19_12_46.ulg	
 INFO  [logger] Opened full log file: ./log/2026-10-27/19_12_46.ulg
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [px4] Startup script returned successfully
+INFO  [commander] Armed by external command	
+INFO  [tone_alarm] arming warning
+INFO  [commander] Takeoff detected	
+INFO  [commander] Landing at current position	
+INFO  [commander] Landing detected	
+INFO  [commander] Disarmed by landing	
+INFO  [tone_alarm] notify neutral
+INFO  [logger] closed logfile, bytes written: 130241073
+
+PX4 Exiting...
+Exiting NOW.

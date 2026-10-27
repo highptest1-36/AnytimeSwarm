@@ -1,0 +1,40 @@
+[INFO] [1793128370.075431564] [atswarm_mission_manager]: gz-arrivals-0: method=alns_fixed@40 budget=250 ms kappa_B=10 (kappa_C=2.5) trigger=event
+[INFO] [1793128376.695554953] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793128376.747259015] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 40.3 ms, 155 it, stop=budget, release at 0.10s, open=8
+[INFO] [1793128399.551745119] [atswarm_mission_manager]: replan #1 (event) t=43.0s: 40.1 ms, 196 it, stop=budget, release at 43.10s, open=7
+[INFO] [1793128441.159455646] [atswarm_mission_manager]: replan #2 (event) t=121.2s: 40.0 ms, 292 it, stop=budget, release at 121.30s, open=4
+[INFO] [1793128446.291228569] [atswarm_mission_manager]: replan #3 (event) t=130.9s: 40.4 ms, 294 it, stop=budget, release at 131.00s, open=3
+[INFO] [1793128513.894259370] [atswarm_mission_manager]: replan #4 (event) t=249.0s: 40.0 ms, 262 it, stop=budget, release at 249.10s, open=1
+[INFO] [1793128525.495746861] [atswarm_mission_manager]: replan #5 (event) t=269.5s: 40.1 ms, 183 it, stop=budget, release at 269.60s, open=2
+Traceback (most recent call last):
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/mission_manager.py", line 383, in <module>
+    node.destroy_node()
+^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/mission_manager.py", line 374, in main
+    ap.add_argument("--out", default=str(JOURNAL / "results" / "tier_c" / "run.json"))
+        ^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/mission_manager.py", line 312, in loop
+    why, t_trig = "periodic", t
+^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/mission_manager.py", line 350, in end
+    "finish_err_mean_s": float(np.mean([e for _h, e in self.calib])) if self.calib else 0.0,
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1313, in mkdir
+    os.mkdir(self, mode)
+FileExistsError: [Errno 17] File exists: '/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/calib_dev_'

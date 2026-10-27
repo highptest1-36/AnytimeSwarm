@@ -1,0 +1,14 @@
+# Tier B counterpart of the tier C experiment: the same 30 held-out gz missions (rescaled world), same disturbance
+# draws, kappa_B = 50 (kappa_C = 12.5), tier C error model. Used to validate tier B against PX4/Gazebo (H4).
+frozen: true
+heldout_seeds: {start: 4000, n: 10}
+grid:
+  name: heldout_B_gz
+  split: heldout
+  scales: [gz]
+  exec: [mid]
+  lat: [none]
+  kappas: [50]
+  triggers: [event]
+  methods: [alns_fixed, "alns_fixed@40", anytime, anytime_risk]
+  workers: 4

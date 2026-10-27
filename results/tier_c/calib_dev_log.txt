@@ -1,1 +1,2 @@
-[batch] calib_dev_ profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=nominal
+[batch] calib_dev_low profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=low
+[batch] 2026-10-27T19:21:19+00:00 ok  gz-arrivals-0 alns_fixed@40: MISSION END t=347.4s utility=0.870

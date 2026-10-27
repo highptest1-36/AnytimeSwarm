@@ -35,6 +35,9 @@ from journal_core.execution import EXEC_LEVELS, LATENCY_LEVELS  # noqa: E402
 from journal_core.kinematic_executor import run_mission_kin  # noqa: E402
 from journal_core.risk import ErrorModel, expected_latency  # noqa: E402
 from run_guarded import _busy  # noqa: E402
+from dataclasses import replace  # noqa: E402
+sys.path.insert(0, str(ROOT / "journal_ros"))
+from common import S_T, S_X, gz_scenario, tier_c_config  # noqa: E402
 
 from anytimeswarm.controller.improvement_model import LearnedPredictor  # noqa: E402
 from anytimeswarm.simulator.scenario import generate_scenario  # noqa: E402
@@ -50,22 +53,32 @@ def _init():
     _W["cfg"] = load_config(FROZEN_CFG)
     _W["pred"] = LearnedPredictor.load(FROZEN_MODEL)
     _W["err"] = ErrorModel.load_all(ROOT / "models" / "error_model_dev.json")
+    fc = ROOT / "models" / "error_model_tierc_dev.json"
+    _W["err_gz"] = ErrorModel.load_all(fc) if fc.exists() else {}
+    _W["cfg_gz"] = tier_c_config()
     os.environ.setdefault("OMP_NUM_THREADS", "1")
 
 
 def _one(job):
     sc, xl, ll, kappa, trig, method, B = job
-    cfg = _W["cfg"]
+    cfg, xm, errs = _W["cfg"], EXEC_LEVELS[xl], _W["err"]
+    if sc.scale == "gz":
+        # tier B counterpart of a tier C mission: rescaled world, kappa_C = kappa_B * S_T, wind x S_X/S_T,
+        # acceleration x S_X/S_T^2, tier C error model (same inputs as the PX4/Gazebo run)
+        cfg, errs = _W["cfg_gz"], _W["err_gz"]
+        xm = replace(xm, wind_mps=xm.wind_mps * S_X / S_T, accel_mps2=xm.accel_mps2 * S_X / S_T ** 2)
+        kappa = kappa * S_T
     base, _, opt = method.partition("@")
     budget = float(opt) if opt else B
     base, _, err_level = base.partition("~")
     kw = {}
     if base == "anytime_risk":
         lv = err_level or xl
-        kw = {"err": _W["err"].get(lv, ErrorModel()), "latency_mean_s": expected_latency(LATENCY_LEVELS[ll])}
-    r = run_mission_kin(copy.deepcopy(sc), cfg, base, budget, kappa=kappa, xm=EXEC_LEVELS[xl], lat=LATENCY_LEVELS[ll],
+        kw = {"err": errs.get(lv, ErrorModel()), "latency_mean_s": expected_latency(LATENCY_LEVELS[ll])}
+    r = run_mission_kin(copy.deepcopy(sc), cfg, base, budget, kappa=kappa, xm=xm, lat=LATENCY_LEVELS[ll],
                         predictor=_W["pred"], seed=sc.seed, trigger=trig, solve_kwargs=kw)
     r["method"] = method
+    r["kappa"] = job[3]
     return r
 
 
@@ -73,6 +86,9 @@ def scenarios(cfg, split, scales, seeds_override=None):
     s = seeds_override or cfg["seeds"][split]
     out = []
     for scale in scales:
+        if scale == "gz":
+            out += [gz_scenario(p, seed) for p in cfg["profiles"] for seed in range(s["start"], s["start"] + s["n"])]
+            continue
         c = cfg
         if scale == "xl":
             c = copy.deepcopy(cfg)
