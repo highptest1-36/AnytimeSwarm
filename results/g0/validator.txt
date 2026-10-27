@@ -1,0 +1,2 @@
+independent validator: 531 snapshots x 9 methods = 4779 plans (ALNS variants capped at 300 iterations)
+infeasible plans: 0

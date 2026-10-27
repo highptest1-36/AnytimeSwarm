@@ -51,4 +51,6 @@ Kết quả của bản hội nghị tái lập được trên Linux. Phần t�
 kết luận chính; chênh lệch số tuyệt đối giải thích được bằng tốc độ CPU/OS (Linux nhanh hơn 21%). Từ đây, mọi thí
 nghiệm journal chạy trên Linux và báo cáo tốc độ tìm kiếm (vòng/ms) cùng kết quả, để người đọc quy đổi giữa máy.
 
-Validator độc lập: xem `results/g0/validator.txt`.
+Validator độc lập (`tools/independent_validator.py`, viết lại phép tính thời gian và năng lượng, không dùng
+`Problem.schedule`): 531 snapshot × 9 phương pháp = 4 779 kế hoạch, 0 kế hoạch vi phạm (`results/g0/validator.txt`).
+G0 đạt cả ba tiêu chí.

@@ -163,7 +163,14 @@ Tiến độ 27/10:
 - Stage A (tất định, `tools/g0_stage_a.sh`, `results/g0/stage_a.txt`): 90 kịch bản dev giống bản gốc đến từng bit;
   531 snapshot giống 99,978% số lá, mọi khác biệt (315) nằm ở trường `energy`, lệch 1 ulp (≤ 7e-12), do libm
   Windows/Linux; Python 3.11 và 3.12 trên Linux cho kết quả giống hệt nhau.
-- Stage B (có đo thời gian, `tools/g0_stage_b.sh`, chạy dưới guard Linux `tools/run_guarded.py`): đang chạy.
+- Stage B (có đo thời gian, `tools/g0_stage_b.sh`, guard Linux `tools/run_guarded.py`): xong 27/10, kết luận chính
+  tái lập (kiểm tra cùng compute 24/24 trùng dấu và ý nghĩa), Linux tìm kiếm nhanh hơn 21%.
+- Validator độc lập: 0/4 779 kế hoạch vi phạm. G0 đạt. Báo cáo: `docs/02_REPRODUCTION.md`.
+
+### Pilot tầng B — xong 28/10 (`docs/03_PILOT_TIER_B.md`)
+Go có điều kiện: zero-shot giữ được (không thua baseline nào, 2/12 cấu hình có nhiễu thắng alns_fixed@40 có ý nghĩa),
+nhưng lợi thế nhỏ so với tổn thất do thực thi (10–23 điểm utility). Trọng tâm journal chuyển sang execution-aware
+AnytimeSwarm: replan theo độ lệch + chi phí trễ theo rủi ro, phát triển trên seed dev; hiệu chỉnh nhiễu bằng PX4/Gazebo.
 
 ### G2 — Multi-UAV SITL + điều khiển
 1. Offboard cho 1 UAV, ENU ↔ NED đúng. Xong ngày 27/10: `demo/offboard_waypoints.py`, 1 UAV và 2 UAV bay hết route,
