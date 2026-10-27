@@ -1,0 +1,97 @@
+# AnytimeSwarm - default configuration (all experiments read this file; override with --config)
+# RULE: after the Scientific Go/No-Go (31/10) copy this file to configs/frozen_<date>.yaml and use
+# only the frozen copy for test seeds. Never tune anything on test seeds.
+
+seed: 0
+
+paths:
+  data_dir: data          # generated scenarios / snapshots
+  models_dir: models      # trained improvement predictor
+  results_dir: results
+  paper_dir: paper
+
+# ----------------------------------------------------------------------------- world model
+# Units: metres, seconds. Energy is measured in "metres of flight": flying 1 m costs 1 unit,
+# hovering during service costs `hover_m_per_s` units per second, waiting/idle UAVs perch (0 cost).
+# Calibrated by a pilot on 24/10 (see docs/03_PROGRESS_TRACKER.md): with the initial proposal
+# (6 km map, 5/15, 10/30, 20/60) every task was served and ALNS improved <0.5% -> no trade-off to
+# study. The values below give 73-90% completion and 6-9% headroom for search over regret insertion.
+world:
+  map_m: 10000
+  horizon_s: 1800           # mission length (30 min)
+  speed_mps: [10, 16]       # heterogeneous cruise speed
+  capacity_m: [18000, 28000]
+  reserve_frac: 0.10        # must land at the depot with >= 10% of capacity left
+  hover_m_per_s: 6.0
+  service_s: [30, 90]
+  window_s: [180, 600]      # deadline - release
+  announce_lead_s: [0, 120] # release - announcement
+  reward_levels: [1, 2, 3, 5]
+  reward_probs: [0.4, 0.3, 0.2, 0.1]
+  hotspots: 3               # 50% of tasks are clustered around hotspots
+  hotspot_std_m: 600
+  initial_frac: 0.5         # share of tasks known at t = 0
+
+scales:
+  small:  {n_uav: 5,  n_tasks: 25}
+  medium: {n_uav: 10, n_tasks: 50}
+  large:  {n_uav: 20, n_tasks: 140}   # more UAVs cover more -> needs a higher load for pressure
+
+profiles:                   # dynamic-event mix of a mission
+  arrivals:  {arrival_batches: 6, failures: 0, deadline_changes: 0}
+  failures:  {arrival_batches: 3, failures: 2, deadline_changes: 0}
+  deadlines: {arrival_batches: 3, failures: 0, deadline_changes: 4}
+
+seeds:
+  dev:  {start: 0,    n: 10}    # scenario seeds for development + training the predictor
+  test: {start: 1000, n: 10}    # final evaluation only (increase to 20 if time allows)
+
+# ----------------------------------------------------------------------------- objective
+# J(pi) = alpha * R(pi) - gamma * E(pi) - delta * C(pi)
+#   R = reward of tasks served before their deadline (hard deadlines -> L(pi) = 0 inside the planner;
+#       deadline misses are measured in closed-loop execution instead)
+#   E = total flight distance in km (incl. return to depot), C = #tasks moved to another UAV
+objective:
+  alpha: 1.0
+  gamma: 0.05
+  delta: 0.3
+
+# ----------------------------------------------------------------------------- search
+alns:
+  removal_frac: [0.1, 0.35]   # fraction of assigned tasks destroyed per iteration
+  min_remove: 2               # D6 24/10: 1 left ALNS stuck when routes are short (dev, see log)
+  max_remove: 25
+  cooling: 0.997              # per-iteration geometric cooling (budget independent -> the same
+  init_accept_worse: 0.05     #  search trajectory for every budget; only the STOP time differs)
+  init_accept_prob: 0.5
+  reaction: 0.1
+  scores: [33, 9, 13]         # new best, improved current, accepted worse
+  noise: 0.1                  # insertion noise for the noisy repair operators
+
+local_search:
+  operators: [insert_unassigned, relocate, swap, two_opt]
+
+# ----------------------------------------------------------------------------- stopping control
+controller:
+  check_ms: 5                 # how often the stopping rule is evaluated
+  horizon_ms: 10              # look-ahead H of the myopic rule
+  min_ms: 2                   # never stop before this (and before one search iteration)
+  mu: 1.0e-05                  # compute cost per ms (fraction of reward scale); D2 24/10: pre-registered rule
+  kappa: 1.0                  # time dilation: 1 ms of planning = kappa ms of mission time
+  predictor: learned          # learned | online
+  stagnation_frac: 0.2        # baseline: stop after no improvement for 20% of the budget
+  stagnation_min_ms: 5
+
+budgets_ms: [20, 50, 100, 250, 500]
+kappas: [1, 10, 50]           # sensitivity of the delay cost (1 = laptop real time)
+reference:
+  alns_ms: 3000               # long ALNS run -> best-known solution
+  ortools_s: 5                # OR-Tools routing reference (small / medium only)
+  ortools_scales: [small, medium]
+
+methods:
+  main: [greedy_repair, regret_repair, ls_fixed, alns_fixed, alns_stagnation, anytime]
+  ablation: [anytime_online, anytime_nodelay, anytime_noffr]
+  # alns_fixed@40 = fixed budget matched to AnytimeSwarm's mean compute on dev (38.9 ms offline, mu = 1e-05)
+  closed_loop: [regret_repair, alns_fixed, "alns_fixed@40", alns_stagnation, anytime, anytime_nodelay]
+closed_loop_budget_ms: 250

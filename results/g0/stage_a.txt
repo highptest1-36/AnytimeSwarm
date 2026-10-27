@@ -1,0 +1,28 @@
+# G0 stage A  2026-10-27T14:36:21+00:00
+2b8c25a5661b80eb678654abd1813f358baba20dee1dce811683093a91e6286f  configs/frozen_2026-10-24.yaml
+2b8c25a5661b80eb678654abd1813f358baba20dee1dce811683093a91e6286f  /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/configs/frozen_2026-10-24.yaml
+b22254d999d56a23268f2e0e58e1d6221f93a9d83b12288a3c8205e1282f67b3  models/improvement_model.json
+b22254d999d56a23268f2e0e58e1d6221f93a9d83b12288a3c8205e1282f67b3  /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/models/improvement_model.json
+== 02_generate_snapshots --split dev  (atswarm311, configs/frozen_2026-10-24.yaml)
+   wall 17.39 s, max RSS 125372 KB
+       failures   48     5.5     4.1
+[ok] 90 scenarios, 531 snapshots -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/repro/data
+== 02_generate_snapshots --split dev  (atswarm, configs/g0_py312.yaml)
+   wall 17.44 s, max RSS 123592 KB
+       failures   48     5.5     4.1
+[ok] 90 scenarios, 531 snapshots -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/repro/data_py312
+scenarios_dev.pkl: leaves=64502 identical=64502 (100.0000%) max_abs_diff=0.000e+00 -> IDENTICAL
+snapshots_dev.pkl: leaves=1454962 identical=1454647 (99.9783%) max_abs_diff=7.276e-12 -> DIFFERENT
+        315 differing leaves in root[i]['P'].Problem['energy'][i]
+   e.g. root[34]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+   e.g. root[35]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+   e.g. root[36]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+snapshots_dev_summary.csv (data): identical content (line endings ignored)
+scenarios_dev.pkl: leaves=64502 identical=64502 (100.0000%) max_abs_diff=0.000e+00 -> IDENTICAL
+snapshots_dev.pkl: leaves=1454962 identical=1454647 (99.9783%) max_abs_diff=7.276e-12 -> DIFFERENT
+        315 differing leaves in root[i]['P'].Problem['energy'][i]
+   e.g. root[34]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+   e.g. root[35]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+   e.g. root[36]['P'].Problem['energy'][3]: 13639.072635124157 != 13639.072635124156
+snapshots_dev_summary.csv (data_py312): identical content (line endings ignored)
+snapshots_dev.pkl: leaves=1454962 identical=1454962 (100.0000%) max_abs_diff=0.000e+00 -> IDENTICAL

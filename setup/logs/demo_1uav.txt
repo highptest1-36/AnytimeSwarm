@@ -1,0 +1,13 @@
+[INFO] [1793108094.489315684] [offboard_waypoints]: [t=   1.0s] Offboard + arm requested
+[INFO] [1793108100.662349705] [offboard_waypoints]: [t=   7.2s] reached waypoint 0 NED=(0.0,0.0,-5.0), holding 2s (service)
+[INFO] [1793108102.762619638] [offboard_waypoints]: [t=   9.3s] -> waypoint 1
+[INFO] [1793108105.661712520] [offboard_waypoints]: [t=  12.2s] reached waypoint 1 NED=(15.0,0.0,-5.0), holding 2s (service)
+[INFO] [1793108107.662257797] [offboard_waypoints]: [t=  14.2s] -> waypoint 2
+[INFO] [1793108110.561884861] [offboard_waypoints]: [t=  17.1s] reached waypoint 2 NED=(15.0,15.0,-5.0), holding 2s (service)
+[INFO] [1793108112.562371071] [offboard_waypoints]: [t=  19.1s] -> waypoint 3
+[INFO] [1793108115.362596772] [offboard_waypoints]: [t=  21.9s] reached waypoint 3 NED=(0.0,15.0,-5.0), holding 2s (service)
+[INFO] [1793108117.462900171] [offboard_waypoints]: [t=  24.0s] -> waypoint 4
+[INFO] [1793108120.262411820] [offboard_waypoints]: [t=  26.8s] reached waypoint 4 NED=(0.0,0.0,-5.0), holding 2s (service)
+[INFO] [1793108122.263338554] [offboard_waypoints]: [t=  28.8s] route finished -> LAND
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/demo/offboard_waypoints.py", line 142, in <module>
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/demo/offboard_waypoints.py", line 133, in main

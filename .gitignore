@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# large generated artefacts (regenerable from seeds; checksums go to the run manifests)
+*.pkl
+*.ulg
+*.bag
+*.db3
+**/data/
+**/traces/
+**/missions/
+
+# ROS 2 build output
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# raw install / simulator logs (keep the short .txt summaries)
+setup/logs/*.log
+
+# reproduction working copy: regenerable outputs (summaries are copied to results/g0)
+repro/data*/
+repro/results*/
+repro/models/improvement_model_*.json
+repro/configs/g0_*.yaml

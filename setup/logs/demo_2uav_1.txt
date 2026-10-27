@@ -1,0 +1,10 @@
+[INFO] [1793108288.092251707] [offboard_waypoints_px4_1]: [t=   1.0s] Offboard + arm requested
+[INFO] [1793108294.562727868] [offboard_waypoints_px4_1]: [t=   7.5s] reached waypoint 0 NED=(0.0,0.0,-6.0), holding 2s (service)
+[INFO] [1793108296.562406227] [offboard_waypoints_px4_1]: [t=   9.5s] -> waypoint 1
+[INFO] [1793108299.762821074] [offboard_waypoints_px4_1]: [t=  12.7s] reached waypoint 1 NED=(20.0,0.0,-6.0), holding 2s (service)
+[INFO] [1793108301.861970529] [offboard_waypoints_px4_1]: [t=  14.8s] -> waypoint 2
+[INFO] [1793108304.763160818] [offboard_waypoints_px4_1]: [t=  17.7s] reached waypoint 2 NED=(20.0,-15.0,-6.0), holding 2s (service)
+[INFO] [1793108306.862813403] [offboard_waypoints_px4_1]: [t=  19.8s] -> waypoint 3
+[INFO] [1793108310.362784116] [offboard_waypoints_px4_1]: [t=  23.3s] reached waypoint 3 NED=(0.0,0.0,-6.0), holding 2s (service)
+[INFO] [1793108312.362478304] [offboard_waypoints_px4_1]: [t=  25.3s] route finished -> LAND
+[INFO] [1793108324.662657860] [offboard_waypoints_px4_1]: [t=  37.6s] landed and disarmed
