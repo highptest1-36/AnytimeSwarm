@@ -1,0 +1,39 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Cell Size: 50
+      Plane Cell Count: 20
+      Color: 160; 160; 164
+      Reference Frame: <Fixed Frame>
+    - Class: rviz_default_plugins/MarkerArray
+      Name: AnytimeSwarm
+      Enabled: true
+      Topic:
+        Value: /atswarm/markers
+        Depth: 5
+        Durability Policy: Volatile
+        Reliability Policy: Reliable
+  Global Options:
+    Background Color: 240; 240; 240
+    Fixed Frame: world
+    Frame Rate: 20
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/TopDownOrtho
+      Name: Current View
+      Scale: 0.9
+      X: 0
+      Y: 0
+      Angle: 0
+    Saved: ~
+Window Geometry:
+  Height: 900
+  Width: 1000
