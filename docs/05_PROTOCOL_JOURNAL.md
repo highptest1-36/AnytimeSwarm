@@ -68,6 +68,24 @@ Kết quả âm được báo cáo như kết quả dương. Không loại nhi�
 - Tiêu chí hợp lệ: RTF đo được trong [0,8F; 1,1F]; nhiệm vụ lỗi kỹ thuật (crash PX4/Gazebo) được chạy lại một lần với
   cùng seed và ghi vào log; không có lựa chọn theo kết quả.
 
+### Tầng B — đối chứng của tầng C
+- Đúng 30 nhiệm vụ gz held-out của tầng C, chạy trong tầng B (thế giới thu nhỏ, κ_C = 12,5, gió × S_X/S_T, gia tốc
+  × S_X/S_T², mô hình sai số tầng C), cùng 4 phương pháp (`experiments/configs/B_gz.yaml`). Dùng để kiểm tra tầng B
+  dự báo đúng tầng C (H4, phần nhất quán).
+
+## 3b. Hiệu chỉnh trên dữ liệu dev (đóng băng cùng config)
+
+- Tầng B (`models/error_model_dev.json`, 90 nhiệm vụ dev mỗi mức, ALNS 40 ms): sai số hoàn thành
+  m(h) = b0 + b1 h, sd(h) = s0 + s1 h. low: m = 8,9 − 0,004 h, sd = 0,090 h; mid: m = 16,8 + 0,035 h,
+  sd = 1,6 + 0,195 h; high: m = 20,8 + 0,292 h, sd = 0,639 h (giây tầng B). Độ lệch chuẩn của z theo bin 0,65–1,32,
+  tỉ lệ vượt phân vị 90% 1–15%.
+- Tầng C (`models/error_model_tierc_dev.json`, 9 chuyến bay dev mỗi mức, seed 0–2): low: m = −1,2 + 0,028 h,
+  sd = 1,3 + 0,055 h; mid: m = 2,4 + 0,030 h, sd = 0,230 h (giây tầng C); z_sd 0,96 và 0,91; tỉ lệ vượt 11–12%.
+  Độ trễ nhận kế hoạch (phát hành → mọi UAV báo phiên bản mới) trung bình 0,147 s, p95 0,204 s (thời gian mô phỏng,
+  F = 2), dùng làm độ trễ kỳ vọng của AnytimeSwarm-R trong tầng C.
+- Bộ chạy tầng C có watchdog khởi động: nếu sau 90 s mô phỏng chưa đủ UAV trên không, lần chạy bị hủy không ghi kết
+  quả và được lặp lại một lần (đã gặp 1 lần trên khoảng 20 chuyến bay dev).
+
 ## 4. Đo thời gian và máy
 
 Laptop i7-11800H (8 nhân), WSL2 Ubuntu 24.04, Python 3.12.3, gói ghim phiên bản (README). Tầng B chạy 4 worker song

@@ -1,2 +1,22 @@
 [batch] calib_dev_low profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=low
 [batch] 2026-10-27T19:21:19+00:00 ok  gz-arrivals-0 alns_fixed@40: MISSION END t=347.4s utility=0.870
+[batch] 2026-10-27T19:25:53+00:00 ok  gz-failures-0 alns_fixed@40: MISSION END t=423.7s utility=0.375
+[batch] 2026-10-27T19:28:55+00:00 ok  gz-deadlines-0 alns_fixed@40: MISSION END t=247.3s utility=0.370
+[batch] 2026-10-27T19:32:19+00:00 ok  gz-arrivals-1 alns_fixed@40: MISSION END t=287.8s utility=0.708
+[batch] 2026-10-27T19:37:15+00:00 ok  gz-failures-1 alns_fixed@40: MISSION END t=472.5s utility=0.520
+[batch] 2026-10-27T19:40:51+00:00 ok  gz-deadlines-1 alns_fixed@40: MISSION END t=315.4s utility=0.577
+[batch] 2026-10-27T19:44:42+00:00 ok  gz-arrivals-2 alns_fixed@40: MISSION END t=344.4s utility=0.812
+[batch] 2026-10-27T19:47:59+00:00 ok  gz-failures-2 alns_fixed@40: MISSION END t=279.0s utility=0.600
+[batch] 2026-10-27T19:52:09+00:00 ok  gz-deadlines-2 alns_fixed@40: MISSION END t=381.4s utility=0.846
+[batch] calib_dev_low done
+[batch] calib_dev_mid profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=mid
+[batch] 2026-10-27T19:56:01+00:00 ok  gz-arrivals-0 alns_fixed@40: MISSION END t=342.8s utility=0.739
+[batch] 2026-10-27T20:00:33+00:00 ok  gz-failures-0 alns_fixed@40: MISSION END t=423.7s utility=0.375
+[batch] 2026-10-27T20:03:37+00:00 ok  gz-deadlines-0 alns_fixed@40: MISSION END t=247.3s utility=0.407
+[batch] 2026-10-27T20:07:15+00:00 ok  gz-arrivals-1 alns_fixed@40: MISSION END t=320.6s utility=0.708
+[batch] 2026-10-27T20:12:13+00:00 ok  gz-failures-1 alns_fixed@40: MISSION END t=472.5s utility=0.800
+[batch] 2026-10-27T20:16:01+00:00 ok  gz-deadlines-1 alns_fixed@40: MISSION END t=337.8s utility=0.538
+[batch] 2026-10-27T20:19:53+00:00 ok  gz-arrivals-2 alns_fixed@40: MISSION END t=344.2s utility=0.531
+[batch] 2026-10-27T20:23:13+00:00 ok  gz-failures-2 alns_fixed@40: MISSION END t=279.0s utility=0.467
+[batch] 2026-10-27T20:27:23+00:00 ok  gz-deadlines-2 alns_fixed@40: MISSION END t=381.4s utility=0.769
+[batch] calib_dev_mid done

@@ -42,6 +42,7 @@ from anytimeswarm.controller.improvement_model import LearnedPredictor  # noqa: 
 from anytimeswarm.simulator.problem import Problem  # noqa: E402
 from journal_core import ORIGINAL  # noqa: E402
 
+STARTUP_TIMEOUT_S = 90.0             # simulation seconds from the first fleet state to "every UAV airborne"
 REL_QOS = QoSProfile(reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                      history=HistoryPolicy.KEEP_LAST, depth=10)
 
@@ -83,6 +84,7 @@ class Mission(Node):
         self.queued_why, self.queued_t = None, None
         self.ended = False
         self.wall0 = self.sim0 = None
+        self.first_fleet = None
         self.pub_tasks = self.create_publisher(TaskArray, "/atswarm/tasks", 10)
         self.pub_plan = self.create_publisher(Plan, "/atswarm/plan", REL_QOS)
         self.pub_cmd = self.create_publisher(UavCommand, "/atswarm/command", REL_QOS)
@@ -270,6 +272,16 @@ class Mission(Node):
             return
         if self.t0 is None:
             f = self.fleet
+            if f is not None and self.first_fleet is None:
+                self.first_fleet = self.sim()
+            if self.first_fleet is not None and self.sim() - self.first_fleet > STARTUP_TIMEOUT_S:
+                # a vehicle did not reach its altitude (technical failure of the simulation): abort without a
+                # result file so that the batch runner repeats the mission (protocol: one repetition)
+                self.get_logger().error(f"STARTUP FAILED: not every UAV airborne after {STARTUP_TIMEOUT_S:.0f} s "
+                                        f"(phases {[u.phase for u in f.uavs]})")
+                self.ended = True
+                self.create_timer(1.0, lambda: rclpy.try_shutdown())
+                return
             if f is not None and f.uavs and all(u.phase == UavState.IDLE for u in f.uavs):
                 self.t0 = self.sim()
                 self.wall0, self.sim0 = time.monotonic(), self.t0
