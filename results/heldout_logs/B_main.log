@@ -7,3 +7,5 @@
   exec=low     lat=none k= 10 event         anytime          U=0.7776 late= 4.56 dropD=0.18 dropX= 8.23 replans=  6.8 ms=  55.3 (201s)
   exec=low     lat=none k= 10 event         anytime_nodelay  U=0.7800 late= 4.27 dropD=0.67 dropX= 7.86 replans=  6.8 ms=  61.8 (232s)
   exec=low     lat=none k= 10 event         anytime_risk     U=0.7804 late= 4.28 dropD=0.33 dropX= 8.13 replans=  6.8 ms=  49.9 (257s)
+  exec=low     lat=none k= 10 event         anytime_risk~zero U=0.7792 late= 4.32 dropD=0.19 dropX= 8.00 replans=  6.8 ms=  56.4 (285s)
+  exec=low     lat=none k= 10 periodic:60   regret_repair    U=0.7518 late= 4.70 dropD=0.05 dropX=15.60 replans= 24.0 ms=   0.5 (289s)

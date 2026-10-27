@@ -1,1 +1,48 @@
-% results: written after the held-out results
+\section{Results}\label{sec:results}
+\subsection{Exact execution: stopping rules at equal computation}\label{sec:static}
+On the \val{NsnapTest} test snapshots, regret-2 repair finished within about one millisecond but left a regret of
+\val{RepairRegret}\%. With a budget of 250\,ms, ALNS with the full budget reached \val{FixedRegret}\%, whereas
+AnytimeSwarm reached \val{ASRegret}\% with \val{ASUsed}\% of the budget, that is, with \val{SavedPct}\% less computation.
+Because the stopping rules use different amounts of computation, they are best compared at equal computation.
+Table~\ref{tab:scale} makes this comparison for each fleet scale, with the fixed budget and the stagnation rule evaluated
+at the mean computation that AnytimeSwarm used on the same scale. AnytimeSwarm reached a lower regret on every scale,
+and all paired intervals lie below zero. The reduction was \val{ScMediumRedMin}\% to \val{ScMediumRedMax}\% on the
+medium scale, \val{ScLargeRedMin}\% to \val{ScLargeRedMax}\% on the large scale and \val{ScXlargeRedMin}\% to
+\val{ScXlargeRedMax}\% with 40 UAVs, a scale that was never used for training. Read in the other direction, the two
+baselines needed between \val{ScMediumSpeedMin} and \val{ScSmallSpeedMax} times the computation of AnytimeSwarm to
+reach its regret. Over all scales, AnytimeSwarm reached \val{EqRegretAS}\% against \val{EqRegretBaseMin}\% to
+\val{EqRegretBaseMax}\% for four baselines that include a fixed budget and a stagnation patience tuned per fleet scale
+on development data.
+
+\inputtable{tab_static_scale}
+
+Fig.~\ref{fig:static} shows where this advantage comes from. On the medium and large scales, the quality--compute
+frontier of AnytimeSwarm lies below those of fixed budgets and stagnation stopping over the range of practical
+computation (Fig.~\ref{fig:static}a). Grouped by the improvement that a 500\,ms search can still find
+(Fig.~\ref{fig:static}b), AnytimeSwarm spent \val{AllocASNone}\,ms on snapshots that cannot be improved and
+\val{AllocASHigh}\,ms on those with the largest available improvement. Only \val{AllocASShare}\% of its computation went
+to snapshots without any possible gain, compared with more than half for the baselines. The learned predictor is
+essential for this allocation. It reached an area under the ROC curve~\cite{fawcett2006roc} of \val{AUCLearned} for the
+event that the next 10\,ms bring an improvement, compared with \val{AUCOnline} for an extrapolation of the recent
+improvement rate.
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[b]{0.62\linewidth}\centering\fig{fig_static_frontier}{\linewidth}\\[-1pt]{\small (a)}\end{minipage}\hfill
+\begin{minipage}[b]{0.36\linewidth}\centering\fig{fig_static_allocation}{\linewidth}\\[-1pt]{\small (b)}\end{minipage}
+\caption{Exact execution, test seeds 2000--2029: (a) quality--compute frontiers on identical search trajectories (open
+markers: baselines tuned per scale; star: selected AnytimeSwarm setting); (b) mean computation per snapshot, grouped by
+the improvement that a 500\,ms search can still find.}\label{fig:static}
+\end{figure}
+
+\subsection{Reproduction on the evaluation platform}\label{sec:repro}
+The exact-execution benchmark was produced on Windows. Before the execution-aware study, its development pipeline was
+re-run on the platform of all later experiments (Ubuntu 24.04 under WSL2, identical Python and package versions). The
+deterministic part was reproduced bit for bit, except for differences of one unit in the last place of some energy
+values, which stem from the floating-point libraries of the two operating systems. The search ran
+\val{JReproSpeedup}\% more iterations per millisecond on the new platform. The improvement predictor, re-trained on the
+new timing traces, reached the same compute price by the pre-registered rule, and the conclusions of the
+equal-computation comparison agreed in sign and significance in \val{JReproMatched} comparisons. The frozen predictor
+was used unchanged in all later experiments.
+
+\todo{held-out results: tier B primary matrix, triggers, 40 UAVs, sensitivity, tier C}
