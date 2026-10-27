@@ -26,3 +26,10 @@ repro/data*/
 repro/results*/
 repro/models/improvement_model_*.json
 repro/configs/g0_*.yaml
+paper_journal/*.aux
+paper_journal/*.log
+paper_journal/*.out
+paper_journal/*.blg
+paper_journal/*.spl
+paper_journal/figures_src/*.aux
+paper_journal/figures_src/*.log

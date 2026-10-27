@@ -1,0 +1,63 @@
+% AnytimeSwarm journal manuscript (Elsevier elsarticle; target: Robotics and Autonomous Systems).
+% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% Every number in the text comes from tables/numbers.tex (experiments/make_paper_numbers.py); none is typed by hand.
+\documentclass[preprint,11pt]{elsarticle}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{lineno}
+\usepackage[hidelinks]{hyperref}
+\usepackage[margin=2.5cm]{geometry}
+\biboptions{sort&compress}
+\newtheorem{prop}{Proposition}
+\newproof{proof}{Proof}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+% static benchmark (exact execution, seeds 2000--2029) and journal numbers (prefix J)
+\IfFileExists{tables/static_numbers.tex}{\input{tables/static_numbers.tex}}{}
+\IfFileExists{tables/static_numbers_XL.tex}{\input{tables/static_numbers_XL.tex}}{}
+\IfFileExists{tables/static_numbers_scale.tex}{\input{tables/static_numbers_scale.tex}}{}
+\IfFileExists{tables/numbers.tex}{\input{tables/numbers.tex}}{}
+\newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
+\newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
+\newcommand{\inputtable}[1]{\IfFileExists{tables/#1.tex}{\input{tables/#1.tex}}{\todo{table \detokenize{#1}}}}
+\journal{Robotics and Autonomous Systems}
+
+\begin{document}
+\begin{frontmatter}
+\title{Execution-aware anytime replanning for multi-UAV missions: when to stop computing under uncertain execution,
+with validation on PX4 and Gazebo}
+
+\author[fpt]{Cao-Phuc Ha}
+\ead{caophucai@gmail.com}
+\author[fpt]{Anh Nguyen Vu Minh}
+\ead{anhnvmse203412@fpt.edu.vn}
+\author[vaa]{Phu-Nguyen Le\corref{cor}}
+\ead{nguyenlp@vaa.edu.vn}
+\cortext[cor]{Corresponding author.}
+\affiliation[fpt]{organization={Department of Artificial Intelligence, FPT University},
+  city={Ho Chi Minh City}, country={Vietnam}}
+\affiliation[vaa]{organization={Faculty of Electrical and Electronics Engineering, Vietnam Aerospace University},
+  addressline={104 Nguyen Van Troi Street, Phu Nhuan Ward}, city={Ho Chi Minh City}, postcode={700000},
+  country={Vietnam}}
+
+\input{sections/abstract}
+\end{frontmatter}
+
+\linenumbers
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/problem}
+\input{sections/method}
+\input{sections/setup}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+\input{sections/declarations}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+\end{document}

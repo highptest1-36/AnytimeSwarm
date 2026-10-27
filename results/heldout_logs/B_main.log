@@ -1,0 +1,9 @@
+[grid] heldout_B_main: 270 missions x 128 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  exec=low     lat=none k= 10 event         regret_repair    U=0.7423 late= 4.63 dropD=0.04 dropX= 7.02 replans=  6.8 ms=   1.6 (3s)
+  exec=low     lat=none k= 10 event         alns_fixed       U=0.7771 late= 4.31 dropD=0.96 dropX= 8.02 replans=  6.8 ms= 250.2 (120s)
+  exec=low     lat=none k= 10 event         alns_fixed@40    U=0.7764 late= 4.51 dropD=0.20 dropX= 7.76 replans=  6.8 ms=  40.2 (141s)
+  exec=low     lat=none k= 10 event         alns_stagnation  U=0.7777 late= 4.56 dropD=0.49 dropX= 7.97 replans=  6.8 ms=  63.7 (173s)
+  exec=low     lat=none k= 10 event         anytime          U=0.7776 late= 4.56 dropD=0.18 dropX= 8.23 replans=  6.8 ms=  55.3 (201s)
+  exec=low     lat=none k= 10 event         anytime_nodelay  U=0.7800 late= 4.27 dropD=0.67 dropX= 7.86 replans=  6.8 ms=  61.8 (232s)
+  exec=low     lat=none k= 10 event         anytime_risk     U=0.7804 late= 4.28 dropD=0.33 dropX= 8.13 replans=  6.8 ms=  49.9 (257s)

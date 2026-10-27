@@ -1,0 +1,25 @@
+[heldout] 2026-10-27T20:45:47+00:00 freeze check
+experiments/configs/B_gz.yaml: OK
+experiments/configs/B_main.yaml: OK
+experiments/configs/B_sens_high_k1_dev.yaml: OK
+experiments/configs/B_sens_misspec.yaml: OK
+experiments/configs/B_xl.yaml: OK
+experiments/configs/C_main.yaml: OK
+models/error_model_dev.json: OK
+models/error_model_tierc_dev.json: OK
+original/models/improvement_model.json: OK
+original/configs/frozen_2026-10-24.yaml: OK
+journal_core/__init__.py: OK
+journal_core/execution.py: OK
+journal_core/kinematic_executor.py: OK
+journal_core/methods.py: OK
+journal_core/risk.py: OK
+journal_ros/common.py: OK
+journal_ros/mission_manager.py: OK
+journal_ros/uav_executor.py: OK
+journal_ros/viz.py: OK
+journal_ros/calib_dev.sh: OK
+journal_ros/run_batch.sh: OK
+journal_ros/run_mission.sh: OK
+experiments/b_grid.py: OK
+[heldout] 2026-10-27T20:45:47+00:00 tier B B_main

@@ -1,0 +1,31 @@
+% Tier C architecture (pdflatex fig_tierc.tex -> fig_tierc.pdf)
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}
+\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+\begin{document}
+\begin{tikzpicture}[font=\small,
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=1.05cm, inner sep=4pt, fill=white},
+  ros/.style={box, fill=blue!6},
+  px/.style={box, fill=orange!10},
+  gz/.style={box, fill=green!8},
+  arr/.style={-{Stealth[length=2.2mm]}, thick},
+  lab/.style={font=\scriptsize, fill=white, inner sep=1pt}]
+\node[ros, text width=4.1cm] (mm) {\textbf{Mission manager}\\ scenario timeline, triggers,\\ snapshot $\rightarrow$ AnytimeSwarm(-R),\\ release at $t+\kappa_C\tau$, metrics};
+\node[ros, text width=4.1cm, right=2.6cm of mm] (ex) {\textbf{UAV executor}\\ one state machine per UAV,\\ offboard setpoints at 10\,Hz,\\ carrot along each leg, service hold};
+\node[ros, text width=4.1cm, below=1.4cm of mm] (viz) {\textbf{Visualisation}\\ RViz~2 markers,\\ task pillars in the Gazebo scene};
+\node[box, text width=2.6cm, below=1.4cm of ex, xshift=-1.6cm] (xrce) {uXRCE-DDS agent};
+\node[px, text width=1.55cm, below=1.2cm of xrce, xshift=-2.0cm] (p1) {PX4 SITL\\ UAV 0};
+\node[px, text width=1.55cm, right=0.35cm of p1] (p2) {PX4 SITL\\ UAV 1};
+\node[px, text width=1.55cm, right=0.35cm of p2] (p3) {PX4 SITL\\ UAV 2};
+\begin{scope}[on background layer]
+\node[gz, fit=(p1)(p2)(p3), inner sep=8pt, label={[font=\small]below:\textbf{Gazebo Harmonic}: three X500 quadrotors, lockstep physics}] (gzbox) {};
+\node[draw=blue!50, dashed, rounded corners, fit=(mm)(ex)(viz)(xrce), inner sep=8pt, label={[font=\small,blue!60!black]above:ROS~2 Jazzy}] {};
+\end{scope}
+\draw[arr] (mm.10) -- node[lab, above]{/atswarm/plan, command} (ex.170);
+\draw[arr] (ex.190) -- node[lab, below]{fleet\_state, task\_report} (mm.350);
+\draw[arr] (mm) -- node[lab, right]{tasks, plan} (viz);
+\draw[arr, <->] (ex.south) ++(0.6,0) -- node[lab, right]{px4\_msgs} ++(0,-1.4) coordinate (a) -- (a -| xrce.east);
+\draw[arr, <->] (xrce) -- node[lab, right]{UDP} (gzbox.north -| xrce);
+\end{tikzpicture}
+\end{document}

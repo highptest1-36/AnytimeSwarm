@@ -1,0 +1,38 @@
+\section{Related work}\label{sec:related}
+\paragraph{Dynamic task allocation and routing} Multi-robot task allocation~\cite{gerkey2004formal} and dynamic vehicle
+routing~\cite{pillac2013review,psaraftis2016dynamic} study how tasks can be reassigned when information changes. The
+planning problem considered here is a prize-collecting routing problem with time
+windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Real-time routing has long been limited by the
+computation available between events. Gendreau et al.\ parallelised tabu search to fit more optimisation between
+request arrivals~\cite{gendreau1999parallel}, and large neighbourhood search has been adapted to dynamic routing with
+time windows~\cite{hong2012improved,alnsdvrp2024} and to routing with drones~\cite{sacramento2019alns}. For multi-UAV
+systems, auction methods such as CBBA~\cite{choi2009consensus,bertuccelli2009realtime} reach conflict-free assignments
+quickly, uncertainty-gated allocation addresses intermittent communication~\cite{ucdg2026drones}, and centralised
+methods protect valid assignments or repair only affected route segments when events
+occur~\cite{hwang2026apr,shen2026localrepair}. These studies make the search faster or better within a given budget.
+The present work asks how much of the budget should be used for each event and how this choice depends on uncertain
+execution.
+
+\paragraph{Uncertainty in routing and allocation} Stochastic vehicle routing models travel and service times or demands
+as random variables~\cite{gendreau1996stochastic}. Scenario-based approaches plan against sampled futures in dynamic
+settings~\cite{bent2004scenario}, and chance-constrained task allocation bounds the probability that a team misses its
+objectives~\cite{ponda2012chance}. These methods change the plan itself. AnytimeSwarm-R keeps the planning model and
+the search unchanged and uses the uncertainty only to price the delay of publishing a plan. The two ideas are
+complementary, and a risk-aware planner could be combined with the stopping rule studied here.
+
+\paragraph{Metareasoning and anytime algorithms} Anytime algorithms~\cite{dean1988analysis,zilberstein1996using} and the
+rational allocation of computation~\cite{horvitz1987reasoning,russell1991right} form the conceptual basis of this work.
+Hansen and Zilberstein derive a monitoring policy by dynamic programming over a performance profile and a
+time-dependent utility~\cite{hansen2001monitoring}. Svegliato et al.\ predict the performance of an anytime algorithm
+online~\cite{svegliato2018meta} and learn meta-level control with model-free reinforcement
+learning~\cite{svegliato2020modelfree}, and Sung et al.\ learn when an anytime motion planner should
+stop~\cite{sung2021quit}. In these studies, the utility of time is usually a given function. In multi-UAV replanning, it
+follows from the plan at hand, from the vehicles that wait for it and, as studied here, from how reliably the plan
+will be executed.
+
+\paragraph{Simulation-based validation of multi-UAV planning} Software-in-the-loop simulation with an autopilot and a
+physics simulator is a common step between algorithm design and flight tests. PX4~\cite{meier2015px4} runs the same
+flight stack in simulation and on hardware, Gazebo~\cite{koenig2004gazebo} provides vehicle dynamics and sensors, and
+ROS~2~\cite{macenski2022ros2} connects planners and vehicles. Such setups are rarely used for statistical comparisons
+of planners, because each mission runs in real time or close to it. The two-tier design of this paper uses the physical
+tier to validate a fast simulator that carries the statistical burden.

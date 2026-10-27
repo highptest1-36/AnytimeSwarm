@@ -1,0 +1,44 @@
+\section{Introduction}\label{sec:intro}
+Teams of unmanned aerial vehicles (UAVs) are used for inspection, delivery and monitoring. During a mission, new tasks
+may appear, a vehicle may fail, or a deadline may be moved forward. A central planner then repairs the routes of the
+whole fleet, while some UAVs may already wait for new instructions. Dynamic vehicle routing and multi-robot task
+allocation offer many methods for this repair~\cite{gerkey2004formal,pillac2013review,psaraftis2016dynamic}, and
+metaheuristics such as adaptive large neighbourhood search (ALNS)~\cite{ropke2006adaptive} usually find good plans when
+enough time is available.
+
+The time given to such a planner is usually fixed in advance, and the same budget is spent on easy and on hard events.
+This choice may be inefficient for two reasons. Many events leave little room for improvement, and on the others most of
+the improvement of an anytime search tends to arrive early. In addition, idle UAVs wait while the planner computes, so a
+later plan is not always a better plan. Anytime algorithms and metareasoning study this question in general
+terms~\cite{dean1988analysis,horvitz1987reasoning,russell1991right,zilberstein1996using,hansen2001monitoring,svegliato2018meta}.
+In replanning, the cost of time is specific to the current plan. It depends on which UAVs are idle, on the slack in
+their routes and, in practice, on how reliably the plan will be executed.
+
+Execution uncertainty changes this cost. A planner that assumes exact execution prices the delay of a plan with the
+slack that the plan promises. When UAVs accelerate, meet wind and take longer than expected at a task, a part of this
+slack is consumed by flight-time errors that the planner does not see. Errors also accumulate along a route between two
+replanning calls, which raises the question of when to replan at all. Validation is a further difficulty. Results
+obtained with a kinematic simulator may not hold for vehicles flown by an autopilot, while a physics-based simulation
+alone cannot provide the number of missions that a statistical comparison of planners requires.
+
+This paper studies when a multi-UAV replanner should stop computing and publish its plan, first with exact execution
+and then under execution uncertainty. Its contributions are fourfold. The first is AnytimeSwarm, a replanner that repairs
+the previous plan, improves it with an anytime ALNS whose search trajectory does not depend on the budget, and stops
+when a learned prediction of the next improvement no longer exceeds a delay cost derived from the slack of the current
+plan. A proposition shows that this cost bounds the reward that a later publication loses. The second is
+AnytimeSwarm-R, an execution-aware stopping rule whose delay cost is the expected reward lost under a calibrated model
+of the finish-time error and of the expected dissemination latency. It reduces exactly to the deterministic cost when
+the error model is zero. The third is a two-tier evaluation framework. Tier B is a continuous-time kinematic simulator
+with acceleration limits, wind, speed and service-time errors and stochastic communication latency, drawn with common
+random numbers~\cite{law2015simulation} so that every planner faces the same disturbances. Tier C flies the same
+missions with three PX4 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo}, connected to the planner
+through ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem.
+The fourth is a pre-registered evaluation. All design choices and error models were fixed on development seeds, the
+configuration was frozen with cryptographic hashes, and the main comparisons were run once on held-out seeds with
+mission-level paired bootstrap and Holm correction.
+
+The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews related work.
+Section~\ref{sec:problem} formulates replanning with publication delay and uncertain execution. Section~\ref{sec:method}
+describes AnytimeSwarm and AnytimeSwarm-R. Section~\ref{sec:setup} presents the evaluation framework and protocol.
+Section~\ref{sec:results} reports the results, Section~\ref{sec:discussion} discusses them together with the
+limitations of the study, and Section~\ref{sec:conclusion} concludes the paper.
