@@ -11,8 +11,14 @@ What changes:
     estimate from its actual state already misses the deadline ("dropped in execution").
   * the planner sees telemetry, not the future: a UAV flying its committed task is reported with the planner's
     nominal estimate of the remaining flight and service from its actual position.
-With ExecutionModel nominal and zero latency the class falls back to the conference code path, so results are
-identical to anytimeswarm.simulator.executor.run_mission (tests/test_kinematic.py checks this).
+  * replanning triggers (run_mission_kin(trigger=...)):
+      "event"          conference behaviour: replan only on task arrivals, UAV failures, deadline changes
+      "deviation:<s>"  also replan when the actual finish of a planned task deviates from the plan by more than <s>
+                       seconds; detection at planned finish + <s> (late) or at the actual finish (early)
+      "periodic:<s>"   also replan every <s> seconds of mission time (baseline trigger)
+    Extra triggers are skipped when no open task is left (nothing to reassign).
+With ExecutionModel nominal, zero latency and the event trigger the class falls back to the conference code path, so
+results are identical to anytimeswarm.simulator.executor.run_mission (tests/test_kinematic.py checks this).
 """
 from __future__ import annotations
 
@@ -21,11 +27,11 @@ import math
 import numpy as np
 
 from . import ORIGINAL  # noqa: F401  (puts the frozen conference package on sys.path)
-from anytimeswarm.algorithms.methods import solve
 from anytimeswarm.simulator.executor import MissionExecutor
 from anytimeswarm.simulator.problem import Problem
 
 from .execution import ExecutionModel, LatencyModel
+from .methods import solve
 
 
 class KinematicExecutor(MissionExecutor):
@@ -35,6 +41,8 @@ class KinematicExecutor(MissionExecutor):
         self.dropped_in_exec = 0
         self.planned_fin: dict[int, float] = {}       # task -> planner's finish estimate at its last publication
         self.trajectory = []                           # (uav, task, x0, y0, x1, y1, depart, arrive, start, finish)
+        self.plan_lead: dict[int, tuple] = {}          # task -> (publication time, planned finish) of the executed plan
+        self.uav_plan: dict[int, list] = {}            # uav -> [(task, planned finish, actual finish)] of its schedule
 
     def advance(self, t: float) -> None:
         # record every leg completed by t (with its arrival time) before the conference code folds it into the state
@@ -82,6 +90,7 @@ class KinematicExecutor(MissionExecutor):
             for uid in P.uav_ids:
                 for e in self.uav[uid]["sched"][1 if locked[uid] else 0:]:
                     self.planned_fin[e[0]] = e[4]
+                    self.plan_lead[e[0]] = (t_pub, e[4])
             return
         for k, uid in enumerate(P.uav_ids):
             u = self.uav[uid]
@@ -92,7 +101,9 @@ class KinematicExecutor(MissionExecutor):
                 lt = self.tasks[lk[0]]
                 x, y, t, e_now = lt.x, lt.y, lk[4], lk[6]
                 new = [lk]
+                plan = [(lk[0], P.ready[k], lk[4])]
             else:
+                plan = []
                 x, y, t, e_now = u["x"], u["y"], max(u["ready"], t_pub), u["energy"]
                 new = []
             for j, _dep, _arr, _start, fin_plan in entries:
@@ -117,10 +128,47 @@ class KinematicExecutor(MissionExecutor):
                 self.assigned_to[gid] = uid
                 self.promised.add(gid)
                 self.planned_fin[gid] = fin_plan
+                self.plan_lead[gid] = (t_pub, fin_plan)
+                plan.append((gid, fin_plan, fin))
                 x, y, t = task.x, task.y, fin
             u["sched"] = new
+            self.uav_plan[uid] = plan
             if not locked[uid]:
                 u["ready"] = max(u["ready"], t_pub)
+
+    def next_deviation(self, theta: float, after: float) -> float:
+        """Earliest time > after at which some UAV's progress deviates from its plan by more than theta seconds."""
+        best = float("inf")
+        for uid, plan in self.uav_plan.items():
+            if not self.uav[uid]["alive"]:
+                continue
+            for _j, p, a in plan:
+                if a - p > theta:
+                    t = p + theta
+                elif p - a > theta:
+                    t = a
+                else:
+                    continue
+                if t > after + 1e-6:
+                    best = min(best, t)
+                break                                  # later tasks are re-timed by the replan anyway
+        return best
+
+    def mark_seen(self, t: float, theta: float) -> None:
+        """Deviations detected up to t are acknowledged (used when a trigger finds nothing to replan)."""
+        def seen(p, a):
+            return (a - p > theta and p + theta <= t + 1e-6) or (p - a > theta and a <= t + 1e-6)
+        for uid, plan in self.uav_plan.items():
+            self.uav_plan[uid] = [(j, a, a) if seen(p, a) else (j, p, a) for (j, p, a) in plan]
+
+    def calibration_pairs(self):
+        """(lead time h = planned finish - publication time, error e = actual - planned finish) of executed tasks."""
+        out = []
+        for (_u, j, _d, _s, fin) in self.executed:
+            if j in self.plan_lead:
+                t_pub, p = self.plan_lead[j]
+                out.append((p - t_pub, fin - p))
+        return out
 
     def finish(self) -> dict:
         m = super().finish()
@@ -140,20 +188,35 @@ class KinematicExecutor(MissionExecutor):
 
 def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: float = 1.0,
                     xm: ExecutionModel | None = None, lat: LatencyModel | None = None,
-                    predictor=None, seed: int = 0, keep_log: bool = False, solve_kwargs: dict | None = None) -> dict:
-    """Same loop as anytimeswarm.simulator.executor.run_mission, plus execution and latency models."""
+                    predictor=None, seed: int = 0, keep_log: bool = False, solve_kwargs: dict | None = None,
+                    trigger: str = "event") -> dict:
+    """Same loop as anytimeswarm.simulator.executor.run_mission, plus execution / latency models and extra
+    replanning triggers. solve_kwargs may carry err / latency_mean_s for the risk-aware method."""
     xm = xm or ExecutionModel()
     lat = lat or LatencyModel()
     ex = KinematicExecutor(scenario, cfg, xm)
     events = sorted(scenario.events, key=lambda e: e.time)
-    t_pub, i, call = 0.0, 0, 0
+    kind, _, par = trigger.partition(":")
+    assert kind in ("event", "deviation", "periodic"), trigger
+    par = float(par) if par else 0.0
+    t_stop = max(t.deadline for t in scenario.tasks)
+    t_pub, t_last, i, call, n_extra = 0.0, 0.0, 0, 0, 0
     while True:
+        why = "start"
         if call == 0:
             t_event = 0.0
         else:
-            if i >= len(events):
+            t_ev = events[i].time if i < len(events) else float("inf")
+            t_x = float("inf")
+            if kind == "deviation":
+                t_x = ex.next_deviation(par, t_pub)
+            elif kind == "periodic":
+                t_x = max(t_last + par, t_pub + 1e-6)
+            if t_x >= t_stop:
+                t_x = float("inf")
+            if math.isinf(t_ev) and math.isinf(t_x):
                 break
-            t_event = events[i].time
+            t_event, why = (t_ev, "event") if t_ev <= t_x else (t_x, kind)
         t_now = max(t_event, t_pub)
         ex.advance(t_now)
         first_event = i
@@ -161,25 +224,35 @@ def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: f
             while i < len(events) and events[i].time <= t_now:
                 ex.apply_event(events[i])
                 i += 1
+                why = "event"
         P, old, locked = ex.snapshot(t_now)
+        if why in ("deviation", "periodic") and P.N == 0:
+            if kind == "deviation":
+                ex.mark_seen(t_now, par)               # nothing to reassign: no planning call
+            t_last = t_pub = t_now
+            continue
         res = solve(method, P, old, budget_ms, cfg, seed=seed * 1000 + call, predictor=predictor, kappa=kappa,
                     **(solve_kwargs or {}))
-        latency = lat.sample(scenario.seed, first_event if call > 0 else -1)
+        latency = lat.sample(scenario.seed, first_event if why in ("start", "event") else 100000 + call)
         t_pub = t_now + kappa * res["elapsed_ms"] / 1000.0 + latency
         ex.publish(P, res["solution"].routes, locked, t_pub)
-        ex.replans.append({"call": call, "t_event": t_event, "t_now": t_now, "t_pub": t_pub, "latency_s": latency,
-                           "elapsed_ms": res["elapsed_ms"], "iters": res["iters"], "stop": res["stop_reason"],
-                           "J": res["J"], "n_open": P.N, "n_uav": P.M})
+        ex.replans.append({"call": call, "why": why, "t_event": t_event, "t_now": t_now, "t_pub": t_pub,
+                           "latency_s": latency, "elapsed_ms": res["elapsed_ms"], "iters": res["iters"],
+                           "stop": res["stop_reason"], "J": res["J"], "n_open": P.N, "n_uav": P.M})
+        n_extra += why in ("deviation", "periodic")
+        t_last = t_now
         call += 1
     m = ex.finish()
     lat_s = [r["latency_s"] for r in ex.replans]
     m.update({"scenario": scenario.name, "scale": scenario.scale, "profile": scenario.profile,
               "seed": scenario.seed, "method": method, "budget_ms": budget_ms, "kappa": kappa,
-              "latency_level": lat.name, "latency_s_mean": float(np.mean(lat_s)) if lat_s else 0.0})
+              "latency_level": lat.name, "latency_s_mean": float(np.mean(lat_s)) if lat_s else 0.0,
+              "trigger": trigger, "n_extra_replans": n_extra})
     if keep_log:
         m["_replans"] = ex.replans
         m["_executed"] = ex.executed
         m["_trajectory"] = ex.trajectory
         m["_served"] = dict(ex.served)
         m["_late"] = sorted(ex.late)
+        m["_calib"] = ex.calibration_pairs()
     return m
