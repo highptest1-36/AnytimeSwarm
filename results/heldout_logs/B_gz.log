@@ -1,0 +1,7 @@
+[grid] heldout_B_gz: 30 missions x 4 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  exec=mid     lat=none k= 50 event         alns_fixed       U=0.5017 late= 1.70 dropD=0.40 dropX= 1.83 replans=  5.9 ms= 250.1 (13s)
+  exec=mid     lat=none k= 50 event         alns_fixed@40    U=0.5172 late= 1.50 dropD=0.07 dropX= 2.13 replans=  5.9 ms=  40.0 (15s)
+  exec=mid     lat=none k= 50 event         anytime          U=0.5190 late= 1.53 dropD=0.00 dropX= 2.23 replans=  5.9 ms=  31.9 (16s)
+  exec=mid     lat=none k= 50 event         anytime_risk     U=0.5255 late= 1.53 dropD=0.00 dropX= 1.97 replans=  5.9 ms=  21.0 (17s)
+[ok] 120 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_gz.csv

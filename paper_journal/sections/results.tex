@@ -105,4 +105,48 @@ event. The advantage of AnytimeSwarm-R over ALNS with 40\,ms was \val{JDFixedFor
 \val{JDFixedFortyPeriodic}\,pp with the periodic trigger. The two values are close, and the protocol did not test their
 difference.
 
-\todo{held-out results: 40 UAVs, sensitivity, tier C}
+\subsection{Scalability to 40 UAVs}\label{sec:res-xl}
+With 40 UAVs and 280 tasks, \val{JNXL} held-out missions were run under mid disturbances in \val{JXLNConf}
+configurations of latency level and latency factor. All five methods reached between \val{JXLUAS}\% and
+\val{JXLUStag}\%. AnytimeSwarm-R reached \val{JXLURisk}\% with \val{JXLMsRisk}\,ms per call. Its pooled difference was
+\val{JXLDFixedOneEighty}\,pp to ALNS with 180\,ms, \val{JXLDAS}\,pp to AnytimeSwarm and \val{JXLDStag}\,pp to the
+stagnation rule. After Holm correction over the four comparisons of the pre-registered analysis, none of them is
+significant ($p_{\mathrm{Holm}}=$ \val{JXLPAS} for AnytimeSwarm), so the fifth hypothesis is not supported either.
+AnytimeSwarm-R again needed less computation than AnytimeSwarm (\val{JXLDMsAS}\,ms per call). The stagnation rule
+stopped earliest, after \val{JXLMsStag}\,ms, and was significantly better than AnytimeSwarm-R in \val{JXLLossStag} of the
+\val{JXLNConf} configurations, which had no latency and $\kappa_B=50$. On this scale, the rules used between \val{JXLMsStag} and 250\,ms
+per call, and utility hardly changed within this range of computation. The equal-computation advantage that
+AnytimeSwarm showed with 40 UAVs under exact execution (Table~\ref{tab:scale}) therefore did not translate into a
+utility gain under uncertain execution.
+
+\subsection{Sensitivity analyses}\label{sec:res-sens}
+The sensitivity runs use the held-out missions of the primary matrix without latency and are descriptive. They vary the
+execution level beyond the primary matrix, the latency factor and the trigger in \val{JNSensConf} configurations, and
+the error model in \val{JNMisConf} further configurations.
+
+Under high disturbances, which lie outside the range of the primary matrix but within that of the fitted error models,
+utility fell to about \val{JSensUHighRisk}\% for all methods. The combination of high disturbances and a slow planner
+($\kappa_B=50$) gave the largest advantage of the risk-aware cost in this study. AnytimeSwarm-R served
+\val{JSensHighKFiftyAS}\,pp more reward than AnytimeSwarm and used \val{JSensMsHighKFiftyRisk}\,ms instead of
+\val{JSensMsHighKFiftyAS}\,ms per call. Its difference to ALNS with 40\,ms was \val{JSensHighKFiftyFixedForty}\,pp and to
+the stagnation rule \val{JSensHighKFiftyStag}\,pp, so the gain over AnytimeSwarm brought it to the level of the
+baselines rather than beyond them. With $\kappa_B=1$, planning time hardly delays the plan, both delay costs are close to
+zero and the two rules behave alike. AnytimeSwarm-R then differed from AnytimeSwarm by \val{JSensKOneAS}\,pp and
+\val{JSensKOneMsDiff}\,ms per call, as the reduction to the deterministic cost implies.
+
+Replanning when a UAV deviated by more than 30\,s from its planned finish time raised the number of calls from
+\val{JSensCallsEvent} to \val{JSensCallsDev} per mission and the utility by \val{JSensTrigDevRisk}\,pp for
+AnytimeSwarm-R and \val{JSensTrigDevFixedForty}\,pp for ALNS with 40\,ms. Like the periodic trigger, it helped both
+stopping rules by a similar amount. Under the deviation trigger, the difference of AnytimeSwarm-R was
+\val{JSensDevFixedForty}\,pp to ALNS with 40\,ms and \val{JSensDevAS}\,pp to AnytimeSwarm.
+
+AnytimeSwarm-R was robust to a misspecified error model. With the error model of the low, mid or high level under low
+and mid disturbances, its difference to AnytimeSwarm ranged between \val{JMisAllLow}\,pp and \val{JMisAllMid}\,pp, and
+the mean utilities of all versions lay within \val{JMisSpread}\,pp. Setting the error model to zero gave
+\val{JMisAllZero}\,pp. The four misspecification configurations also belong to the primary matrix, so the correctly
+specified method was run twice on the same missions. The two runs differ only in the measured planning times, because
+the stopping rule reads a wall clock. They gave identical utility in \val{JRepeatSameShare}\% of the missions, and the
+mean utility of a method differed by up to \val{JRepeatDiffMax}\,pp between the runs. Differences of this size between
+stopping rules should therefore not be read as systematic.
+
+\todo{held-out results: tier C}

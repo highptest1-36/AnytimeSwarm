@@ -59,6 +59,22 @@
 \expandafter\def\csname vJLostKFiftyRiskZero\endcsname{1.23}
 \expandafter\def\csname vJLostKFiftyStag\endcsname{2.46}
 \expandafter\def\csname vJLostRedFixed\endcsname{76}
+\expandafter\def\csname vJMisAllCorrect\endcsname{+0.07 [$-$0.32, +0.47]}
+\expandafter\def\csname vJMisAllHigh\endcsname{+0.16 [$-$0.18, +0.52]}
+\expandafter\def\csname vJMisAllLow\endcsname{+0.07 [$-$0.31, +0.47]}
+\expandafter\def\csname vJMisAllMid\endcsname{+0.18 [$-$0.18, +0.55]}
+\expandafter\def\csname vJMisAllZero\endcsname{$-$0.13 [$-$0.32, +0.03]}
+\expandafter\def\csname vJMisLowCorrect\endcsname{+0.23 [$-$0.23, +0.69]}
+\expandafter\def\csname vJMisLowHigh\endcsname{+0.27 [$-$0.12, +0.67]}
+\expandafter\def\csname vJMisLowLow\endcsname{+0.17 [$-$0.28, +0.63]}
+\expandafter\def\csname vJMisLowMid\endcsname{+0.32 [$-$0.12, +0.76]}
+\expandafter\def\csname vJMisLowZero\endcsname{$-$0.11 [$-$0.29, +0.06]}
+\expandafter\def\csname vJMisMidCorrect\endcsname{$-$0.08 [$-$0.58, +0.44]}
+\expandafter\def\csname vJMisMidHigh\endcsname{+0.06 [$-$0.41, +0.54]}
+\expandafter\def\csname vJMisMidLow\endcsname{$-$0.02 [$-$0.53, +0.51]}
+\expandafter\def\csname vJMisMidMid\endcsname{+0.04 [$-$0.46, +0.55]}
+\expandafter\def\csname vJMisMidZero\endcsname{$-$0.16 [$-$0.43, +0.09]}
+\expandafter\def\csname vJMisSpread\endcsname{0.11}
 \expandafter\def\csname vJMsAS\endcsname{48.2}
 \expandafter\def\csname vJMsFixed\endcsname{250.1}
 \expandafter\def\csname vJMsFixedForty\endcsname{40.1}
@@ -81,13 +97,52 @@
 \expandafter\def\csname vJMsStag\endcsname{59.9}
 \expandafter\def\csname vJNConfigsMain\endcsname{16}
 \expandafter\def\csname vJNMain\endcsname{270}
+\expandafter\def\csname vJNMisConf\endcsname{4}
 \expandafter\def\csname vJNRunsMain\endcsname{34\,560}
+\expandafter\def\csname vJNSensConf\endcsname{8}
 \expandafter\def\csname vJNXL\endcsname{90}
 \expandafter\def\csname vJPAS\endcsname{0.308}
 \expandafter\def\csname vJPFixedForty\endcsname{0.128}
 \expandafter\def\csname vJPStag\endcsname{0.308}
+\expandafter\def\csname vJRepeatDiffMax\endcsname{0.12}
+\expandafter\def\csname vJRepeatSameShare\endcsname{73}
 \expandafter\def\csname vJReproMatched\endcsname{24 of 24}
 \expandafter\def\csname vJReproSpeedup\endcsname{21}
+\expandafter\def\csname vJSensCallsDev\endcsname{13.2}
+\expandafter\def\csname vJSensCallsEvent\endcsname{6.8}
+\expandafter\def\csname vJSensDevAS\endcsname{+0.29 [$-$0.05, +0.65]}
+\expandafter\def\csname vJSensDevFixedForty\endcsname{+0.10 [$-$0.30, +0.52]}
+\expandafter\def\csname vJSensDevStag\endcsname{+0.12 [$-$0.31, +0.56]}
+\expandafter\def\csname vJSensHighAS\endcsname{+0.42 [+0.06, +0.78]}
+\expandafter\def\csname vJSensHighFixedForty\endcsname{$-$0.05 [$-$0.53, +0.44]}
+\expandafter\def\csname vJSensHighKFiftyAS\endcsname{+0.96 [+0.29, +1.66]}
+\expandafter\def\csname vJSensHighKFiftyFixedForty\endcsname{+0.14 [$-$0.53, +0.84]}
+\expandafter\def\csname vJSensHighKFiftyStag\endcsname{+0.43 [$-$0.33, +1.21]}
+\expandafter\def\csname vJSensHighStag\endcsname{+0.08 [$-$0.42, +0.61]}
+\expandafter\def\csname vJSensKOneAS\endcsname{+0.01 [$-$0.13, +0.15]}
+\expandafter\def\csname vJSensKOneFixedForty\endcsname{+0.06 [$-$0.32, +0.44]}
+\expandafter\def\csname vJSensKOneMsDiff\endcsname{$-$0.5}
+\expandafter\def\csname vJSensKOneStag\endcsname{$-$0.07 [$-$0.40, +0.28]}
+\expandafter\def\csname vJSensMidAS\endcsname{+0.19 [$-$0.14, +0.54]}
+\expandafter\def\csname vJSensMidFixedForty\endcsname{+0.25 [$-$0.13, +0.64]}
+\expandafter\def\csname vJSensMidStag\endcsname{+0.17 [$-$0.29, +0.63]}
+\expandafter\def\csname vJSensMsDevAS\endcsname{55}
+\expandafter\def\csname vJSensMsDevRisk\endcsname{50}
+\expandafter\def\csname vJSensMsHighAS\endcsname{64}
+\expandafter\def\csname vJSensMsHighKFiftyAS\endcsname{58}
+\expandafter\def\csname vJSensMsHighKFiftyRisk\endcsname{49}
+\expandafter\def\csname vJSensMsHighRisk\endcsname{59}
+\expandafter\def\csname vJSensMsKOneAS\endcsname{65}
+\expandafter\def\csname vJSensMsKOneRisk\endcsname{64}
+\expandafter\def\csname vJSensMsMidAS\endcsname{55}
+\expandafter\def\csname vJSensMsMidRisk\endcsname{49}
+\expandafter\def\csname vJSensTrigDevFixedForty\endcsname{+0.86 [+0.54, +1.18]}
+\expandafter\def\csname vJSensTrigDevRisk\endcsname{+0.86 [+0.58, +1.14]}
+\expandafter\def\csname vJSensUDevRisk\endcsname{57.96}
+\expandafter\def\csname vJSensUHighKFiftyRisk\endcsname{48.94}
+\expandafter\def\csname vJSensUHighRisk\endcsname{48.93}
+\expandafter\def\csname vJSensUKOneRisk\endcsname{57.68}
+\expandafter\def\csname vJSensUMidRisk\endcsname{66.14}
 \expandafter\def\csname vJTrigFixedForty\endcsname{+1.47 [+1.19, +1.75]}
 \expandafter\def\csname vJTrigMax\endcsname{+1.56}
 \expandafter\def\csname vJTrigMin\endcsname{+1.29}
@@ -108,17 +163,29 @@
 \expandafter\def\csname vJWinFixed\endcsname{6}
 \expandafter\def\csname vJWinFixedForty\endcsname{2}
 \expandafter\def\csname vJWinStag\endcsname{1}
-\expandafter\def\csname vJXLDAS\endcsname{+0.43 [$-$0.06, +0.90]}
-\expandafter\def\csname vJXLDFixed\endcsname{$-$0.13 [$-$0.61, +0.34]}
-\expandafter\def\csname vJXLDFixedOneEighty\endcsname{+0.14 [$-$0.37, +0.64]}
-\expandafter\def\csname vJXLDStag\endcsname{+0.02 [$-$0.44, +0.47]}
-\expandafter\def\csname vJXLMsAS\endcsname{139}
+\expandafter\def\csname vJXLDAS\endcsname{+0.34 [+0.05, +0.62]}
+\expandafter\def\csname vJXLDFixed\endcsname{+0.06 [$-$0.21, +0.32]}
+\expandafter\def\csname vJXLDFixedOneEighty\endcsname{+0.02 [$-$0.26, +0.30]}
+\expandafter\def\csname vJXLDMsAS\endcsname{$-$9.0 [$-$11.7, $-$6.2]}
+\expandafter\def\csname vJXLDStag\endcsname{$-$0.07 [$-$0.30, +0.16]}
+\expandafter\def\csname vJXLLossAS\endcsname{0}
+\expandafter\def\csname vJXLLossFixedOneEighty\endcsname{0}
+\expandafter\def\csname vJXLLossStag\endcsname{1}
+\expandafter\def\csname vJXLMsAS\endcsname{136}
 \expandafter\def\csname vJXLMsFixed\endcsname{251}
 \expandafter\def\csname vJXLMsFixedOneEighty\endcsname{181}
-\expandafter\def\csname vJXLMsRisk\endcsname{152}
+\expandafter\def\csname vJXLMsRisk\endcsname{127}
 \expandafter\def\csname vJXLMsStag\endcsname{100}
-\expandafter\def\csname vJXLUAS\endcsname{68.95}
-\expandafter\def\csname vJXLUFixed\endcsname{69.38}
-\expandafter\def\csname vJXLUFixedOneEighty\endcsname{69.33}
-\expandafter\def\csname vJXLURisk\endcsname{69.82}
-\expandafter\def\csname vJXLUStag\endcsname{69.44}
+\expandafter\def\csname vJXLNConf\endcsname{4}
+\expandafter\def\csname vJXLPAS\endcsname{0.086}
+\expandafter\def\csname vJXLPFixed\endcsname{1.000}
+\expandafter\def\csname vJXLPFixedOneEighty\endcsname{1.000}
+\expandafter\def\csname vJXLPStag\endcsname{1.000}
+\expandafter\def\csname vJXLUAS\endcsname{68.82}
+\expandafter\def\csname vJXLUFixed\endcsname{69.10}
+\expandafter\def\csname vJXLUFixedOneEighty\endcsname{69.14}
+\expandafter\def\csname vJXLURisk\endcsname{69.16}
+\expandafter\def\csname vJXLUStag\endcsname{69.23}
+\expandafter\def\csname vJXLWinAS\endcsname{1}
+\expandafter\def\csname vJXLWinFixedOneEighty\endcsname{1}
+\expandafter\def\csname vJXLWinStag\endcsname{0}

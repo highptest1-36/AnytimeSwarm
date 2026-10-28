@@ -1,0 +1,23 @@
+[grid] heldout_B_xl: 90 missions x 20 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  exec=mid     lat=none k= 10 event         alns_fixed       U=0.6995 late=31.77 dropD=4.78 dropX=73.50 replans=  6.9 ms= 250.7 (42s)
+  exec=mid     lat=none k= 10 event         alns_fixed@180   U=0.6968 late=32.16 dropD=3.22 dropX=74.06 replans=  6.9 ms= 180.9 (73s)
+  exec=mid     lat=none k= 10 event         alns_stagnation  U=0.6981 late=31.27 dropD=3.67 dropX=73.47 replans=  6.9 ms=  99.1 (92s)
+  exec=mid     lat=none k= 10 event         anytime          U=0.6940 late=32.83 dropD=2.53 dropX=75.37 replans=  6.9 ms= 152.3 (118s)
+  exec=mid     lat=none k= 10 event         anytime_risk     U=0.6982 late=32.06 dropD=4.23 dropX=74.38 replans=  6.9 ms= 151.8 (144s)
+  exec=mid     lat=none k= 50 event         alns_fixed       U=0.6880 late=29.18 dropD=20.94 dropX=66.80 replans=  6.9 ms= 250.8 (186s)
+  exec=mid     lat=none k= 50 event         alns_fixed@180   U=0.6898 late=29.54 dropD=16.24 dropX=68.23 replans=  6.9 ms= 180.9 (217s)
+  exec=mid     lat=none k= 50 event         alns_stagnation  U=0.6908 late=28.97 dropD=16.29 dropX=68.99 replans=  6.9 ms= 100.9 (235s)
+  exec=mid     lat=none k= 50 event         anytime          U=0.6850 late=32.70 dropD=10.11 dropX=71.49 replans=  6.9 ms= 125.0 (257s)
+  exec=mid     lat=none k= 50 event         anytime_risk     U=0.6851 late=31.34 dropD=13.66 dropX=71.16 replans=  6.9 ms= 110.2 (277s)
+  exec=mid     lat=high k= 10 event         alns_fixed       U=0.6906 late=31.59 dropD=10.18 dropX=71.34 replans=  6.9 ms= 250.8 (319s)
+  exec=mid     lat=high k= 10 event         alns_fixed@180   U=0.6920 late=31.59 dropD=9.30 dropX=70.66 replans=  6.9 ms= 180.9 (350s)
+  exec=mid     lat=high k= 10 event         alns_stagnation  U=0.6944 late=31.12 dropD=9.48 dropX=70.64 replans=  6.9 ms= 100.8 (368s)
+  exec=mid     lat=high k= 10 event         anytime          U=0.6897 late=32.24 dropD=8.99 dropX=70.69 replans=  6.9 ms= 147.8 (393s)
+  exec=mid     lat=high k= 10 event         anytime_risk     U=0.6986 late=30.59 dropD=9.36 dropX=71.46 replans=  6.9 ms= 146.8 (419s)
+  exec=mid     lat=high k= 50 event         alns_fixed       U=0.6857 late=28.42 dropD=24.74 dropX=65.31 replans=  6.9 ms= 250.7 (461s)
+  exec=mid     lat=high k= 50 event         alns_fixed@180   U=0.6868 late=28.74 dropD=20.40 dropX=67.28 replans=  6.9 ms= 180.7 (492s)
+  exec=mid     lat=high k= 50 event         alns_stagnation  U=0.6860 late=28.99 dropD=19.99 dropX=67.36 replans=  6.9 ms=  99.0 (509s)
+  exec=mid     lat=high k= 50 event         anytime          U=0.6843 late=31.07 dropD=16.80 dropX=68.29 replans=  6.9 ms= 120.2 (530s)
+  exec=mid     lat=high k= 50 event         anytime_risk     U=0.6844 late=30.43 dropD=16.84 dropX=69.03 replans=  6.9 ms= 100.5 (548s)
+[ok] 1800 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_xl.csv

@@ -25,3 +25,11 @@ experiments/b_grid.py: OK
 [heldout] 2026-10-27T20:45:47+00:00 tier B B_main
 [ok] 34560 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_main.csv
 [heldout] 2026-10-27T23:20:31+00:00 tier B B_xl
+[ok] 1800 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_xl.csv
+[heldout] 2026-10-27T23:29:42+00:00 tier B B_sens_high_k1_dev
+[ok] 8640 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_sens.csv
+[heldout] 2026-10-27T23:50:33+00:00 tier B B_sens_misspec
+[ok] 6480 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_misspec.csv
+[heldout] 2026-10-28T00:00:13+00:00 tier B B_gz
+[ok] 120 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_gz.csv
+[heldout] 2026-10-28T00:00:32+00:00 tier C heldout_C

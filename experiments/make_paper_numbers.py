@@ -313,16 +313,33 @@ def tier_b_other():
             if m in g.index:
                 put(f"XLU{k}", pp(g.loc[m, "u"]))
                 put(f"XLMs{k}", f"{g.loc[m, 'ms']:.0f}")
+        tests = []
         for base, k in [("alns_fixed@180", "FixedOneEighty"), ("anytime", "AS"), ("alns_stagnation", "Stag"),
                         ("alns_fixed", "Fixed")]:
             if base in df.method.values:
                 m, lo, hi, p = boot(pooled(df, OURS, base))
                 put(f"XLD{k}", ci(m, lo, hi))
+                tests.append((k, p))
+        # Holm over the same family as experiments/analyze_heldout.py (four comparisons)
+        for (k, _), pa in zip(tests, holm(np.array([t[1] for t in tests]))):
+            put(f"XLP{k}", pval(pa))
+        m, lo, hi, _ = boot(pooled(df, OURS, "anytime", "plan_ms_mean"))
+        put("XLDMsAS", f"{m:+.1f} [{lo:+.1f}, {hi:+.1f}]".replace("-", "$-$"))
+        put("XLNConf", str(df.groupby(CFG_KEY).ngroups))
+        for base, k in [("alns_fixed@180", "FixedOneEighty"), ("anytime", "AS"), ("alns_stagnation", "Stag")]:
+            sig = []
+            for _, gg in df.groupby(CFG_KEY):
+                w = gg.pivot_table(index="scenario", columns="method", values="utility_rate")
+                _, lo, hi, _ = boot(w[OURS] - w[base])
+                sig.append("+" if lo > 0 else ("-" if hi < 0 else "0"))
+            put(f"XLWin{k}", str(sig.count("+")))
+            put(f"XLLoss{k}", str(sig.count("-")))
     f = TB / "heldout_B_sens.csv"
     if f.exists():
         df = pd.read_csv(f)
-        for cond, k in [(("high", None, None), "High"), ((None, 1.0, None), "KOne"),
-                        ((None, None, "deviation:30"), "Dev")]:
+        put("NSensConf", str(df.groupby(CFG_KEY).ngroups))
+        for cond, k in [(("high", None, None), "High"), (("high", 50.0, None), "HighKFifty"), ((None, 1.0, None), "KOne"),
+                        ((None, None, "deviation:30"), "Dev"), (("mid", None, None), "Mid")]:
             sub = df
             if cond[0]:
                 sub = sub[sub.exec_level == cond[0]]
@@ -330,18 +347,53 @@ def tier_b_other():
                 sub = sub[sub.kappa == cond[1]]
             if cond[2]:
                 sub = sub[sub.trigger == cond[2]]
-            for base, kb in [("alns_fixed@40", "FixedForty"), ("anytime", "AS")]:
+            for base, kb in [("alns_fixed@40", "FixedForty"), ("anytime", "AS"), ("alns_stagnation", "Stag")]:
                 m, lo, hi, _ = boot(pooled(sub, OURS, base))
                 put(f"Sens{k}{kb}", ci(m, lo, hi))
+            ms = sub.groupby("method").plan_ms_mean.mean()
+            put(f"SensMs{k}Risk", f"{ms[OURS]:.0f}")
+            put(f"SensMs{k}AS", f"{ms['anytime']:.0f}")
+            put(f"SensU{k}Risk", pp(sub[sub.method == OURS].utility_rate.mean()))
+        # deviation-triggered minus event-only replanning (same execution level and kappa)
+        for meth, k in [(OURS, "Risk"), ("alns_fixed@40", "FixedForty")]:
+            w = df[df.method == meth].pivot_table(index=["scenario", "exec_level", "kappa"], columns="trigger",
+                                                  values="utility_rate").dropna()
+            m, lo, hi, _ = boot((w["deviation:30"] - w["event"]).groupby(level="scenario").mean())
+            put(f"SensTrigDev{k}", ci(m, lo, hi))
+        put("SensCallsDev", f"{df[df.trigger == 'deviation:30'].n_replans.mean():.1f}")
+        put("SensCallsEvent", f"{df[df.trigger == 'event'].n_replans.mean():.1f}")
+        # the same machine but no planning delay: both delay costs vanish
+        sub = df[df.kappa == 1.0]
+        w = sub.pivot_table(index=["scenario"] + CFG_KEY, columns="method", values="plan_ms_mean").dropna()
+        put("SensKOneMsDiff", f"{(w[OURS] - w['anytime']).mean():+.1f}".replace("-", "$-$"))
     f = TB / "heldout_B_misspec.csv"
     if f.exists():
         df = pd.read_csv(f)
-        for lv in ["low", "mid"]:
-            sub = df[df.exec_level == lv]
+        put("NMisConf", str(df.groupby(CFG_KEY).ngroups))
+        for lv in ["low", "mid", None]:
+            sub = df[df.exec_level == lv] if lv else df
+            tag = lv.capitalize() if lv else "All"
             for meth, k in [("anytime_risk", "Correct"), ("anytime_risk~zero", "Zero"), ("anytime_risk~low", "Low"),
                             ("anytime_risk~mid", "Mid"), ("anytime_risk~high", "High")]:
                 m, lo, hi, _ = boot(pooled(sub, meth, "anytime"))
-                put(f"Mis{lv.capitalize()}{k}", ci(m, lo, hi))
+                put(f"Mis{tag}{k}", ci(m, lo, hi))
+        u = df.groupby("method").utility_rate.mean()
+        risk = [m for m in u.index if m.startswith("anytime_risk") and m != "anytime_risk~zero"]
+        put("MisSpread", pp(u[risk].max() - u[risk].min()))
+        # run-to-run variation: these configurations and seeds also belong to the primary matrix; the runs differ
+        # only in the measured planning times (wall clock)
+        main = pd.read_csv(TB / "heldout_B_main.csv")
+        keys = df[CFG_KEY].drop_duplicates()
+        main = main.merge(keys, on=CFG_KEY)
+        diffs = []
+        for meth in ["anytime", "anytime_risk", "anytime_risk~zero"]:
+            a = main[main.method == meth].set_index(["scenario"] + CFG_KEY).utility_rate
+            b = df[df.method == meth].set_index(["scenario"] + CFG_KEY).utility_rate
+            j = a.to_frame("a").join(b.rename("b"), how="inner")
+            diffs.append(abs(j.a.mean() - j.b.mean()))
+            if meth == "anytime_risk":
+                put("RepeatSameShare", f"{np.mean(np.isclose(j.a, j.b)) * 100:.0f}")
+        put("RepeatDiffMax", pp(max(diffs)))
 
 
 # ---------------------------------------------------------------------------------------------- tier C
