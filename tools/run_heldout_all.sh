@@ -2,7 +2,7 @@
 # Every pre-registered held-out experiment, in the order of docs/05_PROTOCOL_JOURNAL.md. Run ONCE after freezing.
 #   bash tools/run_heldout_all.sh            (resumable: finished configurations / missions are skipped)
 set -uo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 cd $J
 export PYTHONDONTWRITEBYTECODE=1
 PY=~/venvs/atswarm/bin/python

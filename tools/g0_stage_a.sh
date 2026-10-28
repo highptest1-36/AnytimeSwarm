@@ -4,7 +4,7 @@
 # then compare both, leaf by leaf, with the conference pickles. Snapshot generation runs ALNS for a fixed
 # number of iterations (kappa = 0), so any difference is a platform / interpreter effect, not timing.
 set -euo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 R=$J/repro
 ORIG=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm
 OUT=$J/results/g0

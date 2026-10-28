@@ -107,3 +107,9 @@ PX4/Gazebo (WSL) chạy. Tầng B và tầng C không chạy cùng lúc. Báo c�
    đúng họ 4 so sánh của script; kết luận không đổi (không so sánh nào có ý nghĩa).
 4. Hai lượt tầng C lỗi khởi động (watchdog 90 s) đã được chạy lại một lần như protocol mục 3 (không phải sai lệch,
    ghi để đầy đủ): gz-deadlines-4006 anytime, gz-failures-4005 alns_fixed@40.
+5. Dời thư mục (28/10/2026, sau khi mọi thí nghiệm held-out đã xong, theo yêu cầu tác giả): repo chuyển từ
+   `D:\paper\TAIMMA_2027\AnytimeSwarm_Journal` sang `D:\paper\TAIMMA_2027\AnytimeSwarm\AnytimeSwarm_Journal`. Chỉ hằng số
+   đường dẫn `J=` trong các script được đổi (kể cả 3 script tầng C đóng băng: run_mission.sh, run_batch.sh,
+   calib_dev.sh); không đổi logic. `results/frozen_journal_sha256.txt` giữ nguyên làm bản ghi lúc đóng băng, nên phép
+   kiểm hash của 3 file này sẽ báo khác; `git diff a561c7a -- journal_ros/` cho thấy chỉ dòng `J=` thay đổi. Ở vị trí cũ
+   có một symlink Windows trỏ tới vị trí mới. Log trong `results/` giữ đường dẫn cũ (bản ghi lịch sử).

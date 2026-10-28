@@ -3,7 +3,7 @@
 # heldout_C/invalid_rtf/ and repeated once with the same seed (handled like a technical failure; see
 # docs/05_PROTOCOL_JOURNAL.md, deviations). The batch skips every run that already has a result file.
 set -uo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 D=$J/results/tier_c/heldout_C
 mkdir -p $D/invalid_rtf
 ~/venvs/atswarm/bin/python - <<PY

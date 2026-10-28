@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Headless check of demo/offboard_waypoints.py on one vehicle (instance 0).
 set -uo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal; LOG=$J/setup/logs
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal; LOG=$J/setup/logs
 set +u; source /opt/ros/jazzy/setup.bash; source ~/px4_ros_ws/install/setup.bash; set -u
 B=~/PX4-Autopilot/build/px4_sitl_default
 stop() { pkill -f MicroXRCEAgent; pkill -f "px4_sitl_default/bin/px4 -d"; pkill -f "gz sim"; sleep 2; }

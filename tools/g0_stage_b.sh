@@ -5,7 +5,7 @@
 # The predictor that 03 re-trains on Linux is kept as models/improvement_model_linux.json for comparison;
 # static and closed-loop runs use the FROZEN conference predictor (models/improvement_model.json, sha256 checked).
 set -euo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 R=$J/repro
 OUT=$J/results/g0
 PY=~/venvs/atswarm311/bin/python

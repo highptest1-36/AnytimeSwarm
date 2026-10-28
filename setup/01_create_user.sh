@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run as root once after `wsl --import Ubuntu-24.04 D:\WSL\Ubuntu-24.04 ...`
-#   wsl -d Ubuntu-24.04 -u root bash /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/setup/01_create_user.sh
+#   wsl -d Ubuntu-24.04 -u root bash /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/setup/01_create_user.sh
 # Creates the Linux user, makes it the default login and keeps Windows PATH out of builds.
 set -euo pipefail
 USER_NAME=${1:-highp}

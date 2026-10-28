@@ -4,7 +4,7 @@
 #   bash 05_smoke_test.sh 2          # 2 UAVs (instance 1 starts Gazebo, instance 2 joins)
 set -uo pipefail
 N=${1:-1}
-LOG=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/setup/logs
+LOG=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/setup/logs
 mkdir -p "$LOG"
 set +u; source /opt/ros/jazzy/setup.bash; source ~/px4_ros_ws/install/setup.bash; set -u
 export PATH="$HOME/.local/bin:$PATH"

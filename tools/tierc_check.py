@@ -4,7 +4,7 @@ import json
 
 import pandas as pd
 
-J = "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal"
+J = "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal"
 rows = []
 for f in sorted(glob.glob(f"{J}/results/tier_c/heldout_C/gz-*.json")):
     m = json.load(open(f))

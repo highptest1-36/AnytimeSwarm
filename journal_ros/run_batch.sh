@@ -5,7 +5,7 @@
 # Results: results/tier_c/<name>/<scenario>_<method>.json (existing files are skipped -> resumable).
 # Order: seeds outer, methods inner, so that methods are interleaved in time (same machine conditions).
 set -uo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 NAME=$1; PROFILES=$2; SEEDS=$3; METHODS=$4; KAPPA=${5:-10}; TRIGGER=${6:-event}; SPEED=${7:-1}; EXEC=${8:-nominal}
 OUTD=$J/results/tier_c/$NAME
 mkdir -p "$OUTD"

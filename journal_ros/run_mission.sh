@@ -10,7 +10,7 @@
 #          --out FILE.json  --latency-mean-s L  --exec nominal|low|mid|high (disturbance level, as tier B)
 # The script stops every process it started when the mission manager exits (or on Ctrl+C).
 set -uo pipefail
-J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal
+J=/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal
 PROFILE=arrivals; SEED=0; METHOD=anytime; BUDGET=250; KAPPA=10; TRIGGER=event; GUI=0; RVIZ=0; SPEED=1
 OUT=""; LAT=""; EXEC=nominal
 while [ $# -gt 0 ]; do

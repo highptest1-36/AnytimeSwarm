@@ -32,7 +32,7 @@ Từ PowerShell hoặc Windows Terminal:
 wsl -d Ubuntu-24.04
 ```
 Bạn vào bằng user `highp`. Mỗi terminal mới đã tự nạp ROS 2, `px4_ros_ws`, cấu hình GPU, và biến `$J` trỏ tới
-`/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal` (xem cuối `~/.bashrc`).
+`/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal` (xem cuối `~/.bashrc`).
 
 Cần nhiều terminal cùng lúc. Trong Windows Terminal, mỗi tab mới gõ lại `wsl -d Ubuntu-24.04`, hoặc chọn profile
 "Ubuntu-24.04" trong menu mũi tên xuống. Có thể mở thư mục trong VS Code: `code $J` (cần extension WSL).
