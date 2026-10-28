@@ -56,9 +56,13 @@ báo cáo cỡ hiệu ứng và phân tích công suất. Đồng hồ: dùng wa
   Ở mid/w1: z=0,5 + periodic 72,8% vs baseline tốt nhất 67,8%. Sửa: deadline hiệu dụng dạng đóng chính xác
   d~ = t0 + (d − t0 − b0 − z s0)/(1 + b1 + z s1) (ràng buộc trên chính thời điểm hoàn thành). Thêm baseline đệm cố định.
 - P2b (dev2b_explore): chạy lại với công thức đúng.
-- [ ] P2 dev exploration, chọn tham số, Go/No-Go
-- [ ] P3 protocol v2 + freeze
-- [ ] P4 held-out tầng B (5000–5029)
-- [ ] P5 held-out tầng C (6000–)
-- [ ] P6 phân tích, hình, bảng
-- [ ] P7 viết lại bản thảo + hình kiến trúc
+- [x] P2 dev exploration, chọn tham số (z mid 0,5 / high 0; đệm 60 s; 1 ms/task), Go
+- [x] P3 protocol v2 + freeze (docs/08_PROTOCOL_V2.md, commit d0ca1ad)
+- [x] P4 held-out tầng B (5000–5029), 48 600 lượt, xong 28/10 15:10 UTC. Kết quả (results/study2/report.md):
+      H1 đạt 6/6 (proposed hơn +1,35 [buffer] đến +2,87 pp [ALNS 40 ms], Holm p<0,001); H2 đạt (+4,44 pp, +9,3%);
+      H3 tương đương (TOST 90% CI +0,22 [+0,09, +0,35]) → lợi ích đến từ mô hình chance-constrained, không từ luật dừng.
+      Thua ở high + cửa sổ ×0,5 (−2,0 pp so với buffer, −1,6 pp so với ALNS 40 ms): mô hình quá thận trọng.
+- [ ] P5 held-out tầng C (6000–6009), đang chạy từ 15:10 UTC 28/10 (~4,3 phút/chuyến, 120 chuyến)
+- [x] P6 phân tích, hình, bảng tầng B (fig_s2_main, fig_s2_regime, tab_s2_main, tab_s2_regime)
+- [x] P7 viết lại bản thảo: tiêu đề, tóm tắt, giới thiệu, kết quả NC2, thảo luận, kết luận, highlights
+      (còn 3 chỗ chờ tầng C: KAbstractTierC, KDiscTierC, KConclTierC + mục 6.4.4)

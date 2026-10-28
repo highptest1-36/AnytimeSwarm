@@ -14,37 +14,49 @@ terms~\cite{dean1988analysis,horvitz1987reasoning,russell1991right,zilberstein19
 In replanning, the cost of time is specific to the current plan. It depends on which UAVs are idle, on the slack in
 their routes and, in practice, on how reliably the plan will be executed.
 
-Execution uncertainty changes this cost. A planner that assumes exact execution prices the delay of a plan with the
-slack that the plan promises. When UAVs accelerate, meet wind and take longer than expected at a task, a part of this
-slack is consumed by flight-time errors that the planner does not see. Errors also accumulate along a route between two
-replanning calls, which raises the question of when to replan at all. Validation is a further difficulty. Results
-obtained with a kinematic simulator may not hold for vehicles flown by an autopilot, while a physics-based simulation
-alone cannot provide the number of missions that a statistical comparison of planners requires.
+Execution uncertainty changes the problem in two ways. First, a planner that assumes exact execution accepts plans whose
+finish times leave no margin. When UAVs meet wind, fly slower than commanded or take longer at a task, part of the
+promised slack is consumed by errors that the planner does not see, and tasks near the end of a route are served late.
+The error also grows with the time until a task is reached, so a fixed margin is too large for early tasks and too small
+for late ones. Second, the cost of a later plan depends on how reliably the plan will be executed, and errors accumulate
+between two replanning calls, which raises the question of when to replan at all. Stochastic and robust routing protect
+schedules against such errors~\cite{errico2016apriori,agra2013robust}, but usually with models that are too slow to be
+solved within the fraction of a second available between events. Validation is a further difficulty. Results obtained
+with a kinematic simulator may not hold for vehicles flown by an autopilot, while a physics-based simulation alone
+cannot provide the number of missions that a statistical comparison of planners requires.
 
-This paper studies when a multi-UAV replanner should stop computing and publish its plan, first with exact execution
-and then under execution uncertainty. Its contributions are fourfold. The first is AnytimeSwarm, a replanner that repairs
-the previous plan, improves it with an anytime ALNS whose search trajectory does not depend on the budget, and stops
-when a learned prediction of the next improvement no longer exceeds a delay cost derived from the slack of the current
-plan. A proposition shows that this cost bounds the reward that a later publication loses. The second is
-AnytimeSwarm-R, an execution-aware stopping rule whose delay cost is the expected reward lost under a calibrated model
-of the finish-time error and of the expected dissemination latency. It reduces exactly to the deterministic cost when
-the error model is zero. The third is a two-tier evaluation framework. Tier B is a continuous-time kinematic simulator
-with acceleration limits, wind, speed and service-time errors and stochastic communication latency, drawn with common
-random numbers~\cite{law2015simulation} so that every planner faces the same disturbances. Tier C flies the same
-missions with three PX4 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo}, connected to the planner
-through ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem.
-The fourth is a pre-registered evaluation. All design choices and error models were fixed on development seeds, the
-configuration was frozen with cryptographic hashes, and the main comparisons were run once on held-out seeds with
-mission-level paired bootstrap and Holm correction.
+This paper proposes AnytimeSwarm-CC, a replanner that addresses these points together, and evaluates it against
+baselines from the literature. Its contributions are fourfold. The first is a chance-constrained planning model for fast
+replanning. A calibrated model of the finish-time error, whose mean and spread grow linearly with the lead time, turns
+a chance constraint on the finish time of every task into an effective deadline in closed form. The proposed model is
+therefore solved by the same feasibility-first repair and anytime adaptive large neighbourhood search (ALNS) as the
+nominal model, with no extra cost per call. The second is a learned stopping rule. The search stops when a prediction of
+the next improvement no longer exceeds a delay cost derived from the slack of the plan, and an execution-aware variant
+prices the delay with the calibrated error model. Two propositions bound the reward that a later publication loses and
+show that the execution-aware cost reduces to the deterministic one when the error vanishes. The third is a two-tier
+evaluation framework. Tier B is a continuous-time kinematic simulator with acceleration limits, wind, speed and
+service-time errors and stochastic communication latency, drawn with common random numbers~\cite{law2015simulation} so
+that every planner faces the same disturbances. Tier C flies the same missions with three PX4
+autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo}, connected to the planner through
+ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem. The fourth
+is a pre-registered evaluation in two studies. Study~1 tests whether an execution-aware stopping rule alone improves the
+nominal planner. Study~2 compares the proposed replanner with re-implemented stopping rules from the metareasoning
+literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, size-scaled and fixed budgets, a robust
+time buffer~\cite{agra2013robust} and a conventional event-triggered planner, over latency factors and time-window
+widths. All design choices were fixed on development seeds, the code was frozen with cryptographic hashes, and each
+study was run once on its own held-out seeds with mission-level paired bootstrap, Holm correction and equivalence
+tests.
 
-The results are mixed, and they are reported as they came out. Under uncertain execution, the adaptive rules served as
-much reward as the best fixed budget without tuning per fleet scale, and AnytimeSwarm-R did so with less computation
-than AnytimeSwarm. The pre-registered hypothesis that AnytimeSwarm-R serves more reward than the strongest baselines was
-not confirmed, neither in the kinematic tier nor in PX4 flights. The replanning trigger had a larger effect on utility
-than the stopping rule, and the kinematic tier predicted the utility of PX4 flights closely.
+The results are reported as they came out. In study~1, the execution-aware stopping rule needed
+\val{JMsRedAS}\% less computation than its deterministic counterpart, but it did not serve significantly more reward
+than the strongest baselines. In study~2, the proposed replanner served \val{KDabsBuf} to \val{KDabsForty} percentage
+points more reward than each of six baselines and \val{KURelConv}\% more than the conventional planner. Ablations show
+that this gain comes from the chance-constrained model, not from the stopping rule, which was equivalent to a fixed
+budget on the same model. The proposed model was too cautious under high disturbances with halved time windows, where
+a constant buffer served more reward.
 
 The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews related work.
 Section~\ref{sec:problem} formulates replanning with publication delay and uncertain execution. Section~\ref{sec:method}
-describes AnytimeSwarm and AnytimeSwarm-R. Section~\ref{sec:setup} presents the evaluation framework and protocol.
-Section~\ref{sec:results} reports the results, Section~\ref{sec:discussion} discusses them together with the
-limitations of the study, and Section~\ref{sec:conclusion} concludes the paper.
+describes the proposed replanner. Section~\ref{sec:setup} presents the evaluation framework, the compared methods and
+the protocol. Section~\ref{sec:results} reports the results, Section~\ref{sec:discussion} discusses them together with
+the limitations of the study, and Section~\ref{sec:conclusion} concludes the paper.

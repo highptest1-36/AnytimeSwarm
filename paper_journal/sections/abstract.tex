@@ -1,24 +1,22 @@
 \begin{abstract}
-Multi-UAV replanners usually stop their search after a fixed time budget. This paper studies when such a planner should
-stop computing and publish its plan, with exact and with uncertain execution. AnytimeSwarm repairs the previous plan,
-improves it with an anytime adaptive large neighbourhood search and stops when a learned prediction of the next
-improvement no longer exceeds a delay cost derived from the slack of the plan. AnytimeSwarm-R adds a calibrated model of
-finish-time errors and dissemination latency to this cost. The evaluation has two tiers, a kinematic simulator with
-wind, speed, service and latency disturbances drawn with common random numbers, and PX4 software-in-the-loop with
-Gazebo and ROS~2 after a rescaling that preserves every dimensionless ratio. All design choices were frozen before the
-held-out runs. With exact execution, AnytimeSwarm reached a regret of \val{EqRegretAS}\% against \val{EqRegretBaseMin}\%
-to \val{EqRegretBaseMax}\% for fixed budgets and stagnation stopping at equal computation. In \val{JNRunsMain} kinematic
-runs with uncertain execution, search raised the utility from \val{JURepair}\% with plan repair alone to
-\val{JURisk}\% with AnytimeSwarm-R, and AnytimeSwarm-R lost \val{JLostRedFixed}\% fewer tasks to late plans than a 250\,ms budget on a slow planner. It
-reached the highest mean utility with \val{JMsRedAS}\% less computation than AnytimeSwarm, but its advantage over the
-strongest baselines, at most \val{JDmFixedFortyAbs} percentage points, was not significant after Holm correction, and it was not
-confirmed with 40 UAVs or in \val{JNCRuns} PX4 flights. Periodic replanning raised the utility of every method by
-\val{JTrigMinAbs} to \val{JTrigMaxAbs} points. The kinematic tier predicted the utility of PX4 flights closely ($r=$
-\val{JBCr}) but not differences below one point. Adaptive stopping thus mainly saves computation, and the replanning
-trigger matters more for the reward served.
+Multi-UAV replanners usually plan for nominal execution and stop their search after a fixed time budget. Under wind,
+speed and service-time errors, such plans promise more than the vehicles deliver. This paper proposes AnytimeSwarm-CC, a
+replanner that takes three decisions in every replanning cycle. It replans on events and periodically, plans against a
+chance constraint on the finish time of every task, and stops an anytime adaptive large neighbourhood search when a
+learned prediction of the next improvement no longer exceeds a delay cost. Because the mean and the spread of a
+calibrated finish-time error grow linearly with the lead time, the chance constraint reduces exactly to an effective
+deadline per task, and the fast repair and search heuristics are reused unchanged. The evaluation uses a kinematic
+simulator with disturbances drawn with common random numbers and PX4 software-in-the-loop with Gazebo and ROS~2, and two
+pre-registered studies with frozen code and held-out seeds. In \val{KNRuns} kinematic runs, the proposed replanner
+reached a utility of \val{KUProp}\%. It served \val{KDabsBuf} to \val{KDabsForty} percentage points more reward than
+six baselines, among them stopping rules from the metareasoning literature and a robust time buffer (all Holm-adjusted
+$p<0.001$), \val{KURelConv}\% more than a conventional planner, and \val{KLateRedForty}\% fewer tasks late than a fixed budget of
+40\,ms. Ablations attribute the gain to the chance-constrained model. On this model, the learned stopping rule was
+equivalent to a fixed budget of 40\,ms, and under high disturbances with halved time windows the model was too cautious
+and a constant buffer served more reward. \val{KAbstractTierC}
 \end{abstract}
 
 \begin{keyword}
-multi-UAV task allocation \sep dynamic vehicle routing \sep anytime planning \sep metareasoning \sep replanning \sep
-execution uncertainty \sep PX4 \sep Gazebo \sep ROS~2
+multi-UAV task allocation \sep dynamic vehicle routing \sep chance-constrained planning \sep anytime planning \sep
+metareasoning \sep execution uncertainty \sep PX4 \sep Gazebo \sep ROS~2
 \end{keyword}

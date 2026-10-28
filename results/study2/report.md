@@ -28,7 +28,10 @@ H3 TOST (margin 0.5 pp): proposed minus fixed-40-ms stop on the proposed model, 
 
 ## H4: tier C (PX4 SITL + Gazebo)
 
-1 missions, 1 runs, RTF 1.95 (min 1.95), repeated for RTF: 0, failed attempts: 0
+1 missions, 2 runs, RTF 1.94 (min 1.93), repeated for RTF: 0, failed attempts: 0
 
 | baseline | diff pp [95% CI] | p | p Holm |
 |---|---|---|---|
+| ALNS, fixed 40 ms | +12.20 [+12.20, +12.20] | 0.0000 | 0.0000 |
+
+Tier B vs C (same missions): r per run 1.00, Kendall tau 1.00

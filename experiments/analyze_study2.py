@@ -130,6 +130,7 @@ def tier_b():
         put(f"D{k}", ci(m, lo, hi))
         put(f"Dm{k}", spp(m))
         put(f"P{k}", pval(pa))
+        put(f"Dabs{k}", pp(m))
         rows[k] = (ci(m, lo, hi), pval(pa))
         REPORT.append(f"| {M[k][1]} | {ci(m, lo, hi)} | {p:.4f} | {pa:.4f} |")
     put("HOneAll", "all" if len(adj) and all(a < 0.05 and t[1] > 0 for a, t in zip(adj, tests)) else "not all")
@@ -146,6 +147,8 @@ def tier_b():
             put(f"PRaw{k}", pval(p))
             rows.setdefault(k, (ci(m, lo, hi), "--"))
             REPORT.append(f"| {M[k][1]} | {ci(m, lo, hi)} | {p:.4f} |")
+    stop = [M[k][0] for k in ["Forty", "Scaled", "Prof", "Onl", "AS", "Risk"] if M[k][0] in g.index]
+    put("USpreadStop", pp(g.loc[stop, "u"].max() - g.loc[stop, "u"].min()))
     for k in [k for k in M if k != "Prop" and M[k][0] in g.index]:
         put(f"URel{k}", f"{(g.loc[PROP, 'u'] / g.loc[M[k][0], 'u'] - 1) * 100:.1f}")
         put(f"LateRed{k}", f"{(1 - g.loc[PROP, 'late'] / g.loc[M[k][0], 'late']) * 100:.0f}")

@@ -1,19 +1,18 @@
 \section{Conclusion}\label{sec:conclusion}
-This paper studied when a multi-UAV replanner should stop computing and publish its plan. AnytimeSwarm stops an anytime
-ALNS when a learned prediction of the next improvement no longer exceeds a delay cost derived from the slack of the
-plan, and AnytimeSwarm-R extends this cost with a calibrated model of execution errors and latency. Both rules were
-evaluated in a pre-registered study with a kinematic tier and a PX4 software-in-the-loop tier on held-out missions.
+This paper proposed AnytimeSwarm-CC, a multi-UAV replanner that plans against a chance constraint on the finish time of
+every task, replans on events and periodically, and stops an anytime ALNS with a learned rule. Because the calibrated
+finish-time error grows linearly with the lead time, the chance constraint reduces exactly to an effective deadline per
+task, so the proposed model costs no more to solve than the nominal one. The replanner was evaluated in two
+pre-registered studies with a kinematic tier and a PX4 software-in-the-loop tier on held-out missions.
 
-With exact execution, AnytimeSwarm reached a lower regret than fixed budgets and stagnation stopping at equal
-computation on every fleet scale. With uncertain execution, the adaptive rules served as much reward as the best fixed
-budget, which had been matched to them on development data, and avoided the losses of long budgets on slow planners
-and of short budgets on large fleets without tuning per scale. AnytimeSwarm-R needed \val{JMsRedAS}\% less computation
-than AnytimeSwarm in the kinematic tier and \val{JCMsRedAS}\% less in the PX4 tier. Its gain in utility was small and not significant, so the execution-aware delay cost is
-best seen as a way to stop earlier at no loss rather than as a way to serve more reward. Periodic or deviation-triggered
-replanning raised the utility of every method more than any choice of stopping rule. The kinematic tier predicted the
-utility of PX4 flights closely, which supports its use for large comparisons, but differences of less than one
-percentage point between methods remained within the noise of both tiers.
+In the kinematic tier, the proposed replanner served more reward than ALNS with fixed and size-scaled budgets, than
+stopping rules based on performance profiles and on online performance prediction, than an execution-aware stopping
+rule on the nominal model and than a robust constant buffer, by \val{KDabsBuf} to \val{KDabsForty} percentage points,
+and \val{KURelConv}\% more than a conventional event-triggered planner. Ablations showed that the gain comes from the
+chance-constrained model. On this model, the learned stopping rule was equivalent to a well-chosen fixed budget, and
+its value lies in avoiding the losses of long budgets on slow planners and the tuning of a budget per fleet scale. Under
+high disturbances with halved time windows, the proposed model was too cautious. \val{KConclTierC}
 
-Future work will let the error model shape the routes themselves through chance-constrained planning, choose the
-replanning trigger and the stopping rule jointly, and run the planner on embedded hardware and in field tests, where the
-reduction of computation is expected to matter most.
+Future work will replace the hard chance constraint by an objective that weights every task by its probability of
+being served on time, adapt the confidence parameter online, and run the replanner on embedded hardware and in field
+tests.

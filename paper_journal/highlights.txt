@@ -1,7 +1,7 @@
 Highlights (Elsevier: 3-5 items, at most 85 characters each, submitted as a separate file)
 
-- Anytime multi-UAV replanner stops when predicted gain falls below a delay cost
-- Execution-aware delay cost uses calibrated finish-time errors and plan latency
-- Pre-registered held-out study: kinematic tier plus PX4/Gazebo/ROS 2 flights
-- Adaptive stopping matches tuned budgets with less computation, no per-scale tuning
-- Replanning trigger affects utility more than the stopping rule does
+- Chance-constrained replanner for multi-UAV missions under uncertain execution
+- Calibrated finish-time error turns chance constraints into closed-form deadlines
+- Beats literature stopping rules and a robust buffer in pre-registered simulations
+- Ablations: gain comes from the planning model, not from the stopping rule
+- Kinematic simulator and PX4/Gazebo/ROS 2 flights on frozen held-out missions
