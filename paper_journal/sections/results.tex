@@ -45,7 +45,8 @@ new timing traces, reached the same compute price by the pre-registered rule, an
 equal-computation comparison agreed in sign and significance in \val{JReproMatched} comparisons. The frozen predictor
 was used unchanged in all later experiments.
 
-\subsection{Tier B: stopping rules under uncertain execution}\label{sec:tierb}
+\subsection{Study 1: execution-aware stopping on the nominal planning model}\label{sec:study1}
+\subsubsection{Tier B primary matrix}\label{sec:tierb}
 The primary matrix comprises \val{JNRunsMain} mission runs, that is, \val{JNMain} held-out missions in
 \val{JNConfigsMain} configurations with eight methods. Table~\ref{tab:main} lists utility, lost tasks and computation per
 method, and Fig.~\ref{fig:main} relates utility to computation and shows the difference in every configuration.
@@ -56,22 +57,23 @@ full budget of 250\,ms was the weakest search method, with \val{JUFixed}\%, and 
 more reward than it. The loss of the long budget stems from late plans. A task counts as lost to delay when it is part of
 the computed plan but can no longer be served on time when the plan is released. With $\kappa_B=50$, the full budget
 lost \val{JLostKFiftyFixed} tasks per mission in this way, against \val{JLostKFiftyRisk} for AnytimeSwarm-R, that is,
-\val{JLostRedFixed}\% fewer. Without its delay cost, AnytimeSwarm lost \val{JLostKFiftyNoDelay} tasks per mission, so the
-delay cost keeps its role when execution is uncertain.
+\val{JLostRedFixed}\% fewer. Without its delay cost, AnytimeSwarm lost \val{JLostKFiftyNoDelay} tasks per mission in this
+way, but its utility was not lower (\val{JUNoDelay}\% against \val{JUAS}\%). The delay cost thus prevents losses from
+late plans without a measurable gain in utility on this matrix.
 
-Among the remaining search methods, the differences are small. All six search methods lie within \val{JUSpreadSearch}\,pp
-of each other. AnytimeSwarm-R reached the highest mean utility with the least computation of the adaptive rules,
+Among the remaining search methods, the differences are small. All seven search methods lie within
+\val{JUSpreadSearch}\,pp of each other. AnytimeSwarm-R reached the highest mean utility with the least computation of the adaptive rules,
 \val{JMsRisk}\,ms per call against \val{JMsAS}\,ms for AnytimeSwarm and \val{JMsStag}\,ms for the stagnation rule. The
 reduction of \val{JMsRedAS}\% relative to AnytimeSwarm is significant (\val{JDMsAS}\,ms per call), so the second
 hypothesis holds. The primary hypothesis does not hold at the pre-registered level. The pooled advantage of
 AnytimeSwarm-R was \val{JDFixedForty}\,pp over ALNS with 40\,ms, \val{JDAS}\,pp over AnytimeSwarm and \val{JDStag}\,pp
 over the stagnation rule, with Holm-adjusted $p$-values of \val{JPFixedForty}, \val{JPAS} and \val{JPStag}. Only the
-first interval excludes zero before correction. Per configuration, AnytimeSwarm-R was significantly better than ALNS with
-40\,ms in \val{JWinFixedForty} of the \val{JNConfigsMain} configurations, better than the stagnation rule in
-\val{JWinStag} and never significantly different from AnytimeSwarm. It was significantly worse than none of the baselines
-in any configuration (Fig.~\ref{fig:main}b). The ablation that keeps only the latency term reached \val{JURiskZero}\%,
-close to AnytimeSwarm, so the small advantage of AnytimeSwarm-R, if real, comes from the error model and not from the
-expected latency.
+first interval excludes zero before correction. Per configuration and without correction for multiple testing,
+AnytimeSwarm-R was better than ALNS with 40\,ms in \val{JWinFixedForty} of the \val{JNConfigsMain} configurations, better
+than the stagnation rule in \val{JWinStag} and never different from AnytimeSwarm, which is consistent with chance
+(Fig.~\ref{fig:main}b). The ablation that keeps only the latency term reached \val{JURiskZero}\%, close to AnytimeSwarm.
+Together with the misspecification runs below, this suggests that a non-zero error spread mainly makes the rule stop
+earlier, rather than that the calibration of the spread matters.
 
 The fixed budget of 40\,ms is a strong reference, because it was matched to the mean computation of AnytimeSwarm on
 development data. Its weakness lies in the allocation across fleet scales. AnytimeSwarm-R used \val{JMsScSmallRisk}\,ms
@@ -95,7 +97,7 @@ difference of AnytimeSwarm-R minus ALNS with 40\,ms and minus AnytimeSwarm per c
 level, $\kappa_B$, trigger) with 95\% bootstrap intervals over \val{JNMain} missions.}\label{fig:main}
 \end{figure}
 
-\subsection{Replanning triggers}\label{sec:res-triggers}
+\subsubsection{Replanning triggers}\label{sec:res-triggers}
 The trigger mattered more than the stopping rule. Replanning every 60\,s in addition to the events raised the number of
 planning calls from \val{JCallsEvent} to \val{JCallsPeriodic} per mission and the utility of every method, by
 \val{JTrigMin}\,pp to \val{JTrigMax}\,pp, with all intervals above zero (\val{JTrigRisk}\,pp for AnytimeSwarm-R,
@@ -105,7 +107,7 @@ event. The advantage of AnytimeSwarm-R over ALNS with 40\,ms was \val{JDFixedFor
 \val{JDFixedFortyPeriodic}\,pp with the periodic trigger. The two values are close, and the protocol did not test their
 difference.
 
-\subsection{Scalability to 40 UAVs}\label{sec:res-xl}
+\subsubsection{Scalability to 40 UAVs}\label{sec:res-xl}
 With 40 UAVs and 280 tasks, \val{JNXL} held-out missions were run under mid disturbances in \val{JXLNConf}
 configurations of latency level and latency factor. All five methods reached between \val{JXLUAS}\% and
 \val{JXLUStag}\%. AnytimeSwarm-R reached \val{JXLURisk}\% with \val{JXLMsRisk}\,ms per call. Its pooled difference was
@@ -119,7 +121,7 @@ per call, and utility hardly changed within this range of computation. The equal
 AnytimeSwarm showed with 40 UAVs under exact execution (Table~\ref{tab:scale}) therefore did not translate into a
 utility gain under uncertain execution.
 
-\subsection{Sensitivity analyses}\label{sec:res-sens}
+\subsubsection{Sensitivity analyses}\label{sec:res-sens}
 The sensitivity runs use the held-out missions of the primary matrix without latency and are descriptive. They vary the
 execution level beyond the primary matrix, the latency factor and the trigger in \val{JNSensConf} configurations, and
 the error model in \val{JNMisConf} further configurations.
@@ -131,8 +133,8 @@ utility fell to about \val{JSensUHighRisk}\% for all methods. The combination of
 \val{JSensMsHighKFiftyAS}\,ms per call. Its difference to ALNS with 40\,ms was \val{JSensHighKFiftyFixedForty}\,pp and to
 the stagnation rule \val{JSensHighKFiftyStag}\,pp, so the gain over AnytimeSwarm brought it to the level of the
 baselines rather than beyond them. With $\kappa_B=1$, planning time hardly delays the plan, both delay costs are close to
-zero and the two rules behave alike. AnytimeSwarm-R then differed from AnytimeSwarm by \val{JSensKOneAS}\,pp and
-\val{JSensKOneMsDiff}\,ms per call, as the reduction to the deterministic cost implies.
+zero because they scale with the shift $\kappa\tau$, and the two rules behave alike. AnytimeSwarm-R then differed from
+AnytimeSwarm by \val{JSensKOneAS}\,pp and \val{JSensKOneMsDiff}\,ms per call.
 
 Replanning when a UAV deviated by more than 30\,s from its planned finish time raised the number of calls from
 \val{JSensCallsEvent} to \val{JSensCallsDev} per mission and the utility by \val{JSensTrigDevRisk}\,pp for
@@ -140,16 +142,17 @@ AnytimeSwarm-R and \val{JSensTrigDevFixedForty}\,pp for ALNS with 40\,ms. Like t
 stopping rules by a similar amount. Under the deviation trigger, the difference of AnytimeSwarm-R was
 \val{JSensDevFixedForty}\,pp to ALNS with 40\,ms and \val{JSensDevAS}\,pp to AnytimeSwarm.
 
-AnytimeSwarm-R was robust to a misspecified error model. With the error model of the low, mid or high level under low
-and mid disturbances, its difference to AnytimeSwarm ranged between \val{JMisAllLow}\,pp and \val{JMisAllMid}\,pp, and
-the mean utilities of all versions lay within \val{JMisSpread}\,pp. Setting the error model to zero gave
+The utility of AnytimeSwarm-R was insensitive to the error model. With the error model of the low, mid or high level
+under low and mid disturbances, its difference to AnytimeSwarm ranged between \val{JMisAllLow}\,pp and
+\val{JMisAllMid}\,pp, the correctly specified model was not better than a wrong one, and the mean utilities of all
+versions lay within \val{JMisSpread}\,pp. Setting the error model to zero gave
 \val{JMisAllZero}\,pp. The four misspecification configurations also belong to the primary matrix, so the correctly
 specified method was run twice on the same missions. The two runs differ only in the measured planning times, because
 the stopping rule reads a wall clock. They gave identical utility in \val{JRepeatSameShare}\% of the missions, and the
 mean utility of a method differed by up to \val{JRepeatDiffMax}\,pp between the runs. Differences of this size between
 stopping rules should therefore not be read as systematic.
 
-\subsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:res-tierc}
+\subsubsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:res-tierc}
 All \val{JNCRuns} held-out flights of tier C were completed, that is, \val{JNC} missions with four methods each. Two runs
 did not reach their altitude within 90\,s and were repeated as specified. A further \val{JCNInvalid} runs had a real-time
 factor between \val{JCRTFInvalidMin} and \val{JCRTFInvalidMax}, below the validity range of 1.6 to 2.2 stated in the
@@ -164,8 +167,10 @@ Table~\ref{tab:tierc} summarises the results. AnytimeSwarm-R reached a utility o
 \val{JCUFixedForty}\% for ALNS with 40\,ms, \val{JCUAS}\% for AnytimeSwarm and \val{JCUFixed}\% for the full budget.
 The paired differences were \val{JCDFixedForty}\,pp to ALNS with 40\,ms and \val{JCDAS}\,pp to AnytimeSwarm, with
 Holm-adjusted $p$-values of \val{JCPFixedForty} and \val{JCPAS}. The fourth hypothesis is therefore not supported. With
-\val{JNC} missions, the intervals are much wider than in tier B and cannot resolve differences of the size seen there. Two effects of tier B reappear in tier C. The full budget was again the weakest method
-(\val{JCDFixed}\,pp to AnytimeSwarm-R) and the only one that lost a noticeable number of tasks to late plans,
+\val{JNC} missions, the intervals are much wider than in tier B and cannot resolve differences of the size seen there.
+Two effects of tier B reappear in tier C. The full budget again had the lowest mean utility, although its interval
+includes zero (\val{JCDFixed}\,pp to AnytimeSwarm-R), and it was the only method that lost a noticeable number of tasks
+to late plans,
 \val{JCDropFixed} per mission against at most \val{JCDropAS} for the others. AnytimeSwarm-R again computed least among
 the adaptive rules, with \val{JCMsRisk}\,ms per call against \val{JCMsAS}\,ms for AnytimeSwarm, a reduction of
 \val{JCMsRedAS}\% (\val{JCDMsAS}\,ms).
@@ -179,7 +184,11 @@ slightly more reward on average, \val{JBCUC}\% against \val{JBCUB}\%, so the kin
 slightly pessimistic for these missions. The small
 differences between the methods were not predicted as well. The method means of the two tiers had a Kendall rank
 correlation of \val{JBCTau}, and the sign of the per-mission difference between AnytimeSwarm-R and ALNS with 40\,ms
-agreed in \val{JBCSignAgreeFixedForty}\% of the missions. In tier B, the advantage of AnytimeSwarm-R on these missions
+agreed in \val{JBCSignAgreeFixedForty}\% of the missions, counting ties as agreement only when both differences are zero.
+Part of the per-run correlation is by construction, because both tiers draw the wind, speed and service disturbances
+from the same random numbers, and much of it reflects the different difficulty of the missions. The correlation was
+first computed with an erroneous pairing of runs in the analysis script, which was corrected after the results had
+been seen; the hypothesis tests were not affected. In tier B, the advantage of AnytimeSwarm-R on these missions
 was \val{JBgzDFixedForty}\,pp over ALNS with 40\,ms and \val{JBgzDAS}\,pp over AnytimeSwarm (Fig.~\ref{fig:bc}a). Both
 tiers thus agree that the methods differ by at most a few percentage points on this scale, and that the full budget is
 the weakest search method, while the order of the three short-computation methods is within the noise of both tiers.
@@ -191,3 +200,6 @@ the weakest search method, while the order of the three short-computation method
 (a) paired difference of AnytimeSwarm-R minus each baseline with 95\% bootstrap intervals; (b) utility of every run in
 tier C against the same run in tier B (dashed: equality).}\label{fig:bc}
 \end{figure}
+
+\subsection{Study 2: the proposed replanner against baselines from the literature}\label{sec:study2}
+	odo{study 2 results}

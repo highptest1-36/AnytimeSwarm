@@ -1,0 +1,28 @@
+% Qualitative comparison with recent related work. Features as stated in each paper (abstract or full text); see
+% docs/09_RECENT_WORKS.md for the evidence per cell. Hand-written (not generated).
+\begin{table}[t]
+\caption{Features of recent approaches to dynamic task allocation and replanning compared with the proposed method.
+TW: time windows or deadlines; Exec.\ unc.: execution or duration uncertainty in the planning model; Trigger: replanning
+trigger policies compared; Stop: when to stop the replanner (computation as a decision); SITL: validation with an
+autopilot in software-in-the-loop or physics simulation. \checkmark: yes; $\circ$: partly; --: no or not reported.}
+\label{tab:related}
+\centering\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{llcccccl}
+\toprule
+Work & Problem & TW & Exec.\ unc. & Trigger & Stop & SITL & Architecture \\
+\midrule
+Choudhury et al.~\cite{choudhury2022dynamic} & MRTA, time windows & \checkmark & \checkmark & -- & -- & -- & hierarchical \\
+Huang et al.~\cite{huang2024dynamic} & multi-UAV allocation & -- & \checkmark & $\circ$ & -- & -- & -- \\
+Calvo and Capitan~\cite{calvo2025heterogeneous} & long-endurance UAV MRTA & $\circ$ & -- & -- & -- & \checkmark & centralised \\
+Hwang et al.~\cite{hwang2026apr} & multi-UAV replanning & \checkmark & -- & -- & -- & -- & -- \\
+Shen et al.~\cite{shen2026localrepair} & UAV swarm allocation & $\circ$ & -- & -- & -- & -- & edge \\
+Qian and Fu~\cite{ucdg2026drones} & multi-UAV allocation & \checkmark & \checkmark & -- & -- & -- & distributed \\
+Cong et al.~\cite{cong2026event} & multi-UAV allocation & \checkmark & $\circ$ & \checkmark & -- & $\circ$ & -- \\
+Ali et al.~\cite{ali2026sitl} & multi-UAV allocation & -- & -- & -- & -- & \checkmark & decentralised \\
+Svegliato et al.~\cite{svegliato2018meta} & anytime metareasoning & -- & -- & -- & \checkmark & -- & -- \\
+\midrule
+Proposed & multi-UAV replanning & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & centralised \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,14 +1,44 @@
-\section{Method}\label{sec:method}
-AnytimeSwarm consists of a repair module, an anytime search and a stopping rule. Fig.~\ref{fig:arch} illustrates how
-the three modules interact during one replanning call. AnytimeSwarm-R differs only in the delay cost used by the
-stopping rule.
+\section{Proposed method}\label{sec:method}
+The proposed replanner, AnytimeSwarm-CC, decides at three points of the replanning cycle (Fig.~\ref{fig:overview}).
+The trigger decides when to replan. The chance-constrained planning model decides which plans are acceptable given the
+calibrated execution error. The stopping rule decides when to stop computing and publish. Between these decisions, a
+feasibility-first repair and an anytime adaptive large neighbourhood search (ALNS) produce the plan.
+Algorithm~\ref{alg:cycle} summarises one replanning call. Earlier variants of the replanner differ only in parts of
+this cycle: AnytimeSwarm uses the deterministic delay cost and the nominal planning model, and AnytimeSwarm-R adds the
+execution-aware delay cost but keeps the nominal planning model.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
-\fig{fig_architecture}{0.95\linewidth}
-\caption{Overview of AnytimeSwarm: (a) an event changes the mission, (b) the planner repairs and improves the plan,
-(c) the stopping rule decides when to publish it.}\label{fig:arch}
-\end{figure}
+\fig{fig_overview}{\linewidth}
+\caption{Overview of the proposed replanner. (a) The mission: UAVs serve tasks with time windows, while wind and
+speed and service errors make the executed routes deviate from the plan, and events change the task set. (b) One
+replanning call: trigger, chance-constrained planning model, feasibility-first repair, anytime ALNS and the stopping
+rule. (c) Execution in the kinematic tier or in PX4 software-in-the-loop with Gazebo and ROS~2. (d) The mission-time
+view of one call: search, emulated planning delay, dissemination latency and execution, whose deviations trigger the
+next call.}\label{fig:overview}
+\end{figure*}
+
+\begin{algorithm}[t]
+\caption{One replanning call of the proposed replanner}\label{alg:cycle}
+\small
+\begin{algorithmic}[1]
+\Require snapshot at time $t_0$: committed tasks, open tasks with $(r_j,d_j,w_j)$, UAV states; previous plan $\pi^-$;
+error model $(b_0,b_1,s_0,s_1)$, safety factor $z$, expected latency $\bar L$, latency factor $\kappa$
+\State $\tilde d_j \gets \min\{d_j,\; t_0+(d_j-t_0-b_0-z s_0)/(1+b_1+z s_1)\}$ for every open task
+\Comment{Eq.~\eqref{eq:cc}}
+\State $\pi \gets$ \Call{FeasibilityFirstRepair}{$\pi^-$, $\tilde d$} \Comment{feasible by construction}
+\State $\pi^\ast \gets \pi$;\; $\tau \gets 0$
+\Repeat
+  \State destroy and repair $\pi$ with adaptively chosen operators; accept by simulated annealing
+  \State \textbf{if} $J(\pi) > J(\pi^\ast)$ \textbf{then} $\pi^\ast \gets \pi$
+  \State every 5\,ms: $\widehat{\Delta J} \gets$ learned prediction of the gain in the next $H$\,ms
+  \State \hphantom{every 5\,ms: }$C \gets \Lambda_{\mathrm{R}}(\pi^\ast,\tau+H)-\Lambda_{\mathrm{R}}(\pi^\ast,\tau)$
+  \Comment{Eq.~\eqref{eq:risk}}
+\Until{$\widehat{\Delta J}\le C+\mu W H$ \textbf{or} $\tau\ge B$}
+\State publish $\pi^\ast$; it reaches the UAVs at $t_0+\kappa\tau+L$
+\State next call at the next event or $T_{\max}$ after $t_0$, whichever comes first
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Feasibility-first repair}
 The previous plan is first restricted to the open tasks. Each route is then walked once, and a task is kept only if the
@@ -27,7 +57,7 @@ far can be published at any time. The temperature decreases per iteration rather
 variants use the same random seed. Every stopping rule therefore follows the same search trajectory and differs only in
 the moment at which it stops.
 
-\subsection{Adaptive stopping}
+\subsection{Learned stopping rule}
 Every 5\,ms, the stopping rule compares the predicted gain of searching for another $H=10$\,ms with the cost of doing so.
 With $\widehat{\Delta J}$ as the predicted gain, the search stops at time $\tau$ if
 \begin{equation}\label{eq:stop}
@@ -39,7 +69,8 @@ iterations, the recent improvements over 5\,ms, over 20\,ms and over the second 
 the last improvement, the total improvement over the repaired plan, the unassigned share of the reward, the numbers of
 tasks and UAVs, and the iteration rate. The target is the improvement in the next 10\,ms in percent of $W$. The model is
 fitted on 500\,ms search trajectories of development scenarios only, and a prediction costs one dot product. The search
-loop enforces the hard time budget independently of the stopping rule.
+loop enforces the hard time budget $B$ independently of the stopping rule. The price of computation is
+$\mu=10^{-5}$ per millisecond.
 
 \subsection{Deterministic delay cost}
 The delay cost is computed from the best plan found so far. A late start of a route is partly absorbed by the waiting
@@ -47,12 +78,12 @@ times along it, in the same way as the forward time slack of routing with time w
 tolerance $\mathrm{tol}_j$ of a task is the margin between its finish time and its deadline, plus all waiting times on
 the route up to this task. A task is lost when the start shift $\sigma_j(\tau)$ of its route exceeds its tolerance. The
 start shift is zero for a UAV that is still busy, and it equals the waiting time until the publication for an idle UAV.
-With $v_j$ as the contribution of task $j$ to the objective and
+With $v_j=\alpha w_j-\delta\,\mathbb{1}[\text{$j$ changes UAV}]$ as the value of task $j$ in the objective and
 $\Lambda(\tau)=\sum_j v_j\,\mathbb{1}[\sigma_j(\tau)>\mathrm{tol}_j]$, the delay cost of searching $H$ milliseconds longer
 is $C_{\mathrm{delay}}(\tau)=\Lambda(\tau+H)-\Lambda(\tau)$.
 
 \begin{prop}\label{prop:delay}
-For a feasible plan executed exactly, (i) $\Lambda(\tau)$ is the reward lost through missed deadlines if every UAV
+For a feasible plan executed exactly, (i) $\Lambda(\tau)$ is the value lost through missed deadlines if every UAV
 follows its route, (ii) the loss of the objective is at most $\Lambda(\tau)$ if late tasks are skipped, and
 (iii) $\Lambda(\tau)$ does not decrease with $\tau$ and is zero while all UAVs are busy with their committed tasks.
 Hence $C_{\mathrm{delay}}$ is non-negative and vanishes while no UAV is waiting.
@@ -63,16 +94,16 @@ of the delay, so the delay at the end of a task equals the start shift minus all
 difference is positive. The task therefore misses its deadline exactly when the start shift exceeds its tolerance.
 Waiting consumes no energy, which proves (i). If late tasks are skipped, the triangle inequality ensures that every
 later task is reached no later and with no more energy. All tasks that are on time in (i) remain on time, and the flown
-distance does not grow. Every assigned task has a positive value, because each reward is at least $\alpha$ and
-$\delta<\alpha$, which proves (ii). Part (iii) holds because the start shift does not decrease with $\tau$ and every
-tolerance is non-negative in a feasible plan.
+distance, hence the energy term $\gamma E$, does not grow. The objective therefore loses the values $v_j$ of the skipped
+tasks and nothing else, which is at most $\Lambda(\tau)$ and proves (ii). Part (iii) holds because the start shift does
+not decrease with $\tau$ and every tolerance is non-negative in a feasible plan.
 \end{proof}
 
 \subsection{Execution-aware delay cost}\label{sec:risk}
 Under uncertain execution, task $j$ is lost when $\sigma_j(\tau)+e_j>\mathrm{tol}_j$, where $e_j$ is its finish-time
-error. AnytimeSwarm-R replaces the indicator in $\Lambda$ by the probability of this event. The error of task $j$ is
-modelled as $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$, where $h_j=f_j-t_0$ is its lead time, the nominal finish time minus
-the time of the planning snapshot. The mean and the spread are linear in the lead time,
+error. The execution-aware cost replaces the indicator in $\Lambda$ by the probability of this event. The error of task
+$j$ is modelled as $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$, where $h_j=f_j-t_0$ is its lead time, the nominal finish time
+minus the time of the planning snapshot. The mean and the spread are linear in the lead time,
 \begin{equation}\label{eq:errmodel}
 m(h)=b_0+b_1h,\qquad s(h)=s_0+s_1h,
 \end{equation}
@@ -82,12 +113,12 @@ expected loss and the execution-aware delay cost are
 \Lambda_{\mathrm{R}}(\tau)=\sum_j v_j\,\Phi\!\left(\frac{\sigma_j(\tau)+\bar L+m(h_j)-\mathrm{tol}_j}{s(h_j)}\right),
 \qquad C_{\mathrm{R}}(\tau)=\Lambda_{\mathrm{R}}(\tau+H)-\Lambda_{\mathrm{R}}(\tau),
 \end{equation}
-where $\Phi$ is the standard normal distribution function and the start shift now includes $\bar L$ for idle UAVs.
-Search and predictor are unchanged, and $C_{\mathrm{R}}$ replaces $C_{\mathrm{delay}}$ in Eq.~\eqref{eq:stop}.
+where $\Phi$ is the standard normal distribution function. Search and predictor are unchanged, and $C_{\mathrm{R}}$
+replaces $C_{\mathrm{delay}}$ in Eq.~\eqref{eq:stop}.
 
 \begin{prop}\label{prop:risk}
-(i) With $b_0=b_1=s_0=s_1=0$ and $\bar L=0$, $\Lambda_{\mathrm{R}}=\Lambda$ and AnytimeSwarm-R takes exactly the decisions
-of AnytimeSwarm. (ii) $\Lambda_{\mathrm{R}}(\tau)$ does not decrease with $\tau$, so $C_{\mathrm{R}}\ge0$.
+(i) With $b_0=b_1=s_0=s_1=0$ and $\bar L=0$, $\Lambda_{\mathrm{R}}=\Lambda$, and the stopping rule takes exactly the
+decisions of the deterministic one. (ii) $\Lambda_{\mathrm{R}}(\tau)$ does not decrease with $\tau$, so $C_{\mathrm{R}}\ge0$.
 (iii) Under the error model, $\Lambda_{\mathrm{R}}(\tau)$ is the expected value of the tasks whose deadline is missed if
 every UAV follows its route.
 \end{prop}
@@ -99,11 +130,53 @@ $\sigma_j+e_j$ minus the absorbed waiting time, is positive, and the expectation
 probability in Eq.~\eqref{eq:risk}.
 \end{proof}
 
-The execution-aware cost differs from the deterministic one in two ways. It grows smoothly before a task becomes
-infeasible, because a task with little remaining slack is already at risk, and it can be positive for a busy UAV
-through $\bar L$. It is also smaller than the deterministic cost for tasks whose tolerance is already consumed by the
-expected error, because waiting longer cannot lose a task that is likely lost anyway. The parameters of
-Eq.~\eqref{eq:errmodel} are fitted on development missions. The mean is estimated by least squares, and the spread by
-least squares on the absolute residuals scaled by $\sqrt{\pi/2}$, which is less sensitive to the heavy tail of the
-errors than squared residuals. The latency $\bar L$ is the mean of the latency distribution in tier B and the measured
-mean plan-acceptance latency in tier C.
+The parameters of Eq.~\eqref{eq:errmodel} are fitted on development missions. The mean is estimated by least squares,
+and the spread by least squares on the absolute residuals scaled by $\sqrt{\pi/2}$, which is less sensitive to the heavy
+tail of the errors than squared residuals. The latency $\bar L$ is the mean of the latency distribution in tier B and
+the measured mean plan-acceptance latency in tier C.
+
+\subsection{Chance-constrained planning model}\label{sec:cc}
+The delay cost prices the risk of a late plan, but the plan itself is still built for nominal execution. The fitted
+error models show that the nominal model is optimistic, since the mean error grows with the lead time
+(Table~\ref{tab:errmodels}). The proposed replanner therefore plans for the calibrated execution. A planned finish time
+$f_j$ is accepted only if
+\begin{equation}\label{eq:ccfinish}
+f_j+m(f_j-t_0)+z\,s(f_j-t_0)\;\le\;d_j ,
+\end{equation}
+where $z\ge0$ is a safety factor. The left-hand side depends on the finish time itself, so the buffer is small for
+tasks served soon and large for tasks served late in a route. Because $m$ and $s$ are linear, the constraint reduces to
+an effective deadline,
+\begin{equation}\label{eq:cc}
+f_j\le\tilde d_j,\qquad \tilde d_j=t_0+\frac{d_j-t_0-b_0-z s_0}{1+b_1+z s_1}.
+\end{equation}
+The planner, the repair and the search use $\tilde d_j$ instead of $d_j$, while the executor and the reward still use the
+true deadline. No other part of the planner changes.
+
+\begin{prop}\label{prop:cc}
+Let $1+b_1+z s_1>0$. (i) A finish time satisfies Eq.~\eqref{eq:ccfinish} if and only if $f_j\le\tilde d_j$. (ii) Under
+the error model of Eq.~\eqref{eq:errmodel}, a task planned to finish at $f_j\le\tilde d_j$ meets its deadline with
+probability at least $\Phi(z)$ if its route starts as planned. (iii) With $b_0=b_1=s_0=s_1=0$, $\tilde d_j=d_j$ and the
+planning model is the nominal one.
+\end{prop}
+\begin{proof}
+Substituting Eq.~\eqref{eq:errmodel} into Eq.~\eqref{eq:ccfinish} gives
+$f_j(1+b_1+zs_1)\le d_j-b_0-zs_0+(b_1+zs_1)t_0$, and dividing by the positive factor gives (i). For (ii), the actual
+finish is $F_j=f_j+e_j$ with $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$ and $h_j=f_j-t_0$. By (i),
+$d_j-f_j-m(h_j)\ge z\,s(h_j)$, hence $\Pr[F_j\le d_j]=\Phi\big((d_j-f_j-m(h_j))/s(h_j)\big)\ge\Phi(z)$. Part (iii) is
+immediate.
+\end{proof}
+
+The effective deadline turns a chance constraint on every task into a deterministic constraint of the same form as the
+original one, so the repair, the insertion heuristics and the feasibility checks of the search are reused unchanged and
+the planning time does not grow. With $z=0$, the model only corrects the mean error and plans for the median finish time.
+Larger values of $z$ protect more tasks against lateness but leave fewer tasks feasible, so $z$ trades the risk of a late
+service against the reward of attempting a task. It is chosen per calibrated disturbance level on development missions.
+Because the delay cost of Eq.~\eqref{eq:risk} is evaluated on the effective deadlines, the mean error is already part of
+the tolerance, and the stopping rule uses the spread only, with $m\equiv0$.
+
+\subsection{Replanning trigger}\label{sec:proposedtrigger}
+Errors accumulate between replanning calls. The proposed replanner therefore replans on every event and in addition at
+least every $T_{\max}=60$\,s of mission time, which corresponds to a rolling-horizon policy in the terminology of
+rescheduling~\cite{vieira2003rescheduling,ouelhadj2009survey}. A deviation trigger, which replans when a finish time
+deviates from the plan by more than a threshold, was evaluated on development missions and gave the same utility, and
+is reported as an alternative.

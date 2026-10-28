@@ -97,38 +97,60 @@ requires $\kappa_C\ge2$ so that the emulated planning delay dominates the real o
 offboard setpoints to three PX4 autopilots that fly X500 quadrotors in Gazebo.}\label{fig:tierc}
 \end{figure}
 
-\subsection{Compared methods}
-The constructive baseline is regret-2 repair, that is, FFR without search. ALNS is run with the full budget of
-250\,ms, with a fixed budget of 40\,ms, which equals the mean computation of AnytimeSwarm on development data, and with
-a stagnation rule that stops after 20\% of the budget without improvement. AnytimeSwarm is used exactly as frozen after
-development, without retraining, and an ablation removes its delay cost. AnytimeSwarm-R uses the error model of the
-execution level of the mission and the expected latency of its latency level. A further ablation sets its error model to
-zero, so that only the latency term remains, and a sensitivity study uses the error model of another level. For 40
-UAVs, the fixed budget matched to the computation of AnytimeSwarm on development data is 180\,ms. All ALNS variants
-share operators, parameters, initial plan and seed, and every call has a hard budget of 250\,ms.
+\subsection{Compared methods}\label{sec:methods}
+All methods share the feasibility-first repair, the ALNS operators and parameters, the initial plan and the random seed,
+and every call has a hard budget of 250\,ms. They differ in the stopping rule, the planning model and the trigger.
+\paragraph{Stopping rules} Regret-2 repair without search is the constructive floor. ALNS is run with a fixed budget of
+250\,ms~\cite{ropke2006adaptive}, with a fixed budget of 40\,ms, which equals the mean computation of AnytimeSwarm on
+development data, with a budget proportional to the number of open tasks (1\,ms per task, chosen on development
+missions among 0.5, 1 and 2\,ms), and with a stagnation rule that stops after 20\% of the budget without improvement.
+Two stopping rules from the metareasoning literature are re-implemented with the same time cost as the proposed rule,
+that is, the delay cost and the price of computation, so that only the prediction of the gain differs. The performance
+profile rule~\cite{boddy1994deliberation,zilberstein1996using} predicts the gain from a static profile of the expected
+improvement over elapsed time and number of open tasks, estimated on 606 development planning calls. The online
+prediction rule follows Svegliato et al.~\cite{svegliato2018meta} and fits the curve $q(t)=a-b\,e^{-ct}$ to the best
+objective found so far at every check, by least squares over a logarithmic grid of rates. AnytimeSwarm uses the
+learned predictor with the deterministic delay cost and AnytimeSwarm-R with the execution-aware cost.
+\paragraph{Planning models and triggers} The nominal planning model uses the deadlines as given. The constant-buffer
+model subtracts 60\,s from every deadline, chosen on development missions among 30, 60 and 120\,s, as is common for
+robust schedules with time buffers~\cite{agra2013robust}. The proposed chance-constrained model uses
+Eq.~\eqref{eq:cc} with $z=0.5$ under mid and $z=0$ under high disturbances, selected on development missions. Triggers
+are event-only or event plus periodic replanning every 60\,s.
 
-\subsection{Protocol and statistics}\label{sec:protocol}
-Development used seeds 0--9 in tier B and 0--2 in tier C. The predictor was trained on development trajectories, and
-the compute price $\mu=10^{-5}$ was selected by a rule stated before any test run. The tier B error models were fitted
-on 90 development missions per level flown by ALNS with 40\,ms, and the tier C models on nine development flights per
-level. The fitted models are listed in Table~\ref{tab:errmodels}. The experiment configurations, the error models, the
-predictor and the experiment code were then frozen with SHA-256 hashes, and the held-out runs checked these hashes
-before starting. Tier B uses held-out seeds 3000--3029, which gives 270 missions for the three scales and three
-profiles, and 90 missions for 40 UAVs. Tier C uses held-out seeds 4000--4009 with three profiles, that is, 30 missions
-per method. The primary tier B matrix crosses two execution levels (low, mid), two latency levels (none, high), two
-latency factors ($\kappa_B=10, 50$) and two triggers (event, periodic every 60\,s).
+\subsection{Two pre-registered studies}\label{sec:protocol}
+The evaluation consists of two pre-registered held-out studies, each with its own seeds, written protocol and frozen code.
+Development used seeds 0--9 in tier B and 0--2 in tier C. The predictor was trained on development trajectories, and the
+compute price $\mu=10^{-5}$ was selected by a rule stated before any test run. The tier B error models were fitted on 90
+development missions per level flown by ALNS with 40\,ms, and the tier C models on nine development flights per level
+(Table~\ref{tab:errmodels}). Before each study, the experiment configurations, the models and the experiment code were
+frozen with SHA-256 hashes, and the held-out runs checked these hashes before starting.
 
-The primary hypothesis is that AnytimeSwarm-R serves more reward than ALNS with 40\,ms, AnytimeSwarm and the stagnation
-rule over the primary matrix. For each mission, the utility difference is averaged over the sixteen configurations of
-the matrix, and the mean over missions is tested with a paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples.
-The three comparisons are corrected with the Holm procedure~\cite{holm1979simple}. The same pooled test compares the
-computation per planning call with that of AnytimeSwarm and the periodic trigger with the event trigger. In tier C,
-AnytimeSwarm-R is compared with ALNS with 40\,ms and with AnytimeSwarm, again with Holm correction, and the same 30
-missions are also run in tier B to assess whether tier B ranks the methods as tier C does. All other comparisons are
-descriptive. A tier C run in which a vehicle does not reach its altitude within 90\,s of simulation time is aborted and
-repeated once with the same seed. The full protocol was written before the held-out runs and is available with the code,
-together with a list of the deviations from it. The only deviation that affects data concerns four tier C runs with a
-low real-time factor (Section~\ref{sec:res-tierc}).
+Study~1 asks whether the stopping rule alone can be made execution-aware. It compares AnytimeSwarm-R with the stopping
+rules of the first group on the nominal planning model, on held-out seeds 3000--3029 in tier B (270 missions over three
+scales and three profiles, and 90 missions with 40 UAVs) and 4000--4009 in tier C (30 missions per method). Its primary
+matrix crosses two execution levels (low, mid), two latency levels (none, high), two latency factors ($\kappa_B=10, 50$)
+and two triggers (event, periodic every 60\,s). Its primary hypothesis is that AnytimeSwarm-R serves more reward than
+ALNS with 40\,ms, AnytimeSwarm and the stagnation rule.
+
+Study~2 evaluates the proposed replanner. It was designed after study~1, on development missions only, and uses new
+held-out seeds 5000--5029 in tier B and 6000--6009 in tier C. Its primary matrix crosses two execution levels (mid,
+high), high latency, three latency factors ($\kappa_B=10, 50, 200$) and two time-window factors (original windows and
+windows halved), which gives twelve configurations and 270 missions each. Fifteen methods are compared: the proposed
+replanner, the eleven baselines of Section~\ref{sec:methods} with the periodic trigger, the conventional planner that
+uses ALNS with 40\,ms, the nominal model and the event trigger, and three ablations. The primary hypothesis H1 is that
+the proposed replanner serves more reward than each of six baselines (ALNS with 40\,ms, the size-scaled budget, online
+prediction, the performance profile, AnytimeSwarm-R and the constant buffer, all with the periodic trigger). H2 compares
+it with the conventional planner. H3 tests whether the proposed stopping rule is equivalent to a fixed budget of 40\,ms on
+the proposed planning model, with a margin of $\pm0.5$ percentage points. In tier C, H4 compares the proposed replanner
+with ALNS with 40\,ms and with the conventional planner on 30 missions.
+
+In both studies, the utility difference of a pair of methods is averaged per mission over the configurations of the
+matrix, and the mean over missions is tested with a paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples.
+Families of primary comparisons are corrected with the Holm procedure~\cite{holm1979simple}, and equivalence is tested
+with two one-sided tests, that is, a 90\% interval inside the margin. All other comparisons are descriptive. A tier C run
+in which a vehicle does not reach its altitude within 90\,s of simulation time, or whose real-time factor leaves
+$[1.6, 2.2]$, is repeated once with the same seed. The protocols are available with the code, together with a list of
+the deviations from them.
 Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with all methods of a configuration run in
 turn, so that they share the same machine load. All runs use Python 3.12 and pinned package versions. Every plan is
 checked for feasibility before publication, and a separately written validator that shares no code with the planner
