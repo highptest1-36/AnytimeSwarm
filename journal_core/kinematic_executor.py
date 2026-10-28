@@ -16,6 +16,8 @@ What changes:
       "deviation:<s>"  also replan when the actual finish of a planned task deviates from the plan by more than <s>
                        seconds; detection at planned finish + <s> (late) or at the actual finish (early)
       "periodic:<s>"   also replan every <s> seconds of mission time (baseline trigger)
+      "hybrid:<s>:<T>" deviation trigger with threshold <s>, and at the latest <T> seconds after the last call
+                       (study 2)
     Extra triggers are skipped when no open task is left (nothing to reassign).
 With ExecutionModel nominal, zero latency and the event trigger the class falls back to the conference code path, so
 results are identical to anytimeswarm.simulator.executor.run_mission (tests/test_kinematic.py checks this).
@@ -189,16 +191,20 @@ class KinematicExecutor(MissionExecutor):
 def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: float = 1.0,
                     xm: ExecutionModel | None = None, lat: LatencyModel | None = None,
                     predictor=None, seed: int = 0, keep_log: bool = False, solve_kwargs: dict | None = None,
-                    trigger: str = "event") -> dict:
+                    trigger: str = "event", solver=None) -> dict:
     """Same loop as anytimeswarm.simulator.executor.run_mission, plus execution / latency models and extra
-    replanning triggers. solve_kwargs may carry err / latency_mean_s for the risk-aware method."""
+    replanning triggers. solve_kwargs may carry err / latency_mean_s for the risk-aware method; solver replaces
+    journal_core.methods.solve (study 2 passes journal_core.study2.solve2)."""
     xm = xm or ExecutionModel()
     lat = lat or LatencyModel()
+    solver = solver or solve
     ex = KinematicExecutor(scenario, cfg, xm)
     events = sorted(scenario.events, key=lambda e: e.time)
     kind, _, par = trigger.partition(":")
-    assert kind in ("event", "deviation", "periodic"), trigger
+    assert kind in ("event", "deviation", "periodic", "hybrid"), trigger
+    par, _, tmax = par.partition(":")
     par = float(par) if par else 0.0
+    tmax = float(tmax) if tmax else float("inf")
     t_stop = max(t.deadline for t in scenario.tasks)
     t_pub, t_last, i, call, n_extra = 0.0, 0.0, 0, 0, 0
     while True:
@@ -208,15 +214,18 @@ def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: f
         else:
             t_ev = events[i].time if i < len(events) else float("inf")
             t_x = float("inf")
-            if kind == "deviation":
+            if kind in ("deviation", "hybrid"):
                 t_x = ex.next_deviation(par, t_pub)
             elif kind == "periodic":
                 t_x = max(t_last + par, t_pub + 1e-6)
+            why_x = "deviation" if kind == "hybrid" else kind
+            if kind == "hybrid" and t_last + tmax < t_x:
+                t_x, why_x = max(t_last + tmax, t_pub + 1e-6), "periodic"
             if t_x >= t_stop:
                 t_x = float("inf")
             if math.isinf(t_ev) and math.isinf(t_x):
                 break
-            t_event, why = (t_ev, "event") if t_ev <= t_x else (t_x, kind)
+            t_event, why = (t_ev, "event") if t_ev <= t_x else (t_x, why_x)
         t_now = max(t_event, t_pub)
         ex.advance(t_now)
         first_event = i
@@ -227,11 +236,11 @@ def run_mission_kin(scenario, cfg: dict, method: str, budget_ms: float, kappa: f
                 why = "event"
         P, old, locked = ex.snapshot(t_now)
         if why in ("deviation", "periodic") and P.N == 0:
-            if kind == "deviation":
+            if kind in ("deviation", "hybrid"):
                 ex.mark_seen(t_now, par)               # nothing to reassign: no planning call
             t_last = t_pub = t_now
             continue
-        res = solve(method, P, old, budget_ms, cfg, seed=seed * 1000 + call, predictor=predictor, kappa=kappa,
+        res = solver(method, P, old, budget_ms, cfg, seed=seed * 1000 + call, predictor=predictor, kappa=kappa,
                     **(solve_kwargs or {}))
         latency = lat.sample(scenario.seed, first_event if why in ("start", "event") else 100000 + call)
         t_pub = t_now + kappa * res["elapsed_ms"] / 1000.0 + latency
