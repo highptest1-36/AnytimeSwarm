@@ -1,0 +1,4 @@
+[run] gz-deadlines-4006_anytime_k50_event_mid  gui=0 rviz=0 speed=2 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-deadlines-4006_anytime.json
+[INFO] [1793164807.364809942] [atswarm_mission_manager]: gz-deadlines-4006: method=anytime budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[ERROR] [1793164868.736803171] [atswarm_mission_manager]: STARTUP FAILED: not every UAV airborne after 90 s (phases [2, 2, 1])
+[run] done -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-deadlines-4006_anytime.json

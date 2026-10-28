@@ -143,6 +143,7 @@ def tier_b_main():
     for (base, k, m, lo, hi, p), pa in zip(tests, adj):
         put(f"D{k}", ci(m, lo, hi))
         put(f"Dm{k}", spp(m))
+        put(f"Dm{k}Abs", pp(m))
         put(f"P{k}", pval(pa))
         rows.append((NAMES[base], ci(m, lo, hi), pval(p), pval(pa)))
     for base, k in [("alns_fixed", "Fixed"), ("anytime_nodelay", "NoDelay"), ("regret_repair", "Repair"),
@@ -179,7 +180,7 @@ def tier_b_main():
              f"{df.groupby(CFG_KEY).ngroups} configurations. Utility and lost tasks per mission, mean planning time per "
              "call, and pooled paired difference of AnytimeSwarm-R minus each method (percentage points, 95\\% "
              "bootstrap interval; Holm-adjusted $p$ for the three primary comparisons).}\\label{tab:main}",
-             "\\centering\\small", "\\setlength{\\tabcolsep}{4pt}", "\\begin{tabular}{lrrrrrl}", "\\toprule",
+             "\\centering\\small", "\\setlength{\\tabcolsep}{3pt}", "\\begin{tabular}{lrrrrrl}", "\\toprule",
              "Method & Utility (\\%) & Late & Skipped & Calls & ms/call & AnytimeSwarm-R minus method (pp) \\\\",
              "\\midrule"]
     diffs = {r[0]: r[1] + (f", $p_{{\\mathrm{{Holm}}}}$ {r[3]}" if r[3] != "--" else "") for r in rows}
@@ -208,6 +209,9 @@ def tier_b_main():
     if tl:
         put("TrigMin", spp(min(t[1] for t in tl)))
         put("TrigMax", spp(max(t[1] for t in tl)))
+        # unsigned forms for running text such as the abstract
+        put("TrigMinAbs", pp(min(t[1] for t in tl)))
+        put("TrigMaxAbs", pp(max(t[1] for t in tl)))
     for trig, k in [("event", "Event"), ("periodic:60", "Periodic")]:
         sub = df[df.trigger == trig]
         for base, kb in [("alns_fixed@40", "FixedForty"), ("anytime", "AS")]:
@@ -436,6 +440,30 @@ def tier_c():
     if "alns_fixed" in w and OURS in w:
         m, lo, hi, p = boot(w[OURS] - w["alns_fixed"])
         put("CDFixed", ci(m, lo, hi))
+    m, lo, hi, _ = boot(df.pivot_table(index="scenario", columns="method", values="plan_ms_mean").dropna()
+                        .pipe(lambda x: x[OURS] - x["anytime"]))
+    put("CDMsAS", f"{m:+.1f} [{lo:+.1f}, {hi:+.1f}]".replace("-", "$-$"))
+    put("CMsRedAS", f"{(1 - g.loc[OURS, 'ms'] / g.loc['anytime', 'ms']) * 100:.0f}")
+    # missions needed to detect 0.5 pp (paired, two-sided 5%, power 80%) with the observed spread of the differences
+    sd = (w[OURS] - w["alns_fixed@40"]).std(ddof=1)
+    put("CSdDiff", pp(sd, 1))
+    put("CNPower", f"{int(round(((1.96 + 0.84) * sd / 0.005) ** 2, -2)):,}".replace(",", "\\,"))
+    # runs outside the RTF validity range were repeated once; sensitivity: use the original runs instead
+    inv = sorted((d / "invalid_rtf").glob("gz-*.json")) if (d / "invalid_rtf").exists() else []
+    put("CNInvalid", str(len(inv)))
+    if inv:
+        orig = df.set_index(["scenario", "method"]).utility_rate.copy()
+        rtf = []
+        for f in inv:
+            mm = json.loads(f.read_text())
+            orig[(mm["scenario"], mm["method"])] = mm["utility_rate"]
+            rtf.append(mm["rtf"])
+        put("CRTFInvalidMin", f"{min(rtf):.2f}")
+        put("CRTFInvalidMax", f"{max(rtf):.2f}")
+        wo = orig.unstack("method")
+        for base, k in [("alns_fixed@40", "FixedForty"), ("anytime", "AS")]:
+            m, lo, hi, _ = boot(wo[OURS] - wo[base])
+            put(f"CD{k}Orig", ci(m, lo, hi))
     fb = TB / "heldout_B_gz.csv"
     if fb.exists():
         from scipy.stats import kendalltau, pearsonr
@@ -444,9 +472,19 @@ def tier_c():
         com = bm.index.intersection(cm.index)
         put("BCTau", f"{kendalltau(bm[com], cm[com]).statistic:.2f}")
         jb = b.pivot_table(index="scenario", columns="method", values="utility_rate")
-        both = w.stack().rename("C").to_frame().join(jb.stack().rename("B"), how="inner")
-        put("BCr", f"{pearsonr(both.B, both.C).statistic:.2f}")
+        both = df[["scenario", "method", "utility_rate"]].merge(b[["scenario", "method", "utility_rate"]],
+                                                                on=["scenario", "method"], suffixes=("_c", "_b"))
+        put("BCr", f"{pearsonr(both.utility_rate_b, both.utility_rate_c).statistic:.2f}")
         put("BCn", str(len(both)))
+        mb = both.groupby("scenario")[["utility_rate_b", "utility_rate_c"]].mean()
+        put("BCrMission", f"{pearsonr(mb.utility_rate_b, mb.utility_rate_c).statistic:.2f}")
+        # does tier B predict the sign of the tier C difference? (paired per mission)
+        for base, k in [("alns_fixed@40", "FixedForty"), ("anytime", "AS"), ("alns_fixed", "Fixed")]:
+            pb = both.pivot_table(index="scenario", columns="method", values=["utility_rate_b", "utility_rate_c"])
+            db = pb["utility_rate_b"][OURS] - pb["utility_rate_b"][base]
+            dc = pb["utility_rate_c"][OURS] - pb["utility_rate_c"][base]
+            put(f"BCSignAgree{k}", f"{np.mean(np.sign(db) == np.sign(dc)) * 100:.0f}")
+        fig_bc(both)
         put("BCUB", pp(b.utility_rate.mean()))
         put("BCUC", pp(df.utility_rate.mean()))
         for m, k in [("anytime_risk", "Risk"), ("anytime", "AS"), ("alns_fixed@40", "FixedForty"), ("alns_fixed", "Fixed")]:
@@ -473,6 +511,41 @@ def tier_c():
             lines.append(f"{NAMES[m]} & {pp(r.u)} & {r.dropd:.2f} & {r.skip:.2f} & {r.ms:.1f} & {ub} \\\\")
     lines += ["\\bottomrule", "\\end{tabular}", "\\end{table}"]
     (P / "tables" / "tab_tierc.tex").write_text("\n".join(lines) + "\n")
+
+
+def fig_bc(both):
+    """Tier B against tier C on the same held-out gz missions: (a) method means, (b) per run."""
+    bases = ["alns_fixed", "alns_fixed@40", "anytime"]
+    fig, axes = plt.subplots(1, 2, figsize=(9.0, 3.3), gridspec_kw={"width_ratios": [1.25, 1]})
+    ax = axes[0]
+    x = np.arange(len(bases))
+    for dx, col, tier, mk, lab in [(-0.12, "C0", "b", "s", "tier B (kinematic)"), (0.12, "C3", "c", "o",
+                                                                                     "tier C (PX4 + Gazebo)")]:
+        w = both.pivot_table(index="scenario", columns="method", values=f"utility_rate_{tier}")
+        est = [boot(w[OURS] - w[b], n=4000)[:3] for b in bases]
+        mean = np.array([e[0] for e in est]) * 100
+        err = np.array([[e[0] - e[1], e[2] - e[0]] for e in est]).T * 100
+        ax.errorbar(x + dx, mean, yerr=err, fmt=mk, ms=5, capsize=2, color=col, label=lab)
+    ax.axhline(0, color="k", lw=0.8)
+    ax.set_xticks(x, ["minus " + NAMES[b].replace("\\,", " ") for b in bases], fontsize=7)
+    ax.set_ylabel("AnytimeSwarm-R minus baseline (pp)")
+    ax.set_title(f"(a) paired difference over {both.scenario.nunique()} missions, 95% CI", fontsize=9)
+    ax.grid(axis="y", alpha=0.3)
+    ax.legend(fontsize=7, loc="upper right", frameon=False)
+    ax = axes[1]
+    ax.scatter(both.utility_rate_b * 100, both.utility_rate_c * 100, s=12, color="C0", alpha=0.6, lw=0)
+    lim = [min(both.utility_rate_b.min(), both.utility_rate_c.min()) * 100 - 3, 103]
+    ax.plot(lim, lim, color="0.4", lw=0.8, ls="--")
+    ax.set_xlim(lim)
+    ax.set_ylim(lim)
+    ax.set_aspect("equal")
+    ax.set_xlabel("utility in tier B (%)")
+    ax.set_ylabel("utility in tier C (%)")
+    ax.set_title("(b) every run, all methods", fontsize=9)
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+    fig.savefig(P / "figures" / "fig_bc.pdf")
+    plt.close(fig)
 
 
 def main():

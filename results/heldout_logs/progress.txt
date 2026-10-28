@@ -33,3 +33,7 @@ experiments/b_grid.py: OK
 [heldout] 2026-10-28T00:00:13+00:00 tier B B_gz
 [ok] 120 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_b/heldout_B_gz.csv
 [heldout] 2026-10-28T00:00:32+00:00 tier C heldout_C
+tier C missions ok: 120
+tier C failed attempts: 2
+[heldout] 2026-10-28T07:53:46+00:00 analysis
+[heldout] 2026-10-28T07:53:56+00:00 done

@@ -1,0 +1,150 @@
+{
+ "scenario": "gz-failures-4001",
+ "profile": "failures",
+ "seed": 4001,
+ "method": "anytime",
+ "budget_ms": 250.0,
+ "exec_level": "mid",
+ "kappa_b": 50.0,
+ "kappa_c": 12.5,
+ "trigger": "event",
+ "n_tasks": 15,
+ "served": 5,
+ "completion_rate": 0.3333333333333333,
+ "utility_rate": 0.38235294117647056,
+ "late_served": 0,
+ "dropped_by_delay": 1,
+ "dropped_in_exec": 0,
+ "reassignments": 2,
+ "distance_km": 1.3381285590295682,
+ "mission_J": 11.730935720485217,
+ "n_replans": 6,
+ "n_extra_replans": 0,
+ "plan_ms_mean": 89.62780933578809,
+ "plan_ms_p95": 196.12721400521696,
+ "accept_latency_s_mean": 0.11999999999999744,
+ "accept_latency_s_p95": 0.1790000000000056,
+ "mission_time_s": 355.4,
+ "wall_s": 178.15112726799998,
+ "rtf": 1.9949354542413718,
+ "finish_err_mean_s": 17.26776709027621,
+ "finish_err_p95_s": 34.16706290328252,
+ "_replans": [
+  {
+   "call": 0,
+   "why": "start",
+   "t_trigger": 0.0,
+   "t_snapshot": 0.0,
+   "t_publish": 0.7324080499820411,
+   "planning_ms": 58.59264399856329,
+   "iters": 332,
+   "stop": "adaptive",
+   "J": 10.744986123458451,
+   "n_open": 8,
+   "n_uav": 3
+  },
+  {
+   "call": 1,
+   "why": "event",
+   "t_trigger": 106.45673844509862,
+   "t_snapshot": 106.50000000000001,
+   "t_publish": 106.96524927504362,
+   "planning_ms": 37.21994200348854,
+   "iters": 910,
+   "stop": "adaptive",
+   "J": -0.09218324952167613,
+   "n_open": 4,
+   "n_uav": 2
+  },
+  {
+   "call": 2,
+   "why": "event",
+   "t_trigger": 209.915770133637,
+   "t_snapshot": 210.0,
+   "t_publish": 210.15463517503812,
+   "planning_ms": 12.370814003050327,
+   "iters": 72,
+   "stop": "adaptive",
+   "J": 5.767520789129621,
+   "n_open": 3,
+   "n_uav": 2
+  },
+  {
+   "call": 3,
+   "why": "event",
+   "t_trigger": 212.36676863974895,
+   "t_snapshot": 212.39999999999998,
+   "t_publish": 213.6366596500389,
+   "planning_ms": 98.93277200311422,
+   "iters": 624,
+   "stop": "adaptive",
+   "J": 12.50616057545509,
+   "n_open": 6,
+   "n_uav": 2
+  },
+  {
+   "call": 4,
+   "why": "event",
+   "t_trigger": 239.6081061727246,
+   "t_snapshot": 239.7,
+   "t_publish": 242.53661357508972,
+   "planning_ms": 226.92908600717783,
+   "iters": 1740,
+   "stop": "adaptive",
+   "J": 6.976367528765586,
+   "n_open": 5,
+   "n_uav": 2
+  },
+  {
+   "call": 5,
+   "why": "event",
+   "t_trigger": 243.01497515367797,
+   "t_snapshot": 243.10000000000002,
+   "t_publish": 244.3965199749917,
+   "planning_ms": 103.72159799933434,
+   "iters": 773,
+   "stop": "adaptive",
+   "J": 2.8562940061098034,
+   "n_open": 6,
+   "n_uav": 1
+  }
+ ],
+ "_calib": [
+  [
+   22.617712197356894,
+   20.44987975266106
+  ],
+  [
+   97.22746495868952,
+   -3.8598730086715562
+  ],
+  [
+   65.37642678329415,
+   36.2911651667238
+  ],
+  [
+   68.6926865004437,
+   25.670653849517407
+  ],
+  [
+   103.01647033385797,
+   7.787009691150331
+  ]
+ ],
+ "_accept_latency_s": [
+  0.1039999999999992,
+  0.103999999999985,
+  0.103999999999985,
+  0.20400000000000773,
+  0.103999999999985,
+  0.10000000000002274
+ ],
+ "_served": {
+  "3": 43.8,
+  "7": 94.10000000000001,
+  "2": 102.39999999999999,
+  "11": 308.0,
+  "9": 355.2
+ },
+ "_late": []
+}

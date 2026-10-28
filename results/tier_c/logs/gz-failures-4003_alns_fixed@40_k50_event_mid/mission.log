@@ -1,0 +1,9 @@
+[INFO] [1793155408.649946284] [atswarm_mission_manager]: gz-failures-4003: method=alns_fixed@40 budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[INFO] [1793155414.067877720] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793155414.117051077] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 40.0 ms, 157 it, stop=budget, release at 0.50s, open=8
+[INFO] [1793155430.624563254] [atswarm_mission_manager]: replan #1 (event) t=33.0s: 40.0 ms, 235 it, stop=budget, release at 33.50s, open=7
+[INFO] [1793155472.171354176] [atswarm_mission_manager]: replan #2 (event) t=116.0s: 40.0 ms, 1123 it, stop=budget, release at 116.50s, open=3
+[INFO] [1793155473.920557395] [atswarm_mission_manager]: replan #3 (event) t=119.5s: 40.0 ms, 945 it, stop=budget, release at 120.00s, open=3
+[INFO] [1793155533.069947005] [atswarm_mission_manager]: replan #4 (event) t=237.4s: 41.0 ms, 200 it, stop=budget, release at 237.91s, open=4
+[INFO] [1793155562.173905699] [atswarm_mission_manager]: replan #5 (event) t=295.4s: 40.0 ms, 873 it, stop=budget, release at 295.90s, open=4
+[INFO] [1793155635.931877036] [atswarm_mission_manager]: MISSION END t=441.7s utility=0.368 served=5/15 late=1 replans=6 plan_ms=40.2 RTF=1.99 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-failures-4003_alns_fixed@40.json

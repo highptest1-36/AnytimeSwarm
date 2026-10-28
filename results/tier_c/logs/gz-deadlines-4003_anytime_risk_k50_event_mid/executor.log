@@ -1,0 +1,22 @@
+[INFO] [1793156758.275955801] [atswarm_uav_executor]: gz-deadlines-4003: 3 UAVs, executor ready
+[INFO] [1793156764.524659082] [atswarm_uav_executor]: mission clock started
+[INFO] [1793156874.521758838] [atswarm_uav_executor]: mission over: landing
+Traceback (most recent call last):
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/uav_executor.py", line 329, in <module>
+    main()
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/journal_ros/uav_executor.py", line 320, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 907, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 877, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 757, in _wait_for_ready_callbacks
+    wait_set = _rclpy.WaitSet(
+               ^^^^^^^^^^^^^^^
+rclpy._rclpy_pybind11.RCLError: failed to initialize wait set: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/wait.c:130

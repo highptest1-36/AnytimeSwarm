@@ -1,0 +1,5 @@
+[INFO] [1793169754.786557688] [atswarm_uav_executor]: gz-failures-4008: 3 UAVs, executor ready
+[INFO] [1793169761.275385652] [atswarm_uav_executor]: mission clock started
+[INFO] [1793169836.339410668] [atswarm_uav_executor]: UAV 1 failed (injected)
+[INFO] [1793169870.538899306] [atswarm_uav_executor]: UAV 0 failed (injected)
+[INFO] [1793169897.824827981] [atswarm_uav_executor]: mission over: landing

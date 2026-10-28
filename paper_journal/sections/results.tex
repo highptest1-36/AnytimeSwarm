@@ -149,4 +149,45 @@ the stopping rule reads a wall clock. They gave identical utility in \val{JRepea
 mean utility of a method differed by up to \val{JRepeatDiffMax}\,pp between the runs. Differences of this size between
 stopping rules should therefore not be read as systematic.
 
-\todo{held-out results: tier C}
+\subsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:res-tierc}
+All \val{JNCRuns} held-out flights of tier C were completed, that is, \val{JNC} missions with four methods each. Two runs
+did not reach their altitude within 90\,s and were repeated as specified. A further \val{JCNInvalid} runs had a real-time
+factor between \val{JCRTFInvalidMin} and \val{JCRTFInvalidMax}, below the validity range of 1.6 to 2.2 stated in the
+protocol. The protocol did not specify how to treat such runs, so they were repeated once with the same seed, like a
+technical failure, and the original runs were kept. The repeated runs reached the same utility as the original ones, and
+the comparisons below are identical with either set (\val{JCDFixedFortyOrig}\,pp and \val{JCDASOrig}\,pp with the
+original runs). The real-time factor of the analysed runs was \val{JCRTF} on average and at least \val{JCRTFmin}. A
+released plan reached all vehicles after \val{JCLat}\,s of simulation time on average, which is included in the expected
+latency of AnytimeSwarm-R.
+
+Table~\ref{tab:tierc} summarises the results. AnytimeSwarm-R reached a utility of \val{JCURisk}\%, against
+\val{JCUFixedForty}\% for ALNS with 40\,ms, \val{JCUAS}\% for AnytimeSwarm and \val{JCUFixed}\% for the full budget.
+The paired differences were \val{JCDFixedForty}\,pp to ALNS with 40\,ms and \val{JCDAS}\,pp to AnytimeSwarm, with
+Holm-adjusted $p$-values of \val{JCPFixedForty} and \val{JCPAS}. The fourth hypothesis is therefore not supported. With
+\val{JNC} missions, the intervals are much wider than in tier B and cannot resolve differences of the size seen there. Two effects of tier B reappear in tier C. The full budget was again the weakest method
+(\val{JCDFixed}\,pp to AnytimeSwarm-R) and the only one that lost a noticeable number of tasks to late plans,
+\val{JCDropFixed} per mission against at most \val{JCDropAS} for the others. AnytimeSwarm-R again computed least among
+the adaptive rules, with \val{JCMsRisk}\,ms per call against \val{JCMsAS}\,ms for AnytimeSwarm, a reduction of
+\val{JCMsRedAS}\% (\val{JCDMsAS}\,ms).
+
+\inputtable{tab_tierc}
+
+The same \val{JNC} missions were also run in tier B with the rescaled parameters of tier C. Tier B predicted the outcome
+of a flight well. The utility of a run in tier C correlated with that of the same run in tier B with $r=$ \val{JBCr}
+(\val{JBCn} runs), and the mean utility per mission with $r=$ \val{JBCrMission} (Fig.~\ref{fig:bc}b). Tier C served
+slightly more reward on average, \val{JBCUC}\% against \val{JBCUB}\%, so the kinematic model of tier B was, if anything,
+slightly pessimistic for these missions. The small
+differences between the methods were not predicted as well. The method means of the two tiers had a Kendall rank
+correlation of \val{JBCTau}, and the sign of the per-mission difference between AnytimeSwarm-R and ALNS with 40\,ms
+agreed in \val{JBCSignAgreeFixedForty}\% of the missions. In tier B, the advantage of AnytimeSwarm-R on these missions
+was \val{JBgzDFixedForty}\,pp over ALNS with 40\,ms and \val{JBgzDAS}\,pp over AnytimeSwarm (Fig.~\ref{fig:bc}a). Both
+tiers thus agree that the methods differ by at most a few percentage points on this scale, and that the full budget is
+the weakest search method, while the order of the three short-computation methods is within the noise of both tiers.
+
+\begin{figure}[t]
+\centering
+\fig{fig_bc}{\linewidth}
+\caption{Tier B against tier C on the same \val{JNC} held-out missions (three UAVs, mid disturbances, $\kappa_B=50$):
+(a) paired difference of AnytimeSwarm-R minus each baseline with 95\% bootstrap intervals; (b) utility of every run in
+tier C against the same run in tier B (dashed: equality).}\label{fig:bc}
+\end{figure}

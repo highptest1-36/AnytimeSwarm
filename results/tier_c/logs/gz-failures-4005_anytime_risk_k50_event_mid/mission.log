@@ -1,0 +1,8 @@
+[INFO] [1793161455.514055766] [atswarm_mission_manager]: gz-failures-4005: method=anytime_risk budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[INFO] [1793161460.912573779] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793161460.928558270] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 7.4 ms, 30 it, stop=adaptive, release at 0.09s, open=8
+[INFO] [1793161495.899636781] [atswarm_mission_manager]: replan #1 (event) t=69.7s: 38.2 ms, 225 it, stop=adaptive, release at 70.18s, open=6
+[INFO] [1793161516.876332904] [atswarm_mission_manager]: replan #2 (event) t=111.7s: 7.1 ms, 51 it, stop=adaptive, release at 111.79s, open=8
+[INFO] [1793161523.794277736] [atswarm_mission_manager]: replan #3 (event) t=125.5s: 12.7 ms, 53 it, stop=adaptive, release at 125.66s, open=8
+[INFO] [1793161525.471715538] [atswarm_mission_manager]: replan #4 (event) t=128.6s: 139.4 ms, 1075 it, stop=adaptive, release at 130.34s, open=8
+[INFO] [1793161600.073506011] [atswarm_mission_manager]: MISSION END t=277.4s utility=0.231 served=4/15 late=0 replans=5 plan_ms=41.0 RTF=1.99 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-failures-4005_anytime_risk.json

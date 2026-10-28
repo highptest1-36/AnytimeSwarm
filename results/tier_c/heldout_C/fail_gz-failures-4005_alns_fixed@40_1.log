@@ -1,0 +1,4 @@
+[run] gz-failures-4005_alns_fixed@40_k50_event_mid  gui=0 rviz=0 speed=2 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-failures-4005_alns_fixed@40.json
+[INFO] [1793160960.382327469] [atswarm_mission_manager]: gz-failures-4005: method=alns_fixed@40 budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[ERROR] [1793161009.472336331] [atswarm_mission_manager]: STARTUP FAILED: not every UAV airborne after 90 s (phases [1, 2, 2])
+[run] done -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-failures-4005_alns_fixed@40.json

@@ -3,8 +3,8 @@ The held-out study separates three effects that are often studied together. The 
 uncertain execution, every ALNS variant served more reward than regret-2 repair in every configuration of the primary
 matrix, so the benefit of search does not vanish when the plan is executed with errors. The second is how much to
 search. A long fixed budget lost reward through late plans, and a short fixed budget lost reward on large fleets. The
-adaptive stopping rules avoided both losses without tuning per scale, and AnytimeSwarm-R did so with the least
-computation. The third is when to replan. Periodic replanning raised the utility of every method by more than the choice
+adaptive stopping rules avoided both losses without tuning per scale, and in the primary matrix AnytimeSwarm-R did so
+with the least computation. The third is when to replan. Periodic replanning raised the utility of every method by more than the choice
 between the stopping rules did. For a practitioner, this ordering suggests to choose the trigger first and the stopping
 rule second.
 
@@ -20,13 +20,24 @@ routing~\cite{gendreau1996stochastic,ponda2012chance}, instead of only the decis
 computation is the more robust benefit. It matters when the planner runs on embedded hardware or shares the processor
 with perception and control.
 
-\todo{tier C discussion: agreement of tier B and tier C, what the physical simulation adds}
+The two tiers play different roles. Tier B provides the number of missions that a paired comparison of stopping rules
+needs, and tier C checks that its conclusions survive an autopilot, a physics engine and a real middleware. Tier B
+predicted the utility of individual flights closely and reproduced the two robust findings, the loss of the long fixed
+budget and the lower computation of AnytimeSwarm-R. It did not predict the order of methods whose utilities differ by
+less than one percentage point, and neither tier can resolve such differences with the number of missions used here.
+A two-tier study of this kind should therefore state its effect sizes before running, and plan the number of tier C
+missions from the smallest difference that it is meant to confirm. The per-mission difference between AnytimeSwarm-R and ALNS with
+40\,ms in tier C had a standard deviation of \val{JCSdDiff}\,pp. Confirming a difference of half a percentage point with
+a power of 80\% would thus require about \val{JCNPower} missions per method, far beyond the \val{JNC} missions that a
+software-in-the-loop campaign of one night allows.
 
 Several limitations bound these conclusions. Tier C uses three UAVs and fifteen tasks per mission, so it validates the
 decision problem at a small scale and with a limited number of missions. Software-in-the-loop simulation reproduces the
 autopilot and the vehicle dynamics but not the sensors, the radio link or the weather of a field test. Wind is constant
 during a mission, and the finish-time error model is linear in the planning horizon and fitted per disturbance level, so
 the level itself is assumed to be known. The latency factor emulates a slower planning computer instead of measuring
-one. All experiments ran on a single laptop, and the measured computation depends on it. Finally, the methods share one
+one. All experiments ran on a single laptop, and the measured computation depends on it. Because the stopping
+rules read a wall clock, repeated runs are not bit-identical, and the mean utility of a method varied by up to
+\val{JRepeatDiffMax}\,pp between two runs of the same missions. Finally, the methods share one
 ALNS and one family of scenarios, and other search methods or mission types may show different gains from adaptive
 stopping.

@@ -1,0 +1,212 @@
+# Held-out results (pre-registered analysis)
+
+## H1-H3: tier B primary matrix
+
+270 held-out missions x 16 configurations. Utility differences in percentage points (pp).
+
+Mean over all missions and configurations:
+
+|                                  |   utility |   plan_ms |   replans |   late |
+|:---------------------------------|----------:|----------:|----------:|-------:|
+| ALNS 250 ms                      |    0.7148 |  250.129  |   15.5178 | 6.1544 |
+| ALNS 40 ms                       |    0.7193 |   40.1207 |   15.5104 | 6.6502 |
+| ALNS stagnation                  |    0.7197 |   59.9262 |   15.525  | 6.4755 |
+| AnytimeSwarm                     |    0.7204 |   48.1692 |   15.5181 | 6.6356 |
+| AnytimeSwarm w/o delay cost      |    0.7213 |   54.0941 |   15.487  | 6.3486 |
+| AnytimeSwarm-R                   |    0.7225 |   41.0762 |   15.5153 | 6.5562 |
+| AnytimeSwarm-R, zero error model |    0.7202 |   48.2452 |   15.5359 | 6.6521 |
+| Regret-2 repair                  |    0.6886 |    0.9619 |   15.5752 | 6.6373 |
+
+H1 (pooled, Holm-adjusted):
+
+| baseline | diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| ALNS 40 ms | +0.32 [+0.01, +0.63] | 0.0426 | 0.1278 |
+| AnytimeSwarm | +0.21 [-0.08, +0.52] | 0.1538 | 0.3076 |
+| ALNS stagnation | +0.28 [-0.11, +0.67] | 0.1632 | 0.3076 |
+
+Secondary pooled comparisons (not part of the H1 family):
+
+| baseline | diff pp [95% CI] | p |
+|---|---|---|
+| ALNS 250 ms | +0.77 [+0.31, +1.25] | 0.0014 |
+| AnytimeSwarm w/o delay cost | +0.12 [-0.20, +0.45] | 0.4878 |
+| Regret-2 repair | +3.39 [+2.76, +4.04] | 0.0000 |
+| AnytimeSwarm-R, zero error model | +0.23 [-0.06, +0.54] | 0.1298 |
+
+H2 (compute, AnytimeSwarm-R minus AnytimeSwarm, ms per planning call): -7.09 [-7.68, -6.53].
+
+Per-configuration comparisons of AnytimeSwarm-R (count of significant +, 0, -):
+
+| baseline        |   + |   0 |
+|:----------------|----:|----:|
+| alns_fixed      |   6 |  10 |
+| alns_fixed@40   |   2 |  14 |
+| alns_stagnation |   1 |  15 |
+| anytime         |   0 |  16 |
+
+H3: periodic (60 s) minus event-only replanning, pooled per method:
+
+| method | diff pp [95% CI] |
+|---|---|
+| ALNS 250 ms | +1.56 [+1.25, +1.86] |
+| ALNS 40 ms | +1.47 [+1.19, +1.75] |
+| ALNS stagnation | +1.47 [+1.20, +1.73] |
+| AnytimeSwarm | +1.51 [+1.25, +1.77] |
+| AnytimeSwarm w/o delay cost | +1.42 [+1.15, +1.70] |
+| AnytimeSwarm-R | +1.56 [+1.26, +1.84] |
+| AnytimeSwarm-R, zero error model | +1.42 [+1.16, +1.68] |
+| Regret-2 repair | +1.29 [+1.02, +1.56] |
+
+- trigger event: AnytimeSwarm-R vs ALNS 40 ms +0.27 [-0.07, +0.62]; vs AnytimeSwarm +0.19 [-0.15, +0.55]
+- trigger periodic:60: AnytimeSwarm-R vs ALNS 40 ms +0.36 [+0.03, +0.70]; vs AnytimeSwarm +0.24 [-0.07, +0.55]
+
+Mean utility per configuration:
+
+|                                      |   ALNS 250 ms |   ALNS 40 ms |   ALNS stagnation |   AnytimeSwarm |   AnytimeSwarm w/o delay cost |   AnytimeSwarm-R |   AnytimeSwarm-R, zero error model |   Regret-2 repair |
+|:-------------------------------------|--------------:|-------------:|------------------:|---------------:|------------------------------:|-----------------:|-----------------------------------:|------------------:|
+| ('low', 'high', 10.0, 'event')       |        0.7745 |       0.7735 |            0.7746 |         0.7742 |                        0.7766 |           0.7756 |                             0.7747 |            0.74   |
+| ('low', 'high', 10.0, 'periodic:60') |        0.784  |       0.7842 |            0.787  |         0.7879 |                        0.7871 |           0.7889 |                             0.7873 |            0.7507 |
+| ('low', 'high', 50.0, 'event')       |        0.7565 |       0.7703 |            0.7697 |         0.7711 |                        0.7708 |           0.7709 |                             0.7725 |            0.7398 |
+| ('low', 'high', 50.0, 'periodic:60') |        0.7715 |       0.7836 |            0.7834 |         0.7861 |                        0.7855 |           0.7874 |                             0.7876 |            0.7501 |
+| ('low', 'none', 10.0, 'event')       |        0.7771 |       0.7764 |            0.7777 |         0.7776 |                        0.78   |           0.7804 |                             0.7792 |            0.7423 |
+| ('low', 'none', 10.0, 'periodic:60') |        0.7903 |       0.7876 |            0.7893 |         0.791  |                        0.79   |           0.7946 |                             0.7899 |            0.7518 |
+| ('low', 'none', 50.0, 'event')       |        0.762  |       0.7737 |            0.7731 |         0.7724 |                        0.7736 |           0.7777 |                             0.7718 |            0.7417 |
+| ('low', 'none', 50.0, 'periodic:60') |        0.7767 |       0.7876 |            0.7856 |         0.788  |                        0.7864 |           0.7903 |                             0.7882 |            0.752  |
+| ('mid', 'high', 10.0, 'event')       |        0.6484 |       0.6492 |            0.6506 |         0.651  |                        0.6529 |           0.6531 |                             0.6488 |            0.6222 |
+| ('mid', 'high', 10.0, 'periodic:60') |        0.6675 |       0.6679 |            0.6665 |         0.6674 |                        0.6689 |           0.6703 |                             0.6664 |            0.6375 |
+| ('mid', 'high', 50.0, 'event')       |        0.6414 |       0.648  |            0.6466 |         0.6471 |                        0.6507 |           0.6496 |                             0.6478 |            0.6224 |
+| ('mid', 'high', 50.0, 'periodic:60') |        0.6607 |       0.6642 |            0.6653 |         0.6656 |                        0.6666 |           0.6686 |                             0.6647 |            0.6382 |
+| ('mid', 'none', 10.0, 'event')       |        0.6524 |       0.6523 |            0.6556 |         0.6574 |                        0.6569 |           0.6582 |                             0.6574 |            0.6248 |
+| ('mid', 'none', 10.0, 'periodic:60') |        0.6694 |       0.6681 |            0.6736 |         0.6684 |                        0.6735 |           0.6726 |                             0.6689 |            0.6401 |
+| ('mid', 'none', 50.0, 'event')       |        0.6436 |       0.6528 |            0.6515 |         0.6517 |                        0.6525 |           0.6523 |                             0.6521 |            0.6239 |
+| ('mid', 'none', 50.0, 'periodic:60') |        0.6604 |       0.6703 |            0.666  |         0.6689 |                        0.6692 |           0.6696 |                             0.6652 |            0.6401 |
+
+## H5: tier B scalability, 40 UAVs / 280 tasks
+
+90 missions, 4 configurations.
+
+|                                |   ALNS 250 ms |   ALNS 180 ms |   ALNS stagnation |   AnytimeSwarm |   AnytimeSwarm-R |
+|:-------------------------------|--------------:|--------------:|------------------:|---------------:|-----------------:|
+| ('mid', 'high', 10.0, 'event') |        0.6906 |        0.692  |            0.6944 |         0.6897 |           0.6986 |
+| ('mid', 'high', 50.0, 'event') |        0.6857 |        0.6868 |            0.686  |         0.6843 |           0.6844 |
+| ('mid', 'none', 10.0, 'event') |        0.6995 |        0.6968 |            0.6981 |         0.694  |           0.6982 |
+| ('mid', 'none', 50.0, 'event') |        0.688  |        0.6898 |            0.6908 |         0.685  |           0.6851 |
+
+Planning time per call (ms):
+
+|                                |   ALNS 250 ms |   ALNS 180 ms |   ALNS stagnation |   AnytimeSwarm |   AnytimeSwarm-R |
+|:-------------------------------|--------------:|--------------:|------------------:|---------------:|-----------------:|
+| ('mid', 'high', 10.0, 'event') |         250.8 |         180.9 |             100.8 |          147.8 |            146.8 |
+| ('mid', 'high', 50.0, 'event') |         250.7 |         180.7 |              99   |          120.2 |            100.5 |
+| ('mid', 'none', 10.0, 'event') |         250.7 |         180.9 |              99.1 |          152.3 |            151.8 |
+| ('mid', 'none', 50.0, 'event') |         250.8 |         180.9 |             100.9 |          125   |            110.2 |
+
+| comparison | pooled diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| AnytimeSwarm-R vs ALNS 180 ms | +0.02 [-0.26, +0.30] | 0.8784 | 1.0000 |
+| AnytimeSwarm-R vs AnytimeSwarm | +0.34 [+0.05, +0.62] | 0.0214 | 0.0856 |
+| AnytimeSwarm-R vs ALNS stagnation | -0.07 [-0.30, +0.16] | 0.5310 | 1.0000 |
+| AnytimeSwarm-R vs ALNS 250 ms | +0.06 [-0.21, +0.32] | 0.6492 | 1.0000 |
+
+- mid/high/10.0/event: ALNS 180 ms +0.66 [+0.12, +1.20]; AnytimeSwarm +0.90 [+0.40, +1.41]; ALNS stagnation +0.42 [-0.01, +0.84]; ALNS 250 ms +0.80 [+0.31, +1.30]
+- mid/high/50.0/event: ALNS 180 ms -0.24 [-0.83, +0.37]; AnytimeSwarm +0.02 [-0.57, +0.61]; ALNS stagnation -0.16 [-0.65, +0.33]; ALNS 250 ms -0.13 [-0.81, +0.56]
+- mid/none/10.0/event: ALNS 180 ms +0.14 [-0.37, +0.64]; AnytimeSwarm +0.43 [-0.06, +0.90]; ALNS stagnation +0.02 [-0.44, +0.47]; ALNS 250 ms -0.13 [-0.61, +0.34]
+- mid/none/50.0/event: ALNS 180 ms -0.47 [-1.06, +0.12]; AnytimeSwarm +0.01 [-0.58, +0.60]; ALNS stagnation -0.57 [-1.08, -0.05]; ALNS 250 ms -0.29 [-0.85, +0.26]
+
+## Sensitivity: high disturbance, kappa 1, deviation-triggered replanning
+
+270 missions, 8 configurations.
+
+|                                        |   ALNS 40 ms |   ALNS stagnation |   AnytimeSwarm |   AnytimeSwarm-R |
+|:---------------------------------------|-------------:|------------------:|---------------:|-----------------:|
+| ('high', 'none', 1.0, 'deviation:30')  |       0.4935 |            0.4951 |         0.4941 |           0.4915 |
+| ('high', 'none', 1.0, 'event')         |       0.4897 |            0.4885 |         0.4868 |           0.4868 |
+| ('high', 'none', 50.0, 'deviation:30') |       0.4905 |            0.4897 |         0.4838 |           0.4925 |
+| ('high', 'none', 50.0, 'event')        |       0.4854 |            0.4805 |         0.4757 |           0.4863 |
+| ('mid', 'none', 1.0, 'deviation:30')   |       0.6664 |            0.6678 |         0.6676 |           0.6688 |
+| ('mid', 'none', 1.0, 'event')          |       0.655  |            0.6585 |         0.6583 |           0.66   |
+| ('mid', 'none', 50.0, 'deviation:30')  |       0.664  |            0.6612 |         0.6613 |           0.6656 |
+| ('mid', 'none', 50.0, 'event')         |       0.65   |            0.6512 |         0.6508 |           0.6511 |
+
+Planning time per call (ms):
+
+|                                        |   ALNS 40 ms |   ALNS stagnation |   AnytimeSwarm |   AnytimeSwarm-R |
+|:---------------------------------------|-------------:|------------------:|---------------:|-----------------:|
+| ('high', 'none', 1.0, 'deviation:30')  |         40.1 |              58.9 |           61.3 |             61.7 |
+| ('high', 'none', 1.0, 'event')         |         40.1 |              65   |           77.1 |             77.6 |
+| ('high', 'none', 50.0, 'deviation:30') |         40.1 |              58.6 |           54.7 |             47.1 |
+| ('high', 'none', 50.0, 'event')        |         40.1 |              65.2 |           61.6 |             51   |
+| ('mid', 'none', 1.0, 'deviation:30')   |         40.1 |              59.9 |           56   |             53.9 |
+| ('mid', 'none', 1.0, 'event')          |         40.1 |              65.2 |           64.3 |             63.6 |
+| ('mid', 'none', 50.0, 'deviation:30')  |         40.1 |              60.1 |           47.7 |             37.7 |
+| ('mid', 'none', 50.0, 'event')         |         40.1 |              64.9 |           52.7 |             40.2 |
+
+| comparison | pooled diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| AnytimeSwarm-R vs ALNS 40 ms | +0.10 [-0.26, +0.47] | 0.5794 | 1.0000 |
+| AnytimeSwarm-R vs AnytimeSwarm | +0.30 [+0.02, +0.60] | 0.0374 | 0.1122 |
+| AnytimeSwarm-R vs ALNS stagnation | +0.13 [-0.27, +0.53] | 0.5242 | 1.0000 |
+
+- high/none/1.0/deviation:30: ALNS 40 ms -0.20 [-0.80, +0.43]; AnytimeSwarm -0.26 [-0.61, +0.10]; ALNS stagnation -0.36 [-0.91, +0.20]
+- high/none/1.0/event: ALNS 40 ms -0.29 [-0.87, +0.31]; AnytimeSwarm -0.00 [-0.31, +0.29]; ALNS stagnation -0.17 [-0.73, +0.40]
+- high/none/50.0/deviation:30: ALNS 40 ms +0.20 [-0.58, +1.01]; AnytimeSwarm +0.87 [+0.09, +1.68]; ALNS stagnation +0.28 [-0.52, +1.12]
+- high/none/50.0/event: ALNS 40 ms +0.08 [-0.68, +0.86]; AnytimeSwarm +1.06 [+0.30, +1.84]; ALNS stagnation +0.57 [-0.28, +1.44]
+- mid/none/1.0/deviation:30: ALNS 40 ms +0.24 [-0.29, +0.76]; AnytimeSwarm +0.12 [-0.14, +0.41]; ALNS stagnation +0.10 [-0.38, +0.58]
+- mid/none/1.0/event: ALNS 40 ms +0.50 [-0.02, +0.99]; AnytimeSwarm +0.17 [-0.06, +0.40]; ALNS stagnation +0.15 [-0.34, +0.63]
+- mid/none/50.0/deviation:30: ALNS 40 ms +0.16 [-0.49, +0.83]; AnytimeSwarm +0.43 [-0.28, +1.17]; ALNS stagnation +0.44 [-0.32, +1.21]
+- mid/none/50.0/event: ALNS 40 ms +0.11 [-0.55, +0.78]; AnytimeSwarm +0.03 [-0.66, +0.73]; ALNS stagnation -0.01 [-0.78, +0.78]
+
+## Sensitivity: misspecified error model
+
+270 missions, 4 configurations.
+
+|                                |   AnytimeSwarm |   AnytimeSwarm-R |   AnytimeSwarm-R, high model |   AnytimeSwarm-R, low model |   AnytimeSwarm-R, mid model |   AnytimeSwarm-R, zero error model |
+|:-------------------------------|---------------:|-----------------:|-----------------------------:|----------------------------:|----------------------------:|-----------------------------------:|
+| ('low', 'none', 10.0, 'event') |         0.7785 |           0.7798 |                       0.7799 |                      0.78   |                      0.7809 |                             0.7773 |
+| ('low', 'none', 50.0, 'event') |         0.7736 |           0.7768 |                       0.7778 |                      0.7756 |                      0.7776 |                             0.7726 |
+| ('mid', 'none', 10.0, 'event') |         0.6573 |           0.656  |                       0.6587 |                      0.6564 |                      0.6567 |                             0.655  |
+| ('mid', 'none', 50.0, 'event') |         0.6514 |           0.6511 |                       0.6512 |                      0.6519 |                      0.6528 |                             0.6507 |
+
+Planning time per call (ms):
+
+|                                |   AnytimeSwarm |   AnytimeSwarm-R |   AnytimeSwarm-R, high model |   AnytimeSwarm-R, low model |   AnytimeSwarm-R, mid model |   AnytimeSwarm-R, zero error model |
+|:-------------------------------|---------------:|-----------------:|-----------------------------:|----------------------------:|----------------------------:|-----------------------------------:|
+| ('low', 'none', 10.0, 'event') |           52.2 |             46.4 |                         51.4 |                        46.7 |                        47.5 |                               52.4 |
+| ('low', 'none', 50.0, 'event') |           48.3 |             37.7 |                         39.5 |                        37.3 |                        36   |                               48.3 |
+| ('mid', 'none', 10.0, 'event') |           57.9 |             52   |                         56.6 |                        51   |                        52.1 |                               58.9 |
+| ('mid', 'none', 50.0, 'event') |           52.1 |             40.2 |                         42.8 |                        41.7 |                        39.8 |                               53.2 |
+
+| comparison | pooled diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| AnytimeSwarm-R vs AnytimeSwarm | +0.07 [-0.32, +0.47] | 0.7126 | 1.0000 |
+| AnytimeSwarm-R, zero error model vs AnytimeSwarm | -0.13 [-0.32, +0.03] | 0.1206 | 0.6030 |
+| AnytimeSwarm-R, low model vs AnytimeSwarm | +0.07 [-0.31, +0.47] | 0.6982 | 1.0000 |
+| AnytimeSwarm-R, mid model vs AnytimeSwarm | +0.18 [-0.18, +0.55] | 0.3402 | 1.0000 |
+| AnytimeSwarm-R, high model vs AnytimeSwarm | +0.16 [-0.18, +0.52] | 0.3582 | 1.0000 |
+
+- low/none/10.0/event: AnytimeSwarm +0.13 [-0.37, +0.65]; AnytimeSwarm -0.12 [-0.37, +0.12]; AnytimeSwarm +0.15 [-0.37, +0.68]; AnytimeSwarm +0.24 [-0.24, +0.74]; AnytimeSwarm +0.13 [-0.29, +0.57]
+- low/none/50.0/event: AnytimeSwarm +0.32 [-0.28, +0.92]; AnytimeSwarm -0.10 [-0.40, +0.18]; AnytimeSwarm +0.19 [-0.38, +0.80]; AnytimeSwarm +0.39 [-0.18, +0.96]; AnytimeSwarm +0.41 [-0.12, +0.96]
+- mid/none/10.0/event: AnytimeSwarm -0.13 [-0.69, +0.46]; AnytimeSwarm -0.24 [-0.56, +0.06]; AnytimeSwarm -0.10 [-0.69, +0.52]; AnytimeSwarm -0.06 [-0.59, +0.49]; AnytimeSwarm +0.14 [-0.34, +0.65]
+- mid/none/50.0/event: AnytimeSwarm -0.03 [-0.73, +0.67]; AnytimeSwarm -0.07 [-0.43, +0.28]; AnytimeSwarm +0.05 [-0.62, +0.74]; AnytimeSwarm +0.14 [-0.55, +0.84]; AnytimeSwarm -0.02 [-0.69, +0.63]
+
+## H4: tier C (PX4 SITL + Gazebo)
+
+30 held-out missions, 120 runs. RTF mean 1.95 (min 1.67); plan acceptance latency mean 0.152 s (simulation time). Runs repeated because their RTF left [0.8F, 1.1F]: 4 (originals in heldout_C/invalid_rtf/).
+
+|                |   utility |   served |   late |   plan_ms |   finish_err_p95 |   n |
+|:---------------|----------:|---------:|-------:|----------:|-----------------:|----:|
+| ALNS 250 ms    |    0.5188 |   7.4667 | 1.4    |  250.107  |          36.4147 |  30 |
+| ALNS 40 ms     |    0.5469 |   8      | 1.1333 |   40.1071 |          34.4387 |  30 |
+| AnytimeSwarm   |    0.537  |   7.5667 | 1.1    |   47.4303 |          31.5967 |  30 |
+| AnytimeSwarm-R |    0.5418 |   7.8    | 1      |   34.7146 |          30.0974 |  30 |
+
+| baseline | diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| ALNS 40 ms | -0.51 [-3.24, +2.18] | 0.7224 | 1.0000 |
+| AnytimeSwarm | +0.48 [-2.72, +3.46] | 0.7356 | 1.0000 |
+
+Secondary: AnytimeSwarm-R vs ALNS 250 ms +2.30 [-1.32, +5.71] (p 0.2016).
+
+Tier B vs tier C on the same gz missions: Kendall tau of method means 0.33; Pearson r of per-run utility 0.84 (n=120); mean utility B 0.5158 vs C 0.5361.
+

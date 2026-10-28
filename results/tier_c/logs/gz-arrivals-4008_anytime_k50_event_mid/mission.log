@@ -1,0 +1,9 @@
+[INFO] [1793169219.319220130] [atswarm_mission_manager]: gz-arrivals-4008: method=anytime budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[INFO] [1793169225.113209704] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793169225.252657036] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 130.1 ms, 557 it, stop=adaptive, release at 1.63s, open=8
+[INFO] [1793169249.682030459] [atswarm_mission_manager]: replan #1 (event) t=48.0s: 186.9 ms, 1017 it, stop=adaptive, release at 50.34s, open=6
+[INFO] [1793169272.633873900] [atswarm_mission_manager]: replan #2 (event) t=93.2s: 90.6 ms, 466 it, stop=adaptive, release at 94.33s, open=4
+[INFO] [1793169286.174052880] [atswarm_mission_manager]: replan #3 (event) t=120.0s: 89.4 ms, 390 it, stop=adaptive, release at 121.12s, open=6
+[INFO] [1793169366.060993825] [atswarm_mission_manager]: replan #4 (event) t=277.0s: 7.3 ms, 48 it, stop=adaptive, release at 277.09s, open=1
+[INFO] [1793169373.486952222] [atswarm_mission_manager]: replan #5 (event) t=291.3s: 7.3 ms, 33 it, stop=adaptive, release at 291.39s, open=1
+[INFO] [1793169424.116981149] [atswarm_mission_manager]: MISSION END t=392.0s utility=0.525 served=9/15 late=1 replans=6 plan_ms=85.3 RTF=1.97 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-arrivals-4008_anytime.json

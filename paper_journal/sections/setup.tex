@@ -55,7 +55,8 @@ which is verified by unit tests.
 \begin{table}[t]
 \caption{Disturbance and latency levels of tier B.}\label{tab:levels}
 \centering\small
-\begin{tabular}{lcccc@{\qquad}lccc}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccc@{\quad}lccc}
 \toprule
 Execution & accel. (m/s$^2$) & speed c.v. & wind (m/s) & service c.v. & Latency & median (s) & $\sigma_{\log}$ & loss / timeout \\
 \midrule
@@ -125,7 +126,9 @@ computation per planning call with that of AnytimeSwarm and the periodic trigger
 AnytimeSwarm-R is compared with ALNS with 40\,ms and with AnytimeSwarm, again with Holm correction, and the same 30
 missions are also run in tier B to assess whether tier B ranks the methods as tier C does. All other comparisons are
 descriptive. A tier C run in which a vehicle does not reach its altitude within 90\,s of simulation time is aborted and
-repeated once with the same seed. The full protocol was written before the held-out runs and is available with the code.
+repeated once with the same seed. The full protocol was written before the held-out runs and is available with the code,
+together with a list of the deviations from it. The only deviation that affects data concerns four tier C runs with a
+low real-time factor (Section~\ref{sec:res-tierc}).
 Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with all methods of a configuration run in
 turn, so that they share the same machine load. All runs use Python 3.12 and pinned package versions. Every plan is
 checked for feasibility before publication, and a separately written validator that shares no code with the planner

@@ -37,6 +37,12 @@ The fourth is a pre-registered evaluation. All design choices and error models w
 configuration was frozen with cryptographic hashes, and the main comparisons were run once on held-out seeds with
 mission-level paired bootstrap and Holm correction.
 
+The results are mixed, and they are reported as they came out. Under uncertain execution, the adaptive rules served as
+much reward as the best fixed budget without tuning per fleet scale, and AnytimeSwarm-R did so with less computation
+than AnytimeSwarm. The pre-registered hypothesis that AnytimeSwarm-R serves more reward than the strongest baselines was
+not confirmed, neither in the kinematic tier nor in PX4 flights. The replanning trigger had a larger effect on utility
+than the stopping rule, and the kinematic tier predicted the utility of PX4 flights closely.
+
 The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews related work.
 Section~\ref{sec:problem} formulates replanning with publication delay and uncertain execution. Section~\ref{sec:method}
 describes AnytimeSwarm and AnytimeSwarm-R. Section~\ref{sec:setup} presents the evaluation framework and protocol.

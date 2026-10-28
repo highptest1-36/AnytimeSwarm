@@ -203,7 +203,8 @@ def tier_c(L):
     L += ["## H4: tier C (PX4 SITL + Gazebo)", "",
           f"{df.scenario.nunique()} held-out missions, {len(df)} runs. RTF mean {df.rtf.mean():.2f} "
           f"(min {df.rtf.min():.2f}); plan acceptance latency mean {np.nanmean(df.accept_latency_s_mean):.3f} s "
-          f"(simulation time).", ""]
+          f"(simulation time). Runs repeated because their RTF left [0.8F, 1.1F]: "
+          f"{len(list((d / 'invalid_rtf').glob('gz-*.json')))} (originals in heldout_C/invalid_rtf/).", ""]
     g = df.groupby("method").agg(utility=("utility_rate", "mean"), served=("served", "mean"),
                                  late=("late_served", "mean"), plan_ms=("plan_ms_mean", "mean"),
                                  finish_err_p95=("finish_err_p95_s", "mean"), n=("scenario", "count"))
@@ -231,9 +232,10 @@ def tier_c(L):
         common = bm.index.intersection(cm.index)
         from scipy.stats import kendalltau, pearsonr
         tau = kendalltau(bm[common], cm[common]).statistic
-        jb = bdf.pivot_table(index="scenario", columns="method", values="utility_rate")
-        jb.index = [s.replace("gz-", "gz-") for s in jb.index]
-        both = w.stack().rename("C").to_frame().join(jb.stack().rename("B"), how="inner")
+        # pair each tier C run with the tier B run of the same mission and method (the earlier stack/join paired
+        # every run with every run of the mission and reported r = 0.00 for n = 3600)
+        both = df[["scenario", "method", "utility_rate"]].rename(columns={"utility_rate": "C"}).merge(
+            bdf[["scenario", "method", "utility_rate"]].rename(columns={"utility_rate": "B"}), on=["scenario", "method"])
         r = pearsonr(both.B, both.C).statistic if len(both) > 2 else float("nan")
         L += [f"Tier B vs tier C on the same gz missions: Kendall tau of method means {tau:.2f}; Pearson r of "
               f"per-run utility {r:.2f} (n={len(both)}); mean utility B {bdf.utility_rate.mean():.4f} vs "

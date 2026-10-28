@@ -1,0 +1,10 @@
+[INFO] [1793153696.191473142] [atswarm_mission_manager]: gz-deadlines-4002: method=anytime budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[INFO] [1793153701.932705895] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793153702.023662035] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 84.1 ms, 424 it, stop=adaptive, release at 1.05s, open=8
+[INFO] [1793153767.336538032] [atswarm_mission_manager]: replan #1 (event) t=130.6s: 2.1 ms, 50 it, stop=adaptive, release at 130.63s, open=0
+[INFO] [1793153786.998175059] [atswarm_mission_manager]: replan #2 (event) t=169.8s: 22.5 ms, 122 it, stop=adaptive, release at 170.08s, open=5
+[INFO] [1793153790.176970730] [atswarm_mission_manager]: replan #3 (event) t=176.1s: 38.1 ms, 234 it, stop=adaptive, release at 176.58s, open=5
+[INFO] [1793153790.966735342] [atswarm_mission_manager]: replan #4 (event) t=177.7s: 27.2 ms, 655 it, stop=adaptive, release at 178.04s, open=2
+[INFO] [1793153794.668609434] [atswarm_mission_manager]: replan #5 (event) t=185.1s: 27.2 ms, 679 it, stop=adaptive, release at 185.44s, open=2
+[INFO] [1793153816.875670852] [atswarm_mission_manager]: replan #6 (event) t=229.5s: 12.4 ms, 91 it, stop=adaptive, release at 229.65s, open=3
+[INFO] [1793153856.520576834] [atswarm_mission_manager]: MISSION END t=308.6s utility=0.667 served=9/15 late=0 replans=7 plan_ms=30.5 RTF=2.00 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm_Journal/results/tier_c/heldout_C/gz-deadlines-4002_anytime.json

@@ -189,3 +189,23 @@ Planning time per call (ms):
 - low/none/50.0/event: AnytimeSwarm +0.32 [-0.28, +0.92]; AnytimeSwarm -0.10 [-0.40, +0.18]; AnytimeSwarm +0.19 [-0.38, +0.80]; AnytimeSwarm +0.39 [-0.18, +0.96]; AnytimeSwarm +0.41 [-0.12, +0.96]
 - mid/none/10.0/event: AnytimeSwarm -0.13 [-0.69, +0.46]; AnytimeSwarm -0.24 [-0.56, +0.06]; AnytimeSwarm -0.10 [-0.69, +0.52]; AnytimeSwarm -0.06 [-0.59, +0.49]; AnytimeSwarm +0.14 [-0.34, +0.65]
 - mid/none/50.0/event: AnytimeSwarm -0.03 [-0.73, +0.67]; AnytimeSwarm -0.07 [-0.43, +0.28]; AnytimeSwarm +0.05 [-0.62, +0.74]; AnytimeSwarm +0.14 [-0.55, +0.84]; AnytimeSwarm -0.02 [-0.69, +0.63]
+
+## H4: tier C (PX4 SITL + Gazebo)
+
+30 held-out missions, 120 runs. RTF mean 1.95 (min 1.67); plan acceptance latency mean 0.152 s (simulation time). Runs repeated because their RTF left [0.8F, 1.1F]: 4 (originals in heldout_C/invalid_rtf/).
+
+|                |   utility |   served |   late |   plan_ms |   finish_err_p95 |   n |
+|:---------------|----------:|---------:|-------:|----------:|-----------------:|----:|
+| ALNS 250 ms    |    0.5188 |   7.4667 | 1.4    |  250.107  |          36.4147 |  30 |
+| ALNS 40 ms     |    0.5469 |   8      | 1.1333 |   40.1071 |          34.4387 |  30 |
+| AnytimeSwarm   |    0.537  |   7.5667 | 1.1    |   47.4303 |          31.5967 |  30 |
+| AnytimeSwarm-R |    0.5418 |   7.8    | 1      |   34.7146 |          30.0974 |  30 |
+
+| baseline | diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| ALNS 40 ms | -0.51 [-3.24, +2.18] | 0.7224 | 1.0000 |
+| AnytimeSwarm | +0.48 [-2.72, +3.46] | 0.7356 | 1.0000 |
+
+Secondary: AnytimeSwarm-R vs ALNS 250 ms +2.30 [-1.32, +5.71] (p 0.2016).
+
+Tier B vs tier C on the same gz missions: Kendall tau of method means 0.33; Pearson r of per-run utility 0.84 (n=120); mean utility B 0.5158 vs C 0.5361.

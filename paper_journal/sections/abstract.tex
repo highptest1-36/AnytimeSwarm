@@ -1,3 +1,24 @@
 \begin{abstract}
-\todo{abstract, written after all held-out results}
+Multi-UAV replanners usually stop their search after a fixed time budget. This paper studies when such a planner should
+stop computing and publish its plan, with exact and with uncertain execution. AnytimeSwarm repairs the previous plan,
+improves it with an anytime adaptive large neighbourhood search and stops when a learned prediction of the next
+improvement no longer exceeds a delay cost derived from the slack of the plan. AnytimeSwarm-R adds a calibrated model of
+finish-time errors and dissemination latency to this cost. The evaluation has two tiers, a kinematic simulator with
+wind, speed, service and latency disturbances drawn with common random numbers, and PX4 software-in-the-loop with
+Gazebo and ROS~2 after a rescaling that preserves every dimensionless ratio. All design choices were frozen before the
+held-out runs. With exact execution, AnytimeSwarm reached a regret of \val{EqRegretAS}\% against \val{EqRegretBaseMin}\%
+to \val{EqRegretBaseMax}\% for fixed budgets and stagnation stopping at equal computation. In \val{JNRunsMain} kinematic
+runs with uncertain execution, search raised the utility from \val{JURepair}\% with plan repair alone to
+\val{JURisk}\% with AnytimeSwarm-R, and AnytimeSwarm-R lost \val{JLostRedFixed}\% fewer tasks to late plans than a 250\,ms budget on a slow planner. It
+reached the highest mean utility with \val{JMsRedAS}\% less computation than AnytimeSwarm, but its advantage over the
+strongest baselines, at most \val{JDmFixedFortyAbs} percentage points, was not significant after Holm correction, and it was not
+confirmed with 40 UAVs or in \val{JNCRuns} PX4 flights. Periodic replanning raised the utility of every method by
+\val{JTrigMinAbs} to \val{JTrigMaxAbs} points. The kinematic tier predicted the utility of PX4 flights closely ($r=$
+\val{JBCr}) but not differences below one point. Adaptive stopping thus mainly saves computation, and the replanning
+trigger matters more for the reward served.
 \end{abstract}
+
+\begin{keyword}
+multi-UAV task allocation \sep dynamic vehicle routing \sep anytime planning \sep metareasoning \sep replanning \sep
+execution uncertainty \sep PX4 \sep Gazebo \sep ROS~2
+\end{keyword}

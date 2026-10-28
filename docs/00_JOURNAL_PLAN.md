@@ -230,3 +230,13 @@ kiểm tra không rò rỉ dev/test, kiểm tra lại mọi số liệu trong b�
 | Predictor phụ thuộc thang | zero-shot thất bại | kiểm tra đặc trưng ở G0; báo cáo trung thực |
 | Lợi thế không tăng theo quy mô (bản XL) | không được claim scale | giữ claim mềm như paper |
 | Đầu tư ROS trước khi biết kết quả khoa học | tốn công nếu No-Go | Go/No-Go ở tầng B trước (mục 3b) |
+
+## Trạng thái 28/10/2026: thí nghiệm held-out và bản thảo hoàn tất
+
+- Held-out chạy đúng một lần trên config đóng băng (commit a561c7a): tầng B 34 560 + 1 800 + 8 640 + 6 480 + 120 lượt,
+  tầng C 120 chuyến bay PX4/Gazebo (2 lỗi khởi động và 4 lượt RTF thấp được chạy lại một lần, xem protocol mục 5).
+- Kết quả theo giả thuyết: H1 không đạt (sau Holm), H2 đạt (−15% tính toán), H3 đạt (+1,3–1,6 pp), H4 không đạt
+  (tầng C, CI ±3 pp), H5 không đạt. Tầng B dự báo tốt utility tầng C (r = 0,84 theo lượt, 0,89 theo nhiệm vụ).
+- Báo cáo đầy đủ: `results/heldout/report.md`; mọi số trong bài: `experiments/make_paper_numbers.py`.
+- Bản thảo: `paper_journal/main.pdf` (19 trang), highlights: `paper_journal/highlights.txt`.
+- Việc tác giả cần làm trước khi nộp: `docs/06_TAC_GIA_CAN_KIEM_TRA.md`.

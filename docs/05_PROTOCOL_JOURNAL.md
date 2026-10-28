@@ -91,3 +91,19 @@ Kết quả âm được báo cáo như kết quả dương. Không loại nhi�
 Laptop i7-11800H (8 nhân), WSL2 Ubuntu 24.04, Python 3.12.3, gói ghim phiên bản (README). Tầng B chạy 4 worker song
 song; trong mỗi cấu hình mọi phương pháp chịu cùng tải máy (xếp xen kẽ). Guard tạm dừng khi RAVEN (Windows) hoặc
 PX4/Gazebo (WSL) chạy. Tầng B và tầng C không chạy cùng lúc. Báo cáo tốc độ tìm kiếm (vòng ALNS/ms) để quy đổi máy.
+
+## 5. Sai lệch so với protocol (ghi SAU khi chạy held-out, 28/10/2026)
+
+1. Tầng C, tiêu chí RTF. 4/120 lượt bay held-out có RTF 1,43–1,52 (< 0,8F = 1,6): gz-arrivals-4007 alns_fixed,
+   gz-deadlines-4006 anytime, gz-deadlines-4007 anytime, gz-failures-4006 alns_fixed@40. Protocol định nghĩa tiêu chí
+   hợp lệ nhưng chưa nói cách xử lý lượt không hợp lệ. Cách xử lý chọn (trước khi xem kết quả lượt chạy lại): coi như lỗi
+   kỹ thuật, chạy lại MỘT lần cùng seed (`tools/rerun_invalid_rtf.sh`), bản gốc giữ trong
+   `results/tier_c/heldout_C/invalid_rtf/`. Phân tích chính dùng lượt chạy lại; bài báo báo cáo thêm kết quả khi dùng bản
+   gốc (macro `CD*Orig`). Nguyên nhân chưa xác định: các lượt này (05:01–06:20 UTC) trùng giai đoạn có 2 lỗi khởi động, không có thí nghiệm nào khác chạy song song; có thể do tải nền của Windows hoặc giảm xung nhiệt.
+2. Lỗi trong code phân tích (không phải trong thí nghiệm): phép ghép tầng B–tầng C trong `analyze_heldout.py` và
+   `make_paper_numbers.py` dùng stack/join nên ghép mọi lượt với mọi lượt của cùng nhiệm vụ (n = 3600, r = 0,00). Đã sửa
+   thành ghép theo (nhiệm vụ, phương pháp), n = 120. Kiểm định H4 (bootstrap cặp) không bị ảnh hưởng.
+3. H5: script phân tích đóng băng hiệu chỉnh Holm trên 4 so sánh (thêm ALNS 250 ms) thay vì 3 như H1. Bài báo báo cáo
+   đúng họ 4 so sánh của script; kết luận không đổi (không so sánh nào có ý nghĩa).
+4. Hai lượt tầng C lỗi khởi động (watchdog 90 s) đã được chạy lại một lần như protocol mục 3 (không phải sai lệch,
+   ghi để đầy đủ): gz-deadlines-4006 anytime, gz-failures-4005 alns_fixed@40.
