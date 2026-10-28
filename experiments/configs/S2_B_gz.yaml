@@ -1,0 +1,14 @@
+# Study 2: tier B counterpart of the tier C held-out missions (same 30 gz missions, rescaled, tier C error model).
+frozen: true
+heldout_seeds: {start: 6000, n: 10}
+grid:
+  name: s2_heldout_B_gz
+  split: heldout
+  scales: [gz]
+  exec: [mid]
+  lat: [none]
+  kappas: [50]
+  windows: [1]
+  ms_per_task: 1.0
+  methods: ["proposed+periodic:60", "alns_fixed@40+periodic:60", "alns_fixed@40~buf=60+periodic:60", "alns_fixed@40+event"]
+  workers: 4

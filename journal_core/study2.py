@@ -14,9 +14,9 @@ Method grammar (experiments/b2_grid.py):  <base>[@budget_ms][~key=value,...][+tr
 | anytime_risk    | learned predictor vs. risk-aware delay cost (study 1)                           | AnytimeSwarm-R        |
 | proposed        | anytime_risk on a chance-constrained planning model (~z=..), own trigger        | this study            |
 
-Options: ~z=<z> plans with effective deadlines d_j - (m(h_j) + z s(h_j)), h_j = d_j - t0 (bias-corrected and
-chance-constrained planning; any base accepts it, which gives the "+ buffer" baselines); the executor and the delay
-cost of the publication still use the true deadlines. All ALNS variants share operators, parameters and seed, so they
+Options: ~z=<z> plans for finish f_j + m(h_j) + z s(h_j) <= d_j with h_j = f_j - t0 (bias-corrected and
+chance-constrained planning, see buffered_problem; any base accepts it); ~buf=<s> plans with a constant time buffer
+of <s> seconds instead (robust-buffer baseline). The executor still uses the true deadlines. All ALNS variants share operators, parameters and seed, so they
 follow the same search trajectory and differ only in when they stop (and, with ~z, in the deadlines they plan for).
 """
 from __future__ import annotations
@@ -41,16 +41,25 @@ from .risk import ErrorModel, RiskAdaptive
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILE_FILE = ROOT / "models" / "performance_profile_dev.json"
+# safety factor of the proposed planning model per calibrated disturbance level, selected on development missions
+# (results/tier_b/dev2b_explore.csv: mid -> 0.5, high -> 0); "low" was not explored and follows "mid"
+Z_BY_LEVEL = {"nominal": 0.0, "low": 0.5, "mid": 0.5, "high": 0.0}
 
 
 # ---------------------------------------------------------------------------------------------- planning model
-def buffered_problem(P, err: ErrorModel, z: float):
-    """Copy of P whose deadlines are tightened by the predicted finish-time error quantile m(h) + z s(h), h = d - t0.
-    A task that finishes near its deadline has a lead time close to d - t0, which is where the buffer matters."""
+def buffered_problem(P, err: ErrorModel, z: float | None, const_s: float | None = None):
+    """Copy of P with chance-constrained deadlines. A planned finish f must satisfy f + m(h) + z s(h) <= d with the lead
+    time h = f - t0 of that very finish. Because m and s are linear in h, this is exactly f <= d~ with
+        d~ = t0 + (d - t0 - b0 - z s0) / (1 + b1 + z s1),
+    so the buffer adapts to how far ahead the task is served. const_s instead subtracts a constant buffer (baseline)."""
     Q = copy.copy(P)
-    h = np.maximum(np.asarray(P.dl, float) - P.t0, 0.0)
-    buf = np.maximum(err.mean(h) + z * err.sd(h), 0.0)
-    Q.dl = [float(d - b) for d, b in zip(P.dl, buf)]
+    d = np.asarray(P.dl, float)
+    if const_s is not None:
+        new = d - const_s
+    else:
+        c = err.b1 + z * err.s1
+        new = P.t0 + (d - P.t0 - err.b0 - z * err.s0) / (1.0 + c)
+    Q.dl = [float(min(a, b)) for a, b in zip(d, new)]
     Q.hopeless = {j for j in range(Q.N) if not any(Q.route_eval(k, [j])[0] for k in range(Q.M))}
     return Q
 
@@ -159,10 +168,10 @@ def parse_method(spec: str):
 
 def solve2(base: str, P, old_routes, budget_ms: float, cfg: dict, seed: int = 0, predictor=None,
            kappa: float = 1.0, err: ErrorModel | None = None, latency_mean_s: float = 0.0, z: float | None = None,
-           ms_per_task: float | None = None, check: bool = True) -> dict:
+           ms_per_task: float | None = None, buf_s: float | None = None, check: bool = True) -> dict:
     c = cfg["controller"]
     err = err or ErrorModel()
-    Q = buffered_problem(P, err, z) if z is not None else P
+    Q = buffered_problem(P, err, z, buf_s) if (z is not None or buf_s is not None) else P
     if base == "alns_scaled":
         budget_ms = float(np.clip(ms_per_task * max(P.N, 1), 10.0, budget_ms))
     clock = now_ms
@@ -177,7 +186,7 @@ def solve2(base: str, P, old_routes, budget_ms: float, cfg: dict, seed: int = 0,
         if base in ("anytime_risk", "proposed"):
             # the planning model already contains the mean error (and z spreads) when z is set: the delay cost then
             # only prices the remaining spread around the buffered deadlines
-            e = ErrorModel(err.name, 0.0, 0.0, err.s0, err.s1, err.n) if z is not None else err
+            e = ErrorModel(err.name, 0.0, 0.0, err.s0, err.s1, err.n) if z is not None and buf_s is None else err
             ctrl = RiskAdaptive(*args, err=e, latency_mean_s=latency_mean_s)
         elif base == "online_curve":
             ctrl = OnlineCurveStop(*args)

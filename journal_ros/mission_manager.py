@@ -37,6 +37,9 @@ from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPo
 from atswarm_interfaces.msg import FleetState, Plan, Route, Task, TaskArray, TaskReport, UavCommand, UavState  # noqa: E402
 from journal_core.methods import solve  # noqa: E402
 from journal_core.risk import ErrorModel  # noqa: E402
+from journal_core.study2 import Z_BY_LEVEL, parse_method, solve2  # noqa: E402
+
+STUDY2_BASES = {"proposed", "alns_scaled", "online_curve", "profile"}
 
 from anytimeswarm.controller.improvement_model import LearnedPredictor  # noqa: E402
 from anytimeswarm.simulator.problem import Problem  # noqa: E402
@@ -203,11 +206,18 @@ class Mission(Node):
             return
         self.command(UavCommand.HOLD, 0, t)
         a = self.a
-        kw = {"err": self.err, "latency_mean_s": self.lat_mean} if a.method == "anytime_risk" else {}
-        base, _, b = a.method.partition("@")
-        budget = float(b) if b else a.budget_ms
-        res = solve(base, P, old, budget, self.cfg, seed=a.seed * 1000 + len(self.replans), predictor=self.pred,
-                    kappa=self.kappa_c, **kw)
+        base, b, opt, _ = parse_method(a.method)
+        budget = b or a.budget_ms
+        if "~" in a.method or base in STUDY2_BASES:    # study 2 planner (chance-constrained model, literature rules)
+            res = solve2(base, P, old, budget, self.cfg, seed=a.seed * 1000 + len(self.replans), predictor=self.pred,
+                         kappa=self.kappa_c, err=self.err, latency_mean_s=self.lat_mean,
+                         z=(float(opt["z"]) if opt.get("z", "auto") != "auto" else Z_BY_LEVEL[a.error_level])
+                         if ("z" in opt or base == "proposed") else None,
+                         ms_per_task=float(opt.get("ms", 1.0)), buf_s=float(opt["buf"]) * S_T if "buf" in opt else None)
+        else:
+            kw = {"err": self.err, "latency_mean_s": self.lat_mean} if base == "anytime_risk" else {}
+            res = solve(base, P, old, budget, self.cfg, seed=a.seed * 1000 + len(self.replans), predictor=self.pred,
+                        kappa=self.kappa_c, **kw)
         ms = res["elapsed_ms"]
         t_pub = t + self.kappa_c * ms / 1000.0
         self.version += 1

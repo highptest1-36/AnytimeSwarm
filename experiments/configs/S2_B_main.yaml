@@ -1,0 +1,29 @@
+# Study 2, tier B primary matrix (H1-H3 of docs/08_PROTOCOL_V2.md). Frozen before any study-2 held-out run.
+frozen: true
+heldout_seeds: {start: 5000, n: 30}
+grid:
+  name: s2_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [mid, high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "proposed+periodic:60"
+    - "regret_repair+periodic:60"
+    - "alns_fixed+periodic:60"
+    - "alns_fixed@40+periodic:60"
+    - "alns_scaled~ms=1+periodic:60"
+    - "alns_stagnation+periodic:60"
+    - "profile+periodic:60"
+    - "online_curve+periodic:60"
+    - "anytime+periodic:60"
+    - "anytime_risk+periodic:60"
+    - "alns_fixed@40~buf=60+periodic:60"
+    - "alns_fixed@40+event"
+    - "proposed+event"
+    - "alns_fixed@40~z=auto+periodic:60"
+    - "proposed~z=0+periodic:60"
+  workers: 4

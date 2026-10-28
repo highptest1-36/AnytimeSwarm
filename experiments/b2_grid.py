@@ -32,7 +32,7 @@ sys.path.insert(0, str(ROOT / "experiments"))
 from journal_core.execution import EXEC_LEVELS, LATENCY_LEVELS  # noqa: E402
 from journal_core.kinematic_executor import run_mission_kin  # noqa: E402
 from journal_core.risk import ErrorModel, expected_latency  # noqa: E402
-from journal_core.study2 import parse_method, solve2, tighten_windows  # noqa: E402
+from journal_core.study2 import Z_BY_LEVEL, parse_method, solve2, tighten_windows  # noqa: E402
 from run_guarded import _busy  # noqa: E402
 from b_grid import FROZEN_CFG, FROZEN_MODEL, scenarios  # noqa: E402
 sys.path.insert(0, str(ROOT / "journal_ros"))
@@ -66,14 +66,21 @@ def _one(job):
     base, budget, opt, _ = parse_method(spec)
     kw = {"err": errs.get(opt.get("err", xl), ErrorModel()),
           "latency_mean_s": expected_latency(LATENCY_LEVELS[ll]),
-          "z": float(opt["z"]) if "z" in opt else None,
-          "ms_per_task": float(opt.get("ms", _W["ms_per_task"]))}
-    if base == "proposed" and kw["z"] is None:
-        kw["z"] = 0.0
+          "z": float(opt["z"]) if opt.get("z", "auto") != "auto" else None,
+          "ms_per_task": float(opt.get("ms", _W["ms_per_task"])),
+          "buf_s": float(opt["buf"]) if "buf" in opt else None}
+    if opt.get("z") == "auto" or (base == "proposed" and "z" not in opt):
+        kw["z"] = Z_BY_LEVEL[xl]
+    if sc.scale == "gz":                               # buffer and trigger times are given in tier B seconds
+        if kw["buf_s"] is not None:
+            kw["buf_s"] *= S_T
+        kind, _, pars = trig.partition(":")
+        if pars:
+            trig = kind + ":" + ":".join(f"{float(x) * S_T:g}" for x in pars.split(":"))
     r = run_mission_kin(tighten_windows(copy.deepcopy(sc), wf), cfg, base, budget or B, kappa=kappa, xm=xm,
                         lat=LATENCY_LEVELS[ll], predictor=_W["pred"], seed=sc.seed, trigger=trig, solve_kwargs=kw,
                         solver=solve2)
-    r.update(method=spec, kappa=job[3], window=wf, scenario=sc.name)
+    r.update(method=spec, kappa=job[3], window=wf, scenario=sc.name, trigger=job[6])   # unscaled spec for --resume
     return r
 
 

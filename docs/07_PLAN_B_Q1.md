@@ -50,7 +50,12 @@ báo cáo cỡ hiệu ứng và phân tích công suất. Đồng hồ: dùng wa
   định nghĩa cột bảng, khai báo sai lệch B–C, κ của benchmark tĩnh, tài liệu situated planning/DAS/rescheduling).
 
 ## 7. Tiến độ
-- [ ] P1 code baseline + proposed trên dev
+- [x] P1 code baseline + proposed (journal_core/study2.py, experiments/b2_grid.py, b2_build_profile.py; trigger
+      hybrid trong kinematic_executor; 15 test cũ vẫn đạt)
+- P2a (dev2_explore, 28/10): đệm theo h = d − t0 sai (h quá lớn cho task xa → đệm phình, nhiễu high sập về 0).
+  Ở mid/w1: z=0,5 + periodic 72,8% vs baseline tốt nhất 67,8%. Sửa: deadline hiệu dụng dạng đóng chính xác
+  d~ = t0 + (d − t0 − b0 − z s0)/(1 + b1 + z s1) (ràng buộc trên chính thời điểm hoàn thành). Thêm baseline đệm cố định.
+- P2b (dev2b_explore): chạy lại với công thức đúng.
 - [ ] P2 dev exploration, chọn tham số, Go/No-Go
 - [ ] P3 protocol v2 + freeze
 - [ ] P4 held-out tầng B (5000–5029)
