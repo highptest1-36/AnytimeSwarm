@@ -146,9 +146,13 @@ def tier_b():
             put(f"PRaw{k}", pval(p))
             rows.setdefault(k, (ci(m, lo, hi), "--"))
             REPORT.append(f"| {M[k][1]} | {ci(m, lo, hi)} | {p:.4f} |")
-    if M["Conv"][0] in g.index:
-        put("URelConv", f"{(g.loc[PROP, 'u'] / g.loc[M['Conv'][0], 'u'] - 1) * 100:.1f}")
-        put("LateRedConv", f"{(1 - g.loc[PROP, 'late'] / g.loc[M['Conv'][0], 'late']) * 100:.0f}")
+    for k in [k for k in M if k != "Prop" and M[k][0] in g.index]:
+        put(f"URel{k}", f"{(g.loc[PROP, 'u'] / g.loc[M[k][0], 'u'] - 1) * 100:.1f}")
+        put(f"LateRed{k}", f"{(1 - g.loc[PROP, 'late'] / g.loc[M[k][0], 'late']) * 100:.0f}")
+    for k in M:
+        if M[k][0] in g.index:
+            put(f"Late{k}", f"{g.loc[M[k][0], 'late']:.2f}")
+            put(f"Lost{k}", f"{g.loc[M[k][0], 'lost']:.2f}")
     # H3: equivalence of the stopping rule (TOST, margin 0.5 pp, 90% CI)
     if M["AblStop"][0] in g.index:
         m, lo, hi, _ = boot(paired(df, PROP, M["AblStop"][0]), level=90)
@@ -172,10 +176,14 @@ def tier_b():
     for wf, tag in [(1.0, "WOne"), (0.5, "WHalf")]:
         for xl in ["mid", "high"]:
             sub = df[(df.window == wf) & (df.exec_level == xl)]
-            for k in ["Forty", "Buf", "Conv"]:
+            for k in ["Forty", "Buf", "Conv", "AblZ"]:
                 m, lo, hi, _ = boot(paired(sub, PROP, M[k][0], by=["latency_level", "kappa"]))
                 put(f"D{k}{tag}{xl.capitalize()}", ci(m, lo, hi))
             put(f"UProp{tag}{xl.capitalize()}", pp(sub[sub.method == PROP].utility_rate.mean()))
+            for k in ["Prop", "Buf", "Forty"]:
+                s = sub[sub.method == M[k][0]]
+                put(f"Served{k}{tag}{xl.capitalize()}", f"{s.served.mean():.1f}")
+                put(f"Late{k}{tag}{xl.capitalize()}", f"{s.late_served.mean():.1f}")
     per = []
     for key, gg in df.groupby(CFG):
         w = gg.pivot_table(index="scenario", columns="method", values="utility_rate")
@@ -253,7 +261,7 @@ def table_regime(df):
 
 
 def fig_main(df, g, tests):
-    fig, axes = plt.subplots(1, 2, figsize=(6.3, 3.0), gridspec_kw={"width_ratios": [1.15, 1]})
+    fig, axes = plt.subplots(1, 2, figsize=(6.6, 3.3), gridspec_kw={"width_ratios": [1.0, 1.05]})
     ax = axes[0]
     keys = ["Rep", "Fix", "Stag", "AS", "Conv"] + [k for k, *_ in tests]
     est = []
@@ -283,13 +291,27 @@ def fig_main(df, g, tests):
     ax.set_ylabel("utility (%)")
     ax.set_title("(b) utility and computation", loc="left")
     ax.grid(alpha=0.3)
-    lab = {"Prop": "Proposed", "Conv": "Conventional", "Fix": "250 ms", "Rep": "repair", "Buf": "buffer",
-           "Forty": "40 ms", "Onl": "online", "Prof": "profile", "Scaled": "scaled", "Stag": "stagnation",
-           "AS": "AnytimeSwarm", "Risk": "AS-R"}
-    for k, t in lab.items():
+    ax.set_xlim(0.3, 2e4)
+    ax.set_xticks([1, 10, 100, 1000])
+    # isolated points: label next to the marker; the dense cluster: labels in a column at the right, joined by
+    # thin leader lines in the order of the utility so that no label overlaps another
+    lab = {"Prop": ("Proposed", (6, 0), "left"), "Buf": ("60 s buffer", (6, 0), "left"),
+           "Conv": ("Conventional", (6, 0), "left"), "Fix": ("ALNS 250 ms", (-6, 0), "right"),
+           "Rep": ("repair only", (6, 0), "left")}
+    for k, (t, off, ha) in lab.items():
         if M[k][0] in g.index:
             r = g.loc[M[k][0]]
-            ax.annotate(t, (max(r.ms, 0.5), r.u * 100), textcoords="offset points", xytext=(4, 2), fontsize=7.5)
+            ax.annotate(t, (max(r.ms, 0.5), r.u * 100), textcoords="offset points", xytext=off, fontsize=8,
+                        ha=ha, va="center", color="black")
+    col = {"Risk": "AnytimeSwarm-R", "AS": "AnytimeSwarm", "Stag": "stagnation stop", "Prof": "profile",
+           "Scaled": "size-scaled", "Onl": "online prediction", "Forty": "ALNS 40 ms"}
+    cl = sorted([k for k in col if M[k][0] in g.index], key=lambda k: -g.loc[M[k][0]].u)
+    top = g.loc[M["Buf"][0]].u * 100 - 0.45 if M["Buf"][0] in g.index else 50.4
+    for i, k in enumerate(cl):
+        r = g.loc[M[k][0]]
+        ax.annotate(col[k], (max(r.ms, 0.5), r.u * 100), xytext=(220, top - 0.36 * i), textcoords="data",
+                    fontsize=8, ha="left", va="center", color="black",
+                    arrowprops=dict(arrowstyle="-", lw=0.5, color="#555555", shrinkA=1, shrinkB=3))
     fig.tight_layout()
     fig.savefig(P / "figures" / "fig_s2_main.pdf")
     plt.close(fig)

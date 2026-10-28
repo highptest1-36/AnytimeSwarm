@@ -202,4 +202,87 @@ tier C against the same run in tier B (dashed: equality).}\label{fig:bc}
 \end{figure}
 
 \subsection{Study 2: the proposed replanner against baselines from the literature}\label{sec:study2}
-	odo{study 2 results}
+\subsubsection{Tier B primary matrix}\label{sec:s2-main}
+Study~2 comprises \val{KNRuns} tier B mission runs, that is, \val{KNMissions} held-out missions in \val{KNConfigs}
+configurations with \val{KNMethods} methods. Table~\ref{tab:s2main} lists utility, late and lost tasks and computation
+per method. Fig.~\ref{fig:s2main} shows the paired difference of the proposed replanner minus every other method and
+relates utility to computation.
+
+The proposed replanner reached the highest utility, \val{KUProp}\%. Its advantage over the six baselines of the primary
+hypothesis ranged from \val{KDmBuf}\,pp over the constant buffer to \val{KDmForty}\,pp over ALNS with 40\,ms, and every
+Holm-adjusted $p$-value was below 0.001. The primary hypothesis H1 therefore holds for \val{KHOneNSig} of the six
+comparisons. In relative terms, the proposed replanner served \val{KURelProf}\% more reward than the performance profile
+rule, \val{KURelOnl}\% more than online performance prediction, \val{KURelScaled}\% more than the size-scaled budget and
+\val{KURelBuf}\% more than the constant buffer. Against the conventional planner, which combines ALNS with 40\,ms, the
+nominal model and the event trigger, the advantage was \val{KDConv}\,pp, or \val{KURelConv}\%, so H2 holds as well.
+
+The advantage comes from fewer late tasks. The proposed replanner served \val{KLateProp} tasks per mission after their
+deadline, against \val{KLateForty} for ALNS with 40\,ms, that is, \val{KLateRedForty}\% fewer, and \val{KLateBuf} for the
+constant buffer. It lost no task to a late plan, whereas ALNS with 40\,ms lost \val{KLostForty} and the full budget of
+250\,ms lost \val{KLostFix} tasks per mission. On the nominal model, the stopping rules hardly differed. ALNS with 40\,ms,
+the size-scaled budget, the performance profile, online prediction, AnytimeSwarm and AnytimeSwarm-R all lay between
+\val{KUForty}\% and \val{KURisk}\%, although their computation per call ranged from \val{KMsOnl}\,ms to \val{KMsAS}\,ms
+(Fig.~\ref{fig:s2main}b). Correcting the deadlines was worth more than any choice of stopping rule.
+
+\inputtable{tab_s2_main}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_main}{\linewidth}
+\caption{Study~2, tier B, held-out seeds 5000--5029 (\val{KNRuns} runs): (a) utility of the proposed replanner minus
+each method, pooled over the \val{KNConfigs} configurations, with 95\% paired bootstrap intervals over \val{KNMissions}
+missions; (b) mean utility against mean computation per planning call. All methods except the conventional planner use
+the periodic trigger; ablations are omitted.}\label{fig:s2main}
+\end{figure}
+
+\subsubsection{Ablations}\label{sec:s2-abl}
+Three ablations remove one component of the proposed replanner at a time (Table~\ref{tab:s2main}, bottom). With a fixed
+budget of 40\,ms instead of the proposed stopping rule, utility changed by \val{KDAblStop}\,pp. The 90\% interval of this
+difference, \val{KTostCI}\,pp, lies inside the pre-registered margin of $\pm0.5$\,pp, so the stopping rule is equivalent
+to the fixed budget on the chance-constrained model (H3), while it used \val{KTostMs}\,ms more per call. The stopping
+rule still guards against long budgets. At $\kappa_B=200$, the full budget of 250\,ms lost \val{KLostFixKTwoHundred} tasks
+per mission to late plans, and the advantage of the proposed replanner over it grew from \val{KDFixKTen}\,pp at
+$\kappa_B=10$ to \val{KDFixKTwoHundred}\,pp at $\kappa_B=200$.
+
+With the event trigger instead of the periodic one, the proposed replanner made \val{KCallsAblTrig} instead of
+\val{KCallsProp} planning calls per mission and lost \val{KDAblTrig}\,pp. On the nominal model of study~1, the periodic
+trigger had added \val{JTrigMin}\,pp to \val{JTrigMax}\,pp. The chance-constrained model thus seems to absorb most of the
+deviations that periodic replanning corrects. With $z=0$, that is, with the mean correction only, the difference was
+\val{KDAblZ}\,pp and not significant. Since $z=0$ is also the frozen value under high disturbances, this ablation differs
+only under mid disturbances. There, the spread term helped with the original windows (\val{KDAblZWOneMid}\,pp) and hurt
+with halved windows (\val{KDAblZWHalfMid}\,pp). Most of the advantage of the proposed replanner therefore comes from
+the planning model, namely from moving every deadline by the predicted finish-time error, and not from the stopping rule
+or the trigger.
+
+\subsubsection{Regimes}\label{sec:s2-regime}
+Table~\ref{tab:s2regime} and Fig.~\ref{fig:s2regime} break the utility down by disturbance level, time-window factor and
+latency factor. Per configuration and without correction for multiple testing, the proposed replanner was better than
+ALNS with 40\,ms in \val{KWinForty} of the \val{KNConfigs} configurations and worse in \val{KLossForty}, better than the
+constant buffer in \val{KWinBuf} and worse in \val{KLossBuf}, and better than the conventional planner in \val{KWinConv}
+and worse in \val{KLossConv}. The advantage over ALNS with 40\,ms was \val{KDFortyKTen}\,pp, \val{KDFortyKFifty}\,pp and
+\val{KDFortyKTwoHundred}\,pp for $\kappa_B=10$, 50 and 200, and the advantage over online prediction stayed between
+\val{KDOnlKTen}\,pp and \val{KDOnlKTwoHundred}\,pp.
+
+The advantage was largest with the original windows. Under high disturbances, the proposed replanner served
+\val{KDFortyWOneHigh}\,pp more reward than ALNS with 40\,ms and \val{KDBufWOneHigh}\,pp more than the constant buffer.
+The losses all occurred under high disturbances with halved windows. In this regime, the proposed replanner reached
+\val{KUPropWHalfHigh}\%, \val{KDBufWHalfHigh}\,pp relative to the constant buffer and \val{KDFortyWHalfHigh}\,pp relative
+to ALNS with 40\,ms. It served \val{KServedPropWHalfHigh} tasks per mission, of which \val{KLatePropWHalfHigh} late,
+against \val{KServedBufWHalfHigh} and \val{KLateBufWHalfHigh} for the constant buffer. The chance-constrained model was
+thus too cautious when the windows were short compared with the predicted finish-time error. The effective deadline of
+many tasks then probably falls before the earliest possible arrival, so the planner gives up tasks that a less cautious
+plan still serves in time. The value of $z$ was selected per disturbance level on development missions, averaged over
+both window widths. Selecting it also per window width, or adapting it online, is a natural extension.
+
+\inputtable{tab_s2_regime}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_regime}{\linewidth}
+\caption{Study~2, tier B: utility per regime as a function of the latency factor $\kappa_B$, for mid and high
+disturbances with the original and with halved time windows (mean over \val{KNMissions} held-out missions per point).
+The proposed replanner is shown with stars.}\label{fig:s2regime}
+\end{figure}
+
+\subsubsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:s2-tierc}
+\todo{H4: tier C flights of study 2 are running}
