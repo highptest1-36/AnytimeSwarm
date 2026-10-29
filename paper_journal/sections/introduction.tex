@@ -39,11 +39,12 @@ service-time errors and stochastic communication latency, drawn with common rand
 that every planner faces the same disturbances. Tier C flies the same missions with three PX4
 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo}, connected to the planner through
 ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem. The fourth
-is a pre-registered evaluation in two studies. Study~1 tests whether an execution-aware stopping rule alone improves the
+is a pre-registered evaluation in three studies. Study~1 tests whether an execution-aware stopping rule alone improves the
 nominal planner. Study~2 compares the proposed replanner with re-implemented stopping rules from the metareasoning
 literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, size-scaled and fixed budgets, a robust
 time buffer~\cite{agra2013robust} and a conventional event-triggered planner, over latency factors and time-window
-widths. All design choices were fixed on development seeds, the code was frozen with cryptographic hashes, and each
+widths. Study~3 tests a nominal fallback for the tasks that the chance constraint gives up, designed after the results
+of study~2. All design choices were fixed on development seeds, the code was frozen with cryptographic hashes, and each
 study was run once on its own held-out seeds with mission-level paired bootstrap, Holm correction and equivalence
 tests.
 
@@ -53,7 +54,9 @@ than the strongest baselines. In study~2, the proposed replanner served \val{KDa
 points more reward than each of six baselines and \val{KURelConv}\% more than the conventional planner. Ablations show
 that this gain comes from the chance-constrained model, not from the stopping rule, which was equivalent to a fixed
 budget on the same model. The proposed model was too cautious under high disturbances with halved time windows, where
-a constant buffer served more reward.
+a constant buffer served more reward. In software-in-the-loop flights, the differences between methods stayed within the
+noise of \val{KCN} missions. In study~3, on new seeds, the nominal fallback removed this weakness and served
+\val{LDabsPropAll} percentage points more reward than the replanner of study~2, with more tasks served late.
 
 The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews related work.
 Section~\ref{sec:problem} formulates replanning with publication delay and uncertain execution. Section~\ref{sec:method}

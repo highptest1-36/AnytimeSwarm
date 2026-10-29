@@ -174,6 +174,20 @@ service against the reward of attempting a task. It is chosen per calibrated dis
 Because the delay cost of Eq.~\eqref{eq:risk} is evaluated on the effective deadlines, the mean error is already part of
 the tolerance, and the stopping rule uses the spread only, with $m\equiv0$.
 
+\subsection{Nominal fallback for given-up tasks}\label{sec:fallback}
+A hard chance constraint has a side effect when the time windows are short compared with the spread of the error. If no
+vehicle can finish task $j$ before $\tilde d_j$, even on a direct flight, the task is infeasible for the planner and is
+never attempted. A vehicle may still serve it in time with a probability below $\Phi(z)$ but well above zero, and it may
+have nothing better to do. The fallback variant, which was designed after the results of study~2 and is evaluated in
+study~3, keeps such tasks. Let $\tilde H$ be the set of tasks that no vehicle can finish by $\tilde d_j$ on a direct
+flight, and $H$ the set of tasks that no vehicle can finish by $d_j$. The planning deadline is
+\begin{equation}\label{eq:fallback}
+d'_j=\begin{cases} d_j, & j\in\tilde H\setminus H,\\ \tilde d_j, & \text{otherwise.}\end{cases}
+\end{equation}
+The constraints of all other tasks are unchanged, so every other task that is served keeps the guarantee of
+Proposition~\ref{prop:cc}, while a fallback task carries none. The delay cost is evaluated on $d'_j$. Finding
+$\tilde H$ and $H$ requires one direct-flight check per task and vehicle, which is negligible compared with the search.
+
 \subsection{Replanning trigger}\label{sec:proposedtrigger}
 Errors accumulate between replanning calls. The proposed replanner therefore replans on every event and in addition at
 least every $T_{\max}=60$\,s of mission time, which corresponds to a rolling-horizon policy in the terminology of

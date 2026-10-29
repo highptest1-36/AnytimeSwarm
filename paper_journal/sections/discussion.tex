@@ -1,5 +1,5 @@
 \section{Discussion and limitations}\label{sec:discussion}
-The two studies give an order of priorities for a multi-UAV replanner under uncertain execution. The planning model
+The three studies give an order of priorities for a multi-UAV replanner under uncertain execution. The planning model
 matters most. Moving every deadline by the predicted finish-time error raised the utility by more than any choice of
 stopping rule or trigger, and it removed the losses from late plans. The trigger comes second. On the nominal model of
 study~1, periodic replanning raised the utility of every method by more than the stopping rule did, but on the
@@ -16,8 +16,11 @@ tasks that are reached soon and too small for tasks at the end of a route. The p
 lead time and served more reward than the buffer in \val{KWinBuf} of the \val{KNConfigs} configurations. Under high
 disturbances with halved windows, the order reversed. A chance constraint discards every task whose probability of
 being served on time falls below $\Phi(z)$, even when the vehicle has nothing better to do. With short windows and large
-errors, many tasks fall below this threshold. An objective that weights each task by its probability of being served
-on time, instead of a hard constraint, would keep such tasks as fallback options and may remove this weakness.
+errors, many tasks fall below this threshold. Study~3 confirmed this explanation on new seeds. Keeping the given-up
+tasks with their nominal deadline removed the weakness, raised the utility in every regime and left the guarantee of
+the other tasks intact. The fallback trades punctuality for reward, since many fallback tasks are served late. A soft
+formulation that weights each task by its probability of being served on time would make this trade explicit and
+could be tuned to the cost of a late arrival in a given application.
 
 The stopping rules from the metareasoning literature behaved like the learned rule. On the nominal model, the
 performance profile, online performance prediction, the learned predictor, the size-scaled budget and ALNS with
@@ -44,9 +47,12 @@ per-mission standard deviation of \val{KCSdForty}\,pp, about \val{KCNPowerForty}
 
 Several limitations bound these conclusions. The finish-time error model is linear in the lead time and fitted per
 disturbance level, so the level itself is assumed to be known, and the confidence parameter $z$ was selected per level on
-development missions. The chance constraint is imposed on every task separately rather than jointly on a route. Tier C
-uses three UAVs and fifteen tasks per mission, so it validates the decision problem at a small scale and with a limited
-number of missions. Software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the
+development missions. The chance constraint is imposed on every task separately rather than jointly on a route. The
+fallback of study~3 was designed after the held-out results of study~2. It was therefore tested on new seeds, but only
+in tier B, and its behaviour on an autopilot remains to be measured. Tier C uses three UAVs and fifteen tasks per
+mission, so it validates the decision problem at a small scale and with a limited number of missions. Many tier C runs
+of study~2 ran slower than the intended real-time factor because the laptop was shared with other work, although the
+conclusions did not change when such runs were excluded. Software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the
 sensors, the radio link or the weather of a field test, and wind is constant during a mission. The latency factor
 emulates a slower planning computer instead of measuring one. All experiments ran on a single laptop, and the measured
 computation depends on it. Because the stopping rules read a wall clock, repeated runs are not bit-identical, and the

@@ -2,7 +2,7 @@
 This paper proposed AnytimeSwarm-CC, a multi-UAV replanner that plans against a chance constraint on the finish time of
 every task, replans on events and periodically, and stops an anytime ALNS with a learned rule. Because the calibrated
 finish-time error grows linearly with the lead time, the chance constraint reduces exactly to an effective deadline per
-task, so the proposed model costs no more to solve than the nominal one. The replanner was evaluated in two
+task, so the proposed model costs no more to solve than the nominal one. The replanner was evaluated in three
 pre-registered studies with a kinematic tier and a PX4 software-in-the-loop tier on held-out missions.
 
 In the kinematic tier, the proposed replanner served more reward than ALNS with fixed and size-scaled budgets, than
@@ -13,8 +13,10 @@ chance-constrained model. On this model, the learned stopping rule was equivalen
 its value lies in avoiding the losses of long budgets on slow planners and the tuning of a budget per fleet scale. Under
 high disturbances with halved time windows, the proposed model was too cautious. In software-in-the-loop flights with
 PX4 and Gazebo, the proposed replanner served fewer tasks late at the same computation, but its utility did not differ
-detectably from the baselines on \val{KCN} missions.
+detectably from the baselines on \val{KCN} missions. A nominal fallback for the tasks that the chance constraint gives
+up removed the weakness on new held-out seeds. It served \val{LURelProp}\% more reward than the replanner of study~2
+and \val{LURelConv}\% more than the conventional planner, at the price of more tasks served late.
 
-Future work will replace the hard chance constraint by an objective that weights every task by its probability of
-being served on time, adapt the confidence parameter online, and run the replanner on embedded hardware and in field
-tests.
+Future work will replace the fallback by an objective that weights every task by its probability of being served on
+time and by the cost of a late arrival, fly the fallback variant on an autopilot, adapt the confidence parameter
+online, and run the replanner on embedded hardware and in field tests.

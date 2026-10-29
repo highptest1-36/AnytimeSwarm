@@ -117,8 +117,8 @@ robust schedules with time buffers~\cite{agra2013robust}. The proposed chance-co
 Eq.~\eqref{eq:cc} with $z=0.5$ under mid and $z=0$ under high disturbances, selected on development missions. Triggers
 are event-only or event plus periodic replanning every 60\,s.
 
-\subsection{Two pre-registered studies}\label{sec:protocol}
-The evaluation consists of two pre-registered held-out studies, each with its own seeds, written protocol and frozen code.
+\subsection{Three pre-registered studies}\label{sec:protocol}
+The evaluation consists of three pre-registered held-out studies, each with its own seeds, written protocol and frozen code.
 Development used seeds 0--9 in tier B and 0--2 in tier C. The predictor was trained on development trajectories, and the
 compute price $\mu=10^{-5}$ was selected by a rule stated before any test run. The tier B error models were fitted on 90
 development missions per level flown by ALNS with 40\,ms, and the tier C models on nine development flights per level
@@ -144,7 +144,16 @@ it with the conventional planner. H3 tests whether the proposed stopping rule is
 the proposed planning model, with a margin of $\pm0.5$ percentage points. In tier C, H4 compares the proposed replanner
 with ALNS with 40\,ms and with the conventional planner on 30 missions.
 
-In both studies, the utility difference of a pair of methods is averaged per mission over the configurations of the
+Study~3 was designed after the held-out results of study~2, which showed that the proposed model is too cautious under
+high disturbances with halved time windows. Two fallback variants, with the nominal deadline and with the nominal
+deadline minus 60\,s, were compared on development seeds 0--9, and the nominal fallback was selected by a rule stated
+beforehand. Study~3 then uses new held-out seeds 7000--7029 in tier B and the matrix of study~2 with five methods: the
+proposed replanner with the nominal fallback, the proposed replanner of study~2, the constant buffer, ALNS with 40\,ms
+and the conventional planner. Its primary family contains four comparisons of the fallback variant: with the proposed
+replanner over all configurations (H5), with the constant buffer under high disturbances with halved windows (H6), and
+with ALNS with 40\,ms (H7) and the constant buffer (H8) over all configurations. Tier C was not repeated for study~3.
+
+In all studies, the utility difference of a pair of methods is averaged per mission over the configurations of the
 matrix, and the mean over missions is tested with a paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples.
 Families of primary comparisons are corrected with the Holm procedure~\cite{holm1979simple}, and equivalence is tested
 with two one-sided tests, that is, a 90\% interval inside the margin. All other comparisons are descriptive. A tier C run

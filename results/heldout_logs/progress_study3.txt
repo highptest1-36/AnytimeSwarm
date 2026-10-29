@@ -1,0 +1,29 @@
+[study3] 2026-10-29T06:07:32+00:00 freeze check
+docs/10_PROTOCOL_V3.md: OK
+experiments/configs/S3_B.yaml: OK
+experiments/b3_grid.py: OK
+journal_core/study3.py: OK
+experiments/analyze_study3.py: OK
+tools/run_study3.sh: OK
+experiments/b2_grid.py: OK
+experiments/b_grid.py: OK
+journal_core/execution.py: OK
+journal_core/__init__.py: OK
+journal_core/kinematic_executor.py: OK
+journal_core/methods.py: OK
+journal_core/risk.py: OK
+journal_core/study2.py: OK
+journal_ros/common.py: OK
+journal_ros/mission_manager.py: OK
+journal_ros/uav_executor.py: OK
+journal_ros/run_mission.sh: OK
+journal_ros/run_batch.sh: OK
+models/error_model_dev.json: OK
+models/error_model_tierc_dev.json: OK
+models/performance_profile_dev.json: OK
+original/models/improvement_model.json: OK
+original/configs/frozen_2026-10-24.yaml: OK
+[study3] 2026-10-29T06:07:32+00:00 tier B S3_B
+[ok] 16200 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s3_heldout_B.csv
+[study3] 2026-10-29T07:16:04+00:00 analysis
+[study3] 2026-10-29T07:16:07+00:00 done

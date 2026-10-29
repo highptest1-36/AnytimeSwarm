@@ -329,3 +329,45 @@ confirm the size of the gain measured in tier B.
 $\kappa_B=50$): paired difference of the proposed replanner minus each baseline with 95\% bootstrap intervals.}
 \label{fig:s2bc}
 \end{figure}
+
+\subsection{Study 3: nominal fallback for given-up tasks}\label{sec:study3}
+Study~3 comprises \val{LNRuns} tier B runs on \val{LNMissions} new held-out missions in \val{LNConfigs} configurations
+with five methods. Table~\ref{tab:s3} lists utility per regime, and Fig.~\ref{fig:s3} shows the paired difference of
+the fallback variant minus every other method in each regime.
+
+The study first replicates study~2 on the new seeds. The proposed replanner of study~2 served \val{LDPropRepBuf}\,pp
+more reward than the constant buffer and \val{LDPropRepForty}\,pp more than ALNS with 40\,ms over all configurations. It
+again lost to the constant buffer under high disturbances with halved windows, by \val{LDPropBufHighWHalf}\,pp. The
+weakness that motivated study~3 is therefore systematic and not a property of the seeds of study~2.
+
+The fallback variant reached a utility of \val{LUFB}\%, the highest of all methods. All four primary comparisons were
+significant (Holm-adjusted $p<0.001$). It served \val{LDPropAll}\,pp more reward than the proposed replanner of study~2
+(H5), that is, \val{LURelProp}\% more. Under high disturbances with halved windows, where the proposed replanner had
+lost, it served \val{LDBufHighWHalf}\,pp more than the constant buffer (H6). Over all configurations, it served
+\val{LDFortyAll}\,pp more than ALNS with 40\,ms (H7, \val{LURelForty}\%) and \val{LDBufAll}\,pp more than the constant
+buffer (H8, \val{LURelBuf}\%). Its advantage over the conventional planner was \val{LDConvAll}\,pp, or
+\val{LURelConv}\%.
+
+The gain over the proposed replanner of study~2 is concentrated where the chance constraint gives up tasks. It was
+\val{LDPropHighWHalf}\,pp under high disturbances with halved windows and \val{LDPropMidWHalf}\,pp under mid disturbances
+with halved windows. With the original windows, the two variants were close, with \val{LDPropMidWOne}\,pp under mid
+and \val{LDPropHighWOne}\,pp under high disturbances, as expected, since few tasks are given up there. The fallback
+variant beat the constant buffer, ALNS with 40\,ms and the conventional planner in all four regimes.
+
+The fallback has a price in punctuality. A fallback task is planned against its nominal deadline and is therefore often
+served late. The fallback variant served \val{LLateFB} tasks late per mission, \val{LLateIncProp}\% more than the
+\val{LLateProp} of the proposed replanner of study~2, although still \val{LLateRedForty}\% fewer than ALNS with 40\,ms.
+It also lost \val{LLostFB} tasks per mission to late plans, against none for the proposed replanner and \val{LLostForty}
+for ALNS with 40\,ms. A late service yields no reward, so these attempts cost only flight time, and the tasks that
+are served in time more than make up for it. Where a late arrival has a cost of its own, for example a penalty or a
+wasted resource, the guarantee of Proposition~\ref{prop:cc} and the model of study~2 remain the safer choice. The fallback variant needed \val{LMsFB}\,ms per call, against \val{LMsProp}\,ms
+for the proposed replanner of study~2 (\val{LDMsProp}\,ms).
+
+\inputtable{tab_s3}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s3}{\linewidth}
+\caption{Study~3, tier B: paired difference of the proposed replanner with nominal fallback minus each other method,
+per regime (mean over $\kappa_B$, \val{LNMissions} held-out missions, 95\% bootstrap intervals).}\label{fig:s3}
+\end{figure}

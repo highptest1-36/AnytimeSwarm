@@ -2,6 +2,6 @@ Highlights (Elsevier: 3-5 items, at most 85 characters each, submitted as a sepa
 
 - Chance-constrained replanner for multi-UAV missions under uncertain execution
 - Calibrated finish-time error turns chance constraints into closed-form deadlines
-- Beats literature stopping rules and a robust buffer in pre-registered simulations
+- Beats literature stopping rules and a robust buffer in pre-registered studies
 - Ablations: gain comes from the planning model, not from the stopping rule
-- Kinematic simulator and PX4/Gazebo/ROS 2 flights on frozen held-out missions
+- A nominal fallback for given-up tasks fixes its weak regime on new held-out seeds

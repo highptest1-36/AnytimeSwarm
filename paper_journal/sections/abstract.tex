@@ -1,21 +1,19 @@
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution and stop their search after a fixed time budget. Under wind,
 speed and service-time errors, such plans promise more than the vehicles deliver. This paper proposes AnytimeSwarm-CC, a
-replanner that takes three decisions in every replanning cycle. It replans on events and periodically, plans against a
-chance constraint on the finish time of every task, and stops an anytime adaptive large neighbourhood search when a
-learned prediction of the next improvement no longer exceeds a delay cost. Because the mean and the spread of a
+replanner that replans on events and periodically, plans against a chance constraint on the finish time of every task,
+and stops an anytime adaptive large neighbourhood search with a learned rule. Because the mean and the spread of a
 calibrated finish-time error grow linearly with the lead time, the chance constraint reduces exactly to an effective
-deadline per task, and the fast repair and search heuristics are reused unchanged. The evaluation uses a kinematic
-simulator with disturbances drawn with common random numbers and PX4 software-in-the-loop with Gazebo and ROS~2, and two
-pre-registered studies with frozen code and held-out seeds. In \val{KNRuns} kinematic runs, the proposed replanner
-reached a utility of \val{KUProp}\%. It served \val{KDabsBuf} to \val{KDabsForty} percentage points more reward than
-six baselines, among them stopping rules from the metareasoning literature and a robust time buffer (all Holm-adjusted
-$p<0.001$), \val{KURelConv}\% more than a conventional planner, and \val{KLateRedForty}\% fewer tasks late than a fixed budget of
-40\,ms. Ablations attribute the gain to the chance-constrained model. On this model, the learned stopping rule was
-equivalent to a fixed budget of 40\,ms, and under high disturbances with halved time windows the model was too cautious
-and a constant buffer served more reward. In software-in-the-loop flights of \val{KCN} missions, the proposed
-replanner served \val{KCLateRedForty}\% fewer tasks late than the fixed budget, but the utility differences stayed
-within the noise ($p_\mathrm{Holm}\geq$ \val{KCPForty}), so the gain was not confirmed at this sample size.
+deadline per task, so fast heuristics are reused unchanged. Three pre-registered studies on held-out seeds use a
+kinematic simulator and PX4 software-in-the-loop with Gazebo and ROS~2. In
+\val{KNRuns} kinematic runs, the proposed replanner served \val{KDabsBuf} to \val{KDabsForty} percentage points more
+reward than six baselines, among them metareasoning stopping rules and a robust time buffer (Holm-adjusted $p<0.001$),
+and \val{KURelConv}\% more than a conventional planner. Ablations attribute the gain to the chance-constrained model,
+on which the learned stopping rule was equivalent to a fixed budget. In flights of \val{KCN} missions, the proposed
+replanner served \val{KCLateRedForty}\% fewer tasks late, but utility differences stayed within the noise. Under high
+disturbances with halved time windows, the model was too cautious. On new seeds, a nominal fallback for the tasks that the
+chance constraint gives up served \val{LDabsPropAll} percentage points more reward than the replanner without it and \val{LDabsBufHighWHalf} more than the buffer in that regime (Holm-adjusted $p<0.001$), at the
+price of more late tasks.
 \end{abstract}
 
 \begin{keyword}

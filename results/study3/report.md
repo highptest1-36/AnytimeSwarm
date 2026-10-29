@@ -1,0 +1,30 @@
+# Study 3 (held-out): /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s3_heldout_B.csv
+fallback spec: proposed~fb=nominal+periodic:60
+
+## Primary family (fallback minus method), Holm
+
+| comparison | diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| PropAll | +1.97 [+1.61, +2.33] | 0.0000 | 0.0000 |
+| BufHighWHalf | +3.31 [+2.58, +4.03] | 0.0000 | 0.0000 |
+| FortyAll | +4.61 [+4.15, +5.06] | 0.0000 | 0.0000 |
+| BufAll | +3.59 [+3.17, +4.02] | 0.0000 | 0.0000 |
+
+## Secondary: per regime (fallback minus method; proposed minus buffer = replication)
+
+| regime | FB-Prop | FB-Buf | FB-Forty | FB-Conv | Prop-Buf |
+|---|---|---|---|---|---|
+| mid w1.0 | +0.52 [$-$0.01, +1.06] | +2.75 [+2.09, +3.39] | +4.70 [+3.95, +5.44] | +6.25 [+5.48, +7.01] | +2.23 [+1.59, +2.87] |
+| mid w0.5 | +2.01 [+1.32, +2.71] | +4.41 [+3.71, +5.13] | +3.84 [+3.16, +4.51] | +5.43 [+4.68, +6.15] | +2.40 [+1.85, +2.95] |
+| high w1.0 | +0.11 [$-$0.68, +0.89] | +3.91 [+2.83, +4.99] | +6.29 [+5.34, +7.23] | +7.78 [+6.79, +8.77] | +3.80 [+2.86, +4.72] |
+| high w0.5 | +5.25 [+4.49, +6.05] | +3.31 [+2.58, +4.03] | +3.61 [+2.94, +4.30] | +5.31 [+4.59, +6.02] | $-$1.95 [$-$2.72, $-$1.20] |
+
+FB minus conventional, pooled: +6.19 [+5.69, +6.69] (p 0.0000)
+
+| method | U | late | lost | skipped | ms |
+|---|---|---|---|---|---|
+| Proposed with fallback | 54.40 | 8.33 | 1.55 | 12.51 | 55.0 |
+| Proposed (study 2) | 52.42 | 5.70 | 0.00 | 6.70 | 57.4 |
+| Constant 60 s buffer | 50.80 | 6.62 | 0.00 | 13.61 | 40.1 |
+| ALNS, fixed 40 ms | 49.79 | 11.18 | 3.29 | 37.38 | 40.1 |
+| Conventional (40 ms, event-only) | 48.20 | 10.27 | 3.00 | 15.41 | 40.1 |

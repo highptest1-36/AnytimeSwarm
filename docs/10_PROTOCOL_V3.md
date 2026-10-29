@@ -47,3 +47,11 @@ C hay lưới khác. Máy đồng thời được dùng cho trình duyệt (ghi 
 
 ## 7. Sai lệch
 (trống khi đóng băng)
+- Không có sai lệch trong lượt chạy (29/10/2026 06:07–07:16 UTC, 16 200 lượt, hash khớp). Sau khi chạy, thêm
+  `experiments/paper_study3_extras.py` (không đóng băng, chỉ mô tả): số tương đối, task mất/bỏ, và vẽ lại fig_s3.pdf với
+  nhãn đúng ("ALNS" bị viết thường trong bản đóng băng) và chú thích hai cột; khoảng tin cậy và kiểm định không đổi.
+
+## 8. Kết quả (held-out 7000–7029, results/study3/report.md)
+H5–H8 đều đạt (Holm p < 0,001): fallback trừ proposed +1,97 [+1,61; +2,33]; trừ đệm ở high×0,5 +3,31 [+2,58; +4,03];
+trừ ALNS 40 ms +4,61 [+4,15; +5,06]; trừ đệm +3,59 [+3,17; +4,02]. Lặp lại nghiên cứu 2: proposed thua đệm ở high×0,5
+−1,95 [−2,72; −1,20] (điểm yếu có hệ thống). Đánh đổi: trễ 8,33 so với 5,70 task/nhiệm vụ, mất 1,55 so với 0.

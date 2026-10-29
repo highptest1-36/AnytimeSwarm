@@ -62,7 +62,14 @@ báo cáo cỡ hiệu ứng và phân tích công suất. Đồng hồ: dùng wa
       H1 đạt 6/6 (proposed hơn +1,35 [buffer] đến +2,87 pp [ALNS 40 ms], Holm p<0,001); H2 đạt (+4,44 pp, +9,3%);
       H3 tương đương (TOST 90% CI +0,22 [+0,09, +0,35]) → lợi ích đến từ mô hình chance-constrained, không từ luật dừng.
       Thua ở high + cửa sổ ×0,5 (−2,0 pp so với buffer, −1,6 pp so với ALNS 40 ms): mô hình quá thận trọng.
-- [ ] P5 held-out tầng C (6000–6009), đang chạy từ 15:10 UTC 28/10 (~4,3 phút/chuyến, 120 chuyến)
+- [x] P5 held-out tầng C (6000–6009), 120 chuyến, xong 29/10 05:31 UTC. 46 lượt RTF ngoài [1,6; 2,2] bay lại một lần
+      (laptop dùng chung với trình duyệt; 77/120 lượt phân tích nằm trong khoảng). H4 KHÔNG đạt: proposed −0,25 [−4,0; +3,6]
+      so với ALNS 40 ms, +1,28 [−2,2; +4,6] so với thông thường (Holm p 0,94). Độ nhạy (bản gốc / chỉ RTF hợp lệ) cùng kết
+      luận. Proposed trễ ít hơn 25%, không bỏ task. Tầng B trên cùng 30 nhiệm vụ cũng không ý nghĩa; cần ~118 nhiệm vụ.
 - [x] P6 phân tích, hình, bảng tầng B (fig_s2_main, fig_s2_regime, tab_s2_main, tab_s2_regime)
 - [x] P7 viết lại bản thảo: tiêu đề, tóm tắt, giới thiệu, kết quả NC2, thảo luận, kết luận, highlights
-      (còn 3 chỗ chờ tầng C: KAbstractTierC, KDiscTierC, KConclTierC + mục 6.4.4)
+      (chỗ chờ tầng C đã điền, commit 262ced8)
+- [x] P8 nghiên cứu 3 (fallback danh nghĩa cho task bị mô hình CC bỏ): dev seed 0–9 chọn fb=nominal (Go), protocol
+      docs/10_PROTOCOL_V3.md đóng băng commit 281b67a, held-out tầng B seed 7000–7029 (16 200 lượt, 29/10 06:07–07:16 UTC).
+      H5–H8 đạt (Holm p<0,001): +1,97 pp so với proposed (+3,8%), +3,31 so với đệm ở high×0,5, +4,61 so với ALNS 40 ms,
+      +3,59 so với đệm; +6,19 (+12,8%) so với thông thường. Đánh đổi: trễ +46%, mất 1,55 task. Chưa bay tầng C.

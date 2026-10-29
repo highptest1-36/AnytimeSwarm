@@ -24,6 +24,8 @@
 \IfFileExists{tables/static_numbers_scale.tex}{\input{tables/static_numbers_scale.tex}}{}
 \IfFileExists{tables/numbers.tex}{\input{tables/numbers.tex}}{}
 \IfFileExists{tables/numbers_s2.tex}{\input{tables/numbers_s2.tex}}{}
+\IfFileExists{tables/numbers_s3.tex}{\input{tables/numbers_s3.tex}}{}
+\IfFileExists{tables/numbers_s3x.tex}{\input{tables/numbers_s3x.tex}}{}
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
 \newcommand{\inputtable}[1]{\IfFileExists{tables/#1.tex}{\input{tables/#1.tex}}{\todo{table \detokenize{#1}}}}

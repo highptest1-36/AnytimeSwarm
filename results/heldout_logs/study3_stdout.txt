@@ -1,0 +1,5 @@
+[study3] 2026-10-29T06:07:32+00:00 freeze check
+[study3] 2026-10-29T06:07:32+00:00 tier B S3_B
+[ok] 16200 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s3_heldout_B.csv
+[study3] 2026-10-29T07:16:04+00:00 analysis
+[study3] 2026-10-29T07:16:07+00:00 done
