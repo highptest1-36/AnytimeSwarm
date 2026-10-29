@@ -1,0 +1,26 @@
+# Study 4, tier B (docs/12_PROTOCOL_V4.md): planning models on the same search, fallback for moment propagation,
+# online calibration. Frozen before any study-4 held-out run. Options inside a method are separated by ";".
+frozen: true
+heldout_seeds: {start: 8000, n: 30}
+grid:
+  name: s4_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [mid, high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@40~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40~prop=auto;fb=nominal+periodic:60"
+    - "alns_fixed@40~mp=auto;fb=nominal+periodic:60"
+    - "alns_fixed@40~mp=auto+periodic:60"
+    - "alns_fixed@40~online=auto;fb=nominal+periodic:60"
+    - "proposed~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40~buf=60+periodic:60"
+    - "alns_fixed@40+periodic:60"
+    - "alns_fixed@40+event"
+    - "regret_repair~z=auto4;fb=nominal+periodic:60"
+    - "regret_repair+periodic:60"
+  workers: 4

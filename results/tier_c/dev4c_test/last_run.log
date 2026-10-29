@@ -1,0 +1,28 @@
+[run] gz-arrivals-3_proposed~z=0.5,fb=nominal_k50_periodic60_high_w0.5  gui=0 rviz=0 speed=2 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_c/dev4c_test/gz-arrivals-3_proposed~z=0.5,fb=nominal.json
+[INFO] [1793289964.091950379] [atswarm_mission_manager]: gz-arrivals-3-w0.5: method=proposed~z=0.5,fb=nominal budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=periodic:60
+[INFO] [1793289970.343442378] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793289970.369470814] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 17.4 ms, 102 it, stop=adaptive, release at 0.22s, open=8
+[INFO] [1793289977.915705010] [atswarm_mission_manager]: replan #1 (periodic) t=15.0s: 63.9 ms, 418 it, stop=adaptive, release at 15.80s, open=7
+[INFO] [1793289985.481372128] [atswarm_mission_manager]: replan #2 (periodic) t=30.0s: 78.7 ms, 1236 it, stop=adaptive, release at 30.98s, open=6
+[INFO] [1793289991.268814602] [atswarm_mission_manager]: replan #3 (event) t=41.7s: 17.4 ms, 122 it, stop=adaptive, release at 41.92s, open=8
+[INFO] [1793289998.812173953] [atswarm_mission_manager]: replan #4 (periodic) t=56.7s: 57.4 ms, 1053 it, stop=adaptive, release at 57.42s, open=5
+[INFO] [1793290006.354201257] [atswarm_mission_manager]: replan #5 (periodic) t=71.7s: 74.3 ms, 1044 it, stop=adaptive, release at 72.63s, open=4
+[INFO] [1793290011.305452867] [atswarm_mission_manager]: replan #6 (event) t=81.5s: 94.4 ms, 1013 it, stop=adaptive, release at 82.68s, open=4
+[INFO] [1793290021.268828419] [atswarm_mission_manager]: replan #7 (periodic) t=96.5s: 32.4 ms, 606 it, stop=adaptive, release at 96.91s, open=1
+[INFO] [1793290032.621327876] [atswarm_mission_manager]: replan #8 (periodic) t=111.5s: 55.3 ms, 622 it, stop=adaptive, release at 112.19s, open=1
+[INFO] [1793290044.845997780] [atswarm_mission_manager]: replan #9 (periodic) t=126.5s: 22.2 ms, 512 it, stop=adaptive, release at 126.78s, open=1
+[INFO] [1793290051.327809770] [atswarm_mission_manager]: replan #10 (event) t=139.4s: 37.3 ms, 778 it, stop=adaptive, release at 139.87s, open=2
+[INFO] [1793290058.867418529] [atswarm_mission_manager]: replan #11 (periodic) t=154.4s: 53.4 ms, 777 it, stop=adaptive, release at 155.07s, open=2
+[INFO] [1793290066.372024341] [atswarm_mission_manager]: replan #12 (periodic) t=169.4s: 52.4 ms, 764 it, stop=adaptive, release at 170.05s, open=2
+[INFO] [1793290073.968269490] [atswarm_mission_manager]: replan #13 (periodic) t=184.4s: 32.4 ms, 600 it, stop=adaptive, release at 184.80s, open=1
+[INFO] [1793290081.514108083] [atswarm_mission_manager]: replan #14 (periodic) t=199.4s: 27.3 ms, 595 it, stop=adaptive, release at 199.74s, open=1
+[INFO] [1793290115.778682565] [atswarm_mission_manager]: replan #15 (event) t=266.5s: 37.8 ms, 650 it, stop=adaptive, release at 266.97s, open=1
+[INFO] [1793290116.159543955] [atswarm_mission_manager]: replan #16 (event) t=267.3s: 23.1 ms, 132 it, stop=adaptive, release at 267.59s, open=2
+[INFO] [1793290123.709204302] [atswarm_mission_manager]: replan #17 (periodic) t=282.3s: 42.3 ms, 718 it, stop=adaptive, release at 282.83s, open=2
+[INFO] [1793290129.913955553] [atswarm_mission_manager]: replan #18 (event) t=294.7s: 27.8 ms, 187 it, stop=adaptive, release at 295.05s, open=3
+[INFO] [1793290137.434362661] [atswarm_mission_manager]: replan #19 (periodic) t=309.7s: 42.5 ms, 735 it, stop=adaptive, release at 310.23s, open=2
+[INFO] [1793290144.950476961] [atswarm_mission_manager]: replan #20 (periodic) t=324.7s: 42.4 ms, 758 it, stop=adaptive, release at 325.23s, open=2
+[INFO] [1793290152.537464664] [atswarm_mission_manager]: replan #21 (periodic) t=339.7s: 42.3 ms, 759 it, stop=adaptive, release at 340.23s, open=2
+[INFO] [1793290161.410177552] [atswarm_mission_manager]: replan #22 (periodic) t=354.7s: 37.9 ms, 587 it, stop=adaptive, release at 355.17s, open=1
+[INFO] [1793290170.956852641] [atswarm_mission_manager]: MISSION END t=373.6s utility=0.242 served=3/15 late=1 replans=23 plan_ms=44.0 RTF=1.86 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_c/dev4c_test/gz-arrivals-3_proposed~z=0.5,fb=nominal.json
+[run] done -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_c/dev4c_test/gz-arrivals-3_proposed~z=0.5,fb=nominal.json

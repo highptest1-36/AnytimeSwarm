@@ -1,0 +1,11 @@
+[batch] calib_dev_high profiles=(arrivals failures deadlines) seeds=(0 1 2) methods=(alns_fixed@40) kappa_B=10 trigger=event speed=2 exec=high windows=1
+[batch] 2026-10-29T15:26:21+00:00 ok  gz-arrivals-0 alns_fixed@40: MISSION END t=400.8s utility=0.478
+[batch] 2026-10-29T15:31:05+00:00 ok  gz-failures-0 alns_fixed@40: MISSION END t=423.7s utility=0.417
+[batch] 2026-10-29T15:34:11+00:00 ok  gz-deadlines-0 alns_fixed@40: MISSION END t=249.0s utility=0.111
+[batch] 2026-10-29T15:38:16+00:00 ok  gz-arrivals-1 alns_fixed@40: MISSION END t=350.7s utility=0.375
+[batch] 2026-10-29T15:43:55+00:00 ok  gz-failures-1 alns_fixed@40: MISSION END t=472.5s utility=0.400
+[batch] 2026-10-29T15:48:11+00:00 ok  gz-deadlines-1 alns_fixed@40: MISSION END t=337.8s utility=0.423
+[batch] 2026-10-29T15:53:20+00:00 ok  gz-arrivals-2 alns_fixed@40: MISSION END t=434.9s utility=0.375
+[batch] 2026-10-29T15:56:44+00:00 ok  gz-failures-2 alns_fixed@40: MISSION END t=279.0s utility=0.233
+[batch] 2026-10-29T16:01:02+00:00 ok  gz-deadlines-2 alns_fixed@40: MISSION END t=381.4s utility=0.462
+[batch] calib_dev_high done

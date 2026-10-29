@@ -20,10 +20,14 @@ variables~\cite{gendreau1996stochastic}. With hard time windows and stochastic s
 recourse~\cite{errico2016apriori} and robust formulations over budgeted uncertainty
 sets~\cite{agra2013robust} protect the schedule against delays, at the price of a harder model. Scenario-based
 approaches plan against sampled futures~\cite{bent2004scenario}, and chance-constrained task allocation bounds the
-probability that a team misses its objectives~\cite{ponda2012chance}. The proposed model follows this line. It exploits
-one structural property, an error whose mean and spread grow linearly with the lead time, under which a per-task chance
-constraint becomes a deterministic deadline and the heuristics of the nominal model apply unchanged. A constant time
-buffer, the simplest robust alternative, serves as a baseline.
+probability that a team misses its objectives~\cite{ponda2012chance}. Per-customer chance constraints on the service
+time windows were formulated for routing with stochastic travel and service times by Li et al.~\cite{li2010vrptw}.
+Ehmke et al.~\cite{ehmke2015ensuring} propagate the mean and variance of the arrival time along a route, approximate
+the waiting for a time window by Clark's moments of a maximum~\cite{clark1961greatest}, and use the result as a
+feasibility check inside routing heuristics. The proposed model differs in three respects. Its error model is fitted
+to the finish times observed in closed loop rather than assumed per arc, it is applied in a replanner that runs between
+events with a publication delay, and it adds a fallback for the tasks that a hard chance constraint gives up. Moment
+propagation, a proportional buffer and a constant buffer are re-implemented as baselines on the same search.
 
 \paragraph{Metareasoning and anytime algorithms} Anytime algorithms~\cite{dean1988analysis,zilberstein1996using} and the
 rational allocation of computation~\cite{russell1991right,boddy1994deliberation} decide how long a

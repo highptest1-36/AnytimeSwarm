@@ -1,0 +1,14 @@
+# Study 4C: tier B counterpart of the tier C held-out missions (docs/12_PROTOCOL_V4.md section 7). Frozen.
+frozen: true
+heldout_seeds: {start: 9000, n: 12}
+grid:
+  name: s4c_heldout_B_gz
+  split: heldout
+  scales: [gz]
+  exec: [high]
+  lat: [none]
+  kappas: [50]
+  windows: [0.5]
+  ms_per_task: 1.0
+  methods: ["proposed~z=0.5;fb=nominal+periodic:60", "proposed~z=0.5+periodic:60", "alns_fixed@40+periodic:60"]
+  workers: 4

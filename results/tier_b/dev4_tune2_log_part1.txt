@@ -1,0 +1,111 @@
+[grid] DESKTOP-92H01CI: 90 missions x 132 configurations, workers=8
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  mid  high k= 10 w=1 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.6979 late= 7.93 dropD= 0.30 dropX=23.24 calls= 24.8 ms=  40.2 (13s)
+  mid  high k= 10 w=1 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.7136 late= 7.18 dropD= 0.24 dropX=17.00 calls= 24.1 ms=  40.2 (25s)
+  mid  high k= 10 w=1 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.7299 late= 6.20 dropD= 0.39 dropX=10.24 calls= 23.7 ms=  40.2 (38s)
+  mid  high k= 10 w=1 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.7496 late= 4.92 dropD= 0.51 dropX= 6.70 calls= 23.7 ms=  40.2 (50s)
+  mid  high k= 10 w=1 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.7421 late= 4.33 dropD= 0.60 dropX= 7.40 calls= 23.5 ms=  40.2 (63s)
+  mid  high k= 10 w=1 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.7453 late= 4.19 dropD= 0.64 dropX= 9.30 calls= 23.4 ms=  40.2 (74s)
+  mid  high k= 10 w=1 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.7428 late= 4.37 dropD= 1.01 dropX=10.88 calls= 23.6 ms=  40.4 (87s)
+  mid  high k= 10 w=1 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.7363 late= 4.58 dropD= 1.08 dropX=11.66 calls= 23.6 ms=  40.3 (99s)
+  mid  high k= 10 w=1 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.7402 late= 4.33 dropD= 0.97 dropX=12.13 calls= 22.8 ms=  40.2 (112s)
+  mid  high k= 10 w=1 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.7157 late= 4.42 dropD= 1.10 dropX=18.13 calls= 23.4 ms=  40.2 (123s)
+  mid  high k= 10 w=1 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.7182 late= 5.19 dropD= 1.18 dropX=21.80 calls= 23.6 ms=  40.2 (136s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.4962 late= 8.23 dropD= 0.54 dropX= 6.14 calls= 20.8 ms=  40.2 (146s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.5071 late= 7.00 dropD= 0.78 dropX= 4.51 calls= 20.7 ms=  40.1 (157s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.5103 late= 6.60 dropD= 0.92 dropX= 3.13 calls= 20.9 ms=  40.1 (168s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.5092 late= 5.94 dropD= 1.22 dropX= 3.12 calls= 21.2 ms=  40.1 (179s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.5153 late= 5.57 dropD= 1.30 dropX= 4.46 calls= 21.0 ms=  40.1 (189s)
+  mid  high k= 10 w=0.5 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.5052 late= 5.84 dropD= 1.52 dropX= 5.46 calls= 21.1 ms=  40.1 (201s)
+  mid  high k= 10 w=0.5 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.5007 late= 5.96 dropD= 2.00 dropX= 4.47 calls= 21.1 ms=  40.2 (211s)
+  mid  high k= 10 w=0.5 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.4972 late= 6.34 dropD= 2.13 dropX= 4.88 calls= 21.1 ms=  40.2 (223s)
+  mid  high k= 10 w=0.5 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.4895 late= 6.49 dropD= 1.73 dropX= 6.19 calls= 21.0 ms=  40.4 (234s)
+  mid  high k= 10 w=0.5 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.4852 late= 7.11 dropD= 1.84 dropX= 8.12 calls= 21.0 ms=  40.2 (246s)
+  mid  high k= 10 w=0.5 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.4756 late= 7.81 dropD= 1.92 dropX= 9.90 calls= 21.1 ms=  40.1 (256s)
+  mid  high k= 50 w=1 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.6971 late= 7.94 dropD= 0.40 dropX=23.27 calls= 24.6 ms=  40.2 (270s)
+  mid  high k= 50 w=1 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.7080 late= 7.20 dropD= 0.51 dropX=16.43 calls= 24.3 ms=  41.1 (283s)
+  mid  high k= 50 w=1 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.7224 late= 6.13 dropD= 0.56 dropX=11.20 calls= 23.9 ms=  40.4 (297s)
+  mid  high k= 50 w=1 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.7425 late= 4.96 dropD= 0.61 dropX= 7.31 calls= 23.9 ms=  40.2 (309s)
+  mid  high k= 50 w=1 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.7401 late= 4.21 dropD= 0.94 dropX= 6.92 calls= 23.7 ms=  40.2 (322s)
+  mid  high k= 50 w=1 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.7324 late= 4.41 dropD= 1.09 dropX= 9.20 calls= 23.4 ms=  40.3 (334s)
+  mid  high k= 50 w=1 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.7407 late= 4.31 dropD= 1.43 dropX=10.27 calls= 23.7 ms=  40.6 (348s)
+  mid  high k= 50 w=1 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.7376 late= 4.58 dropD= 1.43 dropX=11.33 calls= 23.7 ms=  40.4 (361s)
+  mid  high k= 50 w=1 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.7325 late= 4.27 dropD= 1.13 dropX=12.71 calls= 23.4 ms=  40.4 (374s)
+  mid  high k= 50 w=1 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.7113 late= 4.50 dropD= 1.43 dropX=18.52 calls= 23.5 ms=  40.2 (386s)
+  mid  high k= 50 w=1 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.7162 late= 5.17 dropD= 1.50 dropX=20.67 calls= 23.1 ms=  40.2 (398s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.4855 late= 8.18 dropD= 0.74 dropX= 6.28 calls= 20.9 ms=  40.2 (409s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.5020 late= 6.79 dropD= 1.18 dropX= 4.43 calls= 20.8 ms=  40.1 (420s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.5016 late= 6.74 dropD= 1.40 dropX= 3.13 calls= 20.9 ms=  40.1 (431s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.5028 late= 5.74 dropD= 1.84 dropX= 2.80 calls= 21.2 ms=  40.1 (443s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.5055 late= 5.70 dropD= 1.99 dropX= 4.00 calls= 21.2 ms=  40.3 (454s)
+  mid  high k= 50 w=0.5 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.4950 late= 5.82 dropD= 2.33 dropX= 5.97 calls= 21.1 ms=  40.2 (465s)
+  mid  high k= 50 w=0.5 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.4941 late= 5.94 dropD= 2.84 dropX= 4.60 calls= 21.2 ms=  40.2 (477s)
+  mid  high k= 50 w=0.5 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.4916 late= 6.32 dropD= 2.67 dropX= 4.89 calls= 21.2 ms=  40.2 (488s)
+  mid  high k= 50 w=0.5 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.4849 late= 6.43 dropD= 2.47 dropX= 6.16 calls= 21.2 ms=  40.2 (500s)
+  mid  high k= 50 w=0.5 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.4809 late= 6.82 dropD= 2.89 dropX= 8.06 calls= 21.1 ms=  40.1 (511s)
+  mid  high k= 50 w=0.5 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.4732 late= 7.34 dropD= 2.68 dropX= 9.36 calls= 21.3 ms=  40.1 (522s)
+  mid  high k=200 w=1 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.7001 late= 7.63 dropD= 0.83 dropX=23.20 calls= 24.4 ms=  40.2 (535s)
+  mid  high k=200 w=1 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.7004 late= 7.30 dropD= 0.81 dropX=16.63 calls= 24.1 ms=  40.3 (547s)
+  mid  high k=200 w=1 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.7183 late= 6.13 dropD= 0.99 dropX=10.66 calls= 23.8 ms=  40.2 (560s)
+  mid  high k=200 w=1 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.7336 late= 5.07 dropD= 1.28 dropX= 7.16 calls= 24.0 ms=  40.2 (573s)
+  mid  high k=200 w=1 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.7307 late= 4.22 dropD= 1.80 dropX= 7.67 calls= 23.6 ms=  40.2 (586s)
+  mid  high k=200 w=1 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.7328 late= 4.13 dropD= 1.96 dropX= 9.31 calls= 23.6 ms=  40.2 (599s)
+  mid  high k=200 w=1 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.7366 late= 4.20 dropD= 2.78 dropX= 9.43 calls= 24.1 ms=  40.4 (612s)
+  mid  high k=200 w=1 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.7315 late= 4.40 dropD= 2.91 dropX=11.42 calls= 23.5 ms=  40.4 (625s)
+  mid  high k=200 w=1 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.7306 late= 3.93 dropD= 2.42 dropX=11.76 calls= 22.9 ms=  40.2 (638s)
+  mid  high k=200 w=1 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.7105 late= 4.38 dropD= 2.98 dropX=17.43 calls= 23.4 ms=  40.1 (650s)
+  mid  high k=200 w=1 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.7133 late= 4.84 dropD= 3.14 dropX=20.30 calls= 23.4 ms=  40.2 (662s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.4739 late= 8.19 dropD= 1.56 dropX= 6.31 calls= 21.1 ms=  40.1 (673s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.4811 late= 6.97 dropD= 2.00 dropX= 4.63 calls= 20.9 ms=  40.1 (685s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.4779 late= 6.62 dropD= 2.68 dropX= 3.00 calls= 21.0 ms=  40.2 (696s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.4756 late= 5.87 dropD= 3.37 dropX= 3.11 calls= 21.1 ms=  40.1 (707s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.4751 late= 5.47 dropD= 4.08 dropX= 3.59 calls= 21.1 ms=  40.1 (718s)
+  mid  high k=200 w=0.5 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.4721 late= 5.33 dropD= 4.86 dropX= 5.02 calls= 21.3 ms=  40.1 (730s)
+  mid  high k=200 w=0.5 alns_fixed@40~mp=1.5;fb=nominal+periodic:60 periodic:60      U=0.4713 late= 5.34 dropD= 5.42 dropX= 4.29 calls= 21.2 ms=  40.1 (741s)
+  mid  high k=200 w=0.5 alns_fixed@40~mp=2;fb=nominal+periodic:60 periodic:60      U=0.4720 late= 5.93 dropD= 5.28 dropX= 4.69 calls= 21.1 ms=  40.2 (753s)
+  mid  high k=200 w=0.5 alns_fixed@40~prop=0.6;fb=nominal+periodic:60 periodic:60      U=0.4692 late= 5.94 dropD= 4.71 dropX= 5.69 calls= 21.2 ms=  40.1 (764s)
+  mid  high k=200 w=0.5 alns_fixed@40~prop=0.8;fb=nominal+periodic:60 periodic:60      U=0.4578 late= 6.52 dropD= 5.34 dropX= 7.03 calls= 21.2 ms=  40.1 (775s)
+  mid  high k=200 w=0.5 alns_fixed@40~prop=1.0;fb=nominal+periodic:60 periodic:60      U=0.4564 late= 6.94 dropD= 5.83 dropX= 8.04 calls= 21.3 ms=  40.1 (786s)
+  high high k= 10 w=1 alns_fixed@40~z=0;fb=nominal+periodic:60 periodic:60      U=0.5508 late=11.29 dropD= 0.63 dropX=31.54 calls= 25.9 ms=  40.2 (800s)
+  high high k= 10 w=1 alns_fixed@40~z=0.25;fb=nominal+periodic:60 periodic:60      U=0.5701 late=10.39 dropD= 0.84 dropX=27.81 calls= 25.8 ms=  40.2 (814s)
+  high high k= 10 w=1 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.5806 late= 9.70 dropD= 1.10 dropX=30.02 calls= 25.7 ms=  40.2 (828s)
+  high high k= 10 w=1 alns_fixed@40~z=1;fb=nominal+periodic:60 periodic:60      U=0.5691 late= 9.66 dropD= 1.36 dropX=40.29 calls= 25.7 ms=  40.2 (841s)
+  high high k= 10 w=1 alns_fixed@40~z=1.5;fb=nominal+periodic:60 periodic:60      U=0.5629 late=10.43 dropD= 1.61 dropX=49.81 calls= 25.5 ms=  40.2 (855s)
+  high high k= 10 w=1 alns_fixed@40~z=2;fb=nominal+periodic:60 periodic:60      U=0.5452 late=11.33 dropD= 1.77 dropX=56.09 calls= 25.7 ms=  40.2 (869s)
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/multiprocessing/pool.py", line 48, in mapstar
+    return list(map(*args))
+           ^^^^^^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/experiments/b4_grid.py", line 93, in _one4
+    r = run_mission_kin(tighten_windows(copy.deepcopy(sc), wf), cfg, base, budget or B, kappa=kappa, xm=xm,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/journal_core/kinematic_executor.py", line 243, in run_mission_kin
+    res = solver(method, P, old, budget_ms, cfg, seed=seed * 1000 + call, predictor=predictor, kappa=kappa,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/journal_core/study4.py", line 216, in solve4
+    out = solve2(base, Q, old_routes, budget_ms, cfg, seed, predictor, kappa, spread, latency_mean_s, None,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/journal_core/study2.py", line 208, in solve2
+    raise RuntimeError(f"{base} produced an infeasible plan: {errs[:3]}")
+RuntimeError: alns_fixed produced an infeasible plan: ['infeasible route for uav 9 at task 17']
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/experiments/b4_grid.py", line 109, in <module>
+    b2_grid.main()
+  File "/mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/experiments/b2_grid.py", line 155, in main
+    batch = pool.map(_one, [(sc, xl, ll, k, wf, m, tr, B) for sc in scen], chunksize=1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/multiprocessing/pool.py", line 367, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/multiprocessing/pool.py", line 774, in get
+    raise self._value
+RuntimeError: alns_fixed produced an infeasible plan: ['infeasible route for uav 9 at task 17']
