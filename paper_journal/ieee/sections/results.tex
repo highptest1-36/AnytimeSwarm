@@ -70,7 +70,17 @@ Holm-adjusted $p<0.001$ in both cases. Against the conventional planner, the adv
 \val{QURelCCConv}\%. All three advantages held in each of the four regimes (Fig.~\ref{fig:s4}). The proposed model
 served \val{QLateCC} tasks late per mission, \val{QLateRedForty}\% fewer than the \val{QLateForty} of the nominal model.
 The gain does not depend on the search. With repair only and no ALNS, the proposed model still served
-\val{XDabsRepCCRep}\,pp more than the nominal one.
+\val{XDabsRepCCRep}\,pp more than the nominal one. Across the three independent sets of held-out seeds, every advantage
+over the constant buffer, the nominal model and the conventional planner was significant, and each grew once the
+fallback was added (Fig.~\ref{fig:replication}).
+
+\begin{figure}[t]
+\centering
+\fig{fig_replication}{\linewidth}
+\caption{Replication on three independent sets of held-out tier B seeds: utility of the proposed replanner minus each
+method, pooled over twelve configurations, with 95\% paired bootstrap intervals over 270 missions per study. Study~2
+used the replanner without fallback.}\label{fig:replication}
+\end{figure}
 
 \inputtable{tab_s4}
 
