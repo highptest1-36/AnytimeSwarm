@@ -1,0 +1,353 @@
+{
+ "scenario": "gz-failures-6007",
+ "profile": "failures",
+ "seed": 6007,
+ "method": "proposed",
+ "budget_ms": 250.0,
+ "exec_level": "mid",
+ "kappa_b": 50.0,
+ "kappa_c": 12.5,
+ "trigger": "periodic:60",
+ "n_tasks": 15,
+ "served": 8,
+ "completion_rate": 0.5333333333333333,
+ "utility_rate": 0.6,
+ "late_served": 1,
+ "dropped_by_delay": 0,
+ "dropped_in_exec": 0,
+ "reassignments": 0,
+ "distance_km": 2.0348605251855916,
+ "mission_J": 13.982569737407204,
+ "n_replans": 19,
+ "n_extra_replans": 14,
+ "plan_ms_mean": 57.21784368392668,
+ "plan_ms_p95": 103.27311418950553,
+ "accept_latency_s_mean": 0.11999999999999782,
+ "accept_latency_s_p95": 0.2079999999999984,
+ "mission_time_s": 271.8,
+ "wall_s": 197.66256480800803,
+ "rtf": 1.375070693148207,
+ "finish_err_mean_s": 5.105697449369595,
+ "finish_err_p95_s": 32.19085487039723,
+ "_replans": [
+  {
+   "call": 0,
+   "why": "start",
+   "t_trigger": 0.0,
+   "t_snapshot": 0.0,
+   "t_publish": 0.30224410016089676,
+   "planning_ms": 24.179528012871742,
+   "iters": 36,
+   "stop": "adaptive",
+   "J": 10.886150025378692,
+   "n_open": 8,
+   "n_uav": 3
+  },
+  {
+   "call": 1,
+   "why": "periodic",
+   "t_trigger": 15.0,
+   "t_snapshot": 15.0,
+   "t_publish": 15.48943914975971,
+   "planning_ms": 39.15513198077679,
+   "iters": 137,
+   "stop": "adaptive",
+   "J": 4.176725660983376,
+   "n_open": 5,
+   "n_uav": 3
+  },
+  {
+   "call": 2,
+   "why": "event",
+   "t_trigger": 20.494856704678654,
+   "t_snapshot": 20.5,
+   "t_publish": 21.50519688744098,
+   "planning_ms": 80.41575099527836,
+   "iters": 129,
+   "stop": "adaptive",
+   "J": 6.062884438547913,
+   "n_open": 8,
+   "n_uav": 3
+  },
+  {
+   "call": 3,
+   "why": "periodic",
+   "t_trigger": 35.5,
+   "t_snapshot": 35.5,
+   "t_publish": 36.48555302508176,
+   "planning_ms": 78.8442420065403,
+   "iters": 139,
+   "stop": "adaptive",
+   "J": 6.062884438547913,
+   "n_open": 8,
+   "n_uav": 3
+  },
+  {
+   "call": 4,
+   "why": "event",
+   "t_trigger": 38.049443913114814,
+   "t_snapshot": 38.099999999999994,
+   "t_publish": 39.01800850015133,
+   "planning_ms": 73.4406800121069,
+   "iters": 120,
+   "stop": "adaptive",
+   "J": 8.038258197855782,
+   "n_open": 9,
+   "n_uav": 3
+  },
+  {
+   "call": 5,
+   "why": "periodic",
+   "t_trigger": 53.099999999999994,
+   "t_snapshot": 53.099999999999994,
+   "t_publish": 54.32922674994915,
+   "planning_ms": 98.33813999593258,
+   "iters": 114,
+   "stop": "adaptive",
+   "J": 5.2239104836392025,
+   "n_open": 7,
+   "n_uav": 3
+  },
+  {
+   "call": 6,
+   "why": "periodic",
+   "t_trigger": 68.1,
+   "t_snapshot": 68.1,
+   "t_publish": 69.13372781258076,
+   "planning_ms": 82.69822500646114,
+   "iters": 163,
+   "stop": "adaptive",
+   "J": 5.2239104836392025,
+   "n_open": 7,
+   "n_uav": 3
+  },
+  {
+   "call": 7,
+   "why": "periodic",
+   "t_trigger": 83.1,
+   "t_snapshot": 83.1,
+   "t_publish": 84.36459673736243,
+   "planning_ms": 101.16773898899555,
+   "iters": 259,
+   "stop": "adaptive",
+   "J": 2.3484077154291803,
+   "n_open": 6,
+   "n_uav": 3
+  },
+  {
+   "call": 8,
+   "why": "periodic",
+   "t_trigger": 98.1,
+   "t_snapshot": 98.1,
+   "t_publish": 99.62776863742619,
+   "planning_ms": 122.2214909940958,
+   "iters": 1002,
+   "stop": "adaptive",
+   "J": -0.5097263929109747,
+   "n_open": 4,
+   "n_uav": 3
+  },
+  {
+   "call": 9,
+   "why": "periodic",
+   "t_trigger": 113.1,
+   "t_snapshot": 113.1,
+   "t_publish": 113.9468521123752,
+   "planning_ms": 67.74816899001598,
+   "iters": 886,
+   "stop": "adaptive",
+   "J": -0.5097263929109747,
+   "n_open": 3,
+   "n_uav": 3
+  },
+  {
+   "call": 10,
+   "why": "event",
+   "t_trigger": 119.74695009383989,
+   "t_snapshot": 119.80000000000001,
+   "t_publish": 120.5215969124809,
+   "planning_ms": 57.72775299847126,
+   "iters": 1059,
+   "stop": "adaptive",
+   "J": -0.4462340844106988,
+   "n_open": 4,
+   "n_uav": 2
+  },
+  {
+   "call": 11,
+   "why": "periodic",
+   "t_trigger": 134.8,
+   "t_snapshot": 134.8,
+   "t_publish": 135.58275476228448,
+   "planning_ms": 62.620380982756615,
+   "iters": 1061,
+   "stop": "adaptive",
+   "J": -0.4462340844106988,
+   "n_open": 4,
+   "n_uav": 2
+  },
+  {
+   "call": 12,
+   "why": "periodic",
+   "t_trigger": 149.8,
+   "t_snapshot": 149.8,
+   "t_publish": 150.5869063500315,
+   "planning_ms": 62.95250800251961,
+   "iters": 955,
+   "stop": "adaptive",
+   "J": -0.4462340844106988,
+   "n_open": 3,
+   "n_uav": 2
+  },
+  {
+   "call": 13,
+   "why": "periodic",
+   "t_trigger": 164.8,
+   "t_snapshot": 164.8,
+   "t_publish": 165.39402973763646,
+   "planning_ms": 47.522379010915756,
+   "iters": 770,
+   "stop": "adaptive",
+   "J": -0.4462340844106988,
+   "n_open": 2,
+   "n_uav": 2
+  },
+  {
+   "call": 14,
+   "why": "event",
+   "t_trigger": 170.20639699880232,
+   "t_snapshot": 170.3,
+   "t_publish": 170.77714076247068,
+   "planning_ms": 38.17126099765301,
+   "iters": 222,
+   "stop": "adaptive",
+   "J": 3.511958901100374,
+   "n_open": 5,
+   "n_uav": 2
+  },
+  {
+   "call": 15,
+   "why": "periodic",
+   "t_trigger": 185.3,
+   "t_snapshot": 185.3,
+   "t_publish": 185.6455533752218,
+   "planning_ms": 27.64427001774311,
+   "iters": 172,
+   "stop": "adaptive",
+   "J": 0.7391783592940683,
+   "n_open": 2,
+   "n_uav": 2
+  },
+  {
+   "call": 16,
+   "why": "periodic",
+   "t_trigger": 200.3,
+   "t_snapshot": 200.3,
+   "t_publish": 200.39239987488838,
+   "planning_ms": 7.39198999106884,
+   "iters": 50,
+   "stop": "adaptive",
+   "J": 0.7391783592940683,
+   "n_open": 1,
+   "n_uav": 2
+  },
+  {
+   "call": 17,
+   "why": "periodic",
+   "t_trigger": 215.3,
+   "t_snapshot": 215.3,
+   "t_publish": 215.39210359994323,
+   "planning_ms": 7.368287995457649,
+   "iters": 33,
+   "stop": "adaptive",
+   "J": 0.7391850047951953,
+   "n_open": 1,
+   "n_uav": 2
+  },
+  {
+   "call": 18,
+   "why": "periodic",
+   "t_trigger": 230.3,
+   "t_snapshot": 230.3,
+   "t_publish": 230.39413878768684,
+   "planning_ms": 7.531103014945984,
+   "iters": 48,
+   "stop": "adaptive",
+   "J": 0.7391845742508949,
+   "n_open": 1,
+   "n_uav": 2
+  }
+ ],
+ "_calib": [
+  [
+   45.74591355065629,
+   -3.144157650817192
+  ],
+  [
+   52.47959654983485,
+   -8.28184064999575
+  ],
+  [
+   69.24034355414796,
+   12.557412345691148
+  ],
+  [
+   47.39838356286422,
+   8.58360793698445
+  ],
+  [
+   74.99179795986211,
+   29.574474227557147
+  ],
+  [
+   60.30029463034694,
+   33.93510863229062
+  ],
+  [
+   52.357509847787384,
+   -11.634650610258063
+  ],
+  [
+   68.96481694290216,
+   -6.641957705372818
+  ],
+  [
+   50.302580694066336,
+   -8.996719481753189
+  ]
+ ],
+ "_accept_latency_s": [
+  0.10800000000000409,
+  0.20399999999999352,
+  0.1039999999999992,
+  0.003999999999990678,
+  0.2079999999999984,
+  0.1039999999999992,
+  0.09999999999999432,
+  0.103999999999985,
+  0.2079999999999984,
+  0.10400000000001342,
+  0.10400000000001342,
+  0.10400000000001342,
+  0.10800000000000409,
+  0.09999999999999432,
+  0.103999999999985,
+  0.2039999999999793,
+  0.10000000000002274,
+  0.103999999999985,
+  0.103999999999985
+ ],
+ "_served": {
+  "5": 42.903999999999996,
+  "1": 44.5,
+  "2": 82.1,
+  "6": 95.0,
+  "0": 173.70000000000002,
+  "12": 211.5,
+  "14": 233.10000000000002,
+  "13": 271.7
+ },
+ "_late": [
+  3
+ ]
+}

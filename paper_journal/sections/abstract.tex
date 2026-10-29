@@ -13,7 +13,9 @@ six baselines, among them stopping rules from the metareasoning literature and a
 $p<0.001$), \val{KURelConv}\% more than a conventional planner, and \val{KLateRedForty}\% fewer tasks late than a fixed budget of
 40\,ms. Ablations attribute the gain to the chance-constrained model. On this model, the learned stopping rule was
 equivalent to a fixed budget of 40\,ms, and under high disturbances with halved time windows the model was too cautious
-and a constant buffer served more reward. \val{KAbstractTierC}
+and a constant buffer served more reward. In software-in-the-loop flights of \val{KCN} missions, the proposed
+replanner served \val{KCLateRedForty}\% fewer tasks late than the fixed budget, but the utility differences stayed
+within the noise ($p_\mathrm{Holm}\geq$ \val{KCPForty}), so the gain was not confirmed at this sample size.
 \end{abstract}
 
 \begin{keyword}

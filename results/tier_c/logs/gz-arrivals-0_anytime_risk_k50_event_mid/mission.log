@@ -1,0 +1,9 @@
+[INFO] [1793179213.085584143] [atswarm_mission_manager]: gz-arrivals-0: method=anytime_risk budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=event
+[INFO] [1793179220.082203346] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793179220.097009418] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 7.5 ms, 33 it, stop=adaptive, release at 0.09s, open=8
+[INFO] [1793179242.455467126] [atswarm_mission_manager]: replan #1 (event) t=43.0s: 59.1 ms, 254 it, stop=adaptive, release at 43.74s, open=7
+[INFO] [1793179289.932246836] [atswarm_mission_manager]: replan #2 (event) t=121.2s: 27.5 ms, 213 it, stop=adaptive, release at 121.54s, open=4
+[INFO] [1793179294.803539099] [atswarm_mission_manager]: replan #3 (event) t=130.9s: 32.6 ms, 157 it, stop=adaptive, release at 131.31s, open=4
+[INFO] [1793179355.187406701] [atswarm_mission_manager]: replan #4 (event) t=249.0s: 7.5 ms, 65 it, stop=adaptive, release at 249.09s, open=1
+[INFO] [1793179365.705035962] [atswarm_mission_manager]: replan #5 (event) t=269.5s: 7.2 ms, 52 it, stop=adaptive, release at 269.59s, open=2
+[INFO] [1793179438.151616075] [atswarm_mission_manager]: MISSION END t=400.8s utility=0.696 served=10/15 late=2 replans=6 plan_ms=23.6 RTF=1.84 -> /tmp/smoke_after_move.json

@@ -1,0 +1,293 @@
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6000) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T15:15:04+00:00 ok  gz-arrivals-6000 proposed: MISSION END t=382.5s utility=0.610
+[batch] 2026-10-28T15:19:22+00:00 ok  gz-arrivals-6000 alns_fixed@40: MISSION END t=382.5s utility=0.488
+[batch] 2026-10-28T15:23:42+00:00 ok  gz-arrivals-6000 alns_fixed@40~buf=60: MISSION END t=382.5s utility=0.537
+[batch] 2026-10-28T15:28:23+00:00 ok  gz-failures-6000 proposed: MISSION END t=432.6s utility=0.486
+[batch] 2026-10-28T15:33:08+00:00 ok  gz-failures-6000 alns_fixed@40: MISSION END t=432.6s utility=0.541
+[batch] 2026-10-28T15:37:43+00:00 ok  gz-failures-6000 alns_fixed@40~buf=60: MISSION END t=432.6s utility=0.405
+[batch] 2026-10-28T15:41:46+00:00 ok  gz-deadlines-6000 proposed: MISSION END t=366.6s utility=0.537
+[batch] 2026-10-28T15:45:43+00:00 ok  gz-deadlines-6000 alns_fixed@40: MISSION END t=351.0s utility=0.634
+[batch] 2026-10-28T15:49:50+00:00 ok  gz-deadlines-6000 alns_fixed@40~buf=60: MISSION END t=351.0s utility=0.561
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6000) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T15:54:04+00:00 ok  gz-arrivals-6000 alns_fixed@40: MISSION END t=382.5s utility=0.488
+[batch] 2026-10-28T15:58:46+00:00 ok  gz-failures-6000 alns_fixed@40: MISSION END t=432.6s utility=0.514
+[batch] 2026-10-28T16:02:56+00:00 ok  gz-deadlines-6000 alns_fixed@40: MISSION END t=365.6s utility=0.634
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6001) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T16:05:51+00:00 ok  gz-arrivals-6001 proposed: MISSION END t=234.0s utility=0.522
+[batch] 2026-10-28T16:08:53+00:00 ok  gz-arrivals-6001 alns_fixed@40: MISSION END t=244.9s utility=0.391
+[batch] 2026-10-28T16:11:53+00:00 ok  gz-arrivals-6001 alns_fixed@40~buf=60: MISSION END t=244.9s utility=0.435
+[batch] 2026-10-28T16:15:28+00:00 ok  gz-failures-6001 proposed: MISSION END t=311.5s utility=0.676
+[batch] 2026-10-28T16:19:08+00:00 ok  gz-failures-6001 alns_fixed@40: MISSION END t=317.2s utility=0.794
+[batch] 2026-10-28T16:23:10+00:00 ok  gz-failures-6001 alns_fixed@40~buf=60: MISSION END t=317.2s utility=0.706
+[batch] 2026-10-28T16:26:57+00:00 ok  gz-deadlines-6001 proposed: MISSION END t=331.4s utility=0.773
+[batch] 2026-10-28T16:30:34+00:00 ok  gz-deadlines-6001 alns_fixed@40: MISSION END t=316.8s utility=0.682
+[batch] 2026-10-28T16:34:11+00:00 ok  gz-deadlines-6001 alns_fixed@40~buf=60: MISSION END t=316.8s utility=0.773
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6001) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T16:37:20+00:00 ok  gz-arrivals-6001 alns_fixed@40: MISSION END t=244.9s utility=0.391
+[batch] 2026-10-28T16:40:57+00:00 ok  gz-failures-6001 alns_fixed@40: MISSION END t=317.2s utility=0.618
+[batch] 2026-10-28T16:44:34+00:00 ok  gz-deadlines-6001 alns_fixed@40: MISSION END t=316.8s utility=0.682
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6002) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T16:49:19+00:00 ok  gz-arrivals-6002 proposed: MISSION END t=394.9s utility=0.448
+[batch] 2026-10-28T16:53:43+00:00 ok  gz-arrivals-6002 alns_fixed@40: MISSION END t=394.9s utility=0.586
+[batch] 2026-10-28T16:58:03+00:00 ok  gz-arrivals-6002 alns_fixed@40~buf=60: MISSION END t=363.9s utility=0.483
+[batch] 2026-10-28T17:02:18+00:00 ok  gz-failures-6002 proposed: MISSION END t=370.1s utility=0.389
+[batch] 2026-10-28T17:06:17+00:00 ok  gz-failures-6002 alns_fixed@40: MISSION END t=355.2s utility=0.528
+[batch] 2026-10-28T17:10:37+00:00 ok  gz-failures-6002 alns_fixed@40~buf=60: MISSION END t=370.1s utility=0.389
+[batch] 2026-10-28T17:14:09+00:00 ok  gz-deadlines-6002 proposed: MISSION END t=284.7s utility=0.743
+[batch] 2026-10-28T17:17:40+00:00 ok  gz-deadlines-6002 alns_fixed@40: MISSION END t=284.7s utility=0.686
+[batch] 2026-10-28T17:21:07+00:00 ok  gz-deadlines-6002 alns_fixed@40~buf=60: MISSION END t=284.7s utility=0.600
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6002) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T17:25:24+00:00 ok  gz-arrivals-6002 alns_fixed@40: MISSION END t=394.9s utility=0.586
+[batch] 2026-10-28T17:29:24+00:00 ok  gz-failures-6002 alns_fixed@40: MISSION END t=355.2s utility=0.528
+[batch] 2026-10-28T17:32:45+00:00 ok  gz-deadlines-6002 alns_fixed@40: MISSION END t=284.7s utility=0.686
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6003) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T17:37:11+00:00 ok  gz-arrivals-6003 proposed: MISSION END t=343.2s utility=0.885
+[batch] 2026-10-28T17:40:57+00:00 ok  gz-arrivals-6003 alns_fixed@40: MISSION END t=327.4s utility=0.923
+[batch] 2026-10-28T17:44:51+00:00 ok  gz-arrivals-6003 alns_fixed@40~buf=60: MISSION END t=336.6s utility=0.885
+[batch] 2026-10-28T17:48:38+00:00 ok  gz-failures-6003 proposed: MISSION END t=312.6s utility=0.676
+[batch] 2026-10-28T17:52:17+00:00 ok  gz-failures-6003 alns_fixed@40: MISSION END t=312.6s utility=0.595
+[batch] 2026-10-28T17:55:54+00:00 ok  gz-failures-6003 alns_fixed@40~buf=60: MISSION END t=310.0s utility=0.730
+[batch] 2026-10-28T17:59:27+00:00 ok  gz-deadlines-6003 proposed: MISSION END t=304.6s utility=0.292
+[batch] 2026-10-28T18:02:52+00:00 ok  gz-deadlines-6003 alns_fixed@40: MISSION END t=291.8s utility=0.292
+[batch] 2026-10-28T18:06:23+00:00 ok  gz-deadlines-6003 alns_fixed@40~buf=60: MISSION END t=291.5s utility=0.292
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6003) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T18:11:28+00:00 ok  gz-arrivals-6003 alns_fixed@40: MISSION END t=327.4s utility=0.846
+[batch] 2026-10-28T18:18:38+00:00 ok  gz-failures-6003 alns_fixed@40: MISSION END t=312.6s utility=0.676
+[batch] 2026-10-28T18:22:34+00:00 ok  gz-deadlines-6003 alns_fixed@40: MISSION END t=291.8s utility=0.292
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6004) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T18:26:50+00:00 ok  gz-arrivals-6004 proposed: MISSION END t=380.6s utility=0.828
+[batch] 2026-10-28T18:31:20+00:00 ok  gz-arrivals-6004 alns_fixed@40: MISSION END t=368.1s utility=0.862
+[batch] 2026-10-28T18:38:07+00:00 ok  gz-arrivals-6004 alns_fixed@40~buf=60: MISSION END t=374.2s utility=0.966
+[batch] 2026-10-28T18:49:11+00:00 ok  gz-failures-6004 proposed: MISSION END t=438.3s utility=0.543
+[batch] 2026-10-28T18:58:42+00:00 ok  gz-failures-6004 alns_fixed@40: MISSION END t=445.1s utility=0.286
+[batch] 2026-10-28T19:10:17+00:00 ok  gz-failures-6004 alns_fixed@40~buf=60: MISSION END t=438.3s utility=0.543
+[batch] 2026-10-28T19:14:52+00:00 ok  gz-deadlines-6004 proposed: MISSION END t=426.6s utility=0.686
+[batch] 2026-10-28T19:19:37+00:00 ok  gz-deadlines-6004 alns_fixed@40: MISSION END t=426.6s utility=0.686
+[batch] 2026-10-28T19:24:18+00:00 ok  gz-deadlines-6004 alns_fixed@40~buf=60: MISSION END t=426.6s utility=0.686
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6004) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T19:28:57+00:00 ok  gz-arrivals-6004 alns_fixed@40: MISSION END t=368.1s utility=0.862
+[batch] 2026-10-28T19:34:00+00:00 ok  gz-failures-6004 alns_fixed@40: MISSION END t=445.1s utility=0.314
+[batch] 2026-10-28T19:39:22+00:00 ok  gz-deadlines-6004 alns_fixed@40: MISSION END t=426.6s utility=0.686
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6005) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T19:43:15+00:00 ok  gz-arrivals-6005 proposed: MISSION END t=334.0s utility=0.774
+[batch] 2026-10-28T19:47:16+00:00 ok  gz-arrivals-6005 alns_fixed@40: MISSION END t=327.8s utility=0.871
+[batch] 2026-10-28T19:51:18+00:00 ok  gz-arrivals-6005 alns_fixed@40~buf=60: MISSION END t=327.6s utility=0.774
+[batch] 2026-10-28T19:54:36+00:00 ok  gz-failures-6005 proposed: MISSION END t=261.8s utility=0.488
+[batch] 2026-10-28T20:03:19+00:00 ok  gz-failures-6005 alns_fixed@40: MISSION END t=261.8s utility=0.561
+[batch] 2026-10-28T20:12:27+00:00 ok  gz-failures-6005 alns_fixed@40~buf=60: MISSION END t=261.8s utility=0.488
+[batch] 2026-10-28T20:21:31+00:00 ok  gz-deadlines-6005 proposed: MISSION END t=334.6s utility=0.675
+[batch] 2026-10-28T20:32:06+00:00 ok  gz-deadlines-6005 alns_fixed@40: MISSION END t=321.6s utility=0.675
+[batch] 2026-10-28T20:37:26+00:00 ok  gz-deadlines-6005 alns_fixed@40~buf=60: MISSION END t=334.6s utility=0.675
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6005) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T20:46:22+00:00 ok  gz-arrivals-6005 alns_fixed@40: MISSION END t=327.8s utility=0.710
+[batch] 2026-10-28T20:54:18+00:00 ok  gz-failures-6005 alns_fixed@40: MISSION END t=261.8s utility=0.561
+[batch] 2026-10-28T21:04:42+00:00 ok  gz-deadlines-6005 alns_fixed@40: MISSION END t=321.6s utility=0.675
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6006) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T21:09:13+00:00 ok  gz-arrivals-6006 proposed: MISSION END t=411.6s utility=0.630
+[batch] 2026-10-28T21:13:56+00:00 ok  gz-arrivals-6006 alns_fixed@40: MISSION END t=338.2s utility=0.778
+[batch] 2026-10-28T21:18:17+00:00 ok  gz-arrivals-6006 alns_fixed@40~buf=60: MISSION END t=362.0s utility=0.667
+[batch] 2026-10-28T21:23:42+00:00 ok  gz-failures-6006 proposed: MISSION END t=394.0s utility=0.679
+[batch] 2026-10-28T21:29:51+00:00 ok  gz-failures-6006 alns_fixed@40: MISSION END t=413.0s utility=0.643
+[batch] 2026-10-28T21:34:51+00:00 ok  gz-failures-6006 alns_fixed@40~buf=60: MISSION END t=387.4s utility=0.607
+[batch] 2026-10-28T21:40:03+00:00 ok  gz-deadlines-6006 proposed: MISSION END t=387.2s utility=0.257
+[batch] 2026-10-28T21:51:40+00:00 ok  gz-deadlines-6006 alns_fixed@40: MISSION END t=350.6s utility=0.257
+[batch] 2026-10-28T21:56:32+00:00 ok  gz-deadlines-6006 alns_fixed@40~buf=60: MISSION END t=387.2s utility=0.257
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6006) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T22:00:30+00:00 ok  gz-arrivals-6006 alns_fixed@40: MISSION END t=338.2s utility=0.778
+[batch] 2026-10-28T22:08:33+00:00 ok  gz-failures-6006 alns_fixed@40: MISSION END t=413.0s utility=0.643
+[batch] 2026-10-28T22:13:27+00:00 ok  gz-deadlines-6006 alns_fixed@40: MISSION END t=350.6s utility=0.257
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6007) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T22:18:27+00:00 ok  gz-arrivals-6007 proposed: MISSION END t=342.3s utility=0.636
+[batch] 2026-10-28T22:23:14+00:00 ok  gz-arrivals-6007 alns_fixed@40: MISSION END t=342.3s utility=0.606
+[batch] 2026-10-28T22:27:17+00:00 ok  gz-arrivals-6007 alns_fixed@40~buf=60: MISSION END t=342.3s utility=0.545
+[batch] 2026-10-28T22:29:21+00:00 FAIL gz-failures-6007 proposed (attempt 1), see logs
+[batch] 2026-10-28T22:33:43+00:00 ok  gz-failures-6007 proposed: MISSION END t=271.8s utility=0.600
+[batch] 2026-10-28T22:37:55+00:00 ok  gz-failures-6007 alns_fixed@40: MISSION END t=264.4s utility=0.600
+[batch] 2026-10-28T22:42:16+00:00 ok  gz-failures-6007 alns_fixed@40~buf=60: MISSION END t=272.2s utility=0.280
+[batch] 2026-10-28T22:48:32+00:00 ok  gz-deadlines-6007 proposed: MISSION END t=291.3s utility=0.259
+[batch] 2026-10-28T22:52:52+00:00 ok  gz-deadlines-6007 alns_fixed@40: MISSION END t=291.3s utility=0.481
+[batch] 2026-10-28T22:57:01+00:00 ok  gz-deadlines-6007 alns_fixed@40~buf=60: MISSION END t=291.3s utility=0.259
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6007) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T23:01:37+00:00 ok  gz-arrivals-6007 alns_fixed@40: MISSION END t=342.3s utility=0.606
+[batch] 2026-10-28T23:06:08+00:00 ok  gz-failures-6007 alns_fixed@40: MISSION END t=289.8s utility=0.560
+[batch] 2026-10-28T23:10:48+00:00 ok  gz-deadlines-6007 alns_fixed@40: MISSION END t=291.3s utility=0.481
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6008) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-28T23:14:04+00:00 ok  gz-arrivals-6008 proposed: MISSION END t=225.0s utility=0.735
+[batch] 2026-10-28T23:17:24+00:00 ok  gz-arrivals-6008 alns_fixed@40: MISSION END t=220.2s utility=0.824
+[batch] 2026-10-28T23:20:45+00:00 ok  gz-arrivals-6008 alns_fixed@40~buf=60: MISSION END t=225.0s utility=0.735
+[batch] 2026-10-28T23:24:55+00:00 ok  gz-failures-6008 proposed: MISSION END t=295.6s utility=0.500
+[batch] 2026-10-28T23:29:09+00:00 ok  gz-failures-6008 alns_fixed@40: MISSION END t=295.6s utility=0.444
+[batch] 2026-10-28T23:33:34+00:00 ok  gz-failures-6008 alns_fixed@40~buf=60: MISSION END t=295.6s utility=0.472
+[batch] 2026-10-28T23:38:41+00:00 ok  gz-deadlines-6008 proposed: MISSION END t=372.1s utility=0.606
+[batch] 2026-10-28T23:45:21+00:00 ok  gz-deadlines-6008 alns_fixed@40: MISSION END t=372.1s utility=0.515
+[batch] 2026-10-28T23:49:58+00:00 ok  gz-deadlines-6008 alns_fixed@40~buf=60: MISSION END t=343.6s utility=0.758
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6008) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-28T23:53:15+00:00 ok  gz-arrivals-6008 alns_fixed@40: MISSION END t=220.0s utility=0.824
+[batch] 2026-10-28T23:57:28+00:00 ok  gz-failures-6008 alns_fixed@40: MISSION END t=295.6s utility=0.444
+[batch] 2026-10-29T00:02:21+00:00 ok  gz-deadlines-6008 alns_fixed@40: MISSION END t=372.1s utility=0.515
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6009) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T00:07:26+00:00 ok  gz-arrivals-6009 proposed: MISSION END t=373.6s utility=0.903
+[batch] 2026-10-29T00:12:13+00:00 ok  gz-arrivals-6009 alns_fixed@40: MISSION END t=369.6s utility=0.774
+[batch] 2026-10-29T00:17:21+00:00 ok  gz-arrivals-6009 alns_fixed@40~buf=60: MISSION END t=378.4s utility=0.806
+[batch] 2026-10-29T00:22:48+00:00 ok  gz-failures-6009 proposed: MISSION END t=304.5s utility=0.438
+[batch] 2026-10-29T00:27:28+00:00 ok  gz-failures-6009 alns_fixed@40: MISSION END t=304.5s utility=0.375
+[batch] 2026-10-29T00:31:36+00:00 ok  gz-failures-6009 alns_fixed@40~buf=60: MISSION END t=304.5s utility=0.406
+[batch] 2026-10-29T00:36:52+00:00 ok  gz-deadlines-6009 proposed: MISSION END t=377.4s utility=0.458
+[batch] 2026-10-29T00:42:20+00:00 ok  gz-deadlines-6009 alns_fixed@40: MISSION END t=400.4s utility=0.667
+[batch] 2026-10-29T00:47:02+00:00 ok  gz-deadlines-6009 alns_fixed@40~buf=60: MISSION END t=362.8s utility=0.458
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6009) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T00:52:11+00:00 ok  gz-arrivals-6009 alns_fixed@40: MISSION END t=360.2s utility=0.839
+[batch] 2026-10-29T00:57:07+00:00 ok  gz-failures-6009 alns_fixed@40: MISSION END t=304.5s utility=0.375
+[batch] 2026-10-29T01:04:40+00:00 ok  gz-deadlines-6009 alns_fixed@40: MISSION END t=400.4s utility=0.667
+[batch] s2_heldout_C_event done
+invalid RTF, repeat once: gz-arrivals-6004_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-arrivals-6006_alns_fixed@40.json
+invalid RTF, repeat once: gz-arrivals-6007_alns_fixed@40.json
+invalid RTF, repeat once: gz-arrivals-6007_proposed.json
+invalid RTF, repeat once: gz-arrivals-6009_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-arrivals-6009_proposed.json
+invalid RTF, repeat once: gz-deadlines-6005_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6005_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-deadlines-6005_proposed.json
+invalid RTF, repeat once: gz-deadlines-6006_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6006_proposed.json
+invalid RTF, repeat once: gz-deadlines-6007_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6007_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-deadlines-6007_proposed.json
+invalid RTF, repeat once: gz-deadlines-6008_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6008_proposed.json
+invalid RTF, repeat once: gz-deadlines-6009_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6009_proposed.json
+invalid RTF, repeat once: gz-failures-6004_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6004_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-failures-6004_proposed.json
+invalid RTF, repeat once: gz-failures-6005_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6005_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-failures-6006_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6006_proposed.json
+invalid RTF, repeat once: gz-failures-6007_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6007_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-failures-6007_proposed.json
+invalid RTF, repeat once: gz-failures-6008_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6008_alns_fixed@40~buf=60.json
+invalid RTF, repeat once: gz-failures-6008_proposed.json
+invalid RTF, repeat once: gz-failures-6009_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6009_proposed.json
+invalid RTF, repeat once: gz-arrivals-6003_alns_fixed@40.json
+invalid RTF, repeat once: gz-arrivals-6005_alns_fixed@40.json
+invalid RTF, repeat once: gz-arrivals-6009_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6005_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6006_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6007_alns_fixed@40.json
+invalid RTF, repeat once: gz-deadlines-6009_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6003_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6005_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6006_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6007_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6008_alns_fixed@40.json
+invalid RTF, repeat once: gz-failures-6009_alns_fixed@40.json
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6000) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6000) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6001) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6001) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6002) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6002) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6003) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6003) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T01:12:05+00:00 ok  gz-arrivals-6003 alns_fixed@40: MISSION END t=327.4s utility=0.923
+[batch] 2026-10-29T01:18:33+00:00 ok  gz-failures-6003 alns_fixed@40: MISSION END t=312.6s utility=0.595
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6004) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T01:23:51+00:00 ok  gz-arrivals-6004 alns_fixed@40~buf=60: MISSION END t=374.1s utility=0.966
+[batch] 2026-10-29T01:29:49+00:00 ok  gz-failures-6004 proposed: MISSION END t=438.3s utility=0.543
+[batch] 2026-10-29T01:35:50+00:00 ok  gz-failures-6004 alns_fixed@40: MISSION END t=445.1s utility=0.286
+[batch] 2026-10-29T01:42:00+00:00 ok  gz-failures-6004 alns_fixed@40~buf=60: MISSION END t=438.3s utility=0.543
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6004) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6005) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T01:46:16+00:00 ok  gz-failures-6005 alns_fixed@40: MISSION END t=261.8s utility=0.561
+[batch] 2026-10-29T01:50:39+00:00 ok  gz-failures-6005 alns_fixed@40~buf=60: MISSION END t=261.8s utility=0.488
+[batch] 2026-10-29T01:57:52+00:00 ok  gz-deadlines-6005 proposed: MISSION END t=334.6s utility=0.675
+[batch] 2026-10-29T02:05:00+00:00 ok  gz-deadlines-6005 alns_fixed@40: MISSION END t=321.6s utility=0.675
+[batch] 2026-10-29T02:09:52+00:00 ok  gz-deadlines-6005 alns_fixed@40~buf=60: MISSION END t=334.6s utility=0.675
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6005) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T02:14:36+00:00 ok  gz-arrivals-6005 alns_fixed@40: MISSION END t=327.8s utility=0.710
+[batch] 2026-10-29T02:18:57+00:00 ok  gz-failures-6005 alns_fixed@40: MISSION END t=261.8s utility=0.561
+[batch] 2026-10-29T02:25:02+00:00 ok  gz-deadlines-6005 alns_fixed@40: MISSION END t=321.6s utility=0.675
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6006) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T02:31:26+00:00 ok  gz-arrivals-6006 alns_fixed@40: MISSION END t=338.2s utility=0.778
+[batch] 2026-10-29T02:38:19+00:00 ok  gz-failures-6006 proposed: MISSION END t=386.2s utility=0.714
+[batch] 2026-10-29T02:47:13+00:00 ok  gz-failures-6006 alns_fixed@40: MISSION END t=413.0s utility=0.643
+[batch] 2026-10-29T02:56:12+00:00 ok  gz-deadlines-6006 proposed: MISSION END t=387.6s utility=0.257
+[batch] 2026-10-29T03:01:59+00:00 ok  gz-deadlines-6006 alns_fixed@40: MISSION END t=350.6s utility=0.257
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6006) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T03:09:01+00:00 ok  gz-failures-6006 alns_fixed@40: MISSION END t=413.0s utility=0.643
+[batch] 2026-10-29T03:14:54+00:00 ok  gz-deadlines-6006 alns_fixed@40: MISSION END t=350.6s utility=0.257
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6007) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T03:21:41+00:00 ok  gz-arrivals-6007 proposed: MISSION END t=342.3s utility=0.636
+[batch] 2026-10-29T03:28:50+00:00 ok  gz-arrivals-6007 alns_fixed@40: MISSION END t=342.3s utility=0.606
+[batch] 2026-10-29T03:34:43+00:00 ok  gz-failures-6007 proposed: MISSION END t=271.8s utility=0.600
+[batch] 2026-10-29T03:41:21+00:00 ok  gz-failures-6007 alns_fixed@40: MISSION END t=264.4s utility=0.600
+[batch] 2026-10-29T03:48:09+00:00 ok  gz-failures-6007 alns_fixed@40~buf=60: MISSION END t=272.0s utility=0.280
+[batch] 2026-10-29T03:52:41+00:00 ok  gz-deadlines-6007 proposed: MISSION END t=291.3s utility=0.370
+[batch] 2026-10-29T03:56:10+00:00 ok  gz-deadlines-6007 alns_fixed@40: MISSION END t=291.3s utility=0.481
+[batch] 2026-10-29T04:00:20+00:00 ok  gz-deadlines-6007 alns_fixed@40~buf=60: MISSION END t=291.3s utility=0.259
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6007) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T04:04:52+00:00 ok  gz-failures-6007 alns_fixed@40: MISSION END t=289.8s utility=0.560
+[batch] 2026-10-29T04:09:26+00:00 ok  gz-deadlines-6007 alns_fixed@40: MISSION END t=291.3s utility=0.481
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6008) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T04:14:42+00:00 ok  gz-failures-6008 proposed: MISSION END t=295.6s utility=0.500
+[batch] 2026-10-29T04:19:16+00:00 ok  gz-failures-6008 alns_fixed@40: MISSION END t=295.6s utility=0.444
+[batch] 2026-10-29T04:23:55+00:00 ok  gz-failures-6008 alns_fixed@40~buf=60: MISSION END t=295.6s utility=0.472
+[batch] 2026-10-29T04:29:41+00:00 ok  gz-deadlines-6008 proposed: MISSION END t=358.0s utility=0.697
+[batch] 2026-10-29T04:34:28+00:00 ok  gz-deadlines-6008 alns_fixed@40: MISSION END t=372.1s utility=0.515
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6008) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T04:37:55+00:00 ok  gz-failures-6008 alns_fixed@40: MISSION END t=295.6s utility=0.444
+[batch] s2_heldout_C_event done
+[batch] s2_heldout_C profiles=(arrivals failures deadlines) seeds=(6009) methods=(proposed alns_fixed@40 alns_fixed@40~buf=60) kappa_B=50 trigger=periodic:60 speed=2 exec=mid
+[batch] 2026-10-29T04:43:41+00:00 ok  gz-arrivals-6009 proposed: MISSION END t=373.9s utility=0.903
+[batch] 2026-10-29T04:49:53+00:00 ok  gz-arrivals-6009 alns_fixed@40~buf=60: MISSION END t=378.4s utility=0.806
+[batch] 2026-10-29T04:55:23+00:00 ok  gz-failures-6009 proposed: MISSION END t=304.5s utility=0.438
+[batch] 2026-10-29T05:01:05+00:00 ok  gz-failures-6009 alns_fixed@40: MISSION END t=304.5s utility=0.375
+[batch] 2026-10-29T05:07:50+00:00 ok  gz-deadlines-6009 proposed: MISSION END t=377.4s utility=0.458
+[batch] 2026-10-29T05:16:06+00:00 ok  gz-deadlines-6009 alns_fixed@40: MISSION END t=400.4s utility=0.667
+[batch] s2_heldout_C done
+[batch] s2_heldout_C_event profiles=(arrivals failures deadlines) seeds=(6009) methods=(alns_fixed@40) kappa_B=50 trigger=event speed=2 exec=mid
+[batch] 2026-10-29T05:21:19+00:00 ok  gz-arrivals-6009 alns_fixed@40: MISSION END t=369.6s utility=0.774
+[batch] 2026-10-29T05:25:53+00:00 ok  gz-failures-6009 alns_fixed@40: MISSION END t=304.5s utility=0.375
+[batch] 2026-10-29T05:31:15+00:00 ok  gz-deadlines-6009 alns_fixed@40: MISSION END t=385.6s utility=0.583
+[batch] s2_heldout_C_event done

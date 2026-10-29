@@ -375,6 +375,9 @@ def tier_c():
     for k in g.index:
         put(f"CU{k}", pp(g.loc[k, "u"]))
         put(f"CMs{k}", f"{g.loc[k, 'ms']:.1f}")
+        put(f"CLate{k}", f"{g.loc[k, 'late']:.2f}")
+        put(f"CSkip{k}", f"{g.loc[k, 'skip']:.2f}")
+        put(f"CCalls{k}", f"{g.loc[k, 'calls']:.1f}")
     tests = [(k,) + boot(w["Prop"] - w[k]) for k in ["Forty", "Conv"] if k in w and "Prop" in w]
     adj = holm(np.array([t[4] for t in tests])) if tests else []
     REPORT.extend(["", "## H4: tier C (PX4 SITL + Gazebo)", "",
@@ -389,6 +392,7 @@ def tier_c():
         m, lo, hi, p = boot(w["Prop"] - w["Buf"])
         put("CDBuf", ci(m, lo, hi))
         REPORT.append(f"| {M['Buf'][1]} (secondary) | {ci(m, lo, hi)} | {p:.4f} | -- |")
+    rtf_sensitivity(c, spec_map)
     fb = TB / "s2_heldout_B_gz.csv"
     bm = pd.Series(dtype=float)
     if fb.exists():
@@ -407,6 +411,12 @@ def tier_c():
             if k in wb:
                 m, lo, hi, _ = boot(wb["Prop"] - wb[k])
                 put(f"BgzD{k}", ci(m, lo, hi))
+        # missions needed to confirm the tier B effect on these missions in tier C (paired, two-sided 5%, power 80%)
+        sd, eff = (w["Prop"] - w["Forty"]).std(), (wb["Prop"] - wb["Forty"]).mean()
+        put("CSdForty", pp(sd, 1))
+        put("CEffForty", pp(eff, 1))
+        put("CNPowerForty", str(int(np.ceil(((1.96 + 0.84) * sd / eff) ** 2))))
+        put("CLateRedForty", f"{100 * (1 - g.loc['Prop', 'late'] / g.loc['Forty', 'late']):.0f}")
         REPORT.append(f"\nTier B vs C (same missions): r per run {MAC.get('KBCr')}, Kendall tau {MAC.get('KBCTau')}")
         fig_bc(w, wb)
     lines = ["\\begin{table}[t]",
@@ -425,6 +435,39 @@ def tier_c():
     (P / "tables" / "tab_s2_tierc.tex").write_text("\n".join(lines) + "\n")
 
 
+def rtf_sensitivity(c, spec_map, lo_rtf=1.6, hi_rtf=2.2):
+    """Two sensitivity analyses for the real-time-factor rule (not pre-registered): (a) the original runs instead of
+    their repeats, (b) only runs whose RTF lies in [lo_rtf, hi_rtf], pairs dropped when either run is outside."""
+    ok = c.rtf.between(lo_rtf, hi_rtf)
+    put("CValid", str(int(ok.sum())))
+    put("CRTFq", f"{c.rtf.quantile(0.25):.2f}--{c.rtf.quantile(0.75):.2f}")
+    orig = []
+    for d, trig in [("s2_heldout_C", "periodic:60"), ("s2_heldout_C_event", "event")]:
+        for f in sorted((TC / d / "invalid_rtf").glob("gz-*.json")) if (TC / d / "invalid_rtf").exists() else []:
+            m = json.loads(f.read_text())
+            orig.append({"scenario": m["scenario"], "k": spec_map[f"{m['method']}+{trig}"],
+                         "utility_rate": m["utility_rate"], "rtf": m["rtf"]})
+    co = pd.concat([c[["scenario", "k", "utility_rate", "rtf"]], pd.DataFrame(orig)]).drop_duplicates(
+        ["scenario", "k"], keep="last") if orig else c
+    REPORT.extend(["", f"RTF sensitivity: {int(ok.sum())}/{len(c)} runs in [{lo_rtf}, {hi_rtf}], "
+                       f"RTF quartiles {MAC['KCRTFq']}", "",
+                   "| baseline | originals instead of repeats | valid RTF only (n pairs) |", "|---|---|---|"])
+    wo = co.pivot_table(index="scenario", columns="k", values="utility_rate")
+    wv = c[ok].pivot_table(index="scenario", columns="k", values="utility_rate")
+    for k in ["Forty", "Conv", "Buf"]:
+        cells = []
+        for tag, w in [("Orig", wo), ("Valid", wv)]:
+            dd = (w["Prop"] - w[k]).dropna() if k in w and "Prop" in w else pd.Series(dtype=float)
+            if len(dd) >= 5:
+                m, lo, hi, p = boot(dd)
+                put(f"CD{k}{tag}", ci(m, lo, hi))
+                put(f"CN{k}{tag}", str(len(dd)))
+                cells.append(f"{ci(m, lo, hi)} (p {p:.3f}, n {len(dd)})")
+            else:
+                cells.append("--")
+        REPORT.append(f"| {M[k][1]} | {cells[0]} | {cells[1]} |")
+
+
 def fig_bc(wc, wb):
     keys = [k for k in ["Forty", "Buf", "Conv"] if k in wc and k in wb]
     fig, ax = plt.subplots(figsize=(3.4, 2.5))
@@ -439,7 +482,8 @@ def fig_bc(wc, wb):
                                      for k in keys])
     ax.set_ylabel("proposed minus method (pp)")
     ax.grid(axis="y", alpha=0.3)
-    ax.legend(frameon=False, loc="upper left")
+    ax.legend(frameon=False, loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, handletextpad=0.3,
+              columnspacing=1.0)
     fig.tight_layout()
     fig.savefig(P / "figures" / "fig_s2_bc.pdf")
     plt.close(fig)

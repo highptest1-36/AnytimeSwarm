@@ -11,7 +11,9 @@ rule on the nominal model and than a robust constant buffer, by \val{KDabsBuf} t
 and \val{KURelConv}\% more than a conventional event-triggered planner. Ablations showed that the gain comes from the
 chance-constrained model. On this model, the learned stopping rule was equivalent to a well-chosen fixed budget, and
 its value lies in avoiding the losses of long budgets on slow planners and the tuning of a budget per fleet scale. Under
-high disturbances with halved time windows, the proposed model was too cautious. \val{KConclTierC}
+high disturbances with halved time windows, the proposed model was too cautious. In software-in-the-loop flights with
+PX4 and Gazebo, the proposed replanner served fewer tasks late at the same computation, but its utility did not differ
+detectably from the baselines on \val{KCN} missions.
 
 Future work will replace the hard chance constraint by an objective that weights every task by its probability of
 being served on time, adapt the confidence parameter online, and run the replanner on embedded hardware and in field

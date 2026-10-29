@@ -1,0 +1,30 @@
+[study2] 2026-10-28T11:02:19+00:00 freeze check
+docs/08_PROTOCOL_V2.md: OK
+experiments/configs/S2_B_main.yaml: OK
+experiments/configs/S2_B_gz.yaml: OK
+experiments/b2_grid.py: OK
+experiments/b_grid.py: OK
+journal_core/execution.py: OK
+journal_core/__init__.py: OK
+journal_core/kinematic_executor.py: OK
+journal_core/methods.py: OK
+journal_core/risk.py: OK
+journal_core/study2.py: OK
+journal_ros/common.py: OK
+journal_ros/mission_manager.py: OK
+journal_ros/uav_executor.py: OK
+journal_ros/run_mission.sh: OK
+journal_ros/run_batch.sh: OK
+models/error_model_dev.json: OK
+models/error_model_tierc_dev.json: OK
+models/performance_profile_dev.json: OK
+original/models/improvement_model.json: OK
+original/configs/frozen_2026-10-24.yaml: OK
+tools/run_study2_all.sh: OK
+[study2] 2026-10-28T11:02:19+00:00 tier B S2_B_main
+[ok] 48600 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s2_heldout_B.csv
+[study2] 2026-10-28T15:10:27+00:00 tier B counterpart of tier C (gz scale)
+[ok] 120 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s2_heldout_B_gz.csv
+[study2] 2026-10-28T15:10:49+00:00 tier C
+tier C runs ok (incl. repeats): 166
+[study2] 2026-10-29T05:31:15+00:00 done

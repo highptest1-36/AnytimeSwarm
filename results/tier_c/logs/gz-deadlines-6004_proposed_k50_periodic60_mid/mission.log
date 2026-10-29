@@ -1,0 +1,27 @@
+[INFO] [1793214668.134929787] [atswarm_mission_manager]: gz-deadlines-6004: method=proposed budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=periodic:60
+[INFO] [1793214674.010975468] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793214674.028658972] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 7.5 ms, 6 it, stop=adaptive, release at 0.09s, open=8
+[INFO] [1793214681.789417566] [atswarm_mission_manager]: replan #1 (periodic) t=15.0s: 23.2 ms, 62 it, stop=adaptive, release at 15.29s, open=5
+[INFO] [1793214689.332666198] [atswarm_mission_manager]: replan #2 (periodic) t=30.0s: 17.7 ms, 100 it, stop=adaptive, release at 30.22s, open=5
+[INFO] [1793214696.940835118] [atswarm_mission_manager]: replan #3 (periodic) t=45.0s: 12.4 ms, 80 it, stop=adaptive, release at 45.15s, open=5
+[INFO] [1793214704.609554237] [atswarm_mission_manager]: replan #4 (periodic) t=60.1s: 17.2 ms, 112 it, stop=adaptive, release at 60.32s, open=4
+[INFO] [1793214712.207351044] [atswarm_mission_manager]: replan #5 (periodic) t=75.1s: 22.3 ms, 199 it, stop=adaptive, release at 75.38s, open=2
+[INFO] [1793214712.357396467] [atswarm_mission_manager]: replan #6 (event) t=75.4s: 22.4 ms, 202 it, stop=adaptive, release at 75.68s, open=2
+[INFO] [1793214719.866974269] [atswarm_mission_manager]: replan #7 (periodic) t=90.4s: 7.2 ms, 66 it, stop=adaptive, release at 90.49s, open=1
+[INFO] [1793214724.072239871] [atswarm_mission_manager]: replan #8 (event) t=98.7s: 17.1 ms, 517 it, stop=adaptive, release at 98.91s, open=1
+[INFO] [1793214735.121524332] [atswarm_mission_manager]: replan #9 (event) t=120.7s: 2.1 ms, 35 it, stop=adaptive, release at 120.73s, open=0
+[INFO] [1793214787.086363350] [atswarm_mission_manager]: replan #10 (event) t=223.9s: 7.3 ms, 44 it, stop=adaptive, release at 223.99s, open=3
+[INFO] [1793214809.290130446] [atswarm_mission_manager]: replan #11 (event) t=268.1s: 58.1 ms, 316 it, stop=adaptive, release at 268.83s, open=3
+[INFO] [1793214816.840069671] [atswarm_mission_manager]: replan #12 (periodic) t=283.1s: 48.4 ms, 318 it, stop=adaptive, release at 283.70s, open=3
+[INFO] [1793214824.373786469] [atswarm_mission_manager]: replan #13 (periodic) t=298.1s: 53.3 ms, 304 it, stop=adaptive, release at 298.77s, open=3
+[INFO] [1793214824.909714597] [atswarm_mission_manager]: replan #14 (event) t=299.2s: 42.7 ms, 332 it, stop=adaptive, release at 299.73s, open=3
+[INFO] [1793214825.223894987] [atswarm_mission_manager]: replan #15 (event) t=299.8s: 57.8 ms, 498 it, stop=adaptive, release at 300.52s, open=4
+[INFO] [1793214832.725752608] [atswarm_mission_manager]: replan #16 (periodic) t=314.8s: 47.6 ms, 388 it, stop=adaptive, release at 315.40s, open=3
+[INFO] [1793214840.228938996] [atswarm_mission_manager]: replan #17 (periodic) t=329.8s: 27.1 ms, 630 it, stop=adaptive, release at 330.14s, open=2
+[INFO] [1793214847.777141335] [atswarm_mission_manager]: replan #18 (periodic) t=344.8s: 47.4 ms, 757 it, stop=adaptive, release at 345.39s, open=2
+[INFO] [1793214855.265490609] [atswarm_mission_manager]: replan #19 (periodic) t=359.8s: 37.2 ms, 743 it, stop=adaptive, release at 360.26s, open=2
+[INFO] [1793214862.868626659] [atswarm_mission_manager]: replan #20 (periodic) t=374.8s: 32.2 ms, 668 it, stop=adaptive, release at 375.20s, open=2
+[INFO] [1793214870.474458875] [atswarm_mission_manager]: replan #21 (periodic) t=389.8s: 27.2 ms, 611 it, stop=adaptive, release at 390.14s, open=1
+[INFO] [1793214877.997711562] [atswarm_mission_manager]: replan #22 (periodic) t=404.8s: 17.1 ms, 491 it, stop=adaptive, release at 405.01s, open=1
+[INFO] [1793214885.579474495] [atswarm_mission_manager]: replan #23 (periodic) t=419.8s: 42.3 ms, 634 it, stop=adaptive, release at 420.33s, open=1
+[INFO] [1793214888.946951621] [atswarm_mission_manager]: MISSION END t=426.6s utility=0.686 served=9/15 late=1 replans=24 plan_ms=29.0 RTF=1.98 -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_c/s2_heldout_C/gz-deadlines-6004_proposed.json

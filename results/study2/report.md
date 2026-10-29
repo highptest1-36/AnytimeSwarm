@@ -28,10 +28,20 @@ H3 TOST (margin 0.5 pp): proposed minus fixed-40-ms stop on the proposed model, 
 
 ## H4: tier C (PX4 SITL + Gazebo)
 
-1 missions, 2 runs, RTF 1.94 (min 1.93), repeated for RTF: 0, failed attempts: 0
+30 missions, 120 runs, RTF 1.64 (min 0.83), repeated for RTF: 46, failed attempts: 1
 
 | baseline | diff pp [95% CI] | p | p Holm |
 |---|---|---|---|
-| ALNS, fixed 40 ms | +12.20 [+12.20, +12.20] | 0.0000 | 0.0000 |
+| ALNS, fixed 40 ms | $-$0.25 [$-$4.02, +3.57] | 0.8928 | 0.9416 |
+| Conventional (40 ms, event-only) | +1.28 [$-$2.20, +4.64] | 0.4708 | 0.9416 |
+| Constant 60 s buffer (secondary) | +2.64 [$-$0.01, +5.58] | 0.0516 | -- |
 
-Tier B vs C (same missions): r per run 1.00, Kendall tau 1.00
+RTF sensitivity: 77/120 runs in [1.6, 2.2], RTF quartiles 1.41--1.95
+
+| baseline | originals instead of repeats | valid RTF only (n pairs) |
+|---|---|---|
+| ALNS, fixed 40 ms | $-$1.04 [$-$4.83, +2.77] (p 0.591, n 30) | $-$2.02 [$-$6.25, +2.43] (p 0.365, n 16) |
+| Conventional (40 ms, event-only) | $-$0.02 [$-$3.66, +3.47] (p 0.998, n 30) | $-$1.52 [$-$6.32, +3.37] (p 0.556, n 14) |
+| Constant 60 s buffer | +1.84 [$-$0.92, +4.93] (p 0.199, n 30) | +1.28 [$-$1.09, +3.98] (p 0.333, n 16) |
+
+Tier B vs C (same missions): r per run 0.86, Kendall tau 0.00

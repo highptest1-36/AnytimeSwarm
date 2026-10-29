@@ -1,0 +1,18 @@
+[INFO] [1793185009.320356887] [atswarm_mission_manager]: gz-arrivals-0: method=proposed budget=250 ms kappa_B=50 (kappa_C=12.5) trigger=periodic:60
+[INFO] [1793185015.169729955] [atswarm_mission_manager]: all UAVs airborne: mission starts
+[INFO] [1793185015.190416423] [atswarm_mission_manager]: replan #0 (start) t=0.0s: 12.3 ms, 58 it, stop=adaptive, release at 0.15s, open=8
+[INFO] [1793185022.728515629] [atswarm_mission_manager]: replan #1 (periodic) t=15.0s: 43.1 ms, 244 it, stop=adaptive, release at 15.54s, open=5
+[INFO] [1793185030.228309035] [atswarm_mission_manager]: replan #2 (periodic) t=30.0s: 32.4 ms, 284 it, stop=adaptive, release at 30.41s, open=5
+[INFO] [1793185036.746258442] [atswarm_mission_manager]: replan #3 (event) t=43.0s: 47.7 ms, 320 it, stop=adaptive, release at 43.60s, open=7
+[INFO] [1793185044.307778921] [atswarm_mission_manager]: replan #4 (periodic) t=58.1s: 53.0 ms, 343 it, stop=adaptive, release at 58.76s, open=6
+[INFO] [1793185051.815081028] [atswarm_mission_manager]: replan #5 (periodic) t=73.1s: 52.8 ms, 369 it, stop=adaptive, release at 73.76s, open=5
+[INFO] [1793185059.328915871] [atswarm_mission_manager]: replan #6 (periodic) t=88.1s: 68.1 ms, 645 it, stop=adaptive, release at 88.95s, open=4
+[INFO] [1793185066.789380916] [atswarm_mission_manager]: replan #7 (periodic) t=103.1s: 27.1 ms, 742 it, stop=adaptive, release at 103.44s, open=2
+[INFO] [1793185074.291756105] [atswarm_mission_manager]: replan #8 (periodic) t=118.1s: 27.2 ms, 659 it, stop=adaptive, release at 118.44s, open=2
+[INFO] [1793185075.836008040] [atswarm_mission_manager]: replan #9 (event) t=121.2s: 22.8 ms, 115 it, stop=adaptive, release at 121.48s, open=4
+[INFO] [1793185080.706725304] [atswarm_mission_manager]: replan #10 (event) t=130.9s: 32.5 ms, 280 it, stop=adaptive, release at 131.31s, open=3
+[INFO] [1793185088.229111021] [atswarm_mission_manager]: replan #11 (periodic) t=145.9s: 22.1 ms, 594 it, stop=adaptive, release at 146.18s, open=2
+[INFO] [1793185095.717445287] [atswarm_mission_manager]: replan #12 (periodic) t=160.9s: 12.1 ms, 409 it, stop=adaptive, release at 161.05s, open=1
+[INFO] [1793185139.879533165] [atswarm_mission_manager]: replan #13 (event) t=249.0s: 2.2 ms, 15 it, stop=adaptive, release at 249.03s, open=1
+[INFO] [1793185150.158902999] [atswarm_mission_manager]: replan #14 (event) t=269.5s: 2.4 ms, 11 it, stop=adaptive, release at 269.53s, open=1
+[INFO] [1793185201.369523856] [atswarm_mission_manager]: MISSION END t=371.6s utility=0.783 served=12/15 late=0 replans=15 plan_ms=30.5 RTF=2.00 -> /tmp/smoke_c2.json

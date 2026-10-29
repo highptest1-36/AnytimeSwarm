@@ -1,0 +1,3 @@
+[INFO] [1793202154.912568759] [atswarm_uav_executor]: gz-deadlines-6000: 3 UAVs, executor ready
+[INFO] [1793202163.009615900] [atswarm_uav_executor]: mission clock started
+[INFO] [1793202339.567695514] [atswarm_uav_executor]: mission over: landing

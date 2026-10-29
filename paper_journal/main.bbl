@@ -70,6 +70,21 @@ J.~Svegliato, K.~H. Wray, S.~Zilberstein, Meta-level control of anytime
 \newblock \href {https://doi.org/10.24963/ijcai.2018/208}
   {\path{doi:10.24963/ijcai.2018/208}}.
 
+\bibitem{errico2016apriori}
+F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, L.-M. Rousseau, A priori
+  optimization with recourse for the vehicle routing problem with hard time
+  windows and stochastic service times, European Journal of Operational
+  Research 249~(1) (2016) 55--66.
+\newblock \href {https://doi.org/10.1016/j.ejor.2015.07.027}
+  {\path{doi:10.1016/j.ejor.2015.07.027}}.
+
+\bibitem{agra2013robust}
+A.~Agra, M.~Christiansen, R.~Figueiredo, L.~M. Hvattum, M.~Poss, C.~Requejo,
+  The robust vehicle routing problem with time windows, Computers \& Operations
+  Research 40~(3) (2013) 856--866.
+\newblock \href {https://doi.org/10.1016/j.cor.2012.10.002}
+  {\path{doi:10.1016/j.cor.2012.10.002}}.
+
 \bibitem{law2015simulation}
 A.~M. Law, Simulation Modeling and Analysis, 5th Edition, McGraw-Hill
   Education, New York, 2015.
@@ -95,6 +110,20 @@ S.~Macenski, T.~Foote, B.~Gerkey, C.~Lalancette, W.~Woodall, Robot operating
   (2022) eabm6074.
 \newblock \href {https://doi.org/10.1126/scirobotics.abm6074}
   {\path{doi:10.1126/scirobotics.abm6074}}.
+
+\bibitem{boddy1994deliberation}
+M.~Boddy, T.~L. Dean, Deliberation scheduling for problem solving in
+  time-constrained environments, Artificial Intelligence 67~(2) (1994)
+  245--285.
+\newblock \href {https://doi.org/10.1016/0004-3702(94)90054-X}
+  {\path{doi:10.1016/0004-3702(94)90054-X}}.
+
+\bibitem{ritzinger2016survey}
+U.~Ritzinger, J.~Puchinger, R.~F. Hartl, A survey on dynamic and stochastic
+  vehicle routing problems, International Journal of Production Research 54~(1)
+  (2016) 215--231.
+\newblock \href {https://doi.org/10.1080/00207543.2015.1043403}
+  {\path{doi:10.1080/00207543.2015.1043403}}.
 
 \bibitem{solomon1987algorithms}
 M.~M. Solomon, Algorithms for the vehicle routing and scheduling problems with
@@ -149,6 +178,20 @@ L.~Bertuccelli, H.-L. Choi, P.~Cho, J.~How, Real-time multi-{UAV} task
 \newblock \href {https://doi.org/10.2514/6.2009-5776}
   {\path{doi:10.2514/6.2009-5776}}.
 
+\bibitem{choudhury2022dynamic}
+S.~Choudhury, J.~K. Gupta, M.~J. Kochenderfer, D.~Sadigh, J.~Bohg, Dynamic
+  multi-robot task allocation under uncertainty and temporal constraints,
+  Autonomous Robots 46~(1) (2022) 231--247.
+\newblock \href {https://doi.org/10.1007/s10514-021-10022-9}
+  {\path{doi:10.1007/s10514-021-10022-9}}.
+
+\bibitem{huang2024dynamic}
+H.~Huang, Z.~Jiang, T.~Yan, Y.~Bai, Dynamic task allocation for heterogeneous
+  multi-{UAVs} in uncertain environments based on {4DI-GWO} algorithm, Drones
+  8~(6) (2024) 236.
+\newblock \href {https://doi.org/10.3390/drones8060236}
+  {\path{doi:10.3390/drones8060236}}.
+
 \bibitem{ucdg2026drones}
 C.~Qian, B.~Fu, Uncertainty-gated distributed dynamic task allocation for
   multi-{UAV} systems under intermittent communication, Drones 10~(10) (2026)
@@ -170,11 +213,52 @@ Y.~Shen, T.~Hu, Y.~Wan, H.~Sun, M.~Tan, Edge-responsive local-repair particle
 \newblock \href {https://doi.org/10.1109/ACCESS.2026.3717031}
   {\path{doi:10.1109/ACCESS.2026.3717031}}.
 
+\bibitem{calvo2025heterogeneous}
+{\'A}.~Calvo, J.~Capit{\'a}n, Heterogeneous multirobot task allocation for
+  long-endurance missions in dynamic scenarios, IEEE Transactions on Robotics
+  41 (2025) 6494--6513.
+\newblock \href {https://doi.org/10.1109/TRO.2025.3626651}
+  {\path{doi:10.1109/TRO.2025.3626651}}.
+
+\bibitem{ali2026sitl}
+M.~A. Ali, U.~Athar, A.~Maqsood, {SITL} validation of federated reinforcement
+  learning for priority-based dynamic task allocation in {UAV} swarms, Expert
+  Systems 43~(12) (2026) e70459.
+\newblock \href {https://doi.org/10.1111/exsy.70459}
+  {\path{doi:10.1111/exsy.70459}}.
+
+\bibitem{cong2026event}
+Y.~Cong, Y.~Li, X.~Zhu, Z.~Wang, An event-triggered path-based bid assignment
+  method for energy-aware dynamic multi-{UAV} task allocation, Drones 10~(9)
+  (2026) 684.
+\newblock \href {https://doi.org/10.3390/drones10090684}
+  {\path{doi:10.3390/drones10090684}}.
+
+\bibitem{vieira2003rescheduling}
+G.~E. Vieira, J.~W. Herrmann, E.~Lin, Rescheduling manufacturing systems: A
+  framework of strategies, policies, and methods, Journal of Scheduling 6~(1)
+  (2003) 39--62.
+\newblock \href {https://doi.org/10.1023/A:1022235519958}
+  {\path{doi:10.1023/A:1022235519958}}.
+
+\bibitem{ouelhadj2009survey}
+D.~Ouelhadj, S.~Petrovic, A survey of dynamic scheduling in manufacturing
+  systems, Journal of Scheduling 12~(4) (2009) 417--431.
+\newblock \href {https://doi.org/10.1007/s10951-008-0090-8}
+  {\path{doi:10.1007/s10951-008-0090-8}}.
+
 \bibitem{gendreau1996stochastic}
 M.~Gendreau, G.~Laporte, R.~S{\'e}guin, Stochastic vehicle routing, European
   Journal of Operational Research 88~(1) (1996) 3--12.
 \newblock \href {https://doi.org/10.1016/0377-2217(95)00050-X}
   {\path{doi:10.1016/0377-2217(95)00050-X}}.
+
+\bibitem{errico2018vrptw}
+F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, L.-M. Rousseau, The vehicle
+  routing problem with hard time windows and stochastic service times, EURO
+  Journal on Transportation and Logistics 7~(3) (2018) 223--251.
+\newblock \href {https://doi.org/10.1007/s13676-016-0101-4}
+  {\path{doi:10.1007/s13676-016-0101-4}}.
 
 \bibitem{bent2004scenario}
 R.~W. Bent, P.~Van~Hentenryck, Scenario-based planning for partially dynamic
@@ -197,6 +281,15 @@ J.~Svegliato, P.~Sharma, S.~Zilberstein, A model-free approach to meta-level
 \newblock \href {https://doi.org/10.1109/ICRA40945.2020.9196898}
   {\path{doi:10.1109/ICRA40945.2020.9196898}}.
 
+\bibitem{bhatia2022tuning}
+A.~Bhatia, J.~Svegliato, S.~B. Nashed, S.~Zilberstein, Tuning the
+  hyperparameters of anytime planning: A metareasoning approach with deep
+  reinforcement learning, in: Proceedings of the International Conference on
+  Automated Planning and Scheduling (ICAPS), Vol.~32, AAAI Press, 2022, pp.
+  556--564.
+\newblock \href {https://doi.org/10.1609/icaps.v32i1.19842}
+  {\path{doi:10.1609/icaps.v32i1.19842}}.
+
 \bibitem{sung2021quit}
 Y.~Sung, L.~P. Kaelbling, T.~Lozano-P{\'e}rez, Learning when to quit:
   Meta-reasoning for motion planning, in: Proceedings of the 2021 IEEE/RSJ
@@ -204,6 +297,37 @@ Y.~Sung, L.~P. Kaelbling, T.~Lozano-P{\'e}rez, Learning when to quit:
   2021, pp. 4692--4699.
 \newblock \href {https://doi.org/10.1109/IROS51168.2021.9636864}
   {\path{doi:10.1109/IROS51168.2021.9636864}}.
+
+\bibitem{cashmore2018clock}
+M.~Cashmore, A.~Coles, B.~Cserna, E.~Karpas, D.~Magazzeni, W.~Ruml, Temporal
+  planning while the clock ticks, in: Proceedings of the International
+  Conference on Automated Planning and Scheduling (ICAPS), Vol.~28, AAAI Press,
+  2018, pp. 39--46.
+\newblock \href {https://doi.org/10.1609/icaps.v28i1.13878}
+  {\path{doi:10.1609/icaps.v28i1.13878}}.
+
+\bibitem{shperberg2019allocating}
+S.~S. Shperberg, A.~Coles, B.~Cserna, E.~Karpas, W.~Ruml, S.~E. Shimony,
+  Allocating planning effort when actions expire, in: Proceedings of the AAAI
+  Conference on Artificial Intelligence, Vol.~33, AAAI Press, 2019, pp.
+  2371--2378.
+\newblock \href {https://doi.org/10.1609/aaai.v33i01.33012371}
+  {\path{doi:10.1609/aaai.v33i01.33012371}}.
+
+\bibitem{shperberg2021situated}
+S.~S. Shperberg, A.~Coles, E.~Karpas, W.~Ruml, S.~E. Shimony, Situated temporal
+  planning using deadline-aware metareasoning, in: Proceedings of the
+  International Conference on Automated Planning and Scheduling (ICAPS),
+  Vol.~31, AAAI Press, 2021, pp. 340--348.
+\newblock \href {https://doi.org/10.1609/icaps.v31i1.15979}
+  {\path{doi:10.1609/icaps.v31i1.15979}}.
+
+\bibitem{dionne2011deadline}
+A.~Dionne, J.~Thayer, W.~Ruml, Deadline-aware search using on-line measures of
+  behavior, in: Proceedings of the International Symposium on Combinatorial
+  Search (SoCS), Vol.~2, AAAI Press, 2011, pp. 39--46.
+\newblock \href {https://doi.org/10.1609/socs.v2i1.18199}
+  {\path{doi:10.1609/socs.v2i1.18199}}.
 
 \bibitem{savelsbergh1992vrptw}
 M.~W.~P. Savelsbergh, The vehicle routing problem with time windows: Minimizing
