@@ -215,6 +215,26 @@ R.~W. Bent, P.~Van~Hentenryck, Scenario-based planning for partially dynamic
 \newblock \href {https://doi.org/10.1287/opre.1040.0124}
   {\path{doi:10.1287/opre.1040.0124}}.
 
+\bibitem{li2010vrptw}
+X.~Li, P.~Tian, S.~C.~H. Leung, Vehicle routing problems with time windows and
+  stochastic travel and service times: Models and algorithm, International
+  Journal of Production Economics 125~(1) (2010) 137--145.
+\newblock \href {https://doi.org/10.1016/j.ijpe.2010.01.013}
+  {\path{doi:10.1016/j.ijpe.2010.01.013}}.
+
+\bibitem{ehmke2015ensuring}
+J.~F. Ehmke, A.~M. Campbell, T.~L. Urban, Ensuring service levels in routing
+  problems with time windows and stochastic travel times, European Journal of
+  Operational Research 240~(2) (2015) 539--550.
+\newblock \href {https://doi.org/10.1016/j.ejor.2014.06.045}
+  {\path{doi:10.1016/j.ejor.2014.06.045}}.
+
+\bibitem{clark1961greatest}
+C.~E. Clark, The greatest of a finite set of random variables, Operations
+  Research 9~(2) (1961) 145--162.
+\newblock \href {https://doi.org/10.1287/opre.9.2.145}
+  {\path{doi:10.1287/opre.9.2.145}}.
+
 \bibitem{hansen2001monitoring}
 E.~A. Hansen, S.~Zilberstein, Monitoring and control of anytime algorithms: A
   dynamic programming approach, Artificial Intelligence 126~(1--2) (2001)

@@ -1,18 +1,19 @@
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution. Under wind, speed and service-time errors, such plans promise
-finish times that the vehicles do not achieve, and tasks near the end of a route are served late. This paper proposes
-AnytimeSwarm-CC, a replanner that plans against a chance constraint on the finish time of every task. Because the mean
-and the spread of a calibrated finish-time error grow linearly with the lead time, the chance constraint reduces exactly
-to an effective deadline per task. The margin therefore grows along a route, and the fast repair and adaptive large
-neighbourhood search of the nominal model are reused unchanged. A nominal fallback keeps the tasks that the constraint
-would give up. The replanner was evaluated in pre-registered studies on held-out missions of a kinematic simulator with
-disturbances and communication latency. In \val{KNRuns} runs, the chance-constrained model served \val{KDabsBuf} to
-\val{KDabsForty} percentage points more reward than each of six baselines, among them metareasoning stopping rules and a
-constant time buffer (Holm-adjusted $p<0.001$). Ablations attributed the gain to the planning model rather than to the
-stopping rule. On new seeds, the fallback added \val{LDabsPropAll} percentage points and served \val{LURelConv}\% more
-reward than a conventional event-triggered planner, at the price of more late tasks. In PX4 software-in-the-loop flights
-with Gazebo and ROS~2, the replanner served \val{KCLateRedForty}\% fewer tasks late, but the utility differences on
-\val{KCN} missions stayed within the noise.
+finish times that the vehicles do not achieve, and tasks near the end of a route are served late. On development
+flights, the spread of the finish-time error grew linearly with the lead time, because the disturbances persist over
+each leg. This paper proposes AnytimeSwarm-CC, a replanner whose planning model exploits this structure. With an affine
+error model, a chance constraint on the finish time of every task reduces exactly to an effective deadline, so the fast
+repair and adaptive large neighbourhood search of the nominal model are reused unchanged. A nominal fallback keeps the
+tasks that the constraint would give up. In four pre-registered studies on held-out missions of a kinematic simulator,
+the chance-constrained model served more reward than the nominal model and a constant time buffer on three independent
+sets of seeds. On the last set, the replanner served \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points more
+than these two models and \val{QURelCCConv}\% more than a conventional event-triggered planner (Holm-adjusted
+$p<0.001$). A tuned proportional buffer and moment propagation from the literature came within \val{XRangeScaled}
+percentage points, so the gain comes from a margin that grows with the lead time rather than from the precise error
+model, and the closed form allowed \val{QRelItMsMP}\% more search iterations per millisecond than moment propagation.
+The fallback proved general and raised the utility of moment propagation by \val{XDabsFbMPAll} percentage points.
+%S4C-ABS
 \end{abstract}
 
 \begin{keyword}

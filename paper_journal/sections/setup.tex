@@ -67,8 +67,25 @@ buffers~\cite{agra2013robust}. The proposed model uses Eq.~\eqref{eq:cc} with $z
 disturbances, selected on development missions. All these methods use the periodic trigger. The conventional planner
 combines ALNS with 40\,ms, the nominal model and the event trigger.
 
+Study~4 compares planning models on the same search, with a fixed budget of 40\,ms, the periodic trigger and the
+nominal fallback for every chance-constrained model. The proportional buffer accepts $f_j+c\,h_j\le d_j$, which keeps
+the shape of the proposed margin but replaces the calibration by one tuned slope. Moment propagation follows Ehmke et
+al.~\cite{ehmke2015ensuring}. The flight time of a leg of nominal duration $t$ is normal with mean $(1+a)t+c_0$ and
+standard deviation $c_v t$, the service time is normal with mean $(1+a_s)s$ and standard deviation $c_s s$, legs are
+independent, the start of service $\max(A_j,r_j)$ is approximated by Clark's moments~\cite{clark1961greatest}, and a
+finish is accepted if $\mathrm{E}[F_j]+z\,\mathrm{sd}[F_j]\le d_j$. The leg parameters are fitted on the legs of the
+development flights. Because the variance of one long leg can exceed that of the two legs it replaces, removing a task
+can make a route infeasible under this model, so every route is filtered once more before publication. Online
+calibration starts from one error model fitted on both disturbance levels, with the weight of $n_0$ pairs, and refits
+Eq.~\eqref{eq:errmodel} at every call with the pairs of the tasks completed so far in the mission, so it needs neither
+the disturbance level nor a level-specific $z$. Each model has one parameter per level, selected on development
+missions by the same rule as $z$ in study~2. For the proposed model with fallback, $z$ was selected anew and is 1 under
+mid and 0.5 under high disturbances. The other values are $c=0.45$ and 0.6, $z=1$ and 0.5 for moment propagation, and
+$n_0=50$ with $z=0.5$ for online calibration. On development missions, the three static models differed by less than
+0.2\,pp.
+
 \subsection{Pre-registered protocol}\label{sec:protocol}
-The evaluation consists of three studies, each with its own held-out seeds, written protocol and frozen code.
+The evaluation consists of four studies, each with its own held-out seeds, written protocol and frozen code.
 Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute price, $z$, the buffer and
 the error models were fixed. Before each study, the configurations, the models and the code were frozen with SHA-256
 hashes, which the held-out runs checked before starting. Study~1 tested AnytimeSwarm-R against fixed and adaptive
@@ -87,6 +104,17 @@ seeds, the nominal one was selected by a rule stated beforehand. Study~3 uses ne
 and the matrix of study~2. Its primary family compares the fallback variant with the replanner of study~2 over all
 configurations (H5), with the constant buffer under high disturbances with halved windows (H6), and with ALNS with
 40\,ms (H7) and the constant buffer (H8) over all configurations.
+
+Study~4 uses new held-out seeds 8000--8029 in tier B, the same matrix and eleven methods. Its primary family tests the
+proposed model with fallback against the proportional buffer (H9), non-inferiority against moment propagation with a
+margin of $-0.5$\,pp, followed by superiority in a fixed sequence (H10), the fallback within moment propagation (H11),
+and the proposed model against the constant buffer (H12) and the nominal model (H13). Online calibration, the learned
+stopping rule, repair without search and a reliability check of the error model are secondary. Study~4C flies the
+proposed replanner with and without fallback and the nominal model in tier C under high disturbances with halved
+windows, where tier B predicted the largest effect, on 36 missions with seeds 9000--9011. The sample size was computed
+beforehand from a tier B counterpart on development seeds. One interim analysis after half of the missions uses
+O'Brien--Fleming bounds, so that the flights could stop early without inflating the error rate. H14 compares the
+fallback variant with the nominal model and H15 with the variant without fallback.
 
 In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
 paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the

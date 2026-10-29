@@ -38,7 +38,7 @@ work during the campaign, and many repeats ran slower than the original runs. Of
 comparisons with the original runs instead of the repeats, and with only those pairs of runs that both lie in the
 validity range.
 
-Table~\ref{tab:s2tierc} of the main paper summarises the results. The proposed replanner reached a utility of \val{KCUProp}\%, against
+Table~\ref{tab:s2tierc} summarises the results. The proposed replanner reached a utility of \val{KCUProp}\%, against
 \val{KCUForty}\% for ALNS with 40\,ms, \val{KCUBuf}\% for the constant buffer and \val{KCUConv}\% for the conventional
 planner. The paired differences were \val{KCDForty}\,pp to ALNS with 40\,ms and \val{KCDConv}\,pp to the conventional
 planner, with Holm-adjusted $p$-values of \val{KCPForty} and \val{KCPConv}. The fourth hypothesis is therefore not
@@ -46,6 +46,8 @@ supported. The secondary comparison with the constant buffer gave \val{KCDBuf}\,
 the same conclusion. With the original runs, the differences were \val{KCDFortyOrig}\,pp and \val{KCDConvOrig}\,pp.
 With valid runs only, they were \val{KCDFortyValid}\,pp on \val{KCNFortyValid} missions and \val{KCDConvValid}\,pp on
 \val{KCNConvValid} missions. No interval in the three analyses excludes zero.
+
+\inputtable{tab_s2_tierc}
 
 The mechanism seen in tier B reappears in the counts of late and skipped tasks. The proposed replanner served
 \val{KCLateProp} tasks late per mission, against \val{KCLateForty} for ALNS with 40\,ms, which is \val{KCLateRedForty}\%

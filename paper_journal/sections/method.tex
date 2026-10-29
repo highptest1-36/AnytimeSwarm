@@ -60,6 +60,34 @@ sensitive to the heavy tail of the errors. Under the mid and high disturbances o
 the spread grow with the lead time (Supplementary Table~S2). The nominal model is therefore optimistic, and
 increasingly so along a route.
 
+The affine spread is a modelling choice that the data can reject. A route-level model with independent increments per
+unit of time, the usual assumption when variances are added along a route, implies $s(h)=\sqrt{q_0+q_1h}$. On
+\val{ENPairsMid} and \val{ENPairsHigh} pairs of lead time and error from \val{ENMissions} development missions per
+level, the affine spread fits better by \val{EDAicSqrtMid} and \val{EDAicSqrtHigh} points of the Akaike information
+criterion under mid and high disturbances, and also better than the hybrid $\sqrt{q_0+q_1h+q_2h^2}$ (by
+\val{EDAicHybMid} and \val{EDAicHybHigh}). A five-fold cross-validation with missions as groups gives the same ranking.
+At the longest lead times, about \val{EHLateHigh}\,s, the square-root model predicts a spread of \val{ESdLateSqrtHigh}\,s
+under high disturbances where \val{ESdLateHigh}\,s are observed, while the affine model predicts \val{ESdLateAffHigh}\,s
+(Fig.~\ref{fig:errstructure}a).
+
+The reason is that the disturbances persist over a leg. Wind and an airspeed error act during the whole flight to a
+task, so the error of a leg is proportional to its duration (Fig.~\ref{fig:errstructure}b), with a coefficient of
+variation of \val{EMpCvMid} and \val{EMpCvHigh} under mid and high disturbances. Errors of successive legs are close to
+independent. The correlation between the error of a task and the error added by the next task of the same plan was
+\val{EIncCorrMid} and \val{EIncCorrHigh}, and missions explained only \val{EShareMissionMid}\% and
+\val{EShareMissionHigh}\% of the residual variance. A lead time of a few legs therefore carries a spread that grows
+almost linearly. Moment propagation with a variance proportional to the squared duration of each leg is consistent
+with this structure and serves as the literature baseline in Section~\ref{sec:methods}.
+
+\begin{figure}[t]
+\centering
+\fig{fig_errstructure}{\linewidth}
+\caption{Structure of the finish-time error on development missions. (a) Standard deviation of the error against the
+lead time, in deciles, with the affine fit of Eq.~\eqref{eq:errmodel} and the fit with independent increments. (b)
+Standard deviation of the flight-time error of single legs against their nominal flight time, in deciles, with a
+spread proportional to the duration.}\label{fig:errstructure}
+\end{figure}
+
 \subsection{Chance-constrained planning model}\label{sec:cc}
 The proposed model plans for the calibrated execution. A planned finish time $f_j$ is accepted only if
 \begin{equation}\label{eq:ccfinish}
@@ -107,7 +135,7 @@ d'_j=\begin{cases} d_j, & j\in\tilde H\setminus H,\\ \tilde d_j, & \text{otherwi
 The constraints of all other tasks are unchanged, so every other task that is served keeps the guarantee of
 Proposition~\ref{prop:cc}, while a fallback task carries none. Finding $\tilde H$ and $H$ requires one direct-flight
 check per task and vehicle, which is negligible compared with the search. The fallback was designed after the held-out
-results of study~2 and is evaluated on new seeds in study~3.
+results of study~2 and is evaluated on new seeds in studies~3 and~4.
 
 \subsection{Stopping rule and trigger}\label{sec:stop}
 Every 5\,ms, the stopping rule compares the predicted gain $\widehat{\Delta J}$ of searching $H=10$\,ms longer with the

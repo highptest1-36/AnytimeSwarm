@@ -26,6 +26,10 @@
 \IfFileExists{tables/numbers_s2.tex}{\input{tables/numbers_s2.tex}}{}
 \IfFileExists{tables/numbers_s3.tex}{\input{tables/numbers_s3.tex}}{}
 \IfFileExists{tables/numbers_s3x.tex}{\input{tables/numbers_s3x.tex}}{}
+\IfFileExists{tables/numbers_err.tex}{\input{tables/numbers_err.tex}}{}
+\IfFileExists{tables/numbers_s4.tex}{\input{tables/numbers_s4.tex}}{}
+\IfFileExists{tables/numbers_s4c.tex}{\input{tables/numbers_s4c.tex}}{}
+\IfFileExists{tables/numbers_s4x.tex}{\input{tables/numbers_s4x.tex}}{}
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
 \newcommand{\inputtable}[1]{\IfFileExists{tables/#1.tex}{\input{tables/#1.tex}}{\todo{table \detokenize{#1}}}}
@@ -33,7 +37,7 @@
 
 \begin{document}
 \begin{frontmatter}
-\title{Closed-form chance constraints for fast multi-UAV replanning under uncertain execution}
+\title{Lead-time-scaled chance constraints with a nominal fallback for fast multi-UAV replanning under uncertain execution}
 
 \author[fpt]{Cao-Phuc Ha}
 \ead{caophucai@gmail.com}

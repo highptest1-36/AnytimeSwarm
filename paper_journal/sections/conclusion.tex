@@ -1,12 +1,14 @@
 \section{Conclusion}\label{sec:conclusion}
 This paper proposed AnytimeSwarm-CC, a multi-UAV replanner that plans against a chance constraint on the finish time of
-every task. Because the calibrated finish-time error grows linearly with the lead time, the chance constraint reduces
-exactly to an effective deadline per task, and fast heuristics are reused unchanged. On held-out missions of
-pre-registered studies, the chance-constrained model served \val{KDabsBuf} to \val{KDabsForty} percentage points more
-reward than six baselines, including metareasoning stopping rules and a constant buffer, and a nominal fallback for the
-tasks that the constraint gives up added \val{LDabsPropAll} percentage points on new seeds, at the price of more late
-tasks. The gain came from the planning model, while the stopping rule was equivalent to a well-chosen fixed budget.
-Software-in-the-loop flights with PX4 and Gazebo reproduced the reduction of late tasks but were too few to confirm the
-utility gain. Future work will replace the fallback by an objective that weights every task by its probability of being
-served on time, fly the fallback variant on autopilots with enough missions for the expected effect, adapt the safety
-factor online, and run the replanner on embedded hardware.
+every task. Because disturbances persist over a leg, the spread of the finish-time error grows linearly with the lead
+time, and with an affine error model the chance constraint reduces exactly to an effective deadline per task, so fast
+heuristics are reused unchanged. A nominal fallback keeps the tasks that the constraint would give up. On three
+independent sets of held-out seeds of pre-registered studies, the chance-constrained model served more reward than the
+nominal model and a constant time buffer, and on the last set the replanner served \val{QURelCCConv}\% more than a
+conventional event-triggered planner. A tuned proportional buffer and moment propagation along the route reached the
+same utility, which identifies the margin that grows with the lead time, together with the fallback, as the source of
+the gain. The fallback improved moment propagation as much as the closed form, so it applies to hard chance constraints
+in general. %S4C-CONCL
+Future work will replace the fallback by an objective that weights every task by its probability of being served on
+time, estimate the disturbance level online without loss of utility, and run the replanner on embedded hardware and in
+field flights.
