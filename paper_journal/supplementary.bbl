@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{mccullagh1989glm}
+P.~McCullagh, J.~A. Nelder, Generalized Linear Models, 2nd Edition, Chapman and
+  Hall, London, 1989.
+\newblock \href {https://doi.org/10.1007/978-1-4899-3242-6}
+  {\path{doi:10.1007/978-1-4899-3242-6}}.
+
+\bibitem{savelsbergh1992vrptw}
+M.~W.~P. Savelsbergh, The vehicle routing problem with time windows: Minimizing
+  route duration, ORSA Journal on Computing 4~(2) (1992) 146--154.
+\newblock \href {https://doi.org/10.1287/ijoc.4.2.146}
+  {\path{doi:10.1287/ijoc.4.2.146}}.
+
+\bibitem{ortools}
+L.~Perron, V.~Furnon, {OR-Tools},
+  \url{https://developers.google.com/optimization}, version 9.15 (2026).
+
+\bibitem{voudouris1999gls}
+C.~Voudouris, E.~Tsang, Guided local search and its application to the
+  traveling salesman problem, European Journal of Operational Research 113~(2)
+  (1999) 469--499.
+\newblock \href {https://doi.org/10.1016/S0377-2217(98)00099-X}
+  {\path{doi:10.1016/S0377-2217(98)00099-X}}.
+
+\bibitem{fawcett2006roc}
+T.~Fawcett, An introduction to {ROC} analysis, Pattern Recognition Letters
+  27~(8) (2006) 861--874.
+\newblock \href {https://doi.org/10.1016/j.patrec.2005.10.010}
+  {\path{doi:10.1016/j.patrec.2005.10.010}}.
+
+\end{thebibliography}

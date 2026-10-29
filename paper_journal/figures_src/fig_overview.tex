@@ -1,0 +1,171 @@
+% Fig. 1: overview of AnytimeSwarm-CC (pdflatex fig_overview.tex -> copy fig_overview.pdf to ../figures/)
+\documentclass[tikz,border=2pt]{standalone}
+\input{figstyle}
+\begin{document}
+\begin{tikzpicture}
+% ------------------------------------------------------------------ zoom band (drawn first, behind everything)
+\fill[zoom, opacity=0.55] (7.05,8.0) -- (9.75,8.0) -- (15.7,7.25) -- (0.3,7.25) -- cycle;
+
+% ================================================================== top strip: the replanning loop
+\draw[frame] (1.0,8.0) rectangle (15.0,10.55);
+% mission
+\groundplane{1.35}{8.55}{1.75}{1.05}{3}
+\fill[ink] (2.35,8.88) rectangle ++(0.11,0.08);
+\foreach \p in {(1.75,8.72),(2.85,8.75),(3.05,9.15),(2.0,9.25),(2.65,9.28)} \filldraw[draw=edge,fill=white,line width=0.35pt] \p circle (0.045);
+\draw[sBlue!80!black, line width=0.7pt, dash pattern=on 2pt off 1pt] (2.4,8.92) -- (2.0,9.25) -- (1.75,8.72);
+\draw[sMint!70!black, line width=0.7pt, dash pattern=on 2pt off 1pt] (2.4,8.92) -- (2.85,8.75) -- (3.05,9.15);
+\pic[scale=0.62] at (1.95,9.75) {quad=sBlue};
+\pic[scale=0.62] at (2.95,9.62) {quad=sMint};
+\draw[-{Stealth[length=3pt]}, line width=0.6pt, muted] (1.25,10.15) -- (1.75,10.15);
+\draw[-{Stealth[length=3pt]}, line width=0.6pt, muted] (1.35,10.0) -- (1.85,10.0);
+\node[Ts, anchor=west] at (1.78,10.12) {wind};
+\node[T] at (2.4,8.22) {Mission};
+\draw[arr] (3.6,9.1) -- (4.35,9.1);
+\node[Ts, anchor=south] at (3.97,9.12) {event};
+% snapshot
+\slab{4.5}{8.66}{1.05}{0.13}{0.32}{sSand}
+\slab{4.5}{8.98}{1.05}{0.13}{0.32}{sBlue}
+\slab{4.5}{9.30}{1.05}{0.13}{0.32}{sMint}
+\node[T] at (5.15,8.22) {Snapshot at $t_0$};
+\draw[arr] (5.95,9.1) -- (6.95,9.1);
+% replanner
+\filldraw[draw=ink, line width=0.8pt, fill=white, rounded corners=2pt] (7.05,8.5) rectangle (9.75,9.9);
+\node[T, font=\fontsize{8}{9}\selectfont\bfseries] at (8.4,9.62) {AnytimeSwarm-CC};
+\slab{7.25}{8.8}{0.42}{0.32}{0.22}{sBlue}
+\slab{7.88}{8.8}{0.42}{0.32}{0.22}{sSand}
+\slab{8.51}{8.8}{0.42}{0.32}{0.22}{sRose}
+\slab{9.14}{8.8}{0.42}{0.32}{0.22}{sMint}
+\node[T] at (8.4,8.22) {Replanner (detail below)};
+\draw[arr] (9.75,9.1) -- (10.7,9.1);
+\node[Ts, anchor=south] at (10.22,9.12) {plan $\pi^\ast$};
+% execution
+\groundplane{10.8}{8.55}{1.5}{0.9}{3}
+\pic[scale=0.75] at (11.55,9.65) {quad=sRose};
+\draw[black!45, line width=0.4pt, dash pattern=on 1pt off 1pt] (11.55,9.5) -- (11.55,8.92);
+\fill[black!25] (11.55,8.92) ellipse (0.16 and 0.05);
+\node[T] at (11.75,8.22) {Tier B or tier C (PX4)};
+\draw[arr] (12.75,9.1) -- (13.3,9.1);
+\node[draw=ink, line width=0.6pt, rounded corners=2pt, align=center, T, inner sep=3pt, minimum width=1.35cm] at (14.05,9.1)
+  {Utility,\\late tasks};
+% feedback
+\draw[darr] (11.55,10.05) -- (11.55,10.35) -- (2.4,10.35) -- (2.4,10.2);
+\node[Ts, fill=white, inner sep=1.5pt] at (6.9,10.35) {telemetry: UAV states, actual finish times $F_j$, failures};
+
+% ================================================================== detail: one replanning call
+\draw[frame] (0.3,0.25) rectangle (15.7,7.25);
+% ---------------- snapshot input
+\node[Hd] at (1.25,6.85) {Snapshot};
+\node[Ts, align=center] at (1.3,5.55) {open tasks\\$(r_j,d_j,w_j)$};
+\slab{0.6}{4.75}{1.1}{0.16}{0.38}{sMint}
+\node[Ts] at (1.3,4.32) {UAV states};
+\slab{0.6}{3.75}{1.1}{0.16}{0.38}{sBlue}
+\node[Ts, align=center] at (1.3,3.3) {previous\\plan $\pi^-$};
+\slab{0.6}{2.5}{1.1}{0.16}{0.38}{sSand}
+
+% ---------------- column 1: calibrated error model
+\fill[pBlue, panel] (2.3,0.45) rectangle (5.65,7.05);
+\node[Hd] at (3.97,6.8) {Calibrated error model};
+\begin{scope}
+  \draw[arr] (2.75,2.55) -- (5.4,2.55) node[Ts, anchor=north east] at (5.4,2.5) {lead time $h$};
+  \draw[arr] (2.75,2.55) -- (2.75,6.25);
+  \node[Ts, rotate=90, anchor=south] at (2.7,4.45) {finish-time error $e$};
+  % band between m(h) and m(h)+z s(h)
+  \fill[sBlue!25] (2.85,2.95) -- (5.25,4.15) -- (5.25,5.75) -- (2.85,3.15) -- cycle;
+  \pgfmathsetseed{7}
+  \foreach \i in {1,...,70} {
+    \pgfmathsetmacro{\hh}{rnd}
+    \pgfmathsetmacro{\xx}{2.85+2.4*\hh}
+    \pgfmathsetmacro{\yy}{2.95+1.2*\hh+(0.12+0.95*\hh)*1.25*(rnd+rnd+rnd-1.5)}
+    \fill[sBlue!70!black, opacity=0.75] (\xx,\yy) circle (0.028);
+  }
+  \draw[ink, line width=0.8pt] (2.85,2.95) -- (5.25,4.15);
+  \draw[ink, line width=0.8pt, dash pattern=on 3pt off 1.5pt] (2.85,3.15) -- (5.25,5.75);
+  \node[Ts, anchor=west, fill=pBlue, inner sep=1pt] at (3.0,5.85) {$m(h)+z\,s(h)$};
+  \draw[line width=0.4pt] (4.3,5.75) -- (4.7,5.25);
+  \node[Ts, anchor=north west] at (4.35,3.68) {$m(h)$};
+\end{scope}
+\node[T, align=center] at (3.97,1.45) {$e_j\sim\mathcal{N}\big(m(h_j),\,s(h_j)^2\big)$\\[1pt]
+  $m(h)=b_0+b_1h$,\; $s(h)=s_0+s_1h$};
+\node[Ts, align=center] at (3.97,0.72) {fitted per disturbance level\\on development missions};
+
+% ---------------- column 2: chance-constrained deadlines
+\fill[pSand, panel] (5.85,0.45) rectangle (9.3,7.05);
+\node[Hd] at (7.57,6.8) {Effective deadlines};
+\draw[arr] (6.1,2.35) -- (9.15,2.35);
+\node[Ts, anchor=north east] at (9.15,2.3) {mission time};
+\draw[line width=0.6pt] (6.25,2.25) -- (6.25,6.35);
+\node[Ts, anchor=north] at (6.25,2.25) {$t_0$};
+% rows: window slab [r_j, d_j], effective deadline tick, hatched margin
+\foreach \y/\r/\d/\m in {5.75/6.4/7.1/0.12, 4.95/6.75/7.75/0.3, 4.15/7.2/8.6/0.58} {
+  \slab{\r}{\y}{\d-\r}{0.24}{0.2}{sSand}
+  \fill[pattern=north east lines, pattern color=late!70] ({\d-\m},\y) rectangle (\d,{\y+0.24});
+  \draw[late, line width=1.1pt] ({\d-\m},{\y-0.08}) -- ({\d-\m},{\y+0.36});
+}
+\node[Ts, anchor=south, text=late] at (6.98,6.08) {$\tilde d_j$};
+\node[Ts, anchor=south] at (7.24,6.1) {$d_j$};
+\node[Ts, anchor=west] at (7.4,5.87) {served soon};
+\node[Ts, anchor=north] at (7.9,4.08) {late in the route};
+\draw[{Stealth[length=3pt]}-{Stealth[length=3pt]}, line width=0.45pt] (8.02,4.56) -- (8.6,4.56);
+\node[Ts, anchor=south] at (8.31,4.58) {margin};
+% given-up task kept by the fallback
+\draw[late, line width=1.1pt] (7.3,3.14) -- (7.3,3.58);
+\node[Ts, anchor=east, text=late] at (7.28,3.36) {$\tilde d_j$};
+\draw[edge, line width=0.55pt, dash pattern=on 2pt off 1pt, fill=white] (7.6,3.24) rectangle (8.6,3.48);
+\node[Ts, anchor=north] at (7.75,3.18) {given up: fallback $d'_j=d_j$};
+\node[Ts, align=center] at (7.57,1.5)
+  {$\tilde d_j=t_0+\dfrac{d_j-t_0-b_0-z s_0}{1+b_1+z s_1}$};
+\node[Ts, align=center] at (7.57,0.75) {exact for a linear error model;\\repair and search reuse it unchanged};
+
+% ---------------- column 3: anytime search
+\fill[pRose, panel] (9.5,0.45) rectangle (12.75,7.05);
+\node[Hd] at (11.12,6.8) {Anytime search};
+\wslab{9.72}{5.7}{1.9}{0.5}{0.25}{sRose}
+\node[Ts, align=center] at (10.67,5.95) {feasibility-first repair\\(regret-2)};
+\draw[arr] (10.67,5.7) -- (10.67,5.2);
+\wslab{9.72}{4.45}{1.9}{0.75}{0.25}{sRose}
+\node[Ts, align=center] at (10.67,4.83) {ALNS\\destroy and repair\\SA acceptance};
+\draw[arr] (11.62,5.05) to[out=0,in=90] (12.0,4.82) to[out=-90,in=0] (11.62,4.6);
+% incumbent stack
+\slab{11.55}{3.55}{0.7}{0.09}{0.26}{sRose}
+\slab{11.55}{3.72}{0.7}{0.09}{0.26}{sRose}
+\slab{11.55}{3.89}{0.7}{0.09}{0.26}{sRose}
+\draw[arr] (11.3,4.45) -- (11.55,4.05);
+\node[Ts, anchor=north] at (11.95,3.5) {best plan $\pi^\ast$};
+\draw[arr] (10.45,4.45) -- (10.45,3.0);
+\node[draw=edge, line width=0.5pt, fill=white, rounded corners=2pt, align=center, Ts, inner sep=2.5pt, text width=2.5cm]
+  (stop) at (10.75,2.62) {every 5\,ms: stop if\\$\widehat{\Delta J}\le C_{\mathrm R}(\tau)+\mu WH$};
+\draw[arr] (9.62,2.62) -- (9.62,4.82) -- (9.72,4.82);
+\node[Ts, fill=pRose, inner sep=1pt] at (9.62,3.6) {no};
+\node[Ts, align=center] at (11.12,1.42) {$\widehat{\Delta J}$: learned gain of $H$ more ms\\
+  $C_{\mathrm R}$: expected reward lost\\by a later plan};
+\node[Ts, align=center] at (11.12,0.75) {hard budget $B=250$\,ms};
+
+% ---------------- column 4: publish and execute
+\fill[pMint, panel] (12.95,0.45) rectangle (15.5,7.05);
+\node[Hd] at (14.22,6.8) {Publish and execute};
+\draw[arr] (13.3,6.35) -- (13.3,2.3);
+\draw[line width=1.1pt, late] (13.15,6.25) -- (13.45,6.25);
+\node[Ts, anchor=west] at (13.55,6.25) {trigger at $t_0$};
+\fill[sRose] (13.2,6.25) rectangle (13.4,5.95);
+\node[Ts, anchor=west] at (13.55,5.9) {search $\tau$};
+\fill[sRose!45] (13.2,5.95) rectangle (13.4,5.05);
+\node[Ts, anchor=west] at (13.55,5.45) {delay $\kappa\tau$};
+\fill[sBlue!55] (13.2,5.05) rectangle (13.4,4.6);
+\node[Ts, anchor=west] at (13.55,4.82) {latency $L$};
+\draw[line width=1.1pt] (13.15,4.6) -- (13.45,4.6);
+\node[Ts, anchor=west] at (13.55,4.35) {plan reaches UAVs};
+\fill[sMint] (13.2,4.6) rectangle (13.4,2.5);
+\node[Ts, anchor=west, align=left] at (13.55,3.3) {execution\\$F_j=f_j+e_j$};
+\pic[scale=0.75] at (14.95,3.95) {quad=sMint};
+\node[Ts, anchor=north] at (13.3,2.25) {time};
+\node[T, align=center] at (14.22,1.5) {$\Pr[F_j\le d_j]\ge\Phi(z)$\\[-1pt]{\fontsize{6.4}{7.6}\selectfont for protected tasks}};
+\node[Ts, align=center] at (14.22,0.75) {next call: event or\\$T_{\max}=60$\,s};
+
+% ---------------- flow between the columns
+\draw[arr] (1.95,4.0) -- (2.7,4.0);
+\draw[arr] (5.3,4.6) -- (6.1,4.6);
+\draw[arr] (9.1,5.3) to[out=0,in=180] (9.72,5.95);
+\draw[arr] (12.0,2.62) -- (13.2,2.62);
+\node[Ts, fill=pRose, inner sep=1pt] at (12.45,2.62) {yes};
+\end{tikzpicture}
+\end{document}

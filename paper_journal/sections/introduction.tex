@@ -1,65 +1,39 @@
 \section{Introduction}\label{sec:intro}
 Teams of unmanned aerial vehicles (UAVs) are used for inspection, delivery and monitoring. During a mission, new tasks
 may appear, a vehicle may fail, or a deadline may be moved forward. A central planner then repairs the routes of the
-whole fleet, while some UAVs may already wait for new instructions. Dynamic vehicle routing and multi-robot task
-allocation offer many methods for this repair~\cite{gerkey2004formal,pillac2013review,psaraftis2016dynamic}, and
-metaheuristics such as adaptive large neighbourhood search (ALNS)~\cite{ropke2006adaptive} usually find good plans when
-enough time is available.
+whole fleet within a fraction of a second, while some UAVs may already wait for new instructions. Dynamic vehicle
+routing and multi-robot task allocation offer many methods for this
+repair~\cite{gerkey2004formal,pillac2013review,psaraftis2016dynamic}, and metaheuristics such as adaptive large
+neighbourhood search (ALNS)~\cite{ropke2006adaptive} find good plans within such budgets.
 
-The time given to such a planner is usually fixed in advance, and the same budget is spent on easy and on hard events.
-This choice may be inefficient for two reasons. Many events leave little room for improvement, and on the others most of
-the improvement of an anytime search tends to arrive early. In addition, idle UAVs wait while the planner computes, so a
-later plan is not always a better plan. Anytime algorithms and metareasoning study this question in general
-terms~\cite{dean1988analysis,horvitz1987reasoning,russell1991right,zilberstein1996using,hansen2001monitoring,svegliato2018meta}.
-In replanning, the cost of time is specific to the current plan. It depends on which UAVs are idle, on the slack in
-their routes and, in practice, on how reliably the plan will be executed.
+Most of these replanners plan for nominal execution. When UAVs meet wind, fly slower than commanded or take longer at a
+task, part of the slack that the plan promises is consumed by errors that the planner does not see, and tasks near the
+end of a route are served late. The error grows with the time until a task is reached, so a constant time margin is too
+large for early tasks and too small for late ones. Stochastic and robust routing protect schedules against such
+errors~\cite{errico2016apriori,agra2013robust}, and chance-constrained allocation bounds the probability of
+failure~\cite{ponda2012chance}. These models are usually solved by sampling or by exact methods that are too slow for
+the time available between two events. A second line of work treats the computation time of an anytime planner as a
+decision~\cite{dean1988analysis,russell1991right,zilberstein1996using,svegliato2018meta}. It is not known which of the
+two, the planning model or the control of computation, matters more for a replanner that faces uncertain execution.
 
-Execution uncertainty changes the problem in two ways. First, a planner that assumes exact execution accepts plans whose
-finish times leave no margin. When UAVs meet wind, fly slower than commanded or take longer at a task, part of the
-promised slack is consumed by errors that the planner does not see, and tasks near the end of a route are served late.
-The error also grows with the time until a task is reached, so a fixed margin is too large for early tasks and too small
-for late ones. Second, the cost of a later plan depends on how reliably the plan will be executed, and errors accumulate
-between two replanning calls, which raises the question of when to replan at all. Stochastic and robust routing protect
-schedules against such errors~\cite{errico2016apriori,agra2013robust}, but usually with models that are too slow to be
-solved within the fraction of a second available between events. Validation is a further difficulty. Results obtained
-with a kinematic simulator may not hold for vehicles flown by an autopilot, while a physics-based simulation alone
-cannot provide the number of missions that a statistical comparison of planners requires.
+This paper proposes AnytimeSwarm-CC, a replanner that plans against a chance constraint on the finish time of every
+task and keeps the fast heuristics of the nominal model. Its contributions are threefold. The first is a closed-form
+chance-constrained planning model. A calibrated finish-time error, whose mean and spread grow linearly with the lead
+time, turns a chance constraint on every task into an effective deadline. The margin thus grows along a route, and the
+model is solved by the same repair and ALNS as the nominal one, with a negligible overhead per call. A nominal fallback
+keeps the tasks that the constraint would give up and leaves the guarantee of all other tasks intact. The second is a
+pre-registered comparison on held-out missions with re-implemented baselines. These include stopping rules from the
+metareasoning literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, size-scaled and fixed
+budgets, a constant time buffer~\cite{agra2013robust} and a conventional event-triggered planner, and ablations
+separate the effects of the planning model, the stopping rule and the replanning trigger. The third is a
+software-in-the-loop check with PX4 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo} and
+ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem, together
+with an estimate of the number of flights that such a check requires.
 
-This paper proposes AnytimeSwarm-CC, a replanner that addresses these points together, and evaluates it against
-baselines from the literature. Its contributions are fourfold. The first is a chance-constrained planning model for fast
-replanning. A calibrated model of the finish-time error, whose mean and spread grow linearly with the lead time, turns
-a chance constraint on the finish time of every task into an effective deadline in closed form. The proposed model is
-therefore solved by the same feasibility-first repair and anytime adaptive large neighbourhood search (ALNS) as the
-nominal model, with no extra cost per call. The second is a learned stopping rule. The search stops when a prediction of
-the next improvement no longer exceeds a delay cost derived from the slack of the plan, and an execution-aware variant
-prices the delay with the calibrated error model. Two propositions bound the reward that a later publication loses and
-show that the execution-aware cost reduces to the deterministic one when the error vanishes. The third is a two-tier
-evaluation framework. Tier B is a continuous-time kinematic simulator with acceleration limits, wind, speed and
-service-time errors and stochastic communication latency, drawn with common random numbers~\cite{law2015simulation} so
-that every planner faces the same disturbances. Tier C flies the same missions with three PX4
-autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo}, connected to the planner through
-ROS~2~\cite{macenski2022ros2}, after a rescaling that keeps every dimensionless ratio of the decision problem. The fourth
-is a pre-registered evaluation in three studies. Study~1 tests whether an execution-aware stopping rule alone improves the
-nominal planner. Study~2 compares the proposed replanner with re-implemented stopping rules from the metareasoning
-literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, size-scaled and fixed budgets, a robust
-time buffer~\cite{agra2013robust} and a conventional event-triggered planner, over latency factors and time-window
-widths. Study~3 tests a nominal fallback for the tasks that the chance constraint gives up, designed after the results
-of study~2. All design choices were fixed on development seeds, the code was frozen with cryptographic hashes, and each
-study was run once on its own held-out seeds with mission-level paired bootstrap, Holm correction and equivalence
-tests.
-
-The results are reported as they came out. In study~1, the execution-aware stopping rule needed
-\val{JMsRedAS}\% less computation than its deterministic counterpart, but it did not serve significantly more reward
-than the strongest baselines. In study~2, the proposed replanner served \val{KDabsBuf} to \val{KDabsForty} percentage
-points more reward than each of six baselines and \val{KURelConv}\% more than the conventional planner. Ablations show
-that this gain comes from the chance-constrained model, not from the stopping rule, which was equivalent to a fixed
-budget on the same model. The proposed model was too cautious under high disturbances with halved time windows, where
-a constant buffer served more reward. In software-in-the-loop flights, the differences between methods stayed within the
-noise of \val{KCN} missions. In study~3, on new seeds, the nominal fallback removed this weakness and served
-\val{LDabsPropAll} percentage points more reward than the replanner of study~2, with more tasks served late.
-
-The remainder of this paper is organised as follows. Section~\ref{sec:related} reviews related work.
-Section~\ref{sec:problem} formulates replanning with publication delay and uncertain execution. Section~\ref{sec:method}
-describes the proposed replanner. Section~\ref{sec:setup} presents the evaluation framework, the compared methods and
-the protocol. Section~\ref{sec:results} reports the results, Section~\ref{sec:discussion} discusses them together with
-the limitations of the study, and Section~\ref{sec:conclusion} concludes the paper.
+The results are reported as they came out. In the kinematic tier, the chance-constrained model served \val{KDabsBuf} to
+\val{KDabsForty} percentage points more reward than each of six baselines, and ablations traced the gain to the planning
+model rather than to the stopping rule. The model was too cautious under high disturbances with halved time windows,
+and the nominal fallback, tested afterwards on new seeds, removed this weakness. In software-in-the-loop flights, the
+replanner served fewer tasks late, but the utility differences stayed within the noise. An earlier pre-registered
+study, in which only the stopping rule was made execution-aware, found no significant gain in utility
+(Section~\ref{sec:study1}).

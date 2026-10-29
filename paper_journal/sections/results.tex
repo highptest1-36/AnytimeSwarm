@@ -1,373 +1,100 @@
 \section{Results}\label{sec:results}
-\subsection{Exact execution: stopping rules at equal computation}\label{sec:static}
-On the \val{NsnapTest} test snapshots, regret-2 repair finished within about one millisecond but left a regret of
-\val{RepairRegret}\%. With a budget of 250\,ms, ALNS with the full budget reached \val{FixedRegret}\%, whereas
-AnytimeSwarm reached \val{ASRegret}\% with \val{ASUsed}\% of the budget, that is, with \val{SavedPct}\% less computation.
-Because the stopping rules use different amounts of computation, they are best compared at equal computation.
-Table~\ref{tab:scale} makes this comparison for each fleet scale, with the fixed budget and the stagnation rule evaluated
-at the mean computation that AnytimeSwarm used on the same scale. AnytimeSwarm reached a lower regret on every scale,
-and all paired intervals lie below zero. The reduction was \val{ScMediumRedMin}\% to \val{ScMediumRedMax}\% on the
-medium scale, \val{ScLargeRedMin}\% to \val{ScLargeRedMax}\% on the large scale and \val{ScXlargeRedMin}\% to
-\val{ScXlargeRedMax}\% with 40 UAVs, a scale that was never used for training. Read in the other direction, the two
-baselines needed between \val{ScMediumSpeedMin} and \val{ScSmallSpeedMax} times the computation of AnytimeSwarm to
-reach its regret. Over all scales, AnytimeSwarm reached \val{EqRegretAS}\% against \val{EqRegretBaseMin}\% to
-\val{EqRegretBaseMax}\% for four baselines that include a fixed budget and a stagnation patience tuned per fleet scale
-on development data.
+\subsection{Study 1 in brief: execution-aware stopping on the nominal model}\label{sec:study1}
+Study~1 made only the stopping rule execution-aware and kept the nominal planning model. In \val{JNRunsMain} tier B
+runs, AnytimeSwarm-R needed \val{JMsRedAS}\% less computation per call than AnytimeSwarm, but its advantage over ALNS
+with 40\,ms was \val{JDFixedForty}\,percentage points (pp) with a Holm-adjusted $p$ of \val{JPFixedForty}, and its
+advantages over AnytimeSwarm and the stagnation rule were not significant either. Periodic replanning raised the
+utility of every method by \val{JTrigMin} to \val{JTrigMax}\,pp. Supplementary Sections~S3 and~S4 report these results
+in full, together with an exact-execution benchmark, tier C flights and a scalability study with 40 UAVs. Study~2 was
+designed after these results and moves the error model from the decision to stop into the planning model.
 
-\inputtable{tab_static_scale}
-
-Fig.~\ref{fig:static} shows where this advantage comes from. On the medium and large scales, the quality--compute
-frontier of AnytimeSwarm lies below those of fixed budgets and stagnation stopping over the range of practical
-computation (Fig.~\ref{fig:static}a). Grouped by the improvement that a 500\,ms search can still find
-(Fig.~\ref{fig:static}b), AnytimeSwarm spent \val{AllocASNone}\,ms on snapshots that cannot be improved and
-\val{AllocASHigh}\,ms on those with the largest available improvement. Only \val{AllocASShare}\% of its computation went
-to snapshots without any possible gain, compared with more than half for the baselines. The learned predictor is
-essential for this allocation. It reached an area under the ROC curve~\cite{fawcett2006roc} of \val{AUCLearned} for the
-event that the next 10\,ms bring an improvement, compared with \val{AUCOnline} for an extrapolation of the recent
-improvement rate.
-
-\begin{figure}[t]
-\centering
-\begin{minipage}[b]{0.62\linewidth}\centering\fig{fig_static_frontier}{\linewidth}\\[-1pt]{\small (a)}\end{minipage}\hfill
-\begin{minipage}[b]{0.36\linewidth}\centering\fig{fig_static_allocation}{\linewidth}\\[-1pt]{\small (b)}\end{minipage}
-\caption{Exact execution, test seeds 2000--2029: (a) quality--compute frontiers on identical search trajectories (open
-markers: baselines tuned per scale; star: selected AnytimeSwarm setting); (b) mean computation per snapshot, grouped by
-the improvement that a 500\,ms search can still find.}\label{fig:static}
-\end{figure}
-
-\subsection{Reproduction on the evaluation platform}\label{sec:repro}
-The exact-execution benchmark was produced on Windows. Before the execution-aware study, its development pipeline was
-re-run on the platform of all later experiments (Ubuntu 24.04 under WSL2, identical Python and package versions). The
-deterministic part was reproduced bit for bit, except for differences of one unit in the last place of some energy
-values, which stem from the floating-point libraries of the two operating systems. The search ran
-\val{JReproSpeedup}\% more iterations per millisecond on the new platform. The improvement predictor, re-trained on the
-new timing traces, reached the same compute price by the pre-registered rule, and the conclusions of the
-equal-computation comparison agreed in sign and significance in \val{JReproMatched} comparisons. The frozen predictor
-was used unchanged in all later experiments.
-
-\subsection{Study 1: execution-aware stopping on the nominal planning model}\label{sec:study1}
-\subsubsection{Tier B primary matrix}\label{sec:tierb}
-The primary matrix comprises \val{JNRunsMain} mission runs, that is, \val{JNMain} held-out missions in
-\val{JNConfigsMain} configurations with eight methods. Table~\ref{tab:main} lists utility, lost tasks and computation per
-method, and Fig.~\ref{fig:main} relates utility to computation and shows the difference in every configuration.
-
-Search pays off clearly under uncertain execution. Regret-2 repair reached a utility of \val{JURepair}\%, and
-AnytimeSwarm-R reached \val{JURisk}\%, which is \val{JDmRepair} percentage points (pp) or \val{JURelRepair}\% more. The
-full budget of 250\,ms was the weakest search method, with \val{JUFixed}\%, and AnytimeSwarm-R served \val{JDFixed}\,pp
-more reward than it. The loss of the long budget stems from late plans. A task counts as lost to delay when it is part of
-the computed plan but can no longer be served on time when the plan is released. With $\kappa_B=50$, the full budget
-lost \val{JLostKFiftyFixed} tasks per mission in this way, against \val{JLostKFiftyRisk} for AnytimeSwarm-R, that is,
-\val{JLostRedFixed}\% fewer. Without its delay cost, AnytimeSwarm lost \val{JLostKFiftyNoDelay} tasks per mission in this
-way, but its utility was not lower (\val{JUNoDelay}\% against \val{JUAS}\%). The delay cost thus prevents losses from
-late plans without a measurable gain in utility on this matrix.
-
-Among the remaining search methods, the differences are small. All seven search methods lie within
-\val{JUSpreadSearch}\,pp of each other. AnytimeSwarm-R reached the highest mean utility with the least computation of the adaptive rules,
-\val{JMsRisk}\,ms per call against \val{JMsAS}\,ms for AnytimeSwarm and \val{JMsStag}\,ms for the stagnation rule. The
-reduction of \val{JMsRedAS}\% relative to AnytimeSwarm is significant (\val{JDMsAS}\,ms per call), so the second
-hypothesis holds. The primary hypothesis does not hold at the pre-registered level. The pooled advantage of
-AnytimeSwarm-R was \val{JDFixedForty}\,pp over ALNS with 40\,ms, \val{JDAS}\,pp over AnytimeSwarm and \val{JDStag}\,pp
-over the stagnation rule, with Holm-adjusted $p$-values of \val{JPFixedForty}, \val{JPAS} and \val{JPStag}. Only the
-first interval excludes zero before correction. Per configuration and without correction for multiple testing,
-AnytimeSwarm-R was better than ALNS with 40\,ms in \val{JWinFixedForty} of the \val{JNConfigsMain} configurations, better
-than the stagnation rule in \val{JWinStag} and never different from AnytimeSwarm, which is consistent with chance
-(Fig.~\ref{fig:main}b). The ablation that keeps only the latency term reached \val{JURiskZero}\%, close to AnytimeSwarm.
-Together with the misspecification runs below, this suggests that a non-zero error spread mainly makes the rule stop
-earlier, rather than that the calibration of the spread matters.
-
-The fixed budget of 40\,ms is a strong reference, because it was matched to the mean computation of AnytimeSwarm on
-development data. Its weakness lies in the allocation across fleet scales. AnytimeSwarm-R used \val{JMsScSmallRisk}\,ms
-per call on the small scale and \val{JMsScLargeRisk}\,ms on the large scale. On the large scale, it served
-\val{JDScLargeFixedForty}\,pp more reward than the budget of 40\,ms and was on a par with the full budget
-(\val{JDScLargeFixed}\,pp). On the small scale, it served \val{JDScSmallFixed}\,pp more than the full budget and was on a
-par with the budget of 40\,ms (\val{JDScSmallFixedForty}\,pp). A single fixed budget is therefore either too long for
-small fleets or too short for large ones, whereas the adaptive rules find a suitable amount of computation on each scale
-without tuning. The advantage over ALNS with 40\,ms was \val{JDFFKappa10}\,pp for $\kappa_B=10$ and
-\val{JDFFKappa50}\,pp for $\kappa_B=50$, and \val{JDFFExecLow}\,pp under low and \val{JDFFExecMid}\,pp under mid
-disturbances.
-
-\inputtable{tab_main}
-
-\begin{figure}[t]
-\centering
-\fig{fig_main}{\linewidth}
-\caption{Tier B primary matrix, held-out seeds 3000--3029: (a) mean utility against mean planning time per call over
-all \val{JNConfigsMain} configurations (regret-2 repair, at \val{JURepair}\% and 1\,ms, is not shown); (b) paired
-difference of AnytimeSwarm-R minus ALNS with 40\,ms and minus AnytimeSwarm per configuration (execution level, latency
-level, $\kappa_B$, trigger) with 95\% bootstrap intervals over \val{JNMain} missions.}\label{fig:main}
-\end{figure}
-
-\subsubsection{Replanning triggers}\label{sec:res-triggers}
-The trigger mattered more than the stopping rule. Replanning every 60\,s in addition to the events raised the number of
-planning calls from \val{JCallsEvent} to \val{JCallsPeriodic} per mission and the utility of every method, by
-\val{JTrigMin}\,pp to \val{JTrigMax}\,pp, with all intervals above zero (\val{JTrigRisk}\,pp for AnytimeSwarm-R,
-\val{JTrigFixedForty}\,pp for ALNS with 40\,ms). The third hypothesis therefore holds. Periodic replanning probably helps
-because it corrects the accumulated deviations of the executed routes, which the event trigger only notices at the next
-event. The advantage of AnytimeSwarm-R over ALNS with 40\,ms was \val{JDFixedFortyEvent}\,pp with the event trigger and
-\val{JDFixedFortyPeriodic}\,pp with the periodic trigger. The two values are close, and the protocol did not test their
-difference.
-
-\subsubsection{Scalability to 40 UAVs}\label{sec:res-xl}
-With 40 UAVs and 280 tasks, \val{JNXL} held-out missions were run under mid disturbances in \val{JXLNConf}
-configurations of latency level and latency factor. All five methods reached between \val{JXLUAS}\% and
-\val{JXLUStag}\%. AnytimeSwarm-R reached \val{JXLURisk}\% with \val{JXLMsRisk}\,ms per call. Its pooled difference was
-\val{JXLDFixedOneEighty}\,pp to ALNS with 180\,ms, \val{JXLDAS}\,pp to AnytimeSwarm and \val{JXLDStag}\,pp to the
-stagnation rule. After Holm correction over the four comparisons of the pre-registered analysis, none of them is
-significant ($p_{\mathrm{Holm}}=$ \val{JXLPAS} for AnytimeSwarm), so the fifth hypothesis is not supported either.
-AnytimeSwarm-R again needed less computation than AnytimeSwarm (\val{JXLDMsAS}\,ms per call). The stagnation rule
-stopped earliest, after \val{JXLMsStag}\,ms, and was significantly better than AnytimeSwarm-R in \val{JXLLossStag} of the
-\val{JXLNConf} configurations, which had no latency and $\kappa_B=50$. On this scale, the rules used between \val{JXLMsStag} and 250\,ms
-per call, and utility hardly changed within this range of computation. The equal-computation advantage that
-AnytimeSwarm showed with 40 UAVs under exact execution (Table~\ref{tab:scale}) therefore did not translate into a
-utility gain under uncertain execution.
-
-\subsubsection{Sensitivity analyses}\label{sec:res-sens}
-The sensitivity runs use the held-out missions of the primary matrix without latency and are descriptive. They vary the
-execution level beyond the primary matrix, the latency factor and the trigger in \val{JNSensConf} configurations, and
-the error model in \val{JNMisConf} further configurations.
-
-Under high disturbances, which lie outside the range of the primary matrix but within that of the fitted error models,
-utility fell to about \val{JSensUHighRisk}\% for all methods. The combination of high disturbances and a slow planner
-($\kappa_B=50$) gave the largest advantage of the risk-aware cost in this study. AnytimeSwarm-R served
-\val{JSensHighKFiftyAS}\,pp more reward than AnytimeSwarm and used \val{JSensMsHighKFiftyRisk}\,ms instead of
-\val{JSensMsHighKFiftyAS}\,ms per call. Its difference to ALNS with 40\,ms was \val{JSensHighKFiftyFixedForty}\,pp and to
-the stagnation rule \val{JSensHighKFiftyStag}\,pp, so the gain over AnytimeSwarm brought it to the level of the
-baselines rather than beyond them. With $\kappa_B=1$, planning time hardly delays the plan, both delay costs are close to
-zero because they scale with the shift $\kappa\tau$, and the two rules behave alike. AnytimeSwarm-R then differed from
-AnytimeSwarm by \val{JSensKOneAS}\,pp and \val{JSensKOneMsDiff}\,ms per call.
-
-Replanning when a UAV deviated by more than 30\,s from its planned finish time raised the number of calls from
-\val{JSensCallsEvent} to \val{JSensCallsDev} per mission and the utility by \val{JSensTrigDevRisk}\,pp for
-AnytimeSwarm-R and \val{JSensTrigDevFixedForty}\,pp for ALNS with 40\,ms. Like the periodic trigger, it helped both
-stopping rules by a similar amount. Under the deviation trigger, the difference of AnytimeSwarm-R was
-\val{JSensDevFixedForty}\,pp to ALNS with 40\,ms and \val{JSensDevAS}\,pp to AnytimeSwarm.
-
-The utility of AnytimeSwarm-R was insensitive to the error model. With the error model of the low, mid or high level
-under low and mid disturbances, its difference to AnytimeSwarm ranged between \val{JMisAllLow}\,pp and
-\val{JMisAllMid}\,pp, the correctly specified model was not better than a wrong one, and the mean utilities of all
-versions lay within \val{JMisSpread}\,pp. Setting the error model to zero gave
-\val{JMisAllZero}\,pp. The four misspecification configurations also belong to the primary matrix, so the correctly
-specified method was run twice on the same missions. The two runs differ only in the measured planning times, because
-the stopping rule reads a wall clock. They gave identical utility in \val{JRepeatSameShare}\% of the missions, and the
-mean utility of a method differed by up to \val{JRepeatDiffMax}\,pp between the runs. Differences of this size between
-stopping rules should therefore not be read as systematic.
-
-\subsubsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:res-tierc}
-All \val{JNCRuns} held-out flights of tier C were completed, that is, \val{JNC} missions with four methods each. Two runs
-did not reach their altitude within 90\,s and were repeated as specified. A further \val{JCNInvalid} runs had a real-time
-factor between \val{JCRTFInvalidMin} and \val{JCRTFInvalidMax}, below the validity range of 1.6 to 2.2 stated in the
-protocol. The protocol did not specify how to treat such runs, so they were repeated once with the same seed, like a
-technical failure, and the original runs were kept. The repeated runs reached the same utility as the original ones, and
-the comparisons below are identical with either set (\val{JCDFixedFortyOrig}\,pp and \val{JCDASOrig}\,pp with the
-original runs). The real-time factor of the analysed runs was \val{JCRTF} on average and at least \val{JCRTFmin}. A
-released plan reached all vehicles after \val{JCLat}\,s of simulation time on average, which is included in the expected
-latency of AnytimeSwarm-R.
-
-Table~\ref{tab:tierc} summarises the results. AnytimeSwarm-R reached a utility of \val{JCURisk}\%, against
-\val{JCUFixedForty}\% for ALNS with 40\,ms, \val{JCUAS}\% for AnytimeSwarm and \val{JCUFixed}\% for the full budget.
-The paired differences were \val{JCDFixedForty}\,pp to ALNS with 40\,ms and \val{JCDAS}\,pp to AnytimeSwarm, with
-Holm-adjusted $p$-values of \val{JCPFixedForty} and \val{JCPAS}. The fourth hypothesis is therefore not supported. With
-\val{JNC} missions, the intervals are much wider than in tier B and cannot resolve differences of the size seen there.
-Two effects of tier B reappear in tier C. The full budget again had the lowest mean utility, although its interval
-includes zero (\val{JCDFixed}\,pp to AnytimeSwarm-R), and it was the only method that lost a noticeable number of tasks
-to late plans,
-\val{JCDropFixed} per mission against at most \val{JCDropAS} for the others. AnytimeSwarm-R again computed least among
-the adaptive rules, with \val{JCMsRisk}\,ms per call against \val{JCMsAS}\,ms for AnytimeSwarm, a reduction of
-\val{JCMsRedAS}\% (\val{JCDMsAS}\,ms).
-
-\inputtable{tab_tierc}
-
-The same \val{JNC} missions were also run in tier B with the rescaled parameters of tier C. Tier B predicted the outcome
-of a flight well. The utility of a run in tier C correlated with that of the same run in tier B with $r=$ \val{JBCr}
-(\val{JBCn} runs), and the mean utility per mission with $r=$ \val{JBCrMission} (Fig.~\ref{fig:bc}b). Tier C served
-slightly more reward on average, \val{JBCUC}\% against \val{JBCUB}\%, so the kinematic model of tier B was, if anything,
-slightly pessimistic for these missions. The small
-differences between the methods were not predicted as well. The method means of the two tiers had a Kendall rank
-correlation of \val{JBCTau}, and the sign of the per-mission difference between AnytimeSwarm-R and ALNS with 40\,ms
-agreed in \val{JBCSignAgreeFixedForty}\% of the missions, counting ties as agreement only when both differences are zero.
-Part of the per-run correlation is by construction, because both tiers draw the wind, speed and service disturbances
-from the same random numbers, and much of it reflects the different difficulty of the missions. The correlation was
-first computed with an erroneous pairing of runs in the analysis script, which was corrected after the results had
-been seen; the hypothesis tests were not affected. In tier B, the advantage of AnytimeSwarm-R on these missions
-was \val{JBgzDFixedForty}\,pp over ALNS with 40\,ms and \val{JBgzDAS}\,pp over AnytimeSwarm (Fig.~\ref{fig:bc}a). Both
-tiers thus agree that the methods differ by at most a few percentage points on this scale, and that the full budget is
-the weakest search method, while the order of the three short-computation methods is within the noise of both tiers.
-
-\begin{figure}[t]
-\centering
-\fig{fig_bc}{\linewidth}
-\caption{Tier B against tier C on the same \val{JNC} held-out missions (three UAVs, mid disturbances, $\kappa_B=50$):
-(a) paired difference of AnytimeSwarm-R minus each baseline with 95\% bootstrap intervals; (b) utility of every run in
-tier C against the same run in tier B (dashed: equality).}\label{fig:bc}
-\end{figure}
-
-\subsection{Study 2: the proposed replanner against baselines from the literature}\label{sec:study2}
-\subsubsection{Tier B primary matrix}\label{sec:s2-main}
-Study~2 comprises \val{KNRuns} tier B mission runs, that is, \val{KNMissions} held-out missions in \val{KNConfigs}
-configurations with \val{KNMethods} methods. Table~\ref{tab:s2main} lists utility, late and lost tasks and computation
-per method. Fig.~\ref{fig:s2main} shows the paired difference of the proposed replanner minus every other method and
-relates utility to computation.
-
-The proposed replanner reached the highest utility, \val{KUProp}\%. Its advantage over the six baselines of the primary
-hypothesis ranged from \val{KDmBuf}\,pp over the constant buffer to \val{KDmForty}\,pp over ALNS with 40\,ms, and every
-Holm-adjusted $p$-value was below 0.001. The primary hypothesis H1 therefore holds for \val{KHOneNSig} of the six
-comparisons. In relative terms, the proposed replanner served \val{KURelProf}\% more reward than the performance profile
-rule, \val{KURelOnl}\% more than online performance prediction, \val{KURelScaled}\% more than the size-scaled budget and
-\val{KURelBuf}\% more than the constant buffer. Against the conventional planner, which combines ALNS with 40\,ms, the
-nominal model and the event trigger, the advantage was \val{KDConv}\,pp, or \val{KURelConv}\%, so H2 holds as well.
+\subsection{Study 2: the chance-constrained model against baselines}\label{sec:study2}
+Study~2 comprises \val{KNRuns} tier B runs, that is, \val{KNMissions} held-out missions in \val{KNConfigs}
+configurations with \val{KNMethods} methods (Table~\ref{tab:s2main}). The proposed replanner
+reached the highest utility, \val{KUProp}\%. Its advantage over the six baselines of H1 ranged from \val{KDmBuf}\,pp
+over the constant buffer to \val{KDmForty}\,pp over ALNS with 40\,ms, and every Holm-adjusted $p$-value was below
+0.001, so H1 holds for all six comparisons. In relative terms, it served \val{KURelBuf}\% more reward than the constant
+buffer and \val{KURelOnl}\% more than online performance prediction. Against the conventional planner, the advantage
+was \val{KDConv}\,pp, or \val{KURelConv}\%, so H2 holds as well.
 
 The advantage comes from fewer late tasks. The proposed replanner served \val{KLateProp} tasks per mission after their
-deadline, against \val{KLateForty} for ALNS with 40\,ms, that is, \val{KLateRedForty}\% fewer, and \val{KLateBuf} for the
-constant buffer. It lost no task to a late plan, whereas ALNS with 40\,ms lost \val{KLostForty} and the full budget of
-250\,ms lost \val{KLostFix} tasks per mission. On the nominal model, the stopping rules hardly differed. ALNS with 40\,ms,
-the size-scaled budget, the performance profile, online prediction, AnytimeSwarm and AnytimeSwarm-R all lay between
-\val{KUForty}\% and \val{KURisk}\%, although their computation per call ranged from \val{KMsOnl}\,ms to \val{KMsAS}\,ms
-(Fig.~\ref{fig:s2main}b). Correcting the deadlines was worth more than any choice of stopping rule.
+deadline, against \val{KLateForty} for ALNS with 40\,ms, that is, \val{KLateRedForty}\% fewer, and \val{KLateBuf} for
+the constant buffer. It lost no task to a late plan, whereas ALNS with 40\,ms lost \val{KLostForty} and the full budget
+of 250\,ms \val{KLostFix} tasks per mission. On the nominal model, the stopping rules hardly differed. ALNS with
+40\,ms, the size-scaled budget, the performance profile, online prediction, AnytimeSwarm and AnytimeSwarm-R lay between
+\val{KUForty}\% and \val{KURisk}\%, although their computation ranged from \val{KMsOnl} to \val{KMsAS}\,ms per call
+(Supplementary Fig.~S4).
 
 \inputtable{tab_s2_main}
 
-\begin{figure}[t]
-\centering
-\fig{fig_s2_main}{\linewidth}
-\caption{Study~2, tier B, held-out seeds 5000--5029 (\val{KNRuns} runs): (a) utility of the proposed replanner minus
-each method, pooled over the \val{KNConfigs} configurations, with 95\% paired bootstrap intervals over \val{KNMissions}
-missions; (b) mean utility against mean computation per planning call. All methods except the conventional planner use
-the periodic trigger; ablations are omitted.}\label{fig:s2main}
-\end{figure}
 
-\subsubsection{Ablations}\label{sec:s2-abl}
-Three ablations remove one component of the proposed replanner at a time (Table~\ref{tab:s2main}, bottom). With a fixed
-budget of 40\,ms instead of the proposed stopping rule, utility changed by \val{KDAblStop}\,pp. The 90\% interval of this
-difference, \val{KTostCI}\,pp, lies inside the pre-registered margin of $\pm0.5$\,pp, so the stopping rule is equivalent
-to the fixed budget on the chance-constrained model (H3), while it used \val{KTostMs}\,ms more per call. The stopping
-rule still guards against long budgets. At $\kappa_B=200$, the full budget of 250\,ms lost \val{KLostFixKTwoHundred} tasks
-per mission to late plans, and the advantage of the proposed replanner over it grew from \val{KDFixKTen}\,pp at
-$\kappa_B=10$ to \val{KDFixKTwoHundred}\,pp at $\kappa_B=200$.
+The ablations confirm that the planning model carries the gain (Table~\ref{tab:s2main}, bottom). With a fixed budget
+of 40\,ms instead of the proposed stopping rule, utility changed by \val{KDAblStop}\,pp. The 90\% interval of this
+difference, \val{KTostCI}\,pp, lies inside the margin of $\pm0.5$\,pp, so the stopping rule is equivalent to the fixed
+budget on the chance-constrained model (H3). It still guards against long budgets on slow planners. At $\kappa_B=200$,
+the full budget lost \val{KLostFixKTwoHundred} tasks per mission to late plans and served \val{KDFixKTwoHundred}\,pp less
+reward than the proposed replanner. With the event trigger instead of the periodic one, the proposed replanner lost
+\val{KDAblTrig}\,pp, far less than the \val{JTrigMin} to \val{JTrigMax}\,pp that periodic replanning added on the nominal
+model of study~1. With $z=0$, the difference was \val{KDAblZ}\,pp and not significant.
 
-With the event trigger instead of the periodic one, the proposed replanner made \val{KCallsAblTrig} instead of
-\val{KCallsProp} planning calls per mission and lost \val{KDAblTrig}\,pp. On the nominal model of study~1, the periodic
-trigger had added \val{JTrigMin}\,pp to \val{JTrigMax}\,pp. The chance-constrained model thus seems to absorb most of the
-deviations that periodic replanning corrects. With $z=0$, that is, with the mean correction only, the difference was
-\val{KDAblZ}\,pp and not significant. Since $z=0$ is also the frozen value under high disturbances, this ablation differs
-only under mid disturbances. There, the spread term helped with the original windows (\val{KDAblZWOneMid}\,pp) and hurt
-with halved windows (\val{KDAblZWHalfMid}\,pp). Most of the advantage of the proposed replanner therefore comes from
-the planning model, namely from moving every deadline by the predicted finish-time error, and not from the stopping rule
-or the trigger.
-
-\subsubsection{Regimes}\label{sec:s2-regime}
-Table~\ref{tab:s2regime} and Fig.~\ref{fig:s2regime} break the utility down by disturbance level, time-window factor and
-latency factor. Per configuration and without correction for multiple testing, the proposed replanner was better than
-ALNS with 40\,ms in \val{KWinForty} of the \val{KNConfigs} configurations and worse in \val{KLossForty}, better than the
-constant buffer in \val{KWinBuf} and worse in \val{KLossBuf}, and better than the conventional planner in \val{KWinConv}
-and worse in \val{KLossConv}. The advantage over ALNS with 40\,ms was \val{KDFortyKTen}\,pp, \val{KDFortyKFifty}\,pp and
-\val{KDFortyKTwoHundred}\,pp for $\kappa_B=10$, 50 and 200, and the advantage over online prediction stayed between
-\val{KDOnlKTen}\,pp and \val{KDOnlKTwoHundred}\,pp.
-
-The advantage was largest with the original windows. Under high disturbances, the proposed replanner served
-\val{KDFortyWOneHigh}\,pp more reward than ALNS with 40\,ms and \val{KDBufWOneHigh}\,pp more than the constant buffer.
-The losses all occurred under high disturbances with halved windows. In this regime, the proposed replanner reached
-\val{KUPropWHalfHigh}\%, \val{KDBufWHalfHigh}\,pp relative to the constant buffer and \val{KDFortyWHalfHigh}\,pp relative
-to ALNS with 40\,ms. It served \val{KServedPropWHalfHigh} tasks per mission, of which \val{KLatePropWHalfHigh} late,
-against \val{KServedBufWHalfHigh} and \val{KLateBufWHalfHigh} for the constant buffer. The chance-constrained model was
-thus too cautious when the windows were short compared with the predicted finish-time error. The effective deadline of
-many tasks then probably falls before the earliest possible arrival, so the planner gives up tasks that a less cautious
-plan still serves in time. The value of $z$ was selected per disturbance level on development missions, averaged over
-both window widths. Selecting it also per window width, or adapting it online, is a natural extension.
-
-\inputtable{tab_s2_regime}
-
-\begin{figure}[t]
-\centering
-\fig{fig_s2_regime}{\linewidth}
-\caption{Study~2, tier B: utility per regime as a function of the latency factor $\kappa_B$, for mid and high
-disturbances with the original and with halved time windows (mean over \val{KNMissions} held-out missions per point).
-The proposed replanner is shown with stars.}\label{fig:s2regime}
-\end{figure}
-
-\subsubsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:s2-tierc}
-All \val{KCRuns} held-out flights of study~2 were completed, that is, \val{KCN} missions with four methods each. One run
-failed to start and was repeated. As specified in the protocol, \val{KCInvalid} runs with a real-time factor outside
-1.6 to 2.2 were repeated once with the same seed, and the original runs were kept. The laptop was also used for other
-work during the campaign, and many repeats ran slower than the original runs. Of the \val{KCRuns} analysed runs,
-\val{KCValid} lie in the validity range. The real-time factor was \val{KCRTF} on average, with quartiles of
-\val{KCRTFq} and a minimum of \val{KCRTFmin}. Two sensitivity analyses that were not pre-registered therefore repeat the
-comparisons with the original runs instead of the repeats, and with only those pairs of runs that both lie in the
-validity range.
-
-Table~\ref{tab:s2tierc} summarises the results. The proposed replanner reached a utility of \val{KCUProp}\%, against
-\val{KCUForty}\% for ALNS with 40\,ms, \val{KCUBuf}\% for the constant buffer and \val{KCUConv}\% for the conventional
-planner. The paired differences were \val{KCDForty}\,pp to ALNS with 40\,ms and \val{KCDConv}\,pp to the conventional
-planner, with Holm-adjusted $p$-values of \val{KCPForty} and \val{KCPConv}. The fourth hypothesis is therefore not
-supported. The secondary comparison with the constant buffer gave \val{KCDBuf}\,pp. The sensitivity analyses lead to
-the same conclusion. With the original runs, the differences were \val{KCDFortyOrig}\,pp and \val{KCDConvOrig}\,pp.
-With valid runs only, they were \val{KCDFortyValid}\,pp on \val{KCNFortyValid} missions and \val{KCDConvValid}\,pp on
-\val{KCNConvValid} missions. No interval in the three analyses excludes zero.
-
-The mechanism seen in tier B reappears in the counts of late and skipped tasks. The proposed replanner served
-\val{KCLateProp} tasks late per mission, against \val{KCLateForty} for ALNS with 40\,ms, which is \val{KCLateRedForty}\%
-fewer. It skipped no task at departure, whereas ALNS with 40\,ms skipped \val{KCSkipForty} and the conventional planner
-\val{KCSkipConv} tasks per mission. It computed \val{KCMsProp}\,ms per call, against \val{KCMsForty}\,ms for the fixed
-budget. The conventional planner called the search \val{KCCallsConv} times per mission instead of about
-\val{KCCallsProp}, as in tier B.
-
-\inputtable{tab_s2_tierc}
-
-The same \val{KCN} missions were also run in tier B with the rescaled parameters of tier C. As in study~1, tier B
-predicted the utility of a flight closely, with a correlation of $r=$ \val{KBCr} over \val{KBCn} runs. On these
-missions, however, even tier B did not resolve the differences between the methods (Fig.~\ref{fig:s2bc}). Its estimates
-were \val{KBgzDForty}\,pp to ALNS with 40\,ms, \val{KBgzDBuf}\,pp to the constant buffer and \val{KBgzDConv}\,pp to the
-conventional planner. The tier C intervals overlap them. The per-mission difference to ALNS with 40\,ms had a standard
-deviation of \val{KCSdForty}\,pp in tier C. Confirming the tier B estimate of \val{KCEffForty}\,pp on these missions with
-a power of 80\% would require about \val{KCNPowerForty} missions per method. Tier C thus shows that the proposed
-replanner runs on an autopilot and a physics engine with the same computation and fewer late tasks, but it cannot
-confirm the size of the gain measured in tier B.
-
-\begin{figure}[t]
-\centering
-\fig{fig_s2_bc}{0.62\linewidth}
-\caption{Study~2, tier B against tier C on the same \val{KCN} held-out missions (three UAVs, mid disturbances,
-$\kappa_B=50$): paired difference of the proposed replanner minus each baseline with 95\% bootstrap intervals.}
-\label{fig:s2bc}
-\end{figure}
+The gain was not uniform. Per configuration, the proposed replanner was better than the constant buffer in \val{KWinBuf}
+of the \val{KNConfigs} configurations and worse in \val{KLossBuf}. All losses occurred under high disturbances with
+halved windows, where it served \val{KDBufWHalfHigh}\,pp relative to the buffer and \val{KDFortyWHalfHigh}\,pp relative
+to ALNS with 40\,ms. With short windows and large errors, the effective deadline of many tasks falls before the earliest
+possible arrival, so the planner gives up tasks that a less cautious plan still serves in time. This weakness motivated
+the fallback of Section~\ref{sec:fallback}.
 
 \subsection{Study 3: nominal fallback for given-up tasks}\label{sec:study3}
 Study~3 comprises \val{LNRuns} tier B runs on \val{LNMissions} new held-out missions in \val{LNConfigs} configurations
-with five methods. Table~\ref{tab:s3} lists utility per regime, and Fig.~\ref{fig:s3} shows the paired difference of
-the fallback variant minus every other method in each regime.
+with five methods (Table~\ref{tab:s3}, Fig.~\ref{fig:s3}). It first replicates study~2. The proposed replanner of
+study~2 served \val{LDPropRepBuf}\,pp more reward than the constant buffer over all configurations, and it again lost to
+the buffer under high disturbances with halved windows, by \val{LDPropBufHighWHalf}\,pp. The weakness is therefore
+systematic and not a property of the seeds of study~2.
 
-The study first replicates study~2 on the new seeds. The proposed replanner of study~2 served \val{LDPropRepBuf}\,pp
-more reward than the constant buffer and \val{LDPropRepForty}\,pp more than ALNS with 40\,ms over all configurations. It
-again lost to the constant buffer under high disturbances with halved windows, by \val{LDPropBufHighWHalf}\,pp. The
-weakness that motivated study~3 is therefore systematic and not a property of the seeds of study~2.
-
-The fallback variant reached a utility of \val{LUFB}\%, the highest of all methods. All four primary comparisons were
-significant (Holm-adjusted $p<0.001$). It served \val{LDPropAll}\,pp more reward than the proposed replanner of study~2
-(H5), that is, \val{LURelProp}\% more. Under high disturbances with halved windows, where the proposed replanner had
-lost, it served \val{LDBufHighWHalf}\,pp more than the constant buffer (H6). Over all configurations, it served
-\val{LDFortyAll}\,pp more than ALNS with 40\,ms (H7, \val{LURelForty}\%) and \val{LDBufAll}\,pp more than the constant
-buffer (H8, \val{LURelBuf}\%). Its advantage over the conventional planner was \val{LDConvAll}\,pp, or
-\val{LURelConv}\%.
-
-The gain over the proposed replanner of study~2 is concentrated where the chance constraint gives up tasks. It was
-\val{LDPropHighWHalf}\,pp under high disturbances with halved windows and \val{LDPropMidWHalf}\,pp under mid disturbances
-with halved windows. With the original windows, the two variants were close, with \val{LDPropMidWOne}\,pp under mid
-and \val{LDPropHighWOne}\,pp under high disturbances, as expected, since few tasks are given up there. The fallback
-variant beat the constant buffer, ALNS with 40\,ms and the conventional planner in all four regimes.
-
-The fallback has a price in punctuality. A fallback task is planned against its nominal deadline and is therefore often
-served late. The fallback variant served \val{LLateFB} tasks late per mission, \val{LLateIncProp}\% more than the
-\val{LLateProp} of the proposed replanner of study~2, although still \val{LLateRedForty}\% fewer than ALNS with 40\,ms.
-It also lost \val{LLostFB} tasks per mission to late plans, against none for the proposed replanner and \val{LLostForty}
-for ALNS with 40\,ms. A late service yields no reward, so these attempts cost only flight time, and the tasks that
-are served in time more than make up for it. Where a late arrival has a cost of its own, for example a penalty or a
-wasted resource, the guarantee of Proposition~\ref{prop:cc} and the model of study~2 remain the safer choice. The fallback variant needed \val{LMsFB}\,ms per call, against \val{LMsProp}\,ms
-for the proposed replanner of study~2 (\val{LDMsProp}\,ms).
+The fallback variant reached a utility of \val{LUFB}\%, the highest of all methods, and all four primary comparisons
+were significant (Holm-adjusted $p<0.001$). It served \val{LDPropAll}\,pp more reward than the proposed replanner of
+study~2 (H5), that is, \val{LURelProp}\% more. Under high disturbances with halved windows, it served
+\val{LDBufHighWHalf}\,pp more than the constant buffer (H6). Over all configurations, it served \val{LDFortyAll}\,pp more
+than ALNS with 40\,ms (H7, \val{LURelForty}\%) and \val{LDBufAll}\,pp more than the constant buffer (H8,
+\val{LURelBuf}\%). Against the conventional planner, the advantage was \val{LDConvAll}\,pp, or \val{LURelConv}\%. The gain
+over the replanner of study~2 was concentrated where the chance constraint gives up tasks, with \val{LDPropHighWHalf}\,pp
+under high disturbances with halved windows. With the original windows, the two variants were close
+(\val{LDPropMidWOne}\,pp under mid and \val{LDPropHighWOne}\,pp under high disturbances).
 
 \inputtable{tab_s3}
 
 \begin{figure}[t]
 \centering
 \fig{fig_s3}{\linewidth}
-\caption{Study~3, tier B: paired difference of the proposed replanner with nominal fallback minus each other method,
-per regime (mean over $\kappa_B$, \val{LNMissions} held-out missions, 95\% bootstrap intervals).}\label{fig:s3}
+\caption{Study~3, tier B, held-out seeds 7000--7029: utility of the replanner with nominal fallback minus each other
+method, per regime (mean over $\kappa_B$, \val{LNMissions} missions, 95\% paired bootstrap intervals).}\label{fig:s3}
 \end{figure}
+
+The fallback has a price in punctuality. A fallback task is planned against its nominal deadline and is often served
+late. The fallback variant served \val{LLateFB} tasks late per mission, \val{LLateIncProp}\% more than the
+\val{LLateProp} of the replanner of study~2, although still \val{LLateRedForty}\% fewer than ALNS with 40\,ms. It also
+lost \val{LLostFB} tasks per mission to late plans, against none for the replanner of study~2. A late service yields no
+reward, so these attempts cost only flight time. Where a late arrival has a cost of its own, the guarantee of
+Proposition~\ref{prop:cc} without fallback remains the safer choice.
+
+\subsection{Software-in-the-loop flights}\label{sec:s2-tierc}
+All \val{KCRuns} held-out flights of study~2 were completed (Table~\ref{tab:s2tierc}). As specified in the protocol,
+\val{KCInvalid} runs with a real-time factor outside the validity range were repeated once. Because the laptop was also
+used for other work, many repeats ran slow as well, and two sensitivity analyses that were not pre-registered, with
+the original runs and with valid pairs only, led to the same conclusions (Supplementary Section~S5).
+
+The proposed replanner reached \val{KCUProp}\%, against \val{KCUForty}\% for ALNS with 40\,ms and \val{KCUConv}\% for
+the conventional planner. The paired differences were \val{KCDForty}\,pp and \val{KCDConv}\,pp, with Holm-adjusted
+$p$-values of \val{KCPForty} and \val{KCPConv}, so H4 is not supported. The mechanism of tier B reappeared in the counts. The proposed
+replanner served \val{KCLateProp} tasks late per mission, against \val{KCLateForty} for ALNS with 40\,ms, which is
+\val{KCLateRedForty}\% fewer, and it skipped no task at departure, whereas ALNS with 40\,ms skipped \val{KCSkipForty} and
+the conventional planner \val{KCSkipConv} tasks per mission.
+
+\inputtable{tab_s2_tierc}
+
+The same missions were also run in tier B with the rescaled parameters. Tier B predicted the utility of a flight
+closely ($r=$ \val{KBCr} over \val{KBCn} runs), but even tier B did not resolve the differences between the methods on
+these \val{KCN} missions (\val{KBgzDForty}\,pp to ALNS with 40\,ms). With a per-mission standard deviation of
+\val{KCSdForty}\,pp in tier C, confirming a difference of \val{KCEffForty}\,pp with a power of 80\% would require about
+\val{KCNPowerForty} missions per method. Tier C thus shows that the replanner runs on autopilots with the same
+computation and fewer late tasks, but it cannot confirm the size of the gain measured in tier B.

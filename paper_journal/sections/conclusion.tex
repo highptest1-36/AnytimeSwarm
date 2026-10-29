@@ -1,22 +1,12 @@
 \section{Conclusion}\label{sec:conclusion}
 This paper proposed AnytimeSwarm-CC, a multi-UAV replanner that plans against a chance constraint on the finish time of
-every task, replans on events and periodically, and stops an anytime ALNS with a learned rule. Because the calibrated
-finish-time error grows linearly with the lead time, the chance constraint reduces exactly to an effective deadline per
-task, so the proposed model costs no more to solve than the nominal one. The replanner was evaluated in three
-pre-registered studies with a kinematic tier and a PX4 software-in-the-loop tier on held-out missions.
-
-In the kinematic tier, the proposed replanner served more reward than ALNS with fixed and size-scaled budgets, than
-stopping rules based on performance profiles and on online performance prediction, than an execution-aware stopping
-rule on the nominal model and than a robust constant buffer, by \val{KDabsBuf} to \val{KDabsForty} percentage points,
-and \val{KURelConv}\% more than a conventional event-triggered planner. Ablations showed that the gain comes from the
-chance-constrained model. On this model, the learned stopping rule was equivalent to a well-chosen fixed budget, and
-its value lies in avoiding the losses of long budgets on slow planners and the tuning of a budget per fleet scale. Under
-high disturbances with halved time windows, the proposed model was too cautious. In software-in-the-loop flights with
-PX4 and Gazebo, the proposed replanner served fewer tasks late at the same computation, but its utility did not differ
-detectably from the baselines on \val{KCN} missions. A nominal fallback for the tasks that the chance constraint gives
-up removed the weakness on new held-out seeds. It served \val{LURelProp}\% more reward than the replanner of study~2
-and \val{LURelConv}\% more than the conventional planner, at the price of more tasks served late.
-
-Future work will replace the fallback by an objective that weights every task by its probability of being served on
-time and by the cost of a late arrival, fly the fallback variant on an autopilot, adapt the confidence parameter
-online, and run the replanner on embedded hardware and in field tests.
+every task. Because the calibrated finish-time error grows linearly with the lead time, the chance constraint reduces
+exactly to an effective deadline per task, and fast heuristics are reused unchanged. On held-out missions of
+pre-registered studies, the chance-constrained model served \val{KDabsBuf} to \val{KDabsForty} percentage points more
+reward than six baselines, including metareasoning stopping rules and a constant buffer, and a nominal fallback for the
+tasks that the constraint gives up added \val{LDabsPropAll} percentage points on new seeds, at the price of more late
+tasks. The gain came from the planning model, while the stopping rule was equivalent to a well-chosen fixed budget.
+Software-in-the-loop flights with PX4 and Gazebo reproduced the reduction of late tasks but were too few to confirm the
+utility gain. Future work will replace the fallback by an objective that weights every task by its probability of being
+served on time, fly the fallback variant on autopilots with enough missions for the expected effect, adapt the safety
+factor online, and run the replanner on embedded hardware.

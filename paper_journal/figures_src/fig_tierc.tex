@@ -1,31 +1,120 @@
-% Tier C architecture (pdflatex fig_tierc.tex -> fig_tierc.pdf)
-\documentclass[tikz,border=4pt]{standalone}
-\usepackage[T1]{fontenc}
-\usepackage{newtxtext}
-\usetikzlibrary{positioning,arrows.meta,fit,backgrounds}
+% Fig. 2: software-in-the-loop tier (pdflatex fig_tierc.tex -> copy fig_tierc.pdf to ../figures/)
+% Topic names as in journal_ros/mission_manager.py and journal_ros/uav_executor.py.
+\documentclass[tikz,border=2pt]{standalone}
+\input{figstyle}
 \begin{document}
-\begin{tikzpicture}[font=\small,
-  box/.style={draw, rounded corners=2pt, align=center, minimum height=1.05cm, inner sep=4pt, fill=white},
-  ros/.style={box, fill=blue!6},
-  px/.style={box, fill=orange!10},
-  gz/.style={box, fill=green!8},
-  arr/.style={-{Stealth[length=2.2mm]}, thick},
-  lab/.style={font=\scriptsize, fill=white, inner sep=1pt}]
-\node[ros, text width=4.1cm] (mm) {\textbf{Mission manager}\\ scenario timeline, triggers,\\ snapshot $\rightarrow$ AnytimeSwarm(-R),\\ release at $t+\kappa_C\tau$, metrics};
-\node[ros, text width=4.1cm, right=2.6cm of mm] (ex) {\textbf{UAV executor}\\ one state machine per UAV,\\ offboard setpoints at 10\,Hz,\\ carrot along each leg, service hold};
-\node[ros, text width=4.1cm, below=1.4cm of mm] (viz) {\textbf{Visualisation}\\ RViz~2 markers,\\ task pillars in the Gazebo scene};
-\node[box, text width=2.6cm, below=1.4cm of ex, xshift=-1.6cm] (xrce) {uXRCE-DDS agent};
-\node[px, text width=1.55cm, below=1.2cm of xrce, xshift=-2.0cm] (p1) {PX4 SITL\\ UAV 0};
-\node[px, text width=1.55cm, right=0.35cm of p1] (p2) {PX4 SITL\\ UAV 1};
-\node[px, text width=1.55cm, right=0.35cm of p2] (p3) {PX4 SITL\\ UAV 2};
-\begin{scope}[on background layer]
-\node[gz, fit=(p1)(p2)(p3), inner sep=8pt, label={[font=\small]below:\textbf{Gazebo Harmonic}: three X500 quadrotors, lockstep physics}] (gzbox) {};
-\node[draw=blue!50, dashed, rounded corners, fit=(mm)(ex)(viz)(xrce), inner sep=8pt, label={[font=\small,blue!60!black]above:ROS~2 Jazzy}] {};
-\end{scope}
-\draw[arr] (mm.10) -- node[lab, above]{/atswarm/plan, command} (ex.170);
-\draw[arr] (ex.190) -- node[lab, below]{fleet\_state, task\_report} (mm.350);
-\draw[arr] (mm) -- node[lab, right]{tasks, plan} (viz);
-\draw[arr, <->] (ex.south) ++(0.6,0) -- node[lab, right]{px4\_msgs} ++(0,-1.4) coordinate (a) -- (a -| xrce.east);
-\draw[arr, <->] (xrce) -- node[lab, right]{UDP} (gzbox.north -| xrce);
+\begin{tikzpicture}
+% ------------------------------------------------------------------ zoom band
+\fill[zoom, opacity=0.55] (7.75,6.45) -- (10.55,6.45) -- (15.7,5.85) -- (0.3,5.85) -- cycle;
+
+% ================================================================== top strip: from tier B to tier C
+\draw[frame] (1.0,6.45) rectangle (15.0,8.85);
+% tier B mission
+\groundplane{1.3}{7.05}{2.1}{1.15}{4}
+\fill[ink] (2.62,7.5) rectangle ++(0.11,0.08);
+\foreach \p in {(1.75,7.25),(2.1,7.75),(3.15,7.3),(3.5,7.85),(2.95,8.0),(1.95,7.4),(3.3,7.6)}
+  \filldraw[draw=edge,fill=white,line width=0.35pt] \p circle (0.04);
+\pic[scale=0.45] at (1.9,8.35) {quad=sBlue};
+\pic[scale=0.45] at (2.75,8.5) {quad=sBlue};
+\pic[scale=0.45] at (3.55,8.3) {quad=sBlue};
+\node[T] at (2.65,6.72) {Tier B: 10\,km, 1800\,s};
+\draw[arr] (3.95,7.65) -- (4.55,7.65);
+% rescaling
+\node[draw=ink, line width=0.6pt, rounded corners=2pt, fill=white, align=center, Ts, inner sep=3pt, text width=2.6cm]
+  at (5.95,7.7) {\textbf{rescale}\\$S_X=0.1$,\; $S_T=0.25$\\speed $\times S_X/S_T$, energy $\times S_X$\\$\kappa_C=S_T\,\kappa_B$};
+\node[T] at (5.95,6.72) {same dimensionless ratios};
+\draw[arr] (7.35,7.65) -- (7.75,7.65);
+% tier C mission (zoom source)
+\filldraw[draw=ink, line width=0.8pt, fill=white, rounded corners=2pt] (7.75,6.95) rectangle (10.55,8.65);
+\groundplane{8.0}{7.1}{1.7}{0.95}{3}
+\pillar{8.55}{7.3}{0.3}{sSand}
+\pillar{9.35}{7.55}{0.38}{sRose}
+\pillar{9.05}{7.25}{0.25}{sMint}
+\pillar{10.0}{7.7}{0.3}{sSand}
+\pic[scale=0.55] at (8.55,8.2) {quad=sBlue};
+\pic[scale=0.55] at (9.35,8.35) {quad=sRose};
+\pic[scale=0.55] at (10.05,8.2) {quad=sMint};
+\node[T] at (9.15,6.72) {Tier C: 1\,km, 450\,s, 3 UAVs};
+\draw[arr] (10.55,7.65) -- (11.2,7.65);
+\node[draw=ink, line width=0.6pt, rounded corners=2pt, fill=white, align=center, T, inner sep=3pt] at (12.85,7.65)
+  {utility per flight,\\compared with the same\\mission in tier B};
+\node[T] at (12.85,6.72) {same seeds, same disturbances};
+
+% ================================================================== detail: ROS 2 / PX4 / Gazebo stack
+\draw[frame] (0.3,0.25) rectangle (15.7,5.85);
+
+% ---------------- column 1: mission manager
+\fill[pBlue, panel] (0.5,0.45) rectangle (4.15,5.65);
+\node[Hd] at (2.32,5.4) {Mission manager};
+\wslab{0.75}{2.35}{2.95}{2.45}{0.32}{sBlue}
+\node[Ts, align=left, anchor=north west] at (0.85,4.7) {scenario timeline and events\\[2pt]
+  triggers: event, every 60\,s\\[2pt]
+  snapshot from fleet state\\[2pt]
+  {\fontsize{6.6}{8}\selectfont\bfseries AnytimeSwarm-CC} (in process)\\[2pt]
+  release at $t+\kappa_C\tau$ (sim.\ time)\\[2pt]
+  metrics and logs};
+\wslab{0.75}{0.75}{2.95}{0.9}{0.32}{sBlue}
+\node[Ts, align=center] at (2.22,1.2) {visualisation node\\RViz 2 markers, task pillars};
+\draw[arr] (1.2,2.35) -- (1.2,1.98);
+\node[Tm, font=\fontsize{5.9}{7}\selectfont\ttfamily, anchor=west] at (1.28,2.15) {/atswarm/markers};
+
+% ---------------- column 2: ROS 2 topics
+\fill[pSand, panel] (4.35,0.45) rectangle (7.55,5.65);
+\node[Hd] at (5.95,5.4) {ROS 2 Jazzy topics};
+\foreach \y/\lab in {4.55/tasks, 3.95/plan, 3.35/command} {
+  \slab{4.6}{\y}{2.45}{0.22}{0.22}{sSand}
+  \node[Tm, font=\fontsize{5.9}{7}\selectfont\ttfamily] at (5.82,{\y+0.11}) {/atswarm/\lab};
+}
+\foreach \y/\lab in {2.45/fleet\_state, 1.85/task\_report} {
+  \slab{4.6}{\y}{2.45}{0.22}{0.22}{sBlue}
+  \node[Tm, font=\fontsize{5.9}{7}\selectfont\ttfamily] at (5.82,{\y+0.11}) {/atswarm/\lab};
+}
+\node[Ts, align=center] at (5.95,1.05) {reliable QoS for plans and reports,\\simulation clock on all nodes};
+
+% ---------------- column 3: executor and bridge
+\fill[pRose, panel] (7.75,0.45) rectangle (11.2,5.65);
+\node[Hd] at (9.47,5.4) {UAV executor};
+\wslab{8.05}{2.85}{2.85}{1.95}{0.32}{sRose}
+\node[Ts, align=left, anchor=north west] at (8.15,4.7) {one state machine per UAV\\[2pt]
+  offboard setpoints at 10\,Hz\\[2pt]
+  carrot along each leg\\[2pt]
+  service hold, skip if late\\[2pt]
+  reports start, finish, skip};
+\slab{8.05}{1.35}{2.85}{0.34}{0.3}{sRose}
+\node[Ts] at (9.47,1.52) {uXRCE-DDS agent};
+\draw[{Stealth[length=3.5pt]}-{Stealth[length=3.5pt]}, line width=0.6pt] (9.47,2.85) -- (9.47,1.85);
+\node[Tm, font=\fontsize{5.9}{7}\selectfont\ttfamily, anchor=west, align=left] at (9.55,2.35) {/fmu/in/*\\/fmu/out/*};
+\node[Ts] at (9.47,0.85) {one namespace per vehicle};
+
+% ---------------- column 4: PX4 SITL and Gazebo
+\fill[pMint, panel] (11.4,0.45) rectangle (15.5,5.65);
+\node[Hd] at (13.45,5.4) {PX4 SITL and Gazebo Harmonic};
+\foreach \x/\k in {11.65/0, 12.95/1, 14.25/2} {
+  \wslab{\x}{4.2}{1.05}{0.62}{0.25}{sMint}
+  \node[Ts, align=center] at ({\x+0.52},4.51) {PX4 v1.17\\UAV \k};
+}
+\draw[{Stealth[length=3.5pt]}-{Stealth[length=3.5pt]}, line width=0.6pt] (13.47,4.2) -- (13.47,3.55);
+\node[Ts, anchor=west] at (13.55,3.88) {lockstep};
+\groundplane{11.7}{1.25}{2.75}{1.75}{5}
+\fill[black!22] (12.35,1.95) ellipse (0.2 and 0.06);
+\fill[black!22] (13.55,2.5) ellipse (0.2 and 0.06);
+\fill[black!22] (14.55,2.1) ellipse (0.2 and 0.06);
+\pillar{12.35}{1.6}{0.42}{sSand}
+\pillar{13.55}{2.05}{0.5}{sRose}
+\pillar{13.0}{1.5}{0.35}{sMint}
+\pillar{14.5}{2.35}{0.42}{sSand}
+\pillar{12.9}{2.4}{0.3}{sRose}
+\pic[scale=0.85] at (12.35,2.75) {quad=sBlue};
+\pic[scale=0.85] at (13.55,3.1) {quad=sRose};
+\pic[scale=0.85] at (14.55,2.7) {quad=sMint};
+\node[Ts, align=center] at (13.45,0.8) {three X500 quadrotors, physics at\\twice real time, coloured task pillars};
+
+% ---------------- flow between the columns
+\draw[arr] (3.95,4.06) -- (4.6,4.06);
+\draw[arr] (4.6,2.56) -- (3.95,2.56);
+\draw[arr] (7.25,4.06) -- (8.05,4.06);
+\draw[arr] (8.05,3.05) -- (7.25,2.3);
+\draw[{Stealth[length=3.5pt]}-{Stealth[length=3.5pt]}, line width=0.6pt] (11.15,1.52) -- (11.65,1.52) |- (11.65,4.5);
+\node[Ts, fill=pMint, inner sep=1pt, anchor=west] at (11.62,3.6) {UDP};
 \end{tikzpicture}
 \end{document}

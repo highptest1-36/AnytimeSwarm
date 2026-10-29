@@ -1,0 +1,86 @@
+% Supplementary material of the AnytimeSwarm-CC manuscript (material moved out of the main text when it was shortened).
+% Build after main: pdflatex supplementary && bibtex supplementary && pdflatex supplementary && pdflatex supplementary
+% Every number comes from the generated tables/numbers*.tex files; none is typed by hand.
+\documentclass[preprint,11pt]{elsarticle}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext}
+\usepackage[varvw]{newtxmath}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{xr-hyper}
+\usepackage[hidelinks]{hyperref}
+\usepackage[margin=2.5cm]{geometry}
+\externaldocument{main}
+\biboptions{sort&compress}
+\newtheorem{prop}{Proposition}
+\renewcommand{\theprop}{S\arabic{prop}}
+\newproof{proof}{Proof}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\IfFileExists{tables/static_numbers.tex}{\input{tables/static_numbers.tex}}{}
+\IfFileExists{tables/static_numbers_XL.tex}{\input{tables/static_numbers_XL.tex}}{}
+\IfFileExists{tables/static_numbers_scale.tex}{\input{tables/static_numbers_scale.tex}}{}
+\IfFileExists{tables/numbers.tex}{\input{tables/numbers.tex}}{}
+\IfFileExists{tables/numbers_s2.tex}{\input{tables/numbers_s2.tex}}{}
+\IfFileExists{tables/numbers_s3.tex}{\input{tables/numbers_s3.tex}}{}
+\IfFileExists{tables/numbers_s3x.tex}{\input{tables/numbers_s3x.tex}}{}
+\newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
+\newcommand{\fig}[2]{\IfFileExists{figures/#1.pdf}{\includegraphics[width=#2]{figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
+\newcommand{\inputtable}[1]{\IfFileExists{tables/#1.tex}{\input{tables/#1.tex}}{\todo{table \detokenize{#1}}}}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+\journal{Robotics and Autonomous Systems}
+
+\begin{document}
+\begin{frontmatter}
+\title{Supplementary material for: Closed-form chance constraints for fast multi-UAV replanning under uncertain
+execution}
+\author{Cao-Phuc Ha, Anh Nguyen Vu Minh, Phu-Nguyen Le}
+\begin{abstract}
+This document contains the parts of the evaluation that the main paper only summarises: the stopping rule and its two
+delay costs with their properties, the scenario generator and the fitted error models, the exact-execution benchmark of
+the stopping rules, the full results of study~1, and further results of study~2 per regime and in tier C. Section,
+equation and table numbers without the prefix S refer to the main paper.
+\end{abstract}
+\end{frontmatter}
+
+\section{Stopping rule and delay costs}\label{sec:Sstop}
+\input{supp/s1_delay}
+
+\section{Scenario generator, error models and exact-execution snapshots}\label{sec:Sscen}
+\input{supp/s2_scen}
+
+\inputtable{tab_errmodels}
+
+\section{Exact execution: stopping rules at equal computation}\label{sec:Sstatic}
+\input{supp/s3_static}
+
+\section{Study 1: execution-aware stopping on the nominal planning model}\label{sec:Sstudy1}
+Study~1 compares AnytimeSwarm-R with the stopping rules of the first group of Section~\ref{sec:methods} on the nominal
+planning model, on held-out seeds 3000--3029 in tier B (270 missions over three scales and three profiles, and 90
+missions with 40 UAVs) and 4000--4009 in tier C (30 missions per method). Its primary matrix crosses two execution
+levels (low, mid), two latency levels (none, high), two latency factors ($\kappa_B=10, 50$) and two triggers (event,
+periodic every 60\,s). Its primary hypothesis is that AnytimeSwarm-R serves more reward than ALNS with 40\,ms,
+AnytimeSwarm and the stagnation rule.
+\input{supp/s4_study1}
+
+\section{Study 2: regimes and software-in-the-loop details}\label{sec:Sstudy2}
+Fig.~\ref{fig:Ss2main} shows the paired differences of Table~\ref{tab:s2main} of the main paper together with the
+computation of every method.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_main}{\linewidth}
+\caption{Study~2, tier B, held-out seeds 5000--5029: (a) utility of the proposed replanner minus each method, pooled
+over \val{KNConfigs} configurations, with 95\% paired bootstrap intervals over \val{KNMissions} missions; (b) mean
+utility against mean computation per call. Ablations are omitted.}\label{fig:Ss2main}
+\end{figure}
+
+\input{supp/s5_study2}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+\end{document}

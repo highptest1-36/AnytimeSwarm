@@ -1,0 +1,80 @@
+% Shared style of the architecture figures (fig_overview, fig_tierc): sans-serif text, pastel stage panels,
+% isometric slabs and quadrotor icons. Drawn at print size (16 cm wide); all text black.
+\usepackage[T1]{fontenc}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{sansmath}
+\usepackage{amsmath}
+\usetikzlibrary{arrows.meta,calc,positioning,backgrounds,patterns,decorations.pathmorphing}
+\definecolor{ink}{HTML}{111111}
+\definecolor{edge}{HTML}{3C3C3C}
+\definecolor{muted}{HTML}{8A8A8A}
+% stage panels (fill) and the matching slab colours
+\definecolor{pBlue}{HTML}{E4ECF8}   \definecolor{sBlue}{HTML}{4FA9D6}
+\definecolor{pSand}{HTML}{FBF6EA}   \definecolor{sSand}{HTML}{E9D9B0}
+\definecolor{pRose}{HTML}{FBE4E4}   \definecolor{sRose}{HTML}{EE8C8C}
+\definecolor{pMint}{HTML}{E8F4E5}   \definecolor{sMint}{HTML}{7CC48A}
+\definecolor{zoom}{HTML}{CDEFC9}
+\definecolor{late}{HTML}{C62828}
+\definecolor{ground}{HTML}{F1F1EE}
+\tikzset{
+  every node/.style={text=ink},
+  T/.style={font=\fontsize{7.2}{8.6}\selectfont\sansmath},
+  Ts/.style={font=\fontsize{6.4}{7.6}\selectfont\sansmath},
+  Tm/.style={font=\fontsize{6.8}{8}\selectfont\ttfamily},
+  Hd/.style={font=\fontsize{8}{9.6}\selectfont\bfseries\sansmath},
+  arr/.style={-{Stealth[length=4.2pt,width=3.4pt]}, line width=0.65pt, draw=ink},
+  darr/.style={arr, dash pattern=on 2.6pt off 1.6pt},
+  panel/.style={rounded corners=3pt, line width=0.5pt},
+  frame/.style={draw=ink, line width=0.75pt, rounded corners=5pt, fill=white},
+}
+% \slab{x}{y}{width}{height}{depth}{colour}: isometric slab, front face at (x,y)
+\newcommand{\slab}[6]{%
+  \filldraw[draw=edge, line width=0.4pt, fill=#6!45!white]
+    ({#1},{#2+#4}) -- ++({0.55*#5},{0.42*#5}) -- ++({#3},0) -- ++({-0.55*#5},{-0.42*#5}) -- cycle;
+  \filldraw[draw=edge, line width=0.4pt, fill=#6!80!black]
+    ({#1+#3},{#2}) -- ++({0.55*#5},{0.42*#5}) -- ++(0,{#4}) -- ++({-0.55*#5},{-0.42*#5}) -- cycle;
+  \filldraw[draw=edge, line width=0.4pt, fill=#6] ({#1},{#2}) rectangle ++({#3},{#4});
+}
+% \wslab: white slab with a coloured top (used for software blocks)
+\newcommand{\wslab}[6]{%
+  \filldraw[draw=edge, line width=0.4pt, fill=#6!55!white]
+    ({#1},{#2+#4}) -- ++({0.55*#5},{0.42*#5}) -- ++({#3},0) -- ++({-0.55*#5},{-0.42*#5}) -- cycle;
+  \filldraw[draw=edge, line width=0.4pt, fill=black!14]
+    ({#1+#3},{#2}) -- ++({0.55*#5},{0.42*#5}) -- ++(0,{#4}) -- ++({-0.55*#5},{-0.42*#5}) -- cycle;
+  \filldraw[draw=edge, line width=0.4pt, fill=white] ({#1},{#2}) rectangle ++({#3},{#4});
+}
+% \groundplane{x}{y}{width}{depth}{grid steps}: isometric ground with grid, front-left corner at (x,y)
+\newcommand{\groundplane}[5]{%
+  \filldraw[draw=muted, line width=0.4pt, fill=ground]
+    ({#1},{#2}) -- ++({#3},0) -- ++({0.55*#4},{0.42*#4}) -- ++({-#3},0) -- cycle;
+  \foreach \k in {1,...,#5} {
+    \draw[black!18, line width=0.3pt] ({#1+\k*#3/(#5+1)},{#2}) -- ++({0.55*#4},{0.42*#4});
+    \draw[black!18, line width=0.3pt] ({#1+0.55*#4*\k/(#5+1)},{#2+0.42*#4*\k/(#5+1)}) -- ++({#3},0);
+  }
+}
+% quadrotor in isometric view; argument: body colour
+\tikzset{
+  quad/.pic={
+    \foreach \dx/\dy in {-0.34/-0.10, 0.34/0.10, -0.12/0.17, 0.12/-0.17} {
+      \draw[line width=1.1pt, black!70] (0,0) -- (\dx,\dy);
+    }
+    \foreach \dx/\dy in {-0.12/0.17, 0.34/0.10} {
+      \draw[black!55, line width=0.35pt] (\dx,\dy) -- ++(0,0.05);
+      \filldraw[draw=black!60, line width=0.35pt, fill=black!8, fill opacity=0.85] (\dx,\dy+0.05) ellipse (0.17 and 0.055);
+    }
+    \draw[black!70, line width=0.5pt] (-0.1,-0.03) -- (-0.14,-0.17) (0.1,0.03) -- (0.14,-0.11);
+    \filldraw[draw=black!80, line width=0.4pt, fill=#1] (0,0) ellipse (0.13 and 0.07);
+    \fill[black!80] (-0.13,0) -- (0.13,0) -- (0.13,-0.035) arc (0:-180:0.13 and 0.045) -- cycle;
+    \foreach \dx/\dy in {-0.34/-0.10, 0.12/-0.17} {
+      \draw[black!55, line width=0.35pt] (\dx,\dy) -- ++(0,0.05);
+      \filldraw[draw=black!60, line width=0.35pt, fill=black!8, fill opacity=0.85] (\dx,\dy+0.05) ellipse (0.17 and 0.055);
+    }
+  },
+  quad/.default=sBlue,
+}
+% task pillar (cylinder) for the Gazebo scene
+\newcommand{\pillar}[4]{% x, y, height, colour
+  \filldraw[draw=edge, line width=0.3pt, fill=#4] ({#1-0.05},{#2}) -- ({#1-0.05},{#2+#3}) arc (180:0:0.05 and 0.02) -- ({#1+0.05},{#2}) arc (0:-180:0.05 and 0.02);
+  \filldraw[draw=edge, line width=0.3pt, fill=#4!50!white] ({#1},{#2+#3}) ellipse (0.05 and 0.02);
+}

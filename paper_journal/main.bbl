@@ -32,44 +32,6 @@ S.~Ropke, D.~Pisinger, An adaptive large neighborhood search heuristic for the
 \newblock \href {https://doi.org/10.1287/trsc.1050.0135}
   {\path{doi:10.1287/trsc.1050.0135}}.
 
-\bibitem{dean1988analysis}
-T.~Dean, M.~Boddy, An analysis of time-dependent planning, in: Proceedings of
-  the Seventh National Conference on Artificial Intelligence (AAAI-88), AAAI
-  Press, 1988, pp. 49--54.
-
-\bibitem{horvitz1987reasoning}
-E.~J. Horvitz, Reasoning about beliefs and actions under computational resource
-  constraints, in: Proceedings of the Third Workshop on Uncertainty in
-  Artificial Intelligence, AAAI and Association for Uncertainty in Artificial
-  Intelligence, Seattle, WA, 1987.
-
-\bibitem{russell1991right}
-S.~Russell, E.~Wefald, Do the Right Thing: Studies in Limited Rationality, MIT
-  Press, Cambridge, MA, 1991.
-\newblock \href {https://doi.org/10.7551/mitpress/2474.001.0001}
-  {\path{doi:10.7551/mitpress/2474.001.0001}}.
-
-\bibitem{zilberstein1996using}
-S.~Zilberstein, Using anytime algorithms in intelligent systems, AI Magazine
-  17~(3) (1996) 73--83.
-\newblock \href {https://doi.org/10.1609/aimag.v17i3.1232}
-  {\path{doi:10.1609/aimag.v17i3.1232}}.
-
-\bibitem{hansen2001monitoring}
-E.~A. Hansen, S.~Zilberstein, Monitoring and control of anytime algorithms: A
-  dynamic programming approach, Artificial Intelligence 126~(1--2) (2001)
-  139--157.
-\newblock \href {https://doi.org/10.1016/S0004-3702(00)00068-0}
-  {\path{doi:10.1016/S0004-3702(00)00068-0}}.
-
-\bibitem{svegliato2018meta}
-J.~Svegliato, K.~H. Wray, S.~Zilberstein, Meta-level control of anytime
-  algorithms with online performance prediction, in: Proceedings of the
-  Twenty-Seventh International Joint Conference on Artificial Intelligence
-  (IJCAI-18), IJCAI Organization, 2018, pp. 1499--1505.
-\newblock \href {https://doi.org/10.24963/ijcai.2018/208}
-  {\path{doi:10.24963/ijcai.2018/208}}.
-
 \bibitem{errico2016apriori}
 F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, L.-M. Rousseau, A priori
   optimization with recourse for the vehicle routing problem with hard time
@@ -85,9 +47,44 @@ A.~Agra, M.~Christiansen, R.~Figueiredo, L.~M. Hvattum, M.~Poss, C.~Requejo,
 \newblock \href {https://doi.org/10.1016/j.cor.2012.10.002}
   {\path{doi:10.1016/j.cor.2012.10.002}}.
 
-\bibitem{law2015simulation}
-A.~M. Law, Simulation Modeling and Analysis, 5th Edition, McGraw-Hill
-  Education, New York, 2015.
+\bibitem{ponda2012chance}
+S.~S. Ponda, L.~B. Johnson, J.~P. How, Distributed chance-constrained task
+  allocation for autonomous multi-agent teams, in: Proceedings of the American
+  Control Conference (ACC), 2012, pp. 4528--4533.
+\newblock \href {https://doi.org/10.1109/ACC.2012.6315626}
+  {\path{doi:10.1109/ACC.2012.6315626}}.
+
+\bibitem{dean1988analysis}
+T.~Dean, M.~Boddy, An analysis of time-dependent planning, in: Proceedings of
+  the Seventh National Conference on Artificial Intelligence (AAAI-88), AAAI
+  Press, 1988, pp. 49--54.
+
+\bibitem{russell1991right}
+S.~Russell, E.~Wefald, Do the Right Thing: Studies in Limited Rationality, MIT
+  Press, Cambridge, MA, 1991.
+\newblock \href {https://doi.org/10.7551/mitpress/2474.001.0001}
+  {\path{doi:10.7551/mitpress/2474.001.0001}}.
+
+\bibitem{zilberstein1996using}
+S.~Zilberstein, Using anytime algorithms in intelligent systems, AI Magazine
+  17~(3) (1996) 73--83.
+\newblock \href {https://doi.org/10.1609/aimag.v17i3.1232}
+  {\path{doi:10.1609/aimag.v17i3.1232}}.
+
+\bibitem{svegliato2018meta}
+J.~Svegliato, K.~H. Wray, S.~Zilberstein, Meta-level control of anytime
+  algorithms with online performance prediction, in: Proceedings of the
+  Twenty-Seventh International Joint Conference on Artificial Intelligence
+  (IJCAI-18), IJCAI Organization, 2018, pp. 1499--1505.
+\newblock \href {https://doi.org/10.24963/ijcai.2018/208}
+  {\path{doi:10.24963/ijcai.2018/208}}.
+
+\bibitem{boddy1994deliberation}
+M.~Boddy, T.~L. Dean, Deliberation scheduling for problem solving in
+  time-constrained environments, Artificial Intelligence 67~(2) (1994)
+  245--285.
+\newblock \href {https://doi.org/10.1016/0004-3702(94)90054-X}
+  {\path{doi:10.1016/0004-3702(94)90054-X}}.
 
 \bibitem{meier2015px4}
 L.~Meier, D.~Honegger, M.~Pollefeys, {PX4}: A node-based multithreaded open
@@ -111,20 +108,6 @@ S.~Macenski, T.~Foote, B.~Gerkey, C.~Lalancette, W.~Woodall, Robot operating
 \newblock \href {https://doi.org/10.1126/scirobotics.abm6074}
   {\path{doi:10.1126/scirobotics.abm6074}}.
 
-\bibitem{boddy1994deliberation}
-M.~Boddy, T.~L. Dean, Deliberation scheduling for problem solving in
-  time-constrained environments, Artificial Intelligence 67~(2) (1994)
-  245--285.
-\newblock \href {https://doi.org/10.1016/0004-3702(94)90054-X}
-  {\path{doi:10.1016/0004-3702(94)90054-X}}.
-
-\bibitem{ritzinger2016survey}
-U.~Ritzinger, J.~Puchinger, R.~F. Hartl, A survey on dynamic and stochastic
-  vehicle routing problems, International Journal of Production Research 54~(1)
-  (2016) 215--231.
-\newblock \href {https://doi.org/10.1080/00207543.2015.1043403}
-  {\path{doi:10.1080/00207543.2015.1043403}}.
-
 \bibitem{solomon1987algorithms}
 M.~M. Solomon, Algorithms for the vehicle routing and scheduling problems with
   time window constraints, Operations Research 35~(2) (1987) 254--265.
@@ -137,19 +120,6 @@ P.~Vansteenwegen, W.~Souffriau, D.~Van~Oudheusden, The orienteering problem: A
 \newblock \href {https://doi.org/10.1016/j.ejor.2010.03.045}
   {\path{doi:10.1016/j.ejor.2010.03.045}}.
 
-\bibitem{gendreau1999parallel}
-M.~Gendreau, F.~Guertin, J.-Y. Potvin, {\'E}.~Taillard, Parallel tabu search
-  for real-time vehicle routing and dispatching, Transportation Science 33~(4)
-  (1999) 381--390.
-\newblock \href {https://doi.org/10.1287/trsc.33.4.381}
-  {\path{doi:10.1287/trsc.33.4.381}}.
-
-\bibitem{hong2012improved}
-L.~Hong, An improved {LNS} algorithm for real-time vehicle routing problem with
-  time windows, Computers \& Operations Research 39~(2) (2012) 151--163.
-\newblock \href {https://doi.org/10.1016/j.cor.2011.03.006}
-  {\path{doi:10.1016/j.cor.2011.03.006}}.
-
 \bibitem{alnsdvrp2024}
 S.~Wang, W.~Sun, M.~Huang, An adaptive large neighborhood search for the
   multi-depot dynamic vehicle routing problem with time windows, Computers \&
@@ -157,26 +127,11 @@ S.~Wang, W.~Sun, M.~Huang, An adaptive large neighborhood search for the
 \newblock \href {https://doi.org/10.1016/j.cie.2024.110122}
   {\path{doi:10.1016/j.cie.2024.110122}}.
 
-\bibitem{sacramento2019alns}
-D.~Sacramento, D.~Pisinger, S.~Ropke, An adaptive large neighborhood search
-  metaheuristic for the vehicle routing problem with drones, Transportation
-  Research Part C: Emerging Technologies 102 (2019) 289--315.
-\newblock \href {https://doi.org/10.1016/j.trc.2019.02.018}
-  {\path{doi:10.1016/j.trc.2019.02.018}}.
-
 \bibitem{choi2009consensus}
 H.-L. Choi, L.~Brunet, J.~P. How, Consensus-based decentralized auctions for
   robust task allocation, IEEE Transactions on Robotics 25~(4) (2009) 912--926.
 \newblock \href {https://doi.org/10.1109/TRO.2009.2022423}
   {\path{doi:10.1109/TRO.2009.2022423}}.
-
-\bibitem{bertuccelli2009realtime}
-L.~Bertuccelli, H.-L. Choi, P.~Cho, J.~How, Real-time multi-{UAV} task
-  assignment in dynamic and uncertain environments, in: AIAA Guidance,
-  Navigation, and Control Conference, American Institute of Aeronautics and
-  Astronautics, 2009, {AIAA} Paper 2009-5776.
-\newblock \href {https://doi.org/10.2514/6.2009-5776}
-  {\path{doi:10.2514/6.2009-5776}}.
 
 \bibitem{choudhury2022dynamic}
 S.~Choudhury, J.~K. Gupta, M.~J. Kochenderfer, D.~Sadigh, J.~Bohg, Dynamic
@@ -213,20 +168,6 @@ Y.~Shen, T.~Hu, Y.~Wan, H.~Sun, M.~Tan, Edge-responsive local-repair particle
 \newblock \href {https://doi.org/10.1109/ACCESS.2026.3717031}
   {\path{doi:10.1109/ACCESS.2026.3717031}}.
 
-\bibitem{calvo2025heterogeneous}
-{\'A}.~Calvo, J.~Capit{\'a}n, Heterogeneous multirobot task allocation for
-  long-endurance missions in dynamic scenarios, IEEE Transactions on Robotics
-  41 (2025) 6494--6513.
-\newblock \href {https://doi.org/10.1109/TRO.2025.3626651}
-  {\path{doi:10.1109/TRO.2025.3626651}}.
-
-\bibitem{ali2026sitl}
-M.~A. Ali, U.~Athar, A.~Maqsood, {SITL} validation of federated reinforcement
-  learning for priority-based dynamic task allocation in {UAV} swarms, Expert
-  Systems 43~(12) (2026) e70459.
-\newblock \href {https://doi.org/10.1111/exsy.70459}
-  {\path{doi:10.1111/exsy.70459}}.
-
 \bibitem{cong2026event}
 Y.~Cong, Y.~Li, X.~Zhu, Z.~Wang, An event-triggered path-based bid assignment
   method for energy-aware dynamic multi-{UAV} task allocation, Drones 10~(9)
@@ -247,18 +188,25 @@ D.~Ouelhadj, S.~Petrovic, A survey of dynamic scheduling in manufacturing
 \newblock \href {https://doi.org/10.1007/s10951-008-0090-8}
   {\path{doi:10.1007/s10951-008-0090-8}}.
 
+\bibitem{calvo2025heterogeneous}
+{\'A}.~Calvo, J.~Capit{\'a}n, Heterogeneous multirobot task allocation for
+  long-endurance missions in dynamic scenarios, IEEE Transactions on Robotics
+  41 (2025) 6494--6513.
+\newblock \href {https://doi.org/10.1109/TRO.2025.3626651}
+  {\path{doi:10.1109/TRO.2025.3626651}}.
+
+\bibitem{ali2026sitl}
+M.~A. Ali, U.~Athar, A.~Maqsood, {SITL} validation of federated reinforcement
+  learning for priority-based dynamic task allocation in {UAV} swarms, Expert
+  Systems 43~(12) (2026) e70459.
+\newblock \href {https://doi.org/10.1111/exsy.70459}
+  {\path{doi:10.1111/exsy.70459}}.
+
 \bibitem{gendreau1996stochastic}
 M.~Gendreau, G.~Laporte, R.~S{\'e}guin, Stochastic vehicle routing, European
   Journal of Operational Research 88~(1) (1996) 3--12.
 \newblock \href {https://doi.org/10.1016/0377-2217(95)00050-X}
   {\path{doi:10.1016/0377-2217(95)00050-X}}.
-
-\bibitem{errico2018vrptw}
-F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, L.-M. Rousseau, The vehicle
-  routing problem with hard time windows and stochastic service times, EURO
-  Journal on Transportation and Logistics 7~(3) (2018) 223--251.
-\newblock \href {https://doi.org/10.1007/s13676-016-0101-4}
-  {\path{doi:10.1007/s13676-016-0101-4}}.
 
 \bibitem{bent2004scenario}
 R.~W. Bent, P.~Van~Hentenryck, Scenario-based planning for partially dynamic
@@ -267,28 +215,12 @@ R.~W. Bent, P.~Van~Hentenryck, Scenario-based planning for partially dynamic
 \newblock \href {https://doi.org/10.1287/opre.1040.0124}
   {\path{doi:10.1287/opre.1040.0124}}.
 
-\bibitem{ponda2012chance}
-S.~S. Ponda, L.~B. Johnson, J.~P. How, Distributed chance-constrained task
-  allocation for autonomous multi-agent teams, in: Proceedings of the American
-  Control Conference (ACC), 2012, pp. 4528--4533.
-\newblock \href {https://doi.org/10.1109/ACC.2012.6315626}
-  {\path{doi:10.1109/ACC.2012.6315626}}.
-
-\bibitem{svegliato2020modelfree}
-J.~Svegliato, P.~Sharma, S.~Zilberstein, A model-free approach to meta-level
-  control of anytime algorithms, in: Proceedings of the 2020 IEEE International
-  Conference on Robotics and Automation (ICRA), IEEE, 2020, pp. 11436--11442.
-\newblock \href {https://doi.org/10.1109/ICRA40945.2020.9196898}
-  {\path{doi:10.1109/ICRA40945.2020.9196898}}.
-
-\bibitem{bhatia2022tuning}
-A.~Bhatia, J.~Svegliato, S.~B. Nashed, S.~Zilberstein, Tuning the
-  hyperparameters of anytime planning: A metareasoning approach with deep
-  reinforcement learning, in: Proceedings of the International Conference on
-  Automated Planning and Scheduling (ICAPS), Vol.~32, AAAI Press, 2022, pp.
-  556--564.
-\newblock \href {https://doi.org/10.1609/icaps.v32i1.19842}
-  {\path{doi:10.1609/icaps.v32i1.19842}}.
+\bibitem{hansen2001monitoring}
+E.~A. Hansen, S.~Zilberstein, Monitoring and control of anytime algorithms: A
+  dynamic programming approach, Artificial Intelligence 126~(1--2) (2001)
+  139--157.
+\newblock \href {https://doi.org/10.1016/S0004-3702(00)00068-0}
+  {\path{doi:10.1016/S0004-3702(00)00068-0}}.
 
 \bibitem{sung2021quit}
 Y.~Sung, L.~P. Kaelbling, T.~Lozano-P{\'e}rez, Learning when to quit:
@@ -305,14 +237,6 @@ M.~Cashmore, A.~Coles, B.~Cserna, E.~Karpas, D.~Magazzeni, W.~Ruml, Temporal
   2018, pp. 39--46.
 \newblock \href {https://doi.org/10.1609/icaps.v28i1.13878}
   {\path{doi:10.1609/icaps.v28i1.13878}}.
-
-\bibitem{shperberg2019allocating}
-S.~S. Shperberg, A.~Coles, B.~Cserna, E.~Karpas, W.~Ruml, S.~E. Shimony,
-  Allocating planning effort when actions expire, in: Proceedings of the AAAI
-  Conference on Artificial Intelligence, Vol.~33, AAAI Press, 2019, pp.
-  2371--2378.
-\newblock \href {https://doi.org/10.1609/aaai.v33i01.33012371}
-  {\path{doi:10.1609/aaai.v33i01.33012371}}.
 
 \bibitem{shperberg2021situated}
 S.~S. Shperberg, A.~Coles, E.~Karpas, W.~Ruml, S.~E. Shimony, Situated temporal
@@ -362,16 +286,9 @@ P.~McCullagh, J.~A. Nelder, Generalized Linear Models, 2nd Edition, Chapman and
 \newblock \href {https://doi.org/10.1007/978-1-4899-3242-6}
   {\path{doi:10.1007/978-1-4899-3242-6}}.
 
-\bibitem{ortools}
-L.~Perron, V.~Furnon, {OR-Tools},
-  \url{https://developers.google.com/optimization}, version 9.15 (2026).
-
-\bibitem{voudouris1999gls}
-C.~Voudouris, E.~Tsang, Guided local search and its application to the
-  traveling salesman problem, European Journal of Operational Research 113~(2)
-  (1999) 469--499.
-\newblock \href {https://doi.org/10.1016/S0377-2217(98)00099-X}
-  {\path{doi:10.1016/S0377-2217(98)00099-X}}.
+\bibitem{law2015simulation}
+A.~M. Law, Simulation Modeling and Analysis, 5th Edition, McGraw-Hill
+  Education, New York, 2015.
 
 \bibitem{efron1993bootstrap}
 B.~Efron, R.~J. Tibshirani, An Introduction to the Bootstrap, Chapman and Hall,
@@ -382,11 +299,5 @@ B.~Efron, R.~J. Tibshirani, An Introduction to the Bootstrap, Chapman and Hall,
 \bibitem{holm1979simple}
 S.~Holm, A simple sequentially rejective multiple test procedure, Scandinavian
   Journal of Statistics 6~(2) (1979) 65--70.
-
-\bibitem{fawcett2006roc}
-T.~Fawcett, An introduction to {ROC} analysis, Pattern Recognition Letters
-  27~(8) (2006) 861--874.
-\newblock \href {https://doi.org/10.1016/j.patrec.2005.10.010}
-  {\path{doi:10.1016/j.patrec.2005.10.010}}.
 
 \end{thebibliography}

@@ -1,61 +1,37 @@
 \section{Discussion and limitations}\label{sec:discussion}
-The three studies give an order of priorities for a multi-UAV replanner under uncertain execution. The planning model
-matters most. Moving every deadline by the predicted finish-time error raised the utility by more than any choice of
-stopping rule or trigger, and it removed the losses from late plans. The trigger comes second. On the nominal model of
-study~1, periodic replanning raised the utility of every method by more than the stopping rule did, but on the
-chance-constrained model its contribution fell to \val{KDabsAblTrig}\,pp, which suggests that both correct the same
-accumulated deviations, one before and one after they occur. The stopping rule comes last. It guards against long budgets
-on slow planners, where the full budget of 250\,ms served \val{KDabsFix}\,pp less reward than the proposed replanner
-and \val{KDFixKTwoHundred}\,pp less at $\kappa_B=200$, and it
-finds a suitable amount of computation on every fleet scale without tuning. On the proposed model, however, it was
-equivalent to a fixed budget of 40\,ms that had been matched to its mean computation on development data.
+The three studies suggest an order of priorities for a multi-UAV replanner under uncertain execution. The planning
+model matters most. Moving every deadline by the predicted finish-time error raised the utility by more than any choice
+of stopping rule or trigger, and it removed the losses from late plans. The trigger comes second. Periodic replanning
+helped every method on the nominal model, but only by \val{KDabsAblTrig}\,pp on the chance-constrained model, which
+suggests that both correct the same accumulated deviations, one before and one after they occur. The stopping rule
+comes last. On the proposed model, it was equivalent to a matched fixed budget, and its value lies in avoiding the
+losses of long budgets on slow planners. The metareasoning rules behaved in the same way, probably because the
+improvement curve of this ALNS flattens within a few tens of milliseconds. Monitoring rules may matter more for searches
+whose improvement continues for longer.
 
-The proposed model and the constant buffer both shift deadlines forward, and the buffer was the strongest baseline.
-The difference lies in the shape of the margin. The error grows with the lead time, so a constant margin is too large for
-tasks that are reached soon and too small for tasks at the end of a route. The proposed model scales the margin with the
-lead time and served more reward than the buffer in \val{KWinBuf} of the \val{KNConfigs} configurations. Under high
-disturbances with halved windows, the order reversed. A chance constraint discards every task whose probability of
-being served on time falls below $\Phi(z)$, even when the vehicle has nothing better to do. With short windows and large
-errors, many tasks fall below this threshold. Study~3 confirmed this explanation on new seeds. Keeping the given-up
-tasks with their nominal deadline removed the weakness, raised the utility in every regime and left the guarantee of
-the other tasks intact. The fallback trades punctuality for reward, since many fallback tasks are served late. A soft
-formulation that weights each task by its probability of being served on time would make this trade explicit and
-could be tuned to the cost of a late arrival in a given application.
+The proposed model and the constant buffer both shift deadlines forward, and the buffer was the strongest baseline. The
+difference lies in the shape of the margin. A constant margin is too large for tasks reached soon and too small for
+tasks at the end of a route, whereas the proposed margin grows with the lead time. A hard chance constraint, however,
+discards every task whose probability of being served on time falls below $\Phi(z)$, even when a vehicle has nothing
+better to do. Study~3 confirmed this explanation on new seeds. Keeping the given-up tasks with their nominal deadline
+removed the weakness and left the guarantee of the other tasks intact, but many fallback tasks were served late. A soft
+formulation that weights every task by its probability of being served on time would make this trade explicit and could
+be tuned to the cost of a late arrival in a given application.
 
-The stopping rules from the metareasoning literature behaved like the learned rule. On the nominal model, the
-performance profile, online performance prediction, the learned predictor, the size-scaled budget and ALNS with
-40\,ms all lay within \val{KUSpreadStop}\,pp of each other, although they used between \val{KMsOnl}\,ms and
-\val{KMsAS}\,ms per call. The improvement curve of the ALNS used here flattens within a few tens of milliseconds, so
-every reasonable rule stops near the same point and the differences in reward stay small.
-Monitoring rules may matter more for search methods whose improvement continues for longer, or on slower hardware. The
-execution-aware delay cost of study~1 did not deliver the gain that motivated it either. It changed only the moment at
-which the search stops, and the remaining error was corrected at the next replanning call. Letting the error model shape
-the plan, as the proposed model does, was far more effective than letting it shape the decision to stop.
+The two tiers play different roles. Tier B provides the number of missions that a paired comparison needs, and tier C
+checks that its conclusions survive an autopilot, a physics engine and a real middleware. In both studies with flights,
+tier B predicted the utility of individual flights closely, and tier C reproduced the mechanism but could not resolve
+differences of a few percentage points. A two-tier study should therefore plan its number of flights from the smallest
+difference that it is meant to confirm.
 
-The two tiers play different roles. Tier B provides the number of missions that a paired comparison of replanners
-needs, and tier C checks that its conclusions survive an autopilot, a physics engine and a real middleware. In study~1,
-tier B predicted the utility of individual flights closely and reproduced the two robust findings, the loss of the long
-fixed budget and the lower computation of AnytimeSwarm-R. It did not predict the order of methods whose utilities differ
-by less than one percentage point, and neither tier can resolve such differences with the number of missions used here.
-The per-mission difference between two methods in tier C had a standard deviation of \val{JCSdDiff}\,pp, so confirming a
-difference of half a percentage point with a power of 80\% would require about \val{JCNPower} missions per method, far
-beyond what a software-in-the-loop campaign of one night allows. A two-tier study should therefore state its effect
-sizes before running and plan the number of tier C missions from the smallest difference that it is meant to confirm.
-Study~2 repeated this pattern. Tier C reproduced the mechanism of the proposed model, fewer late and no skipped
-tasks, but not the utility gain, whose tier B estimate on the same missions was itself not significant. With a
-per-mission standard deviation of \val{KCSdForty}\,pp, about \val{KCNPowerForty} missions per method would be needed.
-
-Several limitations bound these conclusions. The finish-time error model is linear in the lead time and fitted per
-disturbance level, so the level itself is assumed to be known, and the confidence parameter $z$ was selected per level on
-development missions. The chance constraint is imposed on every task separately rather than jointly on a route. The
-fallback of study~3 was designed after the held-out results of study~2. It was therefore tested on new seeds, but only
-in tier B, and its behaviour on an autopilot remains to be measured. Tier C uses three UAVs and fifteen tasks per
-mission, so it validates the decision problem at a small scale and with a limited number of missions. Many tier C runs
-of study~2 ran slower than the intended real-time factor because the laptop was shared with other work, although the
-conclusions did not change when such runs were excluded. Software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the
-sensors, the radio link or the weather of a field test, and wind is constant during a mission. The latency factor
-emulates a slower planning computer instead of measuring one. All experiments ran on a single laptop, and the measured
-computation depends on it. Because the stopping rules read a wall clock, repeated runs are not bit-identical, and the
-mean utility of a method varied by up to \val{JRepeatDiffMax}\,pp between two runs of the same missions. Finally, all
-methods share one ALNS and one family of scenarios, and other search methods or mission types may change the size of the
-gains.
+Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
+level, so the level is assumed to be known, and $z$ was selected per level on development missions. The chance
+constraint is imposed on every task separately rather than jointly on a route. The fallback was designed after the
+held-out results of study~2 and was tested on new seeds, but only in tier B. Tier C uses three UAVs and fifteen tasks
+per mission, and many of its runs ran slower than intended because the laptop was shared with other work.
+Software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the sensors, the radio link or
+the weather of a field test, and the wind is constant during a mission. The latency factor emulates a slower planning
+computer instead of measuring one. Because the stopping rules read a wall clock, repeated runs are not bit-identical, and
+the mean utility of a method varied by up to \val{JRepeatDiffMax}\,pp between two runs of the same missions. Finally,
+all methods share one ALNS and one family of scenarios, and other search methods or mission types may change the size of
+the gains.

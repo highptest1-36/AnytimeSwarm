@@ -1,59 +1,37 @@
 \section{Related work}\label{sec:related}
 \paragraph{Dynamic task allocation and routing} Multi-robot task allocation~\cite{gerkey2004formal} and dynamic vehicle
-routing~\cite{pillac2013review,psaraftis2016dynamic,ritzinger2016survey} study how tasks can be reassigned when
-information changes. The planning problem considered here is a prize-collecting routing problem with time
-windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Real-time routing has long been limited by the
-computation available between events. Gendreau et al.\ parallelised tabu search to fit more optimisation between
-request arrivals~\cite{gendreau1999parallel}, and large neighbourhood search has been adapted to dynamic routing with
-time windows~\cite{hong2012improved,alnsdvrp2024} and to routing with drones~\cite{sacramento2019alns}. For multi-UAV
-systems, auction methods such as CBBA~\cite{choi2009consensus,bertuccelli2009realtime} reach conflict-free assignments
-quickly. Recent work handles stochastic task completion with hierarchical policies~\cite{choudhury2022dynamic},
-uncertain execution times with dynamic time slices~\cite{huang2024dynamic}, intermittent communication with
-uncertainty-gated distributed allocation~\cite{ucdg2026drones}, and events with assignment-preserving or local repair
-of the previous plan~\cite{hwang2026apr,shen2026localrepair}. Calvo and Capitan validate a repair-based architecture for
-long-endurance missions with PX4 and Gazebo~\cite{calvo2025heterogeneous}, and Ali et al.\ use ArduPilot
-software-in-the-loop simulation~\cite{ali2026sitl}. Table~\ref{tab:related} compares these approaches. They make the
-search faster or the plan better within a given budget, but none of them treats the computation time of the replanner
-as a decision, calibrates the finish-time error of the executed routes, or compares replanning triggers together with
-the stopping rule.
+routing~\cite{pillac2013review,psaraftis2016dynamic} reassign tasks when information changes. The
+planning problem considered here is a prize-collecting routing problem with time
+windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Large neighbourhood search has been adapted to dynamic routing with time windows~\cite{alnsdvrp2024}. For multi-UAV
+systems, auction methods such as CBBA reach conflict-free assignments quickly~\cite{choi2009consensus}.
+Recent work handles stochastic task completion with hierarchical policies~\cite{choudhury2022dynamic}, uncertain
+execution times with dynamic time slices~\cite{huang2024dynamic}, intermittent communication with uncertainty-gated
+distributed allocation~\cite{ucdg2026drones}, and events with assignment-preserving or local
+repair~\cite{hwang2026apr,shen2026localrepair}. Event-triggered and periodic allocation have been compared for
+multi-UAV systems~\cite{cong2026event}, in line with the rescheduling
+literature~\cite{vieira2003rescheduling,ouelhadj2009survey}. Calvo and Capitan validate a repair-based architecture
+with PX4 and Gazebo~\cite{calvo2025heterogeneous}, and Ali et al.\ use ArduPilot software-in-the-loop
+simulation~\cite{ali2026sitl}. Table~\ref{tab:related} compares these approaches.
 
 \inputtable{tab_related}
 
-\paragraph{Replanning policies} Rescheduling research distinguishes event-driven, periodic and hybrid policies and
-studies how this choice affects the performance and the stability of the
-schedule~\cite{vieira2003rescheduling,ouelhadj2009survey}.
-In dynamic and stochastic routing, rolling-horizon re-optimisation is the standard way to absorb new
-information~\cite{ritzinger2016survey}. For multi-UAV allocation, Cong et al.\ compare event-triggered with periodic
-allocation~\cite{cong2026event}. The present work evaluates the trigger jointly with the stopping rule and the planning
-model, because more frequent calls change how much computation each call should use.
-
-\paragraph{Uncertainty in routing and allocation} Stochastic vehicle routing models travel and service times or demands
-as random variables~\cite{gendreau1996stochastic}. With hard time windows and stochastic service times, a priori routes
-with recourse~\cite{errico2016apriori,errico2018vrptw} and robust formulations over budgeted uncertainty
-sets~\cite{agra2013robust} protect the schedule against delays, at the price of solving a harder model. Scenario-based
-approaches plan against sampled futures in dynamic settings~\cite{bent2004scenario}, and chance-constrained task
-allocation bounds the probability that a team misses its objectives~\cite{ponda2012chance}. The proposed planning model
-follows this line but exploits the structure of a calibrated error model: because the mean and the spread of the
-finish-time error grow linearly with the lead time, a chance constraint on every task reduces exactly to an effective
-deadline, and the fast repair and search heuristics are reused without change.
+\paragraph{Uncertainty in routing and allocation} Stochastic vehicle routing models travel and service times as random
+variables~\cite{gendreau1996stochastic}. With hard time windows and stochastic service times, a priori routes with
+recourse~\cite{errico2016apriori} and robust formulations over budgeted uncertainty
+sets~\cite{agra2013robust} protect the schedule against delays, at the price of a harder model. Scenario-based
+approaches plan against sampled futures~\cite{bent2004scenario}, and chance-constrained task allocation bounds the
+probability that a team misses its objectives~\cite{ponda2012chance}. The proposed model follows this line. It exploits
+one structural property, an error whose mean and spread grow linearly with the lead time, under which a per-task chance
+constraint becomes a deterministic deadline and the heuristics of the nominal model apply unchanged. A constant time
+buffer, the simplest robust alternative, serves as a baseline.
 
 \paragraph{Metareasoning and anytime algorithms} Anytime algorithms~\cite{dean1988analysis,zilberstein1996using} and the
-rational allocation of computation~\cite{horvitz1987reasoning,russell1991right,boddy1994deliberation} form the
-conceptual basis of the stopping rule. Hansen and Zilberstein derive a monitoring policy by dynamic programming over a
-performance profile and a time-dependent utility~\cite{hansen2001monitoring}. Svegliato et al.\ predict the performance
-of an anytime algorithm online~\cite{svegliato2018meta}, learn meta-level control with model-free reinforcement
-learning~\cite{svegliato2020modelfree} and tune the hyperparameters of anytime planners with deep reinforcement
-learning~\cite{bhatia2022tuning}, and Sung et al.\ learn when an anytime motion planner should stop~\cite{sung2021quit}.
-Situated temporal planning accounts for the passage of time during planning~\cite{cashmore2018clock} and allocates
-search effort to actions that expire~\cite{shperberg2019allocating,shperberg2021situated}, and deadline-aware search
-adapts the search to a fixed deadline from on-line measures of its progress~\cite{dionne2011deadline}. In these studies,
-the utility of time is usually a given function or a hard deadline. In multi-UAV replanning, it follows from the plan
-at hand, from the vehicles that wait for it and from how reliably the plan will be executed. Two of these approaches,
-static performance profiles and online performance prediction, are re-implemented as baselines in this paper.
-
-\paragraph{Simulation-based validation of multi-UAV planning} Software-in-the-loop simulation with an autopilot and a
-physics simulator is a common step between algorithm design and flight tests. PX4~\cite{meier2015px4} runs the same
-flight stack in simulation and on hardware, Gazebo~\cite{koenig2004gazebo} provides vehicle dynamics and sensors, and
-ROS~2~\cite{macenski2022ros2} connects planners and vehicles. Such setups are rarely used for statistical comparisons
-of planners, because each mission runs in real time or close to it. The two-tier design of this paper uses the physical
-tier to check a fast simulator that carries the statistical burden.
+rational allocation of computation~\cite{russell1991right,boddy1994deliberation} decide how long a
+planner should compute. Hansen and Zilberstein derive a monitoring policy over a performance
+profile~\cite{hansen2001monitoring}. Svegliato et al.\ predict the performance of an anytime algorithm
+online~\cite{svegliato2018meta}, and Sung
+et al.\ learn when an anytime motion planner should stop~\cite{sung2021quit}. Situated temporal planning accounts for
+the passage of time during planning~\cite{cashmore2018clock,shperberg2021situated}, and
+deadline-aware search adapts to a fixed deadline~\cite{dionne2011deadline}. Two of these rules, static performance
+profiles and online performance prediction, are re-implemented as baselines, so that the value of controlling
+computation can be compared with the value of the planning model.
