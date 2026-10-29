@@ -1,0 +1,117 @@
+% Supplementary material of the AnytimeSwarm-CC manuscript, IEEE format (IEEEtran journal class, one column).
+% Build after main.tex in this folder: pdflatex supplementary && bibtex supplementary && pdflatex supplementary (x2)
+% Every number comes from the generated ../tables/numbers*.tex files; none is typed by hand.
+\documentclass[journal,onecolumn]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{xr-hyper}
+\usepackage[hidelinks]{hyperref}
+\externaldocument{main}
+\newtheorem{prop}{Proposition}
+\renewcommand{\theprop}{S\arabic{prop}}
+\providecommand{\QED}{\hfill$\blacksquare$}
+\newenvironment{proof}{\par\noindent\textit{Proof:}\ }{\QED\par}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\IfFileExists{../tables/static_numbers.tex}{\input{../tables/static_numbers.tex}}{}
+\IfFileExists{../tables/static_numbers_XL.tex}{\input{../tables/static_numbers_XL.tex}}{}
+\IfFileExists{../tables/static_numbers_scale.tex}{\input{../tables/static_numbers_scale.tex}}{}
+\IfFileExists{../tables/numbers.tex}{\input{../tables/numbers.tex}}{}
+\IfFileExists{../tables/numbers_s2.tex}{\input{../tables/numbers_s2.tex}}{}
+\IfFileExists{../tables/numbers_s3.tex}{\input{../tables/numbers_s3.tex}}{}
+\IfFileExists{../tables/numbers_s3x.tex}{\input{../tables/numbers_s3x.tex}}{}
+\IfFileExists{../tables/numbers_err.tex}{\input{../tables/numbers_err.tex}}{}
+\IfFileExists{../tables/numbers_s4.tex}{\input{../tables/numbers_s4.tex}}{}
+\IfFileExists{../tables/numbers_s4x.tex}{\input{../tables/numbers_s4x.tex}}{}
+\IfFileExists{../tables/numbers_s4c.tex}{\input{../tables/numbers_s4c.tex}}{}
+\newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
+\newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
+\newcommand{\inputtable}[1]{\IfFileExists{../tables/#1.tex}{\input{../tables/#1.tex}}{\todo{table \detokenize{#1}}}}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+\title{Supplementary Material for: Lead-Time-Scaled Chance Constraints With a Nominal Fallback for Fast Multi-UAV
+Replanning Under Uncertain Execution}
+\author{Cao-Phuc Ha, Anh Nguyen Vu Minh, and Phu-Nguyen Le}
+\markboth{Supplementary material}{Ha \MakeLowercase{\textit{et al.}}: Lead-Time-Scaled Chance Constraints for Multi-UAV Replanning}
+\maketitle
+\begin{abstract}
+This document contains the parts of the evaluation that the main paper only summarises: the stopping rule and its two
+delay costs with their properties, the scenario generator and the fitted error models, the exact-execution benchmark of
+the stopping rules, the full results of study~1, further results of study~2 per regime and in tier C, the regimes of
+study~3 and the reliability of the error model in study~4. Section, equation and table numbers without the prefix S
+refer to the main paper.
+\end{abstract}
+
+\section{Stopping rule and delay costs}\label{sec:Sstop}
+\input{supp/s1_delay}
+
+\section{Scenario generator, error models and exact-execution snapshots}\label{sec:Sscen}
+\input{supp/s2_scen}
+
+\inputtable{tab_errmodels}
+
+\section{Exact execution: stopping rules at equal computation}\label{sec:Sstatic}
+\input{supp/s3_static}
+
+\section{Study 1: execution-aware stopping on the nominal planning model}\label{sec:Sstudy1}
+Study~1 compares AnytimeSwarm-R with the stopping rules of the first group of Section~\ref{sec:methods} on the nominal
+planning model, on held-out seeds 3000--3029 in tier B (270 missions over three scales and three profiles, and 90
+missions with 40 UAVs) and 4000--4009 in tier C (30 missions per method). Its primary matrix crosses two execution
+levels (low, mid), two latency levels (none, high), two latency factors ($\kappa_B=10, 50$) and two triggers (event,
+periodic every 60\,s). Its primary hypothesis is that AnytimeSwarm-R serves more reward than ALNS with 40\,ms,
+AnytimeSwarm and the stagnation rule.
+\input{supp/s4_study1}
+
+\section{Study 2: regimes and software-in-the-loop details}\label{sec:Sstudy2}
+Fig.~\ref{fig:Ss2main} shows the paired differences of Table~\ref{tab:s2main} of the main paper together with the
+computation of every method.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_main}{\linewidth}
+\caption{Study~2, tier B, held-out seeds 5000--5029: (a) utility of the proposed replanner minus each method, pooled
+over \val{KNConfigs} configurations, with 95\% paired bootstrap intervals over \val{KNMissions} missions; (b) mean
+utility against mean computation per call. Ablations are omitted.}\label{fig:Ss2main}
+\end{figure}
+
+\input{supp/s5_study2}
+
+\section{Study 3: regimes}\label{sec:Sstudy3}
+Fig.~\ref{fig:Ss3} shows the paired differences of study~3 per regime.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s3}{\linewidth}
+\caption{Study~3, tier B, held-out seeds 7000--7029: utility of the replanner with nominal fallback minus each other
+method, per regime (mean over $\kappa_B$, \val{LNMissions} missions, 95\% paired bootstrap intervals).}\label{fig:Ss3}
+\end{figure}
+
+\section{Study 4: reliability of the error model}\label{sec:Sstudy4}
+Fig.~\ref{fig:Scoverage} groups the tasks that were served in study~4 by the probability of meeting the deadline that
+the error model of their disturbance level predicted at the last published plan, and compares it with the share served
+on time. The plans of the proposed model and of the nominal model are evaluated with the same error model. Under mid
+disturbances, the share served on time was \val{QCovObsCCMid}\% for the proposed model, against a mean predicted
+probability of \val{QCovPredCCMid}\%. Under high disturbances, it was \val{QCovObsCCHigh}\% against
+\val{QCovPredCCHigh}\%. Among the tasks with a predicted probability of at least one half, the shares were
+\val{QCovObsAboveCCMid}\% and \val{QCovObsAboveCCHigh}\%, against predicted means of \val{QCovPredAboveCCMid}\% and
+\val{QCovPredAboveCCHigh}\%. The model was thus slightly optimistic under mid and conservative under high disturbances,
+and it ranked the tasks by their risk in both cases.
+
+\begin{figure}[t]
+\centering
+\fig{fig_coverage}{\linewidth}
+\caption{Study~4, tier B, held-out seeds 8000--8029: share of served tasks that met their deadline against the
+probability predicted by the error model of the disturbance level, in deciles, for the proposed model with fallback and
+the nominal model. The dotted line marks perfect calibration.}\label{fig:Scoverage}
+\end{figure}
+
+\bibliographystyle{IEEEtran}
+\bibliography{../references}
+\end{document}

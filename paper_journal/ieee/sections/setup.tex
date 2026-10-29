@@ -1,0 +1,125 @@
+\section{Evaluation}\label{sec:setup}
+\subsection{Scenarios and kinematic tier}
+Missions are created by a seeded generator (Supplementary Table~S1). The map is a square with a side of 10\,km and the
+depot at its centre, half of the tasks are clustered around three hotspots, and half of them are known at the start
+while the others arrive in batches. Time windows have a slack of 180 to 600\,s and services last 30 to 90\,s. Three
+fleet scales with 5, 10 and 20 UAVs and 25, 50 and 140 tasks are combined with three event profiles, namely six arrival
+batches, three batches with two UAV failures, and three batches with four tightened deadlines.
+
+Tier B executes each published plan in continuous mission time. Legs follow a trapezoidal speed profile with an
+acceleration limit, the airspeed of each leg deviates from the nominal speed by a multiplicative error, a constant wind
+of random direction changes the ground speed, and service durations are multiplied by a random factor
+(Table~\ref{tab:levels}). The planner never sees these disturbances and receives the state of each UAV as telemetry.
+The dissemination latency is lognormal, and lost messages are resent after a timeout. All random draws use common random
+numbers~\cite{law2015simulation} keyed to the mission seed, the UAV and the task, so two planners that assign the same
+task to the same UAV experience the same disturbance.
+
+\begin{table*}[t]
+\caption{Disturbance and latency levels of tier B. The levels span mild to severe conditions and are not claimed to
+represent a particular vehicle.}\label{tab:levels}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccc@{\quad}lccc}
+\toprule
+Execution & accel. (m/s$^2$) & speed c.v. & wind (m/s) & service c.v. & Latency & median (s) & $\sigma_{\log}$ & loss / timeout \\
+\midrule
+low & 3.0 & 0.03 & 2 & 0.05 & low & 0.2 & 0.5 & -- \\
+mid & 2.0 & 0.07 & 5 & 0.15 & high & 2.0 & 0.8 & 5\% / 5\,s \\
+high & 1.5 & 0.12 & 8 & 0.25 & & & & \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Software-in-the-loop tier}
+Tier C flies missions with three X500 quadrotors, each controlled by its own PX4 v1.17 autopilot in software-in-the-loop
+mode~\cite{meier2015px4}, in Gazebo Harmonic~\cite{koenig2004gazebo} on ROS~2 Jazzy~\cite{macenski2022ros2}
+(Fig.~\ref{fig:tierc}). The mission manager runs the scenario timeline, builds the planning snapshot, calls the planner
+and releases the plan. The executor streams offboard setpoints to every autopilot at 10\,Hz through a uXRCE-DDS bridge,
+flies each leg with a carrot that moves along the straight leg and holds the UAV at the task for the service duration.
+A tier C mission is a tier B scenario with three UAVs and fifteen tasks, rescaled by $S_X=0.1$ in length and $S_T=0.25$
+in time. Speeds are multiplied by $S_X/S_T$, energy by $S_X$ and the distance price by $1/S_X$, so every dimensionless
+ratio of the decision problem is preserved, and $\kappa_C=S_T\kappa_B$. The commanded ground speed of each leg follows
+the speed error and the scaled wind of tier B with the same random numbers, while acceleration, attitude dynamics,
+position tracking and communication are those of the simulated vehicles. Gazebo runs in lockstep with PX4 at twice
+real time, and mission time is simulation time.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_tierc}{\linewidth}
+\caption{Software-in-the-loop tier. Top: a tier B mission is rescaled in length and time so that the decision problem
+is unchanged. Bottom: the planner runs inside the ROS~2 mission manager, the executor streams offboard setpoints through
+the uXRCE-DDS bridge to three PX4 autopilots, and Gazebo simulates three X500 quadrotors in lockstep.}\label{fig:tierc}
+\end{figure*}
+
+\subsection{Compared methods}\label{sec:methods}
+All methods share the feasibility-first repair, the ALNS operators and parameters, the initial plan and the random seed,
+and every call has a hard budget of 250\,ms. They differ in the stopping rule, the planning model and the trigger.
+Regret-2 repair without search is the constructive floor. ALNS is run with fixed budgets of 250\,ms and
+40\,ms~\cite{ropke2006adaptive}, the latter equal to the mean computation of AnytimeSwarm on development data, with a
+budget of 1\,ms per open task, and with a stagnation rule that stops after 20\% of the budget without improvement. Two
+stopping rules from the metareasoning literature are re-implemented with the same delay cost and price of computation
+as the proposed rule, so that only the prediction of the gain differs. The performance profile
+rule~\cite{boddy1994deliberation,zilberstein1996using} predicts the gain from a static profile over elapsed time and
+number of open tasks, and the online prediction rule~\cite{svegliato2018meta} fits $q(t)=a-b\,e^{-ct}$ to the best
+objective found so far at every check. The constant-buffer model subtracts 60\,s from every deadline, chosen on
+development missions among 30, 60 and 120\,s, as is common for robust schedules with time
+buffers~\cite{agra2013robust}. The proposed model uses Eq.~\eqref{eq:cc} with $z=0.5$ under mid and $z=0$ under high
+disturbances, selected on development missions. All these methods use the periodic trigger. The conventional planner
+combines ALNS with 40\,ms, the nominal model and the event trigger.
+
+Study~4 compares planning models on the same search, with a fixed budget of 40\,ms, the periodic trigger and the
+nominal fallback for every chance-constrained model. The proportional buffer accepts $f_j+c\,h_j\le d_j$, which keeps
+the shape of the proposed margin but replaces the calibration by one tuned slope. Moment propagation follows Ehmke et
+al.~\cite{ehmke2015ensuring}. The flight time of a leg of nominal duration $t$ is normal with mean $(1+a)t+c_0$ and
+standard deviation $c_v t$, the service time is normal with mean $(1+a_s)s$ and standard deviation $c_s s$, legs are
+independent, the start of service $\max(A_j,r_j)$ is approximated by Clark's moments~\cite{clark1961greatest}, and a
+finish is accepted if $\mathrm{E}[F_j]+z\,\mathrm{sd}[F_j]\le d_j$. The leg parameters are fitted on the legs of the
+development flights. Because the variance of one long leg can exceed that of the two legs it replaces, removing a task
+can make a route infeasible under this model, so every route is filtered once more before publication. Online
+calibration starts from one error model fitted on both disturbance levels, with the weight of $n_0$ pairs, and refits
+Eq.~\eqref{eq:errmodel} at every call with the pairs of the tasks completed so far in the mission, so it needs neither
+the disturbance level nor a level-specific $z$. Each model has one parameter per level, selected on development
+missions by the same rule as $z$ in study~2. For the proposed model with fallback, $z$ was selected anew and is 1 under
+mid and 0.5 under high disturbances. The other values are $c=0.45$ and 0.6, $z=1$ and 0.5 for moment propagation, and
+$n_0=50$ with $z=0.5$ for online calibration. On development missions, the three static models differed by less than
+0.2\,pp.
+
+\subsection{Pre-registered protocol}\label{sec:protocol}
+The evaluation consists of four studies, each with its own held-out seeds, written protocol and frozen code.
+Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute price, $z$, the buffer and
+the error models were fixed. Before each study, the configurations, the models and the code were frozen with SHA-256
+hashes, which the held-out runs checked before starting. Study~1 tested AnytimeSwarm-R against fixed and adaptive
+stopping rules on the nominal model (Supplementary Section~S4).
+
+Study~2 evaluates the chance-constrained model on held-out seeds 5000--5029 in tier B and 6000--6009 in tier C. Its
+matrix crosses two execution levels (mid, high), high latency, three latency factors ($\kappa_B=10, 50, 200$) and two
+time-window factors (original and halved), which gives twelve configurations of 270 missions each, with the fifteen
+methods of Table~\ref{tab:s2main}. H1 states that the proposed replanner serves more reward than each of six baselines
+(ALNS with 40\,ms, the size-scaled budget, online prediction, the performance profile, AnytimeSwarm-R and the constant
+buffer), and H2 compares it with the conventional planner. H3 tests whether the proposed stopping rule is equivalent to
+a fixed budget of 40\,ms on the proposed model, with a margin of $\pm0.5$ percentage points. In tier C, H4 compares the
+proposed replanner with ALNS with 40\,ms and the conventional planner on 30 missions with mid disturbances and
+$\kappa_B=50$. Study~3 was designed after the held-out results of study~2. Of two fallbacks compared on development
+seeds, the nominal one was selected by a rule stated beforehand. Study~3 uses new held-out seeds 7000--7029 in tier B
+and the matrix of study~2. Its primary family compares the fallback variant with the replanner of study~2 over all
+configurations (H5), with the constant buffer under high disturbances with halved windows (H6), and with ALNS with
+40\,ms (H7) and the constant buffer (H8) over all configurations.
+
+Study~4 uses new held-out seeds 8000--8029 in tier B, the same matrix and eleven methods. Its primary family tests the
+proposed model with fallback against the proportional buffer (H9), non-inferiority against moment propagation with a
+margin of $-0.5$\,pp, followed by superiority in a fixed sequence (H10), the fallback within moment propagation (H11),
+and the proposed model against the constant buffer (H12) and the nominal model (H13). Online calibration, the learned
+stopping rule, repair without search and a reliability check of the error model are secondary. Study~4C flies the
+proposed replanner with and without fallback and the nominal model in tier C under high disturbances with halved
+windows, where tier B predicted the largest effect, on 36 missions with seeds 9000--9011. The sample size was computed
+beforehand from a tier B counterpart on development seeds. One interim analysis after half of the missions uses
+O'Brien--Fleming bounds, so that the flights could stop early without inflating the error rate. H14 compares the
+fallback variant with the nominal model and H15 with the variant without fallback.
+
+In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
+paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the
+Holm procedure~\cite{holm1979simple}, and equivalence is tested with two one-sided tests. All other comparisons are
+descriptive. A tier C run in which a vehicle does not take off in time, or whose real-time factor leaves $[1.6, 2.2]$,
+is repeated once. Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with the methods of a
+configuration run in turn. A separately written validator found no infeasible plan among \val{JValidatorPlans}
+development plans. The protocols and their deviations are available with the code.

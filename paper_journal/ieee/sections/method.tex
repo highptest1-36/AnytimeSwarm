@@ -1,0 +1,160 @@
+\section{Proposed method}\label{sec:method}
+AnytimeSwarm-CC takes three decisions in every replanning cycle (Fig.~\ref{fig:overview}, Algorithm~\ref{alg:cycle}).
+The chance-constrained planning model decides which plans are acceptable under the calibrated execution error, the
+stopping rule decides when to stop computing and publish, and the trigger decides when to replan. A feasibility-first
+repair and an anytime ALNS produce the plan. Two earlier variants serve as baselines. AnytimeSwarm uses the same
+stopping rule with a deterministic delay cost on the nominal model, and AnytimeSwarm-R uses an execution-aware delay
+cost on the nominal model.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_overview}{\linewidth}
+\caption{Overview of AnytimeSwarm-CC. Top: the replanning loop between the mission, the planning snapshot, the
+replanner and the execution tier. Bottom: one replanning call. The calibrated error model gives a margin that grows
+with the lead time, the chance constraint turns it into an effective deadline per task, the nominal fallback keeps the
+tasks that no vehicle could otherwise reach, and the anytime search stops when the predicted gain no longer pays for the
+delay. The plan is released after the emulated planning delay $\kappa\tau$ and the latency $L$.}\label{fig:overview}
+\end{figure*}
+
+\begin{algorithm}[t]
+\caption{One replanning call of AnytimeSwarm-CC}\label{alg:cycle}
+\small
+\begin{algorithmic}[1]
+\Require snapshot at time $t_0$: committed tasks, open tasks with $(r_j,d_j,w_j)$, UAV states; previous plan $\pi^-$;
+error model $(b_0,b_1,s_0,s_1)$, safety factor $z$, expected latency $\bar L$, latency factor $\kappa$
+\State $\tilde d_j \gets \min\{d_j,\; t_0+(d_j-t_0-b_0-z s_0)/(1+b_1+z s_1)\}$ for every open task
+\Comment{Eq.~\eqref{eq:cc}}
+\State $d'_j \gets d_j$ if no UAV can finish $j$ by $\tilde d_j$ but one can by $d_j$, else $d'_j\gets\tilde d_j$
+\Comment{Eq.~\eqref{eq:fallback}}
+\State $\pi \gets$ \Call{FeasibilityFirstRepair}{$\pi^-$, $d'$};\; $\pi^\ast \gets \pi$;\; $\tau \gets 0$
+\Repeat
+  \State destroy and repair $\pi$ with adaptively chosen operators; accept by simulated annealing
+  \State \textbf{if} $J(\pi) > J(\pi^\ast)$ \textbf{then} $\pi^\ast \gets \pi$
+  \State every 5\,ms: $\widehat{\Delta J} \gets$ learned prediction of the gain in the next $H$\,ms
+\Until{$\widehat{\Delta J}\le C_{\mathrm{R}}(\tau)+\mu W H$ \textbf{or} $\tau\ge B$} \Comment{Eq.~\eqref{eq:stop}}
+\State publish $\pi^\ast$; it reaches the UAVs at $t_0+\kappa\tau+L$
+\State next call at the next event or $T_{\max}$ after $t_0$, whichever comes first
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Repair and anytime search}
+The previous plan is restricted to the open tasks and walked once, keeping a task only if the route up to it is still
+feasible, and tasks of failed UAVs and new tasks are inserted by parallel regret-2
+insertion~\cite{potvin1993parallel,ropke2006adaptive}. This feasibility-first repair yields a publishable plan within
+milliseconds. ALNS~\cite{ropke2006adaptive} then improves it with four destroy operators (random, worst,
+related~\cite{shaw1998cp} and route-segment removal), four greedy or regret-2 repair operators with and without noise,
+adaptive operator selection and simulated-annealing acceptance~\cite{kirkpatrick1983annealing}. All intermediate
+solutions are feasible, so the best plan found so far can be published at any time. The temperature decreases per
+iteration and all variants share the random seed, so every stopping rule follows the same search trajectory and differs
+only in the moment at which it stops.
+
+\subsection{Calibrated finish-time error}
+The error of task $j$ is modelled as $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$, where $h_j=f_j-t_0$ is its lead time, the
+nominal finish time minus the time $t_0$ of the planning snapshot, and
+\begin{equation}\label{eq:errmodel}
+m(h)=b_0+b_1h,\qquad s(h)=s_0+s_1h ,
+\end{equation}
+because errors accumulate along a route. The parameters are fitted per disturbance level on development missions, the
+mean by least squares and the spread by least squares on the absolute residuals scaled by $\sqrt{\pi/2}$, which is less
+sensitive to the heavy tail of the errors. Under the mid and high disturbances of the main studies, both the mean and
+the spread grow with the lead time (Supplementary Table~S2). The nominal model is therefore optimistic, and
+increasingly so along a route.
+
+The affine spread is a modelling choice that the data can reject. A route-level model with independent increments per
+unit of time, the usual assumption when variances are added along a route, implies $s(h)=\sqrt{q_0+q_1h}$. On
+\val{ENPairsMid} and \val{ENPairsHigh} pairs of lead time and error from \val{ENMissions} development missions per
+level, the affine spread fits better by \val{EDAicSqrtMid} and \val{EDAicSqrtHigh} points of the Akaike information
+criterion under mid and high disturbances, and also better than the hybrid $\sqrt{q_0+q_1h+q_2h^2}$ (by
+\val{EDAicHybMid} and \val{EDAicHybHigh}). A five-fold cross-validation with missions as groups gives the same ranking.
+At the longest lead times, about \val{EHLateHigh}\,s, the square-root model predicts a spread of \val{ESdLateSqrtHigh}\,s
+under high disturbances where \val{ESdLateHigh}\,s are observed, while the affine model predicts \val{ESdLateAffHigh}\,s
+(Fig.~\ref{fig:errstructure}a).
+
+The reason is that the disturbances persist over a leg. Wind and an airspeed error act during the whole flight to a
+task, so the error of a leg is proportional to its duration (Fig.~\ref{fig:errstructure}b), with a coefficient of
+variation of \val{EMpCvMid} and \val{EMpCvHigh} under mid and high disturbances. Errors of successive legs are close to
+independent. The correlation between the error of a task and the error added by the next task of the same plan was
+\val{EIncCorrMid} and \val{EIncCorrHigh}, and missions explained only \val{EShareMissionMid}\% and
+\val{EShareMissionHigh}\% of the residual variance. A lead time of a few legs therefore carries a spread that grows
+almost linearly. Moment propagation with a variance proportional to the squared duration of each leg is consistent
+with this structure and serves as the literature baseline in Section~\ref{sec:methods}.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_errstructure}{0.8\linewidth}
+\caption{Structure of the finish-time error on development missions. (a) Standard deviation of the error against the
+lead time, in deciles, with the affine fit of Eq.~\eqref{eq:errmodel} and the fit with independent increments. (b)
+Standard deviation of the flight-time error of single legs against their nominal flight time, in deciles, with a
+spread proportional to the duration.}\label{fig:errstructure}
+\end{figure*}
+
+\subsection{Chance-constrained planning model}\label{sec:cc}
+The proposed model plans for the calibrated execution. A planned finish time $f_j$ is accepted only if
+\begin{equation}\label{eq:ccfinish}
+f_j+m(f_j-t_0)+z\,s(f_j-t_0)\;\le\;d_j ,
+\end{equation}
+where $z\ge0$ is a safety factor. The margin $m+zs$ depends on the finish time itself, so it is small for tasks served
+soon and large for tasks served late in a route. Because $m$ and $s$ are linear, the constraint reduces to an effective
+deadline,
+\begin{equation}\label{eq:cc}
+f_j\le\tilde d_j,\qquad \tilde d_j=t_0+\frac{d_j-t_0-b_0-z s_0}{1+b_1+z s_1}.
+\end{equation}
+The repair and the search use $\tilde d_j$ instead of $d_j$, while the executor and the reward still use the true
+deadline.
+
+\begin{prop}\label{prop:cc}
+Let $1+b_1+z s_1>0$. (i) A finish time satisfies Eq.~\eqref{eq:ccfinish} if and only if $f_j\le\tilde d_j$. (ii) Under
+the error model of Eq.~\eqref{eq:errmodel}, a task planned to finish at $f_j\le\tilde d_j$ meets its deadline with
+probability at least $\Phi(z)$ if its route starts as planned. (iii) With $b_0=b_1=s_0=s_1=0$, $\tilde d_j=d_j$ and the
+planning model is the nominal one.
+\end{prop}
+\begin{proof}
+Substituting Eq.~\eqref{eq:errmodel} into Eq.~\eqref{eq:ccfinish} gives
+$f_j(1+b_1+zs_1)\le d_j-b_0-zs_0+(b_1+zs_1)t_0$, and dividing by the positive factor gives (i). For (ii), the actual
+finish is $F_j=f_j+e_j$ with $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$ and $h_j=f_j-t_0$. By (i),
+$d_j-f_j-m(h_j)\ge z\,s(h_j)$, hence $\Pr[F_j\le d_j]=\Phi\big((d_j-f_j-m(h_j))/s(h_j)\big)\ge\Phi(z)$. Part (iii) is
+immediate.
+\end{proof}
+
+The effective deadline turns a chance constraint on every task into a deterministic constraint of the same form as the
+original one. The insertion heuristics and the feasibility checks of the search are therefore reused unchanged, and
+computing $\tilde d_j$ costs one division per task. With $z=0$, the model corrects the mean error only and plans for the
+median finish time. Larger values of $z$ protect more tasks against lateness but leave fewer tasks feasible, so $z$
+trades the risk of a late service against the reward of attempting a task. It is chosen per disturbance level on
+development missions.
+
+\subsection{Nominal fallback for given-up tasks}\label{sec:fallback}
+A hard chance constraint has a side effect when the time windows are short compared with the spread of the error. If no
+vehicle can finish task $j$ before $\tilde d_j$, even on a direct flight, the task is infeasible for the planner and is
+never attempted. A vehicle may still serve it in time with a probability below $\Phi(z)$ but well above zero, and it may
+have nothing better to do. The fallback keeps such tasks. Let $\tilde H$ be the set of tasks that no vehicle can finish
+by $\tilde d_j$ on a direct flight, and $H$ the set of tasks that no vehicle can finish by $d_j$. The planning deadline is
+\begin{equation}\label{eq:fallback}
+d'_j=\begin{cases} d_j, & j\in\tilde H\setminus H,\\ \tilde d_j, & \text{otherwise.}\end{cases}
+\end{equation}
+The constraints of all other tasks are unchanged, so every other task that is served keeps the guarantee of
+Proposition~\ref{prop:cc}, while a fallback task carries none. Finding $\tilde H$ and $H$ requires one direct-flight
+check per task and vehicle, which is negligible compared with the search. The fallback was designed after the held-out
+results of study~2 and is evaluated on new seeds in studies~3 and~4.
+
+\subsection{Stopping rule and trigger}\label{sec:stop}
+Every 5\,ms, the stopping rule compares the predicted gain $\widehat{\Delta J}$ of searching $H=10$\,ms longer with the
+cost of doing so, and stops at time $\tau$ if
+\begin{equation}\label{eq:stop}
+\widehat{\Delta J}\;\le\;C_{\mathrm{R}}(\tau)+\mu W H ,
+\end{equation}
+with a price of computation $\mu=10^{-5}$ per millisecond. The gain is predicted from eleven features of the search
+history by a Poisson generalised linear model~\cite{mccullagh1989glm} fitted on development trajectories. The delay
+cost $C_{\mathrm{R}}(\tau)=\Lambda_{\mathrm{R}}(\tau+H)-\Lambda_{\mathrm{R}}(\tau)$ is the increase of the expected value
+of the tasks that a later start would lose,
+\begin{equation}\label{eq:risk}
+\Lambda_{\mathrm{R}}(\tau)=\sum_j v_j\,\Phi\!\left(\frac{\sigma_j(\tau)+\bar L+m(h_j)-\mathrm{tol}_j}{s(h_j)}\right),
+\end{equation}
+where $\sigma_j(\tau)$ is the start shift of the route of task $j$ caused by waiting for the plan, $\mathrm{tol}_j$ the
+margin of the task to its deadline plus the waiting times before it on its route~\cite{savelsbergh1992vrptw}, $\bar L$
+the expected latency and $v_j$ the value of the task in Eq.~\eqref{eq:obj}. On the effective deadlines, the mean error
+is already part of the tolerance, so AnytimeSwarm-CC uses $m\equiv0$. $\Lambda_{\mathrm{R}}$ does not decrease with
+$\tau$, and it reduces to the exact loss of a deterministic plan when the spread vanishes (Supplementary
+Section~S1). A hard budget $B$ bounds every call. The replanner replans on every event and at least every
+$T_{\max}=60$\,s of mission time, a rolling-horizon policy in the terminology of
+rescheduling~\cite{vieira2003rescheduling,ouelhadj2009survey}.

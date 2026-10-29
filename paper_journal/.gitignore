@@ -1,0 +1,10 @@
+# LaTeX build by-products
+*.aux
+*.log
+*.out
+*.blg
+*.spl
+# accepted IEEE Access paper used only as the format template (another project)
+01_Main_Manuscript_1/
+# author photos for the IEEE biographies (kept locally, not in the public repository)
+ieee/*.jpg

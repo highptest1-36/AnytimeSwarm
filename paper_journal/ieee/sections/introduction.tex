@@ -1,0 +1,45 @@
+\section{Introduction}\label{sec:intro}
+Teams of unmanned aerial vehicles (UAVs) are used for inspection, delivery and monitoring. During a mission, new tasks
+may appear, a vehicle may fail, or a deadline may be moved forward. A central planner then repairs the routes of the
+whole fleet within a fraction of a second, while some UAVs may already wait for new instructions. Dynamic vehicle
+routing and multi-robot task allocation offer many methods for this
+repair~\cite{gerkey2004formal,pillac2013review,psaraftis2016dynamic}, and metaheuristics such as adaptive large
+neighbourhood search (ALNS)~\cite{ropke2006adaptive} find good plans within such budgets.
+
+Most of these replanners plan for nominal execution. When UAVs meet wind, fly slower than commanded or take longer at a
+task, part of the slack that the plan promises is consumed by errors that the planner does not see, and tasks near the
+end of a route are served late. The error grows with the time until a task is reached, so a constant time margin is too
+large for early tasks and too small for late ones. Stochastic and robust routing protect schedules against such
+errors~\cite{errico2016apriori,agra2013robust}, and chance-constrained allocation bounds the probability of
+failure~\cite{ponda2012chance}. These models are usually solved by sampling or by exact methods that are too slow for
+the time available between two events. A second line of work treats the computation time of an anytime planner as a
+decision~\cite{dean1988analysis,russell1991right,zilberstein1996using,svegliato2018meta}. It is not known which of the
+two, the planning model or the control of computation, matters more for a replanner that faces uncertain execution.
+
+This paper proposes AnytimeSwarm-CC, a replanner that plans against a chance constraint on the finish time of every
+task and keeps the fast heuristics of the nominal model. Its contributions are threefold. The first is a planning model
+derived from the structure of the finish-time error in closed loop. Because wind and airspeed errors persist over a leg,
+the spread of the error grows linearly with the lead time and not with its square root, as independent increments
+would imply. With an affine error model, a chance constraint on every task reduces exactly to an effective deadline,
+which the repair and ALNS of the nominal model use unchanged. A nominal fallback keeps the tasks that the constraint
+would give up. The second is a sequence of four pre-registered studies on held-out missions with re-implemented
+baselines. These include stopping rules from the metareasoning
+literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, fixed and size-scaled budgets, a
+constant time buffer~\cite{agra2013robust}, a proportional buffer, moment propagation along the
+route~\cite{ehmke2015ensuring} and a conventional event-triggered planner, and ablations separate the effects of the
+planning model, the fallback, the stopping rule and the trigger. The third is a software-in-the-loop evaluation with PX4
+autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo} and ROS~2~\cite{macenski2022ros2}, after a rescaling
+that keeps every dimensionless ratio of the decision problem, with a number of flights computed beforehand from the
+kinematic tier.
+
+The results are reported as they came out. In the kinematic tier, the chance-constrained model served more reward than
+the nominal model and a constant time buffer on three independent sets of held-out seeds, while the choice of stopping
+rule mattered little. Without fallback, it was too cautious under high disturbances with halved windows, and the
+fallback, designed after this result and tested on new seeds, removed the weakness. On the last set of seeds, the
+replanner served \val{XDabsBufAll} and \val{XDabsFortyAll} percentage points more than the constant buffer and the
+nominal model. A tuned proportional buffer and moment propagation, whose margins also grow with the lead time, reached
+the same utility within \val{XRangeScaled} percentage points, so the shape of the margin and the fallback carry the
+gain rather than the precise error model. The fallback also raised the utility of moment propagation by
+\val{XDabsFbMPAll} percentage points. %S4C-INTRO
+An earlier pre-registered study, in which only the stopping rule was made execution-aware, found no significant gain in
+utility (Section~\ref{sec:study1}).

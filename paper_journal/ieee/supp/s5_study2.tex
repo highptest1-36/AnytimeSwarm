@@ -1,0 +1,76 @@
+\subsection{Regimes}\label{sec:s2-regime}
+Table~\ref{tab:s2regime} and Fig.~\ref{fig:s2regime} break the utility down by disturbance level, time-window factor and
+latency factor. Per configuration and without correction for multiple testing, the proposed replanner was better than
+ALNS with 40\,ms in \val{KWinForty} of the \val{KNConfigs} configurations and worse in \val{KLossForty}, better than the
+constant buffer in \val{KWinBuf} and worse in \val{KLossBuf}, and better than the conventional planner in \val{KWinConv}
+and worse in \val{KLossConv}. The advantage over ALNS with 40\,ms was \val{KDFortyKTen}\,pp, \val{KDFortyKFifty}\,pp and
+\val{KDFortyKTwoHundred}\,pp for $\kappa_B=10$, 50 and 200, and the advantage over online prediction stayed between
+\val{KDOnlKTen}\,pp and \val{KDOnlKTwoHundred}\,pp.
+
+The advantage was largest with the original windows. Under high disturbances, the proposed replanner served
+\val{KDFortyWOneHigh}\,pp more reward than ALNS with 40\,ms and \val{KDBufWOneHigh}\,pp more than the constant buffer.
+The losses all occurred under high disturbances with halved windows. In this regime, the proposed replanner reached
+\val{KUPropWHalfHigh}\%, \val{KDBufWHalfHigh}\,pp relative to the constant buffer and \val{KDFortyWHalfHigh}\,pp relative
+to ALNS with 40\,ms. It served \val{KServedPropWHalfHigh} tasks per mission, of which \val{KLatePropWHalfHigh} late,
+against \val{KServedBufWHalfHigh} and \val{KLateBufWHalfHigh} for the constant buffer. The chance-constrained model was
+thus too cautious when the windows were short compared with the predicted finish-time error. The effective deadline of
+many tasks then probably falls before the earliest possible arrival, so the planner gives up tasks that a less cautious
+plan still serves in time. The value of $z$ was selected per disturbance level on development missions, averaged over
+both window widths. Selecting it also per window width, or adapting it online, is a natural extension.
+
+\inputtable{tab_s2_regime}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_regime}{\linewidth}
+\caption{Study~2, tier B: utility per regime as a function of the latency factor $\kappa_B$, for mid and high
+disturbances with the original and with halved time windows (mean over \val{KNMissions} held-out missions per point).
+The proposed replanner is shown with stars.}\label{fig:s2regime}
+\end{figure}
+
+\subsection{Tier C: PX4 software-in-the-loop with Gazebo}\label{sec:Ss2-tierc}
+All \val{KCRuns} held-out flights of study~2 were completed, that is, \val{KCN} missions with four methods each. One run
+failed to start and was repeated. As specified in the protocol, \val{KCInvalid} runs with a real-time factor outside
+1.6 to 2.2 were repeated once with the same seed, and the original runs were kept. The laptop was also used for other
+work during the campaign, and many repeats ran slower than the original runs. Of the \val{KCRuns} analysed runs,
+\val{KCValid} lie in the validity range. The real-time factor was \val{KCRTF} on average, with quartiles of
+\val{KCRTFq} and a minimum of \val{KCRTFmin}. Two sensitivity analyses that were not pre-registered therefore repeat the
+comparisons with the original runs instead of the repeats, and with only those pairs of runs that both lie in the
+validity range.
+
+Table~\ref{tab:s2tierc} summarises the results. The proposed replanner reached a utility of \val{KCUProp}\%, against
+\val{KCUForty}\% for ALNS with 40\,ms, \val{KCUBuf}\% for the constant buffer and \val{KCUConv}\% for the conventional
+planner. The paired differences were \val{KCDForty}\,pp to ALNS with 40\,ms and \val{KCDConv}\,pp to the conventional
+planner, with Holm-adjusted $p$-values of \val{KCPForty} and \val{KCPConv}. The fourth hypothesis is therefore not
+supported. The secondary comparison with the constant buffer gave \val{KCDBuf}\,pp. The sensitivity analyses lead to
+the same conclusion. With the original runs, the differences were \val{KCDFortyOrig}\,pp and \val{KCDConvOrig}\,pp.
+With valid runs only, they were \val{KCDFortyValid}\,pp on \val{KCNFortyValid} missions and \val{KCDConvValid}\,pp on
+\val{KCNConvValid} missions. No interval in the three analyses excludes zero.
+
+\inputtable{tab_s2_tierc}
+
+The mechanism seen in tier B reappears in the counts of late and skipped tasks. The proposed replanner served
+\val{KCLateProp} tasks late per mission, against \val{KCLateForty} for ALNS with 40\,ms, which is \val{KCLateRedForty}\%
+fewer. It skipped no task at departure, whereas ALNS with 40\,ms skipped \val{KCSkipForty} and the conventional planner
+\val{KCSkipConv} tasks per mission. It computed \val{KCMsProp}\,ms per call, against \val{KCMsForty}\,ms for the fixed
+budget. The conventional planner called the search \val{KCCallsConv} times per mission instead of about
+\val{KCCallsProp}, as in tier B.
+
+
+The same \val{KCN} missions were also run in tier B with the rescaled parameters of tier C. As in study~1, tier B
+predicted the utility of a flight closely, with a correlation of $r=$ \val{KBCr} over \val{KBCn} runs. On these
+missions, however, even tier B did not resolve the differences between the methods (Fig.~\ref{fig:s2bc}). Its estimates
+were \val{KBgzDForty}\,pp to ALNS with 40\,ms, \val{KBgzDBuf}\,pp to the constant buffer and \val{KBgzDConv}\,pp to the
+conventional planner. The tier C intervals overlap them. The per-mission difference to ALNS with 40\,ms had a standard
+deviation of \val{KCSdForty}\,pp in tier C. Confirming the tier B estimate of \val{KCEffForty}\,pp on these missions with
+a power of 80\% would require about \val{KCNPowerForty} missions per method. Tier C thus shows that the proposed
+replanner runs on an autopilot and a physics engine with the same computation and fewer late tasks, but it cannot
+confirm the size of the gain measured in tier B.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_bc}{0.62\linewidth}
+\caption{Study~2, tier B against tier C on the same \val{KCN} held-out missions (three UAVs, mid disturbances,
+$\kappa_B=50$): paired difference of the proposed replanner minus each baseline with 95\% bootstrap intervals.}
+\label{fig:s2bc}
+\end{figure}

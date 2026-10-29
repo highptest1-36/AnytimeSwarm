@@ -1,0 +1,78 @@
+\subsection{Learned stopping rule}
+Every 5\,ms, the stopping rule compares the predicted gain of searching for another $H=10$\,ms with the cost of doing so.
+With $\widehat{\Delta J}$ as the predicted gain, the search stops at time $\tau$ if
+\begin{equation}\label{eq:Sstop}
+\widehat{\Delta J}\;\le\;C_{\mathrm{delay}}(\tau)+\mu W H .
+\end{equation}
+The gain is predicted from the search history by a Poisson generalised linear model with a log
+link~\cite{mccullagh1989glm} and a small $L_2$ penalty. Its eleven features describe the elapsed time, the number of
+iterations, the recent improvements over 5\,ms, over 20\,ms and over the second half of the elapsed time, the time since
+the last improvement, the total improvement over the repaired plan, the unassigned share of the reward, the numbers of
+tasks and UAVs, and the iteration rate. The target is the improvement in the next 10\,ms in percent of $W$. The model is
+fitted on 500\,ms search trajectories of development scenarios only, and a prediction costs one dot product. The search
+loop enforces the hard time budget $B$ independently of the stopping rule. The price of computation is
+$\mu=10^{-5}$ per millisecond.
+
+\subsection{Deterministic delay cost}
+The delay cost is computed from the best plan found so far. A late start of a route is partly absorbed by the waiting
+times along it, in the same way as the forward time slack of routing with time windows~\cite{savelsbergh1992vrptw}. The
+tolerance $\mathrm{tol}_j$ of a task is the margin between its finish time and its deadline, plus all waiting times on
+the route up to this task. A task is lost when the start shift $\sigma_j(\tau)$ of its route exceeds its tolerance. The
+start shift is zero for a UAV that is still busy, and it equals the waiting time until the publication for an idle UAV.
+With $v_j=\alpha w_j-\delta\,\mathbb{1}[\text{$j$ changes UAV}]$ as the value of task $j$ in the objective and
+$\Lambda(\tau)=\sum_j v_j\,\mathbb{1}[\sigma_j(\tau)>\mathrm{tol}_j]$, the delay cost of searching $H$ milliseconds longer
+is $C_{\mathrm{delay}}(\tau)=\Lambda(\tau+H)-\Lambda(\tau)$.
+
+\begin{prop}\label{prop:delay}
+For a feasible plan executed exactly, (i) $\Lambda(\tau)$ is the value lost through missed deadlines if every UAV
+follows its route, (ii) the loss of the objective is at most $\Lambda(\tau)$ if late tasks are skipped, and
+(iii) $\Lambda(\tau)$ does not decrease with $\tau$ and is zero while all UAVs are busy with their committed tasks.
+Hence $C_{\mathrm{delay}}$ is non-negative and vanishes while no UAV is waiting.
+\end{prop}
+\begin{proof}
+A route that starts later by some shift reaches its first task later by the same amount. Each waiting time absorbs part
+of the delay, so the delay at the end of a task equals the start shift minus all earlier waiting times, if this
+difference is positive. The task therefore misses its deadline exactly when the start shift exceeds its tolerance.
+Waiting consumes no energy, which proves (i). If late tasks are skipped, the triangle inequality ensures that every
+later task is reached no later and with no more energy. All tasks that are on time in (i) remain on time, and the flown
+distance, hence the energy term $\gamma E$, does not grow. The objective therefore loses the values $v_j$ of the skipped
+tasks and nothing else, which is at most $\Lambda(\tau)$ and proves (ii). Part (iii) holds because the start shift does
+not decrease with $\tau$ and every tolerance is non-negative in a feasible plan.
+\end{proof}
+
+\subsection{Execution-aware delay cost}\label{sec:Srisk}
+Under uncertain execution, task $j$ is lost when $\sigma_j(\tau)+e_j>\mathrm{tol}_j$, where $e_j$ is its finish-time
+error. The execution-aware cost replaces the indicator in $\Lambda$ by the probability of this event. The error of task
+$j$ is modelled as $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$, where $h_j=f_j-t_0$ is its lead time, the nominal finish time
+minus the time of the planning snapshot. The mean and the spread are linear in the lead time,
+\begin{equation}\label{eq:Serrmodel}
+m(h)=b_0+b_1h,\qquad s(h)=s_0+s_1h,
+\end{equation}
+because errors accumulate along a route. The expected dissemination latency $\bar L$ is added to the start shift. The
+expected loss and the execution-aware delay cost are
+\begin{equation}\label{eq:Srisk}
+\Lambda_{\mathrm{R}}(\tau)=\sum_j v_j\,\Phi\!\left(\frac{\sigma_j(\tau)+\bar L+m(h_j)-\mathrm{tol}_j}{s(h_j)}\right),
+\qquad C_{\mathrm{R}}(\tau)=\Lambda_{\mathrm{R}}(\tau+H)-\Lambda_{\mathrm{R}}(\tau),
+\end{equation}
+where $\Phi$ is the standard normal distribution function. Search and predictor are unchanged, and $C_{\mathrm{R}}$
+replaces $C_{\mathrm{delay}}$ in Eq.~\eqref{eq:Sstop}.
+
+\begin{prop}\label{prop:risk}
+(i) With $b_0=b_1=s_0=s_1=0$ and $\bar L=0$, $\Lambda_{\mathrm{R}}=\Lambda$, and the stopping rule takes exactly the
+decisions of the deterministic one. (ii) $\Lambda_{\mathrm{R}}(\tau)$ does not decrease with $\tau$, so $C_{\mathrm{R}}\ge0$.
+(iii) Under the error model, $\Lambda_{\mathrm{R}}(\tau)$ is the expected value of the tasks whose deadline is missed if
+every UAV follows its route.
+\end{prop}
+\begin{proof}
+With zero spread, $\Phi$ is read as the indicator of a positive argument, which gives (i). The start shift does not
+decrease with $\tau$ and $\Phi$ is non-decreasing, which gives (ii). Part (iii) follows from the proof of
+Proposition~\ref{prop:delay}, because task $j$ misses its deadline exactly when its delay at the finish,
+$\sigma_j+e_j$ minus the absorbed waiting time, is positive, and the expectation of the indicator of this event is the
+probability in Eq.~\eqref{eq:Srisk}.
+\end{proof}
+
+The parameters of Eq.~\eqref{eq:Serrmodel} are fitted on development missions. The mean is estimated by least squares,
+and the spread by least squares on the absolute residuals scaled by $\sqrt{\pi/2}$, which is less sensitive to the heavy
+tail of the errors than squared residuals. The latency $\bar L$ is the mean of the latency distribution in tier B and
+the measured mean plan-acceptance latency in tier C.
+
