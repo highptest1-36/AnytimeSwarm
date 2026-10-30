@@ -133,4 +133,40 @@ of the effect on these missions was only \val{KBgzDForty}\,pp. With a per-missio
 therefore placed in the regime where tier B predicted the largest effect, and its size was computed from a tier B
 counterpart on development seeds.
 
-%S4C
+Study~4C flew \val{HNB} new held-out missions under high disturbances with halved windows (seeds 9000--9011,
+\val{GNFlights} flights). It compared the complete proposed replanner, with the learned stopping rule and the fallback,
+against the same replanner without fallback and against ALNS with 40\,ms on the nominal model, all with the periodic
+trigger. Every flight ran within the
+valid range of the real-time factor, with a mean of \val{GRTF}. A single flight outside it on the first attempt was
+repeated and served the same utility. The interim analysis after half of the missions did not cross the
+O'Brien--Fleming bound, so all missions were flown.
+
+The fallback carried over to the flights. With it, the proposed replanner served \val{XDabsTcNoFb}\,pp more reward than
+without it (95\% CI \val{XCITcNoFb}, Holm-adjusted $p<0.001$, H15), that is, \val{GUFB}\% against \val{GUNoFb}\%, or
+\val{HURelNoFb}\% more. It was better in \val{HWinNoFb} of the \val{GN} missions and worse in \val{HLossNoFb}. Without
+fallback, the replanner served the fewest tasks late, \val{GLateNoFb} per mission against \val{GLateFB}, as in tier B.
+Against ALNS with 40\,ms on the nominal model, the proposed replanner served \val{XDabsTcNom}\,pp less (\val{XCITcNom},
+$p={}$\val{GPNom}), so H14 is not supported. The two methods reached similar utilities, \val{GUFB}\% and \val{GUNom}\%,
+and served similar numbers of tasks late, \val{GLateFB} and \val{GLateNom} per mission, although the proposed replanner
+planned for \val{GMsFB} instead of \val{GMsNom}\,ms per call.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s4c}{\linewidth}
+\caption{Study~4C, held-out seeds 9000--9011, high disturbances with halved windows: utility of the proposed replanner with
+fallback minus ALNS with 40\,ms on the nominal model and minus the replanner without fallback, with 95\% paired bootstrap intervals. Tier~C
+(\val{GN} missions, PX4 and Gazebo) is shown with its tier~B counterpart on the same missions and with the tier~B
+estimate on development seeds from which the size of the study was computed.}\label{fig:s4c}
+\end{figure}
+
+Tier B predicted both outcomes (Fig.~\ref{fig:s4c}). On the same missions, its counterpart gave \val{XDabsTcBNom}\,pp
+less than the nominal model (\val{XCITcBNom}) and \val{XDabsTcBNoFb}\,pp more than the model without fallback
+(\val{XCITcBNoFb}), and it predicted the utility of a flight with a correlation of $r=$\,\val{HBCr} over \val{HBCn}
+flights. The size of the study had been computed from development seeds, where the counterpart gave
+\val{XDabsTcDevNom}\,pp over the nominal model (\val{XCITcDevNom}). On the held-out missions, this advantage did not
+appear even in tier B, so its absence in tier C reflects the sampled missions rather than the transfer to the autopilot.
+In the full tier B grid of study~4, which averages over more missions, three latency factors and fleets of 5 to 20
+UAVs, the proposed model served \val{XDabsFortyHighWHalf}\,pp more than the nominal model in this regime. With the per-mission
+standard deviation of \val{HSdNom}\,pp observed in tier C, confirming an advantage of this size would require about
+\val{HNPowerNomGrid} missions per method. Tier C thus confirms on an autopilot and a physics engine that the fallback is
+needed and that tier B predicts the flights, but it does not resolve the advantage over the nominal model.

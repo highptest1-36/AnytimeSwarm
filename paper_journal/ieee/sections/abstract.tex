@@ -1,17 +1,16 @@
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution. Under wind, speed and service-time errors, such plans promise
-finish times that the vehicles do not achieve, and tasks near the end of a route are served late. On development
-flights, the spread of the finish-time error grew linearly with the lead time, because the disturbances persist over
-each leg. This paper proposes AnytimeSwarm-CC, a replanner whose planning model exploits this structure. With an affine
+finish times that are not achieved, and tasks near the end of a route are served late. On development flights, the
+spread of the finish-time error grew linearly with the lead time, because disturbances persist over a leg. This paper proposes AnytimeSwarm-CC, a replanner whose planning model exploits this structure. With an affine
 error model, a chance constraint on the finish time of every task reduces exactly to an effective deadline, so the fast
-repair and adaptive large neighbourhood search of the nominal model are reused unchanged. A nominal fallback keeps the
-tasks that the constraint would give up. In four pre-registered studies on held-out missions of a kinematic simulator,
-the chance-constrained model served more reward than the nominal model and a constant time buffer on three independent
+repair and adaptive large neighbourhood search are reused unchanged. A nominal fallback keeps the
+tasks that the constraint would give up. In pre-registered studies on held-out missions of a kinematic simulator, the
+chance-constrained model served more reward than the nominal model and a constant time buffer on three independent
 sets of seeds. On the last set, the replanner served \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points more
-than these two models and \val{QURelCCConv}\% more than a conventional event-triggered planner (Holm-adjusted
-$p<0.001$). A tuned proportional buffer and moment propagation from the literature came within \val{XRangeScaled}
-percentage points, so the gain comes from a margin that grows with the lead time rather than from the precise error
-model, and the closed form allowed \val{QRelItMsMP}\% more search iterations per millisecond than moment propagation.
-The fallback proved general and raised the utility of moment propagation by \val{XDabsFbMPAll} percentage points.
-%S4C-ABS
+than these models and \val{QURelCCConv}\% more than a conventional event-triggered planner (Holm-adjusted
+$p<0.001$). A tuned proportional buffer and moment propagation came within \val{XRangeScaled} percentage points, so
+the gain comes from a margin that grows with the lead time rather than from the precise error model, and the closed
+form allowed \val{QRelItMsMP}\% more search iterations per millisecond than moment propagation. The fallback also
+raised the utility of moment propagation by \val{XDabsFbMPAll} percentage points. In PX4 software-in-the-loop flights,
+the fallback raised the utility by \val{HURelNoFb}\%, whereas the advantage over the nominal model was not confirmed.
 \end{abstract}

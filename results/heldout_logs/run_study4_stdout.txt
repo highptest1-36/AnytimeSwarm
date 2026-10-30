@@ -1,0 +1,11 @@
+[study4] 2026-10-29T16:11:46+00:00 freeze check
+[study4] 2026-10-29T16:11:46+00:00 tier B S4_B
+[ok] 35640 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s4_heldout_B.csv
+[study4] 2026-10-29T18:08:43+00:00 tier B analysis
+[study4] 2026-10-29T18:08:47+00:00 tier B counterpart of tier C
+[ok] 108 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s4c_heldout_B_gz.csv
+[study4] 2026-10-29T18:09:03+00:00 tier C, first half
+[study4] 2026-10-29T21:35:26+00:00 tier C interim analysis
+[study4] 2026-10-29T21:35:28+00:00 tier C, second half
+[study4] 2026-10-30T00:46:58+00:00 tier C final analysis
+[study4] 2026-10-30T00:47:00+00:00 done

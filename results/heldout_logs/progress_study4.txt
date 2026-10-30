@@ -1,0 +1,37 @@
+[study4] 2026-10-29T16:11:46+00:00 freeze check
+docs/12_PROTOCOL_V4.md: OK
+experiments/configs/S4_B.yaml: OK
+experiments/configs/S4C_B_gz.yaml: OK
+experiments/b4_grid.py: OK
+experiments/b4c_gz.py: OK
+experiments/analyze_study4.py: OK
+experiments/analyze_study4c.py: OK
+journal_core/study4.py: OK
+journal_ros/study4c.py: OK
+journal_ros/run_mission4.sh: OK
+journal_ros/run_batch4.sh: OK
+tools/run_study4.sh: OK
+models/mp_model_dev.json: OK
+models/error_model_tierc_dev4.json: OK
+results/tier_b/dev4_errpairs.csv: OK
+journal_core/study3.py: OK
+journal_core/study2.py: OK
+journal_core/risk.py: OK
+journal_core/kinematic_executor.py: OK
+journal_core/execution.py: OK
+experiments/b2_grid.py: OK
+experiments/b_grid.py: OK
+journal_ros/mission_manager.py: OK
+journal_ros/uav_executor.py: OK
+journal_ros/common.py: OK
+models/error_model_dev.json: OK
+[study4] 2026-10-29T16:11:46+00:00 tier B S4_B
+[ok] 35640 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s4_heldout_B.csv
+[study4] 2026-10-29T18:08:43+00:00 tier B analysis
+[study4] 2026-10-29T18:08:47+00:00 tier B counterpart of tier C
+[ok] 108 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s4c_heldout_B_gz.csv
+[study4] 2026-10-29T18:09:03+00:00 tier C, first half
+[study4] 2026-10-29T21:35:26+00:00 tier C interim analysis
+[study4] 2026-10-29T21:35:28+00:00 tier C, second half
+[study4] 2026-10-30T00:46:58+00:00 tier C final analysis
+[study4] 2026-10-30T00:47:00+00:00 done

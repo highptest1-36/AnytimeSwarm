@@ -28,7 +28,14 @@ costs punctuality, because many fallback tasks are served late. A soft formulati
 probability of being served on time would make this trade explicit and could be tuned to the cost of a late arrival in a
 given application.
 
-%S4C-DISC
+The two tiers play different roles. The kinematic tier is fast enough to run tens of thousands of missions and resolves
+differences of a few percentage points. The software-in-the-loop tier adds the autopilot, the vehicle dynamics and
+the timing of a real planning loop, but the cost of a flight limits it to a few dozen missions. In both tier C studies,
+tier B predicted the utility of a flight closely and anticipated every tier C comparison on the same missions,
+including those that were not significant. The flights therefore support the transfer of the kinematic results, and
+they confirm the fallback directly. They do not confirm the advantage of the chance constraint over the nominal model,
+which rests on tier B. The development estimate that sized study~4C overstated this advantage on the held-out missions,
+which shows that tier C studies should be sized from a conservative effect.
 
 Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
 level, so the level is assumed to be known, and $z$ was selected per level on development missions. Online calibration

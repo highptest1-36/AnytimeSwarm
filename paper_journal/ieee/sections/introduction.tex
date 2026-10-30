@@ -40,6 +40,8 @@ replanner served \val{XDabsBufAll} and \val{XDabsFortyAll} percentage points mor
 nominal model. A tuned proportional buffer and moment propagation, whose margins also grow with the lead time, reached
 the same utility within \val{XRangeScaled} percentage points, so the shape of the margin and the fallback carry the
 gain rather than the precise error model. The fallback also raised the utility of moment propagation by
-\val{XDabsFbMPAll} percentage points. %S4C-INTRO
+\val{XDabsFbMPAll} percentage points. In software-in-the-loop flights with PX4 and Gazebo, the fallback raised the
+utility by \val{XDabsTcNoFb} percentage points, whereas the advantage over the nominal model was not confirmed, as the
+kinematic tier had predicted for the same missions.
 An earlier pre-registered study, in which only the stopping rule was made execution-aware, found no significant gain in
 utility (Section~\ref{sec:study1}).

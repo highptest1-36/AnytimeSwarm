@@ -172,7 +172,34 @@ Như nghiên cứu 2–3:
 - trình duyệt có thể mở (ghi nhận); ms và vòng lặp/ms chỉ so sánh tương đối trong cùng lượt.
 
 ## 9. Sai lệch
-(trống khi đóng băng)
+(trống khi đóng băng; điền ngày 30/10/2026 sau khi mọi lượt chạy kết thúc)
+
+1. Không có sai lệch nào trong thiết kế, seed, phương pháp hay kiểm định chính. Bộ lọc tuyến của moment propagation đã
+   nằm trong code đóng băng từ trước lượt chạy.
+2. Lỗi trong analyze_study4c.py (đóng băng): tầng C đặt tên kịch bản có hậu tố cửa sổ ("gz-arrivals-9000-w0.5"), còn bản
+   đối ứng tầng B thì không ("gz-arrivals-9000"). Phép ghép theo tên để tính tương quan theo lượt bay giữa hai tầng vì
+   vậy rỗng, và macro GBCr ghi "nan". Hai kiểm định chính (H14, H15), dự báo tầng B và phân tích độ nhạy không bị ảnh
+   hưởng, vì chúng ghép trong cùng một tầng. Tương quan được tính lại trong experiments/paper_s4c.py sau khi bỏ hậu tố
+   (macro HBCr); file đóng băng không bị sửa.
+3. Một lượt bay (gz-failures-9002, proposed~z=0.5) có RTF 1,56 ở lần đầu và được bay lại theo §7 (RTF 2,00). Hai lượt
+   cho cùng utility, nên phân tích độ nhạy trùng với phân tích chính.
 
 ## 10. Kết quả
-(điền sau lượt chạy)
+Tầng B (seed 8000–8029, 35 640 lượt; results/study4/report.md):
+- H9 không được ủng hộ: proposed + fallback trừ proportional buffer −0,38 [−0,72; −0,05], p Holm 0,050; hướng nghiêng về
+  proportional buffer.
+- H10 không chứng minh được không-kém-hơn so với moment propagation: −0,25 [−0,62; +0,12], p 0,092; kiểm định vượt trội
+  không được thực hiện. Dạng đóng cho thêm 1,13 vòng lặp/ms (13,35 so với 12,22).
+- H11 được ủng hộ: fallback cho moment propagation +9,66 [+9,04; +10,29]; không fallback, moment propagation (44,44%) thấp
+  hơn mô hình danh nghĩa (48,78%).
+- H12 và H13 được ủng hộ: so với buffer 60 s +4,22 [+3,74; +4,68], so với mô hình danh nghĩa +5,07 [+4,63; +5,52]
+  (p Holm < 0,001). So với planner thông thường +6,45.
+- Thứ cấp: online calibration −0,30 (không chứng minh được không-kém-hơn); stopping rule học được +0,34 [+0,16; +0,51]
+  với 50,4 so với 40,1 ms; chỉ repair, proposed so với danh nghĩa +3,33.
+
+Tầng C (seed 9000–9011, 36 nhiệm vụ, 108 chuyến bay, RTF trung bình 1,96, 100% hợp lệ; results/study4/report_4c.md):
+- Interim (18 nhiệm vụ): FB−Nom +0,49 [−3,32; +4,92]; FB−NoFb +8,14 [+2,68; +13,88], p Holm 0,006 > 0,0052; tiếp tục.
+- H14 không được ủng hộ: FB−Nom −0,57 [−3,49; +2,29], p 0,699. Bản đối ứng tầng B trên cùng nhiệm vụ dự báo −0,22
+  [−2,49; +2,06], trong khi ước lượng dev dùng để tính cỡ mẫu là +5,52.
+- H15 được ủng hộ: FB−NoFb +10,35 [+6,41; +14,39], p Holm < 0,001 (28,99% so với 18,64%); tầng B dự báo +8,89.
+- Tương quan utility theo lượt bay giữa tầng B và tầng C: r = 0,83 (108 lượt).
