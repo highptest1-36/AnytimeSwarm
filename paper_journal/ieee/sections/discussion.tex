@@ -1,5 +1,5 @@
 \section{Discussion and limitations}\label{sec:discussion}
-The four studies suggest an order of priorities for a multi-UAV replanner under uncertain execution. The planning
+The five studies suggest an order of priorities for a multi-UAV replanner under uncertain execution. The planning
 model matters most. Moving every deadline by a margin that grows with the lead time raised the utility by more than any
 choice of stopping rule or trigger, on three independent sets of held-out seeds and also without search. The trigger
 comes second. Periodic replanning helped every method on the nominal model, but only by \val{KDabsAblTrig}\,pp on the
@@ -24,9 +24,17 @@ The fallback was the largest single effect of studies~3 and~4. A hard chance con
 probability of being served on time falls below $\Phi(z)$, even when a vehicle has nothing better to do. Study~4 shows
 that this holds however the constraint is evaluated. Without fallback, moment propagation served the fewest tasks late
 of all models but the least reward, below the nominal model. Keeping the given-up tasks with their nominal deadline
-costs punctuality, because many fallback tasks are served late. A soft formulation that weights every task by its
-probability of being served on time would make this trade explicit and could be tuned to the cost of a late arrival in a
-given application.
+costs punctuality, because many fallback tasks are served late.
+
+Study~5 makes this trade explicit and shows where the probabilistic model pays off. With utility alone, a tuned
+proportional buffer was as good as the calibrated model, because both shift the deadlines by a similar margin. Once a
+late arrival has a cost, the question is no longer only how large the margin is but which tasks are worth attempting
+at all, and that requires a probability of meeting the deadline. The calibrated model gives this probability in closed
+form, so the break-even rule of Eq.~\eqref{eq:theta} becomes another effective deadline and needs no tuning. At a late
+cost of one task reward, it served more than a buffer and a safety factor that had both been tuned for this cost, and it
+stayed ahead of the buffer at half and twice this cost whenever the buffer had been tuned for one task reward. At twice
+the cost, a buffer without fallback tuned for that cost was better. The rule prices each attempt on its own and ignores the delay that a fallback
+task causes to later tasks on its route. A route-level version that also charges this delay is the natural next step.
 
 The two tiers play different roles. The kinematic tier is fast enough to run tens of thousands of missions and resolves
 differences of a few percentage points. The software-in-the-loop tier adds the autopilot, the vehicle dynamics and
@@ -40,8 +48,10 @@ which shows that tier C studies should be sized from a conservative effect.
 Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
 level, so the level is assumed to be known, and $z$ was selected per level on development missions. Online calibration
 within a mission removes this assumption but served \val{XDabsOnlCC}\,pp less reward, and its non-inferiority was not
-shown. The chance constraint is imposed on every task separately rather than jointly on a route. The fallback and the
-models of study~4 were designed after the held-out results of earlier studies and were therefore tested on new seeds.
+shown. The chance constraint is imposed on every task separately rather than jointly on a route. The fallback, the
+models of study~4 and the cost-aware fallback were designed after the held-out results of earlier studies and were
+therefore tested on new seeds. The cost-aware fallback assumes that the cost of a late arrival is known and
+proportional to the reward of the task, and study~5 tested it in tier B only.
 Tier C uses three UAVs and fifteen tasks per mission. Software-in-the-loop simulation reproduces the autopilot and the
 vehicle dynamics but not the sensors, the radio link or the weather of a field test, and the wind is constant during a
 mission. The latency factor emulates a slower planning computer instead of measuring one. Because the stopping rules

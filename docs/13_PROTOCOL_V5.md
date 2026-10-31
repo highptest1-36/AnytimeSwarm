@@ -144,7 +144,37 @@ Như nghiên cứu 2–4: laptop i7-11800H, WSL2, 4 worker; các phương pháp 
 lưới khác. Lưới dev chạy 8 worker; mọi phương pháp dùng cùng ngân sách 40 ms nên điều này không ảnh hưởng đến lựa chọn.
 
 ## 9. Sai lệch
-(trống khi đóng băng)
+(trống khi đóng băng; điền ngày 31/10/2026 sau khi lượt held-out kết thúc)
+
+1. Không có sai lệch nào trong thiết kế, seed, phương pháp hay kiểm định. Kiểm tra SHA-256 đạt trước lượt chạy
+   (results/heldout_logs/progress_study5.txt); 55 080 lượt, không lỗi, không loại nhiệm vụ nào.
+2. Lỗi trùng tên macro trong analyze_study5.py (đóng băng): vòng lặp thứ yếu ghi đè macro FP{CCfb,Prop,CCnf,Forty}One (p đã
+   hiệu chỉnh Holm) bằng p chưa hiệu chỉnh, và ghi lại FD/FAbs cùng giá trị. Ở đây cả hai p đều < 0,001 nên chữ hiển thị
+   giống hệt; bảng p Holm đúng nằm trong results/study5/report.md. File đóng băng không bị sửa.
+3. Máy: Chrome được đóng trong khoảng giữa lượt chạy (khoảng 17:10 giờ địa phương, sau khoảng 37% số cấu hình). Mọi phương
+   pháp dùng cùng ngân sách 40 ms và xen kẽ trong cùng cấu hình, nên so sánh không bị ảnh hưởng.
+4. Ngoài protocol, để viết bài: experiments/paper_s4x.py tạo thêm macro XDabsFive*/XCIFive* (giá trị tuyệt đối và khoảng
+   tin cậy) từ numbers_s5.tex; không có phân tích mới.
 
 ## 10. Kết quả
-(trống khi đóng băng)
+Tầng B (seed 10000–10029, 270 nhiệm vụ, 55 080 lượt; results/study5/report.md). Họ chính ở λ = 1, CA(1) trừ phương pháp,
+u_1, điểm %:
+- H16 được ủng hộ: so với fallback danh nghĩa +2,42 [+1,81; +3,02], p Holm < 0,001 (45,81% so với 43,40%). Số task trễ mỗi
+  nhiệm vụ 4,96 so với 7,39 (ít hơn 33%).
+- H17 được ủng hộ: NI đạt; superiority theo trình tự cố định đạt: so với PropBest(1) +0,90 [+0,38; +1,44], p < 0,001.
+- H18 được ủng hộ: NI đạt; superiority đạt: so với CCnf(1) +1,78 [+1,25; +2,31], p < 0,001.
+- H19 được ủng hộ: so với mô hình danh nghĩa +11,75 [+10,88; +12,57]; so với planner thông thường +12,54.
+
+Theo mức nhiễu ở λ = 1: lợi thế so với các đối thủ được tune đến từ nhiễu high (+2,10 so với PropBest, +3,49 so với CCnf);
+ở mid ngang nhau (−0,30 và +0,08); ở mid với cửa sổ gốc, cả hai đối thủ tốt hơn (−2,08 và −1,68).
+
+Thứ yếu:
+- λ = 0,5: CA(0,5) ngang PropBest (+0,21 [−0,22; +0,64]), hơn CCnf (+1,65) và CCfb (+0,63).
+- λ = 2: CA(2) hơn CCfb +7,25, ngang CCnf (−0,02 [−0,47; +0,42]), kém PropBest(2) −1,02 [−1,58; −0,47] và kém MPnf −1,10.
+- Độ bền: PropBest tune cho λ = 1 dùng ở λ = 2 kém CA(2) 1,05 [0,42; 1,69], dùng ở λ = 0,5 kém CA(0,5) 1,46; CCnf tune cho
+  λ = 1 kém CA(0,5) 3,32 ở λ = 0,5. CA(1) dùng ở λ = 2 kém CA(2) 1,22; dùng ở λ = 0,5 ngang CA(0,5) (+0,02).
+- Giá ở λ = 0: CA(1) có utility thấp hơn fallback danh nghĩa 1,20 điểm % (53,13% so với 54,33%).
+
+Diễn giải theo §6: ở λ = 1, phương pháp đề xuất, không tune lại, tốt hơn cả đối thủ được tune riêng cho chi phí trễ. Lợi thế
+không đều theo λ: ở λ = 2, một proportional buffer không fallback được tune cho λ = 2 tốt hơn. Giả thuyết giải thích (chưa
+kiểm định): quy tắc định giá từng task fallback riêng lẻ và bỏ qua độ trễ mà task đó gây cho các task sau trên cùng tuyến.

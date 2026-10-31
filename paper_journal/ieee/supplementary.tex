@@ -27,6 +27,8 @@
 \IfFileExists{../tables/numbers_s4x.tex}{\input{../tables/numbers_s4x.tex}}{}
 \IfFileExists{../tables/numbers_s4c.tex}{\input{../tables/numbers_s4c.tex}}{}
 \IfFileExists{../tables/numbers_s4cx.tex}{\input{../tables/numbers_s4cx.tex}}{}
+\IfFileExists{../tables/numbers_latepen.tex}{\input{../tables/numbers_latepen.tex}}{}
+\IfFileExists{../tables/numbers_s5.tex}{\input{../tables/numbers_s5.tex}}{}
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
 \newcommand{\inputtable}[1]{\IfFileExists{../tables/#1.tex}{\input{../tables/#1.tex}}{\todo{table \detokenize{#1}}}}
@@ -37,7 +39,7 @@
 \renewcommand{\theequation}{S\arabic{equation}}
 
 \begin{document}
-\title{Supplementary Material for: Lead-Time-Scaled Chance Constraints With a Nominal Fallback for Fast Multi-UAV
+\title{Supplementary Material for: Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-UAV
 Replanning Under Uncertain Execution}
 \author{Cao-Phuc Ha, Anh Nguyen Vu Minh, and Phu-Nguyen Le}
 \markboth{Supplementary material}{Ha \MakeLowercase{\textit{et al.}}: Lead-Time-Scaled Chance Constraints for Multi-UAV Replanning}
@@ -111,6 +113,27 @@ and it ranked the tasks by their risk in both cases.
 \caption{Study~4, tier B, held-out seeds 8000--8029: share of served tasks that met their deadline against the
 probability predicted by the error model of the disturbance level, in deciles, for the proposed model with fallback and
 the nominal model. The dotted line marks perfect calibration.}\label{fig:Scoverage}
+\end{figure}
+
+\section{Study 5: cost of a late arrival}\label{sec:Sstudy5}
+Fig.~\ref{fig:Slatepen} scores the held-out runs of studies 3 and 4 again with a cost of $\lambda$ mean task rewards for
+every late arrival, $u_\lambda=U-\lambda\,n_{\mathrm{late}}/n$. The analysis was done after study~4C, was not
+pre-registered and used no new runs. The fallback of study~3 raised the number of tasks served late from
+\val{PSThreeLateNoFb} to \val{PSThreeLateFb} per mission, and the fallback within moment propagation from
+\val{PSFourLateNoFb} to \val{PSFourLateFb}. A comparison changes sign at the late cost
+$\lambda^\ast=\Delta U/\Delta(n_{\mathrm{late}}/n)$. For the fallback, $\lambda^\ast$ was \val{PSThreeFbPropStar} in
+study~3 and \val{PSFourMPMPnfStar} within moment propagation. In tier C, it was \val{PCFbNoFbStar}, with a difference of
+\val{PCFbNoFbOne}\,pp at $\lambda=1$. The advantage over the constant buffer shrank with $\lambda$ and vanished at
+\val{PSFourCCBufStar}, because the buffer of 60\,s served fewer tasks late than the proposed model with fallback (\val{QLateBuf} against \val{QLateCC} per mission). Against the proportional buffer, the
+proposed model with fallback stayed behind at every $\lambda$, by \val{PSFourCCPropBufOneAbs}\,pp at $\lambda=1$
+(\val{PSFourCCPropBufOne}). Study~5 (Section~\ref{sec:study5} of the main paper) was designed from these results.
+
+\begin{figure}[t]
+\centering
+\fig{fig_latepen}{\linewidth}
+\caption{Held-out runs of studies 3 and 4 scored with a cost of $\lambda$ mean task rewards per late arrival: paired
+difference in $u_\lambda$ with 95\% bootstrap intervals over 270 missions. Exploratory analysis without new
+runs.}\label{fig:Slatepen}
 \end{figure}
 
 \bibliographystyle{IEEEtran}

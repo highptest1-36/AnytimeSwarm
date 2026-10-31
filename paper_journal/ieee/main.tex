@@ -41,6 +41,8 @@
 \IfFileExists{../tables/numbers_s4c.tex}{\input{../tables/numbers_s4c.tex}}{}
 \IfFileExists{../tables/numbers_s4x.tex}{\input{../tables/numbers_s4x.tex}}{}
 \IfFileExists{../tables/numbers_s4cx.tex}{\input{../tables/numbers_s4cx.tex}}{}
+\IfFileExists{../tables/numbers_latepen.tex}{\input{../tables/numbers_latepen.tex}}{}
+\IfFileExists{../tables/numbers_s5.tex}{\input{../tables/numbers_s5.tex}}{}
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
 
@@ -48,8 +50,8 @@
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
 \doi{10.1109/ACCESS.2024.0429000}
 
-\title{Lead-Time-Scaled Chance Constraints With a Nominal Fallback for Fast Multi-UAV Replanning Under Uncertain
-Execution}
+\title{Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-UAV Replanning Under
+Uncertain Execution}
 \author{Cao-Phuc Ha\authorrefmark{1}, Anh Nguyen Vu Minh\authorrefmark{1}, and Phu-Nguyen Le\authorrefmark{2}}
 \address[1]{Department of Artificial Intelligence, FPT University, Ho Chi Minh City, Vietnam (e-mail:
 caophucai@gmail.com, anhnvmse203412@fpt.edu.vn)}

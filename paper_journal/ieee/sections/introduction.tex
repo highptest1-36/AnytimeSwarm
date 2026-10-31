@@ -21,13 +21,16 @@ task and keeps the fast heuristics of the nominal model. Its contributions are t
 derived from the structure of the finish-time error in closed loop. Because wind and airspeed errors persist over a leg,
 the spread of the error grows linearly with the lead time and not with its square root, as independent increments
 would imply. With an affine error model, a chance constraint on every task reduces exactly to an effective deadline,
-which the repair and ALNS of the nominal model use unchanged. A nominal fallback keeps the tasks that the constraint
-would give up. The second is a sequence of four pre-registered studies on held-out missions with re-implemented
-baselines. These include stopping rules from the metareasoning
+which the repair and ALNS of the nominal model use unchanged. A fallback keeps the tasks that the constraint would give
+up. Its cost-aware version attempts such a task only if its probability of meeting the deadline outweighs the cost of
+a late arrival, and because the model gives this probability in closed form, the rule is again an effective deadline
+without a parameter to tune. The second is a sequence of five pre-registered studies on held-out missions with
+re-implemented baselines. These include stopping rules from the metareasoning
 literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, fixed and size-scaled budgets, a
 constant time buffer~\cite{agra2013robust}, a proportional buffer, moment propagation along the
-route~\cite{ehmke2015ensuring} and a conventional event-triggered planner, and ablations separate the effects of the
-planning model, the fallback, the stopping rule and the trigger. The third is a software-in-the-loop evaluation with PX4
+route~\cite{ehmke2015ensuring} and a conventional event-triggered planner. Competitors are tuned for every cost of a
+late arrival, and ablations separate the effects of the planning model, the fallback, the stopping rule and the
+trigger. The third is a software-in-the-loop evaluation with PX4
 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo} and ROS~2~\cite{macenski2022ros2}, after a rescaling
 that keeps every dimensionless ratio of the decision problem, with a number of flights computed beforehand from the
 kinematic tier.
@@ -40,7 +43,11 @@ replanner served \val{XDabsBufAll} and \val{XDabsFortyAll} percentage points mor
 nominal model. A tuned proportional buffer and moment propagation, whose margins also grow with the lead time, reached
 the same utility within \val{XRangeScaled} percentage points, so the shape of the margin and the fallback carry the
 gain rather than the precise error model. The fallback also raised the utility of moment propagation by
-\val{XDabsFbMPAll} percentage points. In software-in-the-loop flights with PX4 and Gazebo, the fallback raised the
+\val{XDabsFbMPAll} percentage points. Re-scoring these runs showed that the nominal fallback pays off only if a late
+arrival costs less than about one task reward. On a new set of held-out seeds, with a late arrival that costs one task reward,
+the cost-aware fallback served \val{FAbsCCfbOne} percentage points more than the nominal fallback, and
+\val{FAbsPropOne} and \val{FAbsCCnfOne} points more than a proportional buffer and a safety factor tuned for this cost.
+At twice this cost, the tuned buffer was better by \val{FAbsPropTwo} points. In software-in-the-loop flights with PX4 and Gazebo, the fallback raised the
 utility by \val{XDabsTcNoFb} percentage points, whereas the advantage over the nominal model was not confirmed, as the
 kinematic tier had predicted for the same missions.
 An earlier pre-registered study, in which only the stopping rule was made execution-aware, found no significant gain in

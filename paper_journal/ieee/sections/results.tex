@@ -55,8 +55,8 @@ under high disturbances with halved windows (Supplementary Fig.~S7).
 The fallback has a price in punctuality. A fallback task is planned against its nominal deadline and is often served
 late. The fallback variant served \val{LLateFB} tasks late per mission, \val{LLateIncProp}\% more than the replanner of
 study~2, although still \val{LLateRedForty}\% fewer than ALNS with 40\,ms, and it lost \val{LLostFB} tasks per mission
-to late plans. A late service yields no reward, so these attempts cost only flight time. Where a late arrival has a
-cost of its own, the guarantee of Proposition~\ref{prop:cc} without fallback remains the safer choice.
+to late plans. A late service yields no reward, so these attempts cost only flight time. The case in which a late
+arrival has a cost of its own is the subject of study~5 (Section~\ref{sec:study5}).
 
 \subsection{Study 4: planning models and the generality of the fallback}\label{sec:study4}
 Study~4 comprises \val{QNRuns} tier B runs on \val{QNMissions} new held-out missions in \val{QNConfigs} configurations
@@ -170,3 +170,71 @@ UAVs, the proposed model served \val{XDabsFortyHighWHalf}\,pp more than the nomi
 standard deviation of \val{HSdNom}\,pp observed in tier C, confirming an advantage of this size would require about
 \val{HNPowerNomGrid} missions per method. Tier C thus confirms on an autopilot and a physics engine that the fallback is
 needed and that tier B predicts the flights, but it does not resolve the advantage over the nominal model.
+
+\subsection{Study 5: the cost of a late arrival}\label{sec:study5}
+The utility of studies 1--4 counts only the reward of tasks served on time, so a late service earns nothing and costs
+nothing. Before study~5, the held-out runs of studies 3, 4 and 4C were scored again with a cost of $\lambda$ mean task
+rewards for every late arrival (Supplementary Fig.~S9). This analysis was not pre-registered and used no new runs. The
+advantage of the proposed model over the nominal model grew with the late cost, from \val{XDabsFortyAll}\,pp at
+$\lambda=0$ to \val{PSFourCCFortyOneAbs}\,pp at $\lambda=1$ and \val{PSFourCCFortyTwoAbs}\,pp at $\lambda=2$, because it
+served fewer tasks late. Over the conventional planner, it grew from \val{XDabsCCConv} to \val{PSFourCCConvTwoAbs}\,pp.
+The fallback behaved in the opposite way. Its advantage vanished at a late cost $\lambda^\ast$ of
+\val{PSThreeFbPropStar} in study~3, \val{PSFourMPMPnfStar} for moment propagation in study~4 and \val{PCFbNoFbStar} in
+tier C. At $\lambda=1$, the fallback of study~3 lowered the score by \val{PSThreeFbPropOneAbs}\,pp
+(\val{PSThreeFbPropOne}). The nominal fallback thus trades punctuality for reward, and the trade pays off only if a late
+arrival costs less than about one task reward. Study~5 tests on new seeds whether the cost-aware fallback of
+Section~\ref{sec:costfb} removes this limitation.
+
+Study~5 comprises \val{FNRuns} tier B runs on \val{FNMissions} new held-out missions in the twelve configurations of
+study~4 (Table~\ref{tab:s5}, Fig.~\ref{fig:s5}). All methods use the same search with 40\,ms and, except the
+conventional planner, the periodic trigger. For $\lambda=0$, the cost-aware fallback is the nominal fallback by
+construction.
+
+All four primary hypotheses were supported. At $\lambda=1$, the cost-aware fallback reached a score of
+\val{FUCAOneOne}\% against \val{FUCCfbOne}\% for the nominal fallback, \val{XDabsFiveCCfbOne}\,pp more (95\% CI
+\val{XCIFiveCCfbOne}, Holm-adjusted $p<0.001$, H16). It served \val{FLateCAOne} tasks late per mission instead of
+\val{FLateCCfb}, that is, \val{FLateRedCCfb}\% fewer. Against the proportional buffer tuned for $\lambda=1$,
+non-inferiority was shown, and in the fixed sequence the cost-aware fallback was better by \val{XDabsFivePropOne}\,pp
+(\val{XCIFivePropOne}, $p<0.001$, H17). Against the model without fallback with $z$ tuned for $\lambda=1$, it was better
+by \val{XDabsFiveCCnfOne}\,pp (\val{XCIFiveCCnfOne}, $p<0.001$, H18). Over the nominal model, the advantage was
+\val{XDabsFiveFortyOne}\,pp (\val{XCIFiveFortyOne}, H19), and over the conventional planner \val{XDabsFiveConvOne}\,pp.
+Both tuned competitors had been selected on development missions from sixteen and five candidates for the late cost of
+the score, whereas the cost-aware fallback used the $z$ of study~4 and no tuning for $\lambda$.
+
+The advantage over the tuned competitors came from high disturbances. There, the cost-aware fallback served
+\val{XDabsFivePropOneHigh}\,pp more than the tuned buffer (\val{XCIFivePropOneHigh}) and \val{XDabsFiveCCnfOneHigh}\,pp
+more than the tuned model without fallback (\val{XCIFiveCCnfOneHigh}). Under mid disturbances, the differences were
+within \val{XCIFivePropOneMid} and \val{XCIFiveCCnfOneMid}\,pp, so the methods were on par. With mid disturbances and
+the original windows, both tuned competitors were better, by \val{XDabsFivePropOneMidWOne}\,pp
+(\val{XCIFivePropOneMidWOne}) and \val{XDabsFiveCCnfOneMidWOne}\,pp (\val{XCIFiveCCnfOneMidWOne}).
+
+\inputtable{tab_s5}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s5}{\linewidth}
+\caption{Study~5, tier B, held-out seeds 10000--10029: score $u_\lambda$ of the cost-aware fallback minus each method,
+when a late arrival costs $\lambda$ mean task rewards. The cost-aware fallback and the tuned competitors use the
+$\lambda$ of the score. 95\% paired bootstrap intervals over \val{FNMissions} missions.}\label{fig:s5}
+\end{figure}
+
+At other late costs, the picture was mixed (Fig.~\ref{fig:s5}). At $\lambda=0.5$, the cost-aware fallback was on par
+with the tuned buffer (\val{XCIFivePropHalf}\,pp) and better than the tuned model without fallback, by
+\val{XDabsFiveCCnfHalf}\,pp (\val{XCIFiveCCnfHalf}), and the nominal fallback, by \val{XDabsFiveCCfbHalf}\,pp
+(\val{XCIFiveCCfbHalf}). At $\lambda=2$, it stayed \val{XDabsFiveCCfbTwo}\,pp above the nominal fallback and matched the
+tuned model without fallback (\val{XCIFiveCCnfTwo}\,pp), but the proportional buffer tuned for $\lambda=2$ was better by
+\val{XDabsFivePropTwo}\,pp (\val{XCIFivePropTwo}), and moment propagation without fallback by
+\val{XDabsFiveMPnfTwo}\,pp (\val{XCIFiveMPnfTwo}). At this cost, a fallback task needs a probability of at least
+\val{FThetaTwo} of meeting its deadline, and the rule still attempts such tasks. It prices every attempt on its own and
+ignores the delay that a fallback task causes to the tasks after it on the same route, which weighs more when lateness
+is expensive.
+
+The competitors have to be tuned again for every late cost, whereas the cost-aware fallback only takes $\lambda$ as an
+input. Tuned for $\lambda=1$ and scored at $\lambda=2$, the proportional buffer stayed \val{XDabsFivePropFixTwo}\,pp
+behind the cost-aware fallback (\val{XCIFivePropFixTwo}), and scored at $\lambda=0.5$ it stayed
+\val{XDabsFivePropFixHalf}\,pp behind (\val{XCIFivePropFixHalf}). The model without fallback tuned for $\lambda=1$ lost
+\val{XDabsFiveCCnfFixHalf}\,pp at $\lambda=0.5$ (\val{XCIFiveCCnfFixHalf}). A wrong late cost also costs the cost-aware
+fallback. Run with $\lambda=1$ and scored at $\lambda=2$, it lost \val{XDabsFiveCAFixTwo}\,pp against the run with
+$\lambda=2$ (\val{XCIFiveCAFixTwo}), and scored at $\lambda=0.5$ it lost nothing (\val{XCIFiveCAFixHalf}\,pp). When a
+late arrival costs nothing, the rule has a price. Run with $\lambda=1$, it served \val{FUCostCCfb}\,pp less utility than
+the nominal fallback (\val{FUCAOne}\% against \val{FUCCfb}\%).

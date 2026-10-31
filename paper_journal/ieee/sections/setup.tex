@@ -84,8 +84,19 @@ mid and 0.5 under high disturbances. The other values are $c=0.45$ and 0.6, $z=1
 $n_0=50$ with $z=0.5$ for online calibration. On development missions, the three static models differed by less than
 0.2\,pp.
 
+Study~5 charges every late arrival with $\lambda$ times the mean task reward of the mission and scores a run by
+$u_\lambda=U-\lambda\,n_{\mathrm{late}}/n$, where $U$ is the utility, $n_{\mathrm{late}}$ the number of tasks served
+late and $n$ the number of tasks. $\lambda=0$ gives the utility of studies 1--4. The cost-aware fallback of
+Section~\ref{sec:costfb} is run with the $\lambda$ it is scored with and the $z$ of study~4, without any further tuning.
+Its competitors are tuned for every $\lambda\in\{0.5,1,2\}$ and disturbance level on development missions. These are
+the proportional buffer with $c\in\{0.1,0.2,0.3,0.45,0.6,0.75,0.9,1.2\}$, with or without the nominal fallback, and the
+proposed model without fallback with $z\in\{-0.5,0,0.5,1,1.5\}$. A grid that first ended at $c=0.3$ and $z=0$ was
+extended after both values were selected on its edge, and the selection did not change. For $\lambda=1$, the selected
+buffer was \val{FSelPropOneMid} under mid and \val{FSelPropOneHigh} under high disturbances, and the selected model
+without fallback had \val{FSelCCnfOneMid} and \val{FSelCCnfOneHigh}.
+
 \subsection{Pre-registered protocol}\label{sec:protocol}
-The evaluation consists of four studies, each with its own held-out seeds, written protocol and frozen code.
+The evaluation consists of five studies, each with its own held-out seeds, written protocol and frozen code.
 Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute price, $z$, the buffer and
 the error models were fixed. Before each study, the configurations, the models and the code were frozen with SHA-256
 hashes, which the held-out runs checked before starting. Study~1 tested AnytimeSwarm-R against fixed and adaptive
@@ -115,6 +126,13 @@ windows, where tier B predicted the largest effect, on \val{GN} missions with se
 beforehand from a tier B counterpart on development seeds. One interim analysis after half of the missions uses
 O'Brien--Fleming bounds, so that the flights could stop early without inflating the error rate. H14 compares the
 fallback variant with the nominal model and H15 with the variant without fallback.
+
+Study~5 was designed after the held-out results of study~4. It uses new held-out seeds 10000--10029 in tier B, the
+matrix of study~4 and seventeen methods. Its primary family uses the score $u_1$, in which a late arrival costs as much
+as a task earns. It tests the cost-aware fallback against the nominal fallback of study~4 (H16), non-inferiority with a
+margin of $-0.5$\,pp against the tuned proportional buffer (H17) and the tuned model without fallback (H18), each
+followed by superiority in a fixed sequence, and superiority over the nominal model (H19). The scores at $\lambda=0.5$
+and 2 are secondary, as is the loss when a competitor is tuned for one late cost and used at another.
 
 In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
 paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the

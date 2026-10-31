@@ -1,0 +1,13 @@
+[study5] 2026-10-31T08:49:29+00:00 freeze check
+journal_core/study5.py: OK
+experiments/b5_grid.py: OK
+experiments/analyze_study5.py: OK
+experiments/analyze_dev5.py: OK
+experiments/configs/S5_B.yaml: OK
+tools/run_study5.sh: OK
+tests/test_study5.py: OK
+docs/13_PROTOCOL_V5.md: OK
+[study5] 2026-10-31T08:49:29+00:00 tier B S5_B
+[ok] 55080 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s5_heldout_B.csv
+[study5] 2026-10-31T12:31:39+00:00 tier B analysis
+[study5] 2026-10-31T12:31:43+00:00 done

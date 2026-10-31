@@ -137,6 +137,36 @@ Proposition~\ref{prop:cc}, while a fallback task carries none. Finding $\tilde H
 check per task and vehicle, which is negligible compared with the search. The fallback was designed after the held-out
 results of study~2 and is evaluated on new seeds in studies~3 and~4.
 
+\subsection{Cost-aware fallback}\label{sec:costfb}
+The nominal fallback is right only if a late service costs nothing. In many applications a late arrival has a cost of
+its own. The flight time and energy are spent, a customer may have left, or a commitment is broken. Let a late arrival
+at task $j$ cost $\lambda w_j$, so that $\lambda$ measures this cost in units of the reward of the task. An attempt that
+meets the deadline with probability $p$ then has the expected value $p\,w_j-(1-p)\lambda w_j$, which is non-negative if
+and only if
+\begin{equation}\label{eq:theta}
+p\;\ge\;\theta(\lambda)=\frac{\lambda}{1+\lambda}.
+\end{equation}
+By Proposition~\ref{prop:cc}, a finish time $f_j\le\tilde d_j(z)$ gives a probability of at least $\Phi(z)$, where
+$\tilde d_j(z)$ denotes the effective deadline of Eq.~\eqref{eq:cc} at safety factor $z$. The break-even probability
+therefore corresponds to the safety factor $z_\lambda=\Phi^{-1}(\theta(\lambda))$. The cost-aware fallback protects
+every task at $z_p=\max(z,z_\lambda)$, and plans a task that no vehicle can finish by $\tilde d_j(z_p)$ on a direct
+flight against $\min\{d_j,\tilde d_j(z_\lambda)\}$. A task that cannot meet this deadline either is given up. Thus
+\begin{equation}\label{eq:costfb}
+d'_j=\begin{cases} \min\{d_j,\tilde d_j(z_\lambda)\}, & j\in\tilde H(z_p)\setminus H,\\ \tilde d_j(z_p), &
+\text{otherwise,}\end{cases}
+\end{equation}
+with $\tilde H(z_p)$ the set of tasks that no vehicle can finish by $\tilde d_j(z_p)$ on a direct flight.
+
+The rule has three properties. For $\lambda=0$, $z_\lambda=-\infty$ and Eq.~\eqref{eq:costfb} is the nominal fallback
+of Eq.~\eqref{eq:fallback}. For $\lambda\ge\Phi(z)/(1-\Phi(z))$, $z_\lambda\ge z$, no task falls back, and the model is
+the chance constraint at $z_\lambda$. In between, a fallback task is attempted only if its expected contribution is
+not negative under the error model. The rule adds no parameter to tune, because $z$ keeps its value and $\lambda$ is a
+property of the application. Where $1+b_1+z_\lambda s_1\le0.05$, which occurs only for $\lambda<0.03$, the nominal
+deadline is used. The rule ignores the delay that a fallback task causes to the tasks after it on the same route. A
+margin without a probability of meeting the deadline, such as a proportional buffer, has no counterpart of $z_\lambda$,
+so its fallback deadline has to be tuned for every value of $\lambda$. The cost-aware fallback was designed after the
+held-out results of study~4 and is evaluated on new seeds in study~5.
+
 \subsection{Stopping rule and trigger}\label{sec:stop}
 Every 5\,ms, the stopping rule compares the predicted gain $\widehat{\Delta J}$ of searching $H=10$\,ms longer with the
 cost of doing so, and stops at time $\tau$ if

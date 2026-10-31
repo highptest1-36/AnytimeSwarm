@@ -33,16 +33,16 @@ def main():
         vals[f"XSlope{key}"] = f"{p['b1'] + z * p['s1']:.2f}"
         vals[f"XIntercept{key}"] = f"{p['b0'] + z * p['s0']:.0f}"
         vals[f"XPropC{key}"] = f"{PROP_BY_LEVEL[lvl]:.2f}"
-    q = s4_macros(("numbers_s4.tex", "numbers_s4c.tex", "numbers_s4cx.tex"))
+    q = s4_macros(("numbers_s4.tex", "numbers_s4c.tex", "numbers_s4cx.tex", "numbers_s5.tex"))
     us = [float(q[k]) for k in ("QUCC", "QUPropBuf", "QUMP")]
     vals["XRangeScaled"] = f"{max(us) - min(us):.2f}"
     # every difference "+m [lo, hi]" of numbers_s4.tex also as |m| (XDabs...) and as its interval (XCI...)
     for name, val in q.items():
         m = re.fullmatch(r"(\S+) \[(.+), (.+)\]", val)
         # tier C of study 4 (GD...), its tier B counterpart (GB...) and the development estimate (HDev...) get the
-        # prefixes Tc, TcB and TcDev
-        pre = next((t for f, t in (("QD", ""), ("GD", "Tc"), ("GB", "TcB"), ("HDev", "TcDev")) if name.startswith(f)),
-                   None)
+        # prefixes Tc, TcB and TcDev; study 5 (FD...) gets the prefix Five
+        pre = next((t for f, t in (("QD", ""), ("GD", "Tc"), ("GB", "TcB"), ("HDev", "TcDev"), ("FD", "Five"))
+                    if name.startswith(f)), None)
         if pre is not None and m and not name.endswith("Orig"):
             num = lambda s: float(s.replace("$-$", "-"))  # noqa: E731
             tex = lambda x: f"{x:.2f}".replace("-", "$-$")  # noqa: E731
