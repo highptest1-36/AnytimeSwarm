@@ -1,4 +1,4 @@
-% Supplementary material of the AnytimeSwarm-CC manuscript, IEEE format (IEEEtran journal class, one column).
+% Supplementary material of the LTCC manuscript, IEEE format (IEEEtran journal class, one column).
 % Build after main.tex in this folder: pdflatex supplementary && bibtex supplementary && pdflatex supplementary (x2)
 % Every number comes from the generated ../tables/numbers*.tex files; none is typed by hand.
 \documentclass[journal,onecolumn]{IEEEtran}
@@ -29,6 +29,9 @@
 \IfFileExists{../tables/numbers_s4cx.tex}{\input{../tables/numbers_s4cx.tex}}{}
 \IfFileExists{../tables/numbers_latepen.tex}{\input{../tables/numbers_latepen.tex}}{}
 \IfFileExists{../tables/numbers_s5.tex}{\input{../tables/numbers_s5.tex}}{}
+\IfFileExists{../tables/numbers_s6.tex}{\input{../tables/numbers_s6.tex}}{}
+\IfFileExists{../tables/numbers_extra.tex}{\input{../tables/numbers_extra.tex}}{}
+\newcommand{\mname}{LTCC}  % name of the proposed method
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
 \newcommand{\inputtable}[1]{\IfFileExists{../tables/#1.tex}{\input{../tables/#1.tex}}{\todo{table \detokenize{#1}}}}

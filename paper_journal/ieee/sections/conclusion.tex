@@ -1,5 +1,5 @@
 \section{Conclusion}\label{sec:conclusion}
-This paper proposed AnytimeSwarm-CC, a multi-UAV replanner that plans against a chance constraint on the finish time of
+This paper proposed \mname{}, a multi-UAV replanner that plans against a chance constraint on the finish time of
 every task. Because disturbances persist over a leg, the spread of the finish-time error grows linearly with the lead
 time, and with an affine error model the chance constraint reduces exactly to an effective deadline per task, so fast
 heuristics are reused unchanged. A fallback keeps the tasks that the constraint would give up. On three independent
@@ -7,17 +7,17 @@ sets of held-out seeds of pre-registered studies in a kinematic simulator, the c
 reward than the nominal model and a constant time buffer, and on the last set the replanner served
 \val{QURelCCConv}\% more than a conventional event-triggered planner. A tuned proportional buffer and moment
 propagation along the route reached the same utility, which identifies the margin that grows with the lead time,
-together with the fallback, as the source of the gain. The fallback improved moment propagation as much as the closed
-form, so it applies to hard chance constraints in general.
+together with the fallback, as the source of the gain in utility. On a further set of seeds, the replanner served
+\val{WURelCACBBA}\% more than CBBA, and CBBA on the proposed model came close to it, so the gain lies in the planning
+model and not in the search.
 
-The nominal fallback pays off only if a late arrival costs little. The cost-aware fallback attempts a given-up task
-only if its probability of meeting the deadline outweighs this cost, and the closed form turns the rule into another
-effective deadline without a parameter to tune. With a late arrival that costs one task reward, it served
-\val{FAbsCCfbOne} percentage points more than the nominal fallback and more than a proportional buffer and a safety
-factor tuned for this cost, which a margin without a probability cannot match without being tuned again. At twice
-this cost, a tuned buffer was better. Software-in-the-loop flights with PX4 and Gazebo confirmed the fallback, which
-raised the utility by \val{HURelNoFb}\%, and agreed closely with the kinematic tier, but they did not resolve the
-advantage over the nominal model on the missions flown.
-Future work will extend the cost-aware rule to the delay that a fallback task causes on its route, fly it in the
-software-in-the-loop tier, estimate the disturbance level online without loss of utility, and run the replanner on
-embedded hardware and in field flights.
+The probability of meeting a deadline, which a buffer lacks, lets a replanner price lateness. The cost-aware fallback
+attempts a given-up task only if this probability outweighs the cost of a late arrival, and the closed form turns the
+rule into another effective deadline without a parameter to tune. With a late arrival that costs one task reward, it
+served \val{FAbsCCfbOne} percentage points more than the nominal fallback and more than a proportional buffer and a
+safety factor tuned for this cost, and it improved moment propagation in the same way. At twice this cost, a tuned
+buffer was better. Software-in-the-loop flights with PX4 and Gazebo confirmed the fallback, which raised the utility by
+\val{HURelNoFb}\%, and agreed closely with the kinematic tier, but they did not resolve the advantage over the nominal
+model on the missions flown. Future work will extend the cost-aware rule to the delay that a fallback task causes on
+its route, fly it in the software-in-the-loop tier, run it inside a distributed allocator, estimate the disturbance
+level online without loss of utility, and run the replanner on embedded hardware and in field flights.

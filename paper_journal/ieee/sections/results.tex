@@ -1,4 +1,10 @@
 \section{Results}\label{sec:results}
+Table~\ref{tab:hyp} summarises the pre-registered primary hypotheses of studies 2--6 and their outcomes. The
+subsections report each study in the order in which it was designed, so that every design decision can be traced to
+the results that motivated it.
+
+\inputtable{tab_hyp}
+
 \subsection{Study 1 in brief: execution-aware stopping on the nominal model}\label{sec:study1}
 Study~1 made only the stopping rule execution-aware and kept the nominal planning model. In \val{JNRunsMain} tier B
 runs, AnytimeSwarm-R needed \val{JMsRedAS}\% less computation per call than AnytimeSwarm, but its advantage over ALNS
@@ -201,6 +207,15 @@ by \val{XDabsFiveCCnfOne}\,pp (\val{XCIFiveCCnfOne}, $p<0.001$, H18). Over the n
 Both tuned competitors had been selected on development missions from sixteen and five candidates for the late cost of
 the score, whereas the cost-aware fallback used the $z$ of study~4 and no tuning for $\lambda$.
 
+In practical units, a mission had \val{YTasksCA} tasks on average. Per 100 tasks, the cost-aware fallback served
+\val{YOnTimeCA} on time and \val{YLateHundredCA} late, the nominal fallback \val{YOnTimeCCfb} and
+\val{YLateHundredCCfb}, and the nominal model \val{YOnTimeForty} and \val{YLateHundredForty}. A late arrival was thus
+\val{YWastedShareCA}\% of all arrivals with the cost-aware fallback, against \val{YWastedShareCCfb}\% with the nominal
+fallback and \val{YWastedShareForty}\% with the nominal model. The fleet flew \val{YKmCA}\,km per mission instead of
+\val{YKmCCfb} and \val{YKmForty}\,km, or \val{YKmPerTaskCA}\,km per task served on time instead of
+\val{YKmPerTaskCCfb} and \val{YKmPerTaskForty}\,km, which is consistent with fewer flights to tasks that were likely to
+be reached too late.
+
 The advantage over the tuned competitors came from high disturbances. There, the cost-aware fallback served
 \val{XDabsFivePropOneHigh}\,pp more than the tuned buffer (\val{XCIFivePropOneHigh}) and \val{XDabsFiveCCnfOneHigh}\,pp
 more than the tuned model without fallback (\val{XCIFiveCCnfOneHigh}). Under mid disturbances, the differences were
@@ -238,3 +253,49 @@ fallback. Run with $\lambda=1$ and scored at $\lambda=2$, it lost \val{XDabsFive
 $\lambda=2$ (\val{XCIFiveCAFixTwo}), and scored at $\lambda=0.5$ it lost nothing (\val{XCIFiveCAFixHalf}\,pp). When a
 late arrival costs nothing, the rule has a price. Run with $\lambda=1$, it served \val{FUCostCCfb}\,pp less utility than
 the nominal fallback (\val{FUCAOne}\% against \val{FUCCfb}\%).
+
+\subsection{Study 6: a published allocator and the generality of the cost-aware fallback}\label{sec:study6}
+Study~6 comprises \val{WNRuns} tier B runs on \val{WNMissions} new held-out missions in the twelve configurations of
+study~4 (Table~\ref{tab:s6}, Fig.~\ref{fig:s6}). Every method with the cost-aware fallback was run with $\lambda=1$, and
+the scores for other late costs are computed from the same runs.
+
+All four primary hypotheses were supported, each with a Holm-adjusted $p<0.001$. With the score $u_1$, the proposed
+replanner exceeded CBBA by \val{WDabsCBBAOne}\,pp (95\% CI \val{WCICBBAOne}, H20). CBBA itself gained
+\val{WDabsCBBAModelOne}\,pp (\val{WCICBBAModelOne}, H21) when it planned on the deadlines of the cost-aware fallback.
+Within moment propagation, the cost-aware fallback scored \val{WDabsMPFbOne}\,pp above the nominal fallback
+(\val{WCIMPFbOne}, H22) and \val{WDabsMPNoFbOne}\,pp above the model without fallback (\val{WCIMPNoFbOne}, H23). The
+advantage of the cost-aware over the nominal fallback in the proposed model was \val{WDabsCACCfbOne}\,pp
+(\val{WCICACCfbOne}), which replicates H16 on a second set of seeds.
+
+\inputtable{tab_s6}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s6}{\linewidth}
+\caption{Study~6, tier B, held-out seeds 12000--12029: differences in the score $u_\lambda$ between methods, with 95\%
+paired bootstrap intervals over \val{WNMissions} missions. All methods with the cost-aware fallback were run with
+$\lambda=1$ and are scored at every $\lambda$ from the same runs.}\label{fig:s6}
+\end{figure}
+
+The difference to CBBA lies in the planning model and not in the search or in the cost of computation. CBBA converged
+after \val{WItersCBBA} consensus rounds and \val{WMsCBBA}\,ms per call on average, against 40\,ms for ALNS, so its
+planning delay was small. On the nominal model it reached almost the utility of ALNS, \val{WDabsCBBAFortyZero}\,pp
+less (\val{WCICBBAFortyZero}). On utility alone ($\lambda=0$), the proposed replanner served \val{WDabsCBBAZero}\,pp,
+or \val{WURelCACBBA}\%, more than CBBA, and \val{WDabsCBBAEventZero}\,pp more than CBBA with the event trigger. CBBA
+served \val{WLateCBBA} tasks late per mission, the proposed replanner \val{WLateCA}. On the proposed model, CBBA served
+\val{WLateCBBACA} tasks late and came within \val{WDabsCACBBACAOne}\,pp of the proposed replanner at $\lambda=1$
+(\val{WCICACBBACAOne}), with \val{WMsCBBACA}\,ms per call. Most of the gain therefore does not depend on ALNS. The
+exception was the regime of high disturbances with halved windows at $\lambda=0$, where the proposed replanner and CBBA
+were on par (\val{WDCBBAZeroHighWHalf}\,pp), because a fallback for $\lambda=1$ gives up tasks that a late arrival would
+not penalise at $\lambda=0$.
+
+The cost-aware fallback behaved within moment propagation as Proposition~\ref{prop:costfb} predicts. Without a late
+cost it lost \val{WDabsMPFbZero}\,pp against the nominal fallback (\val{WCIMPFbZero}), it broke even at $\lambda=0.5$
+(\val{WDMPFbHalf}\,pp), and its advantage grew to \val{WDabsMPFbTwo}\,pp at $\lambda=2$. Against the model without
+fallback, it was ahead up to $\lambda=1$ and on par at $\lambda=2$ (\val{WDMPNoFbTwo}\,pp). With the cost-aware
+fallback, moment propagation scored \val{WDabsCAMPCAOne}\,pp more than the closed-form model at $\lambda=1$ (interval of
+the closed form minus moment propagation \val{WCICAMPCAOne}) and \val{WDabsCAMPCATwo}\,pp more at $\lambda=2$,
+whereas the closed form was \val{WDabsCAMPCAZero}\,pp better at $\lambda=0$. Moment propagation served
+\val{WLateMPCA} tasks late per mission, against \val{WLateCA}. Once lateness has a cost, the variance that moment
+propagation tracks leg by leg therefore pays off, even though it ran fewer search iterations per call
+(\val{WItersMPCA} against \val{WItersCA}).

@@ -83,7 +83,29 @@ Như nghiên cứu 2–5: laptop i7-11800H, WSL2, 4 worker; các phương pháp 
 lưới khác.
 
 ## 7. Sai lệch
-(trống khi đóng băng)
+(trống khi đóng băng; điền ngày 01/11/2026 sau khi lượt held-out kết thúc)
+
+1. Không có sai lệch nào trong thiết kế, seed, phương pháp hay kiểm định. Kiểm tra SHA-256 đạt trước lượt chạy; 29 160
+   lượt, không lỗi, không loại nhiệm vụ nào.
+2. Ngoài protocol, để viết bài: experiments/paper_extra.py tạo macro Y (đơn vị thực tế của nghiên cứu 5; chữ "supported"
+   cho bảng giả thuyết từ WHolds*); không có phân tích mới.
 
 ## 8. Kết quả
-(trống khi đóng băng)
+Tầng B (seed 12000–12029, 270 nhiệm vụ; results/study6/report.md). Họ chính, u_1, Holm, tất cả p Holm < 0,001:
+- H20 được ủng hộ: đề xuất trừ CBBA +12,77 [+11,91; +13,63].
+- H21 được ủng hộ: CBBA trên mô hình đề xuất trừ CBBA +12,12 [+11,31; +12,93].
+- H22 được ủng hộ: MP cost-aware trừ MP fallback danh nghĩa +2,71 [+2,13; +3,27].
+- H23 được ủng hộ: MP cost-aware trừ MP không fallback +3,30 [+2,83; +3,79].
+
+Thứ yếu:
+- Ở λ = 0 (utility): đề xuất hơn CBBA +4,86 [+4,22; +5,50] (+10,0%), hơn CBBA theo sự kiện +6,72; CBBA kém ALNS danh
+  nghĩa −0,99 [−1,48; −0,51]. Ở nhiễu high, cửa sổ ×0,5, λ = 0: đề xuất ngang CBBA (−0,24 [−1,29; +0,82]).
+- CBBA: 2,8 vòng, 5,1 ms mỗi lần gọi (theo sự kiện 13,2 ms); trên mô hình đề xuất 2,1 ms; trễ 10,57 so với 4,25 task mỗi
+  nhiệm vụ. Đề xuất (ALNS) hơn CBBA trên mô hình đề xuất +0,65 [+0,13; +1,17] ở λ = 1.
+- MP cost-aware so với MP fallback danh nghĩa: −2,96 (λ = 0), −0,13 (λ = 0,5), +2,71 (λ = 1), +8,38 (λ = 2).
+- Mô hình dạng đóng trừ MP cost-aware: +1,41 (λ = 0), +0,32 (λ = 0,5), −0,76 [−1,31; −0,24] (λ = 1), −2,94 (λ = 2). Khi việc
+  trễ có chi phí, moment propagation với fallback cost-aware tốt hơn dạng đóng một chút.
+- Đề xuất cost-aware trừ fallback danh nghĩa ở λ = 1: +2,42 [+1,91; +2,92], lặp lại H16 trên bộ seed thứ hai.
+
+Diễn giải theo §5: phương pháp đề xuất tốt hơn một thuật toán phân công đã công bố; lợi ích nằm ở mô hình lập kế hoạch;
+quy tắc cost-aware là cơ chế tổng quát cho mô hình có xác suất đúng hạn.

@@ -1,16 +1,17 @@
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution, so under wind, speed and service-time errors, tasks near the
 end of a route are served late. On development flights, the spread of the finish-time error grew linearly with the
-lead time, because disturbances persist over a leg. This paper proposes AnytimeSwarm-CC, a replanner whose planning
-model exploits this structure. With an affine error model, a chance constraint on the finish time of every task reduces
-exactly to an effective deadline, so fast repair and search heuristics are reused unchanged. A fallback keeps the tasks
-that the constraint would give up, and its cost-aware version attempts such a task only if its probability of meeting
-the deadline outweighs the cost of a late arrival. In five pre-registered studies on held-out missions of a kinematic
-simulator, the chance-constrained model served more reward than the nominal model and a constant time buffer on three
-independent sets of seeds, by \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points on the last one. A tuned
-proportional buffer and moment propagation came within \val{XRangeScaled} points. When a late arrival cost one task
-reward, the cost-aware fallback, without any tuning of its own, outscored the nominal fallback by \val{FAbsCCfbOne}
-points, and a proportional buffer and a safety factor tuned for this cost by \val{FAbsPropOne} and \val{FAbsCCnfOne}
-points (all $p<0.001$). At twice this cost, the tuned buffer was better. In PX4 software-in-the-loop flights, the
+lead time, because disturbances persist over a leg. The proposed replanner,
+\mname{}, exploits this structure. With an affine error model, a chance constraint on the finish time of every task reduces
+exactly to an effective deadline, which fast heuristics reuse unchanged. A cost-aware fallback attempts a task that
+the constraint gives up only if its probability of meeting the deadline outweighs the cost of a late arrival, again in
+closed form and without tuning. In six pre-registered studies on held-out missions of a kinematic simulator, the
+chance-constrained model served more reward than the nominal model and a constant time buffer on three independent
+sets of seeds, by \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points on the last one, and
+\val{WURelCACBBA}\% more than the consensus-based bundle algorithm on a further set. A tuned proportional buffer and
+moment propagation came within \val{XRangeScaled} points. When a late arrival cost one task reward, the cost-aware
+fallback outscored the nominal fallback by \val{FAbsCCfbOne} points, and a proportional buffer and a safety factor
+tuned for this cost by \val{FAbsPropOne} and \val{FAbsCCnfOne} points (all $p<0.001$), and it improved moment
+propagation as well. At twice this cost, the tuned buffer was better. In PX4 software-in-the-loop flights, the
 fallback raised the utility by \val{HURelNoFb}\%, whereas the advantage over the nominal model was not confirmed.
 \end{abstract}

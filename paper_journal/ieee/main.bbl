@@ -36,6 +36,11 @@ H.~N. Psaraftis, M.~Wen, and C.~A. Kontovas, ``Dynamic vehicle routing
   problems: Three decades and counting,'' \emph{Networks}, vol.~67, no.~1, pp.
   3--31, 2016.
 
+\bibitem{choi2009consensus}
+H.-L. Choi, L.~Brunet, and J.~P. How, ``Consensus-based decentralized auctions
+  for robust task allocation,'' \emph{IEEE Transactions on Robotics}, vol.~25,
+  no.~4, pp. 912--926, 2009.
+
 \bibitem{ropke2006adaptive}
 S.~Ropke and D.~Pisinger, ``An adaptive large neighborhood search heuristic for
   the pickup and delivery problem with time windows,'' \emph{Transportation
@@ -52,10 +57,22 @@ A.~Agra, M.~Christiansen, R.~Figueiredo, L.~M. Hvattum, M.~Poss, and
   C.~Requejo, ``The robust vehicle routing problem with time windows,''
   \emph{Computers \& Operations Research}, vol.~40, no.~3, pp. 856--866, 2013.
 
+\bibitem{ehmke2015ensuring}
+J.~F. Ehmke, A.~M. Campbell, and T.~L. Urban, ``Ensuring service levels in
+  routing problems with time windows and stochastic travel times,''
+  \emph{European Journal of Operational Research}, vol. 240, no.~2, pp.
+  539--550, 2015.
+
 \bibitem{ponda2012chance}
 S.~S. Ponda, L.~B. Johnson, and J.~P. How, ``Distributed chance-constrained
   task allocation for autonomous multi-agent teams,'' in \emph{Proceedings of
   the American Control Conference (ACC)}, 2012, pp. 4528--4533.
+
+\bibitem{gao2025drcc}
+Z.~Gao, M.~Zheng, Y.~Mei, A.~Zheng, and H.~Zhong, ``Distributionally robust
+  chance-constrained task assignment for heterogeneous {UAVs} with time windows
+  under uncertain fuel consumption,'' \emph{Drones}, vol.~9, no.~9, p. 633,
+  2025.
 
 \bibitem{dean1988analysis}
 T.~Dean and M.~Boddy, ``An analysis of time-dependent planning,'' in
@@ -79,16 +96,16 @@ J.~Svegliato, K.~H. Wray, and S.~Zilberstein, ``Meta-level control of anytime
   (IJCAI-18)}.\hskip 1em plus 0.5em minus 0.4em\relax IJCAI Organization, 2018,
   pp. 1499--1505.
 
+\bibitem{tas2013stochastic}
+D.~Ta{\c{s}}, N.~Dellaert, T.~van Woensel, and T.~de~Kok, ``Vehicle routing
+  problem with stochastic travel times including soft time windows and service
+  costs,'' \emph{Computers \& Operations Research}, vol.~40, no.~1, pp.
+  214--224, 2013.
+
 \bibitem{boddy1994deliberation}
 M.~Boddy and T.~L. Dean, ``Deliberation scheduling for problem solving in
   time-constrained environments,'' \emph{Artificial Intelligence}, vol.~67,
   no.~2, pp. 245--285, 1994.
-
-\bibitem{ehmke2015ensuring}
-J.~F. Ehmke, A.~M. Campbell, and T.~L. Urban, ``Ensuring service levels in
-  routing problems with time windows and stochastic travel times,''
-  \emph{European Journal of Operational Research}, vol. 240, no.~2, pp.
-  539--550, 2015.
 
 \bibitem{meier2015px4}
 L.~Meier, D.~Honegger, and M.~Pollefeys, ``{PX4}: A node-based multithreaded
@@ -121,11 +138,6 @@ P.~Vansteenwegen, W.~Souffriau, and D.~Van~Oudheusden, ``The orienteering
 S.~Wang, W.~Sun, and M.~Huang, ``An adaptive large neighborhood search for the
   multi-depot dynamic vehicle routing problem with time windows,''
   \emph{Computers \& Industrial Engineering}, vol. 191, p. 110122, 2024.
-
-\bibitem{choi2009consensus}
-H.-L. Choi, L.~Brunet, and J.~P. How, ``Consensus-based decentralized auctions
-  for robust task allocation,'' \emph{IEEE Transactions on Robotics}, vol.~25,
-  no.~4, pp. 912--926, 2009.
 
 \bibitem{choudhury2022dynamic}
 S.~Choudhury, J.~K. Gupta, M.~J. Kochenderfer, D.~Sadigh, and J.~Bohg,
@@ -176,6 +188,16 @@ D.~Ouelhadj and S.~Petrovic, ``A survey of dynamic scheduling in manufacturing
 M.~A. Ali, U.~Athar, and A.~Maqsood, ``{SITL} validation of federated
   reinforcement learning for priority-based dynamic task allocation in {UAV}
   swarms,'' \emph{Expert Systems}, vol.~43, no.~12, p. e70459, 2026.
+
+\bibitem{zhou2022risk}
+L.~Zhou and P.~Tokekar, ``Risk-aware submodular optimization for multirobot
+  coordination,'' \emph{IEEE Transactions on Robotics}, vol.~38, no.~5, pp.
+  3064--3084, 2022.
+
+\bibitem{wang2024uncertain}
+J.~Wang, G.~Jia, Z.~Guo, and Z.~Hou, ``Impact of uncertain flight time on
+  heterogeneous {UAVs}' task planning with temporal constraints,''
+  \emph{Aerospace}, vol.~11, no.~3, p. 214, 2024.
 
 \bibitem{gendreau1996stochastic}
 M.~Gendreau, G.~Laporte, and R.~S{\'e}guin, ``Stochastic vehicle routing,''
@@ -254,6 +276,12 @@ P.~McCullagh and J.~A. Nelder, \emph{Generalized Linear Models}, 2nd~ed.\hskip
 \bibitem{law2015simulation}
 A.~M. Law, \emph{Simulation Modeling and Analysis}, 5th~ed.\hskip 1em plus
   0.5em minus 0.4em\relax New York: McGraw-Hill Education, 2015.
+
+\bibitem{johnson2012nonsubmodular}
+L.~B. Johnson, H.-L. Choi, S.~S. Ponda, and J.~P. How, ``Allowing
+  non-submodular score functions in distributed task allocation,'' in
+  \emph{Proceedings of the 51st IEEE Conference on Decision and Control (CDC)},
+  2012, pp. 4702--4708.
 
 \bibitem{efron1993bootstrap}
 B.~Efron and R.~J. Tibshirani, \emph{An Introduction to the Bootstrap}.\hskip

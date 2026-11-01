@@ -95,8 +95,19 @@ extended after both values were selected on its edge, and the selection did not 
 buffer was \val{FSelPropOneMid} under mid and \val{FSelPropOneHigh} under high disturbances, and the selected model
 without fallback had \val{FSelCCnfOneMid} and \val{FSelCCnfOneHigh}.
 
+Study~6 adds a published task-allocation algorithm and applies the cost-aware fallback to moment propagation. The
+consensus-based bundle algorithm (CBBA)~\cite{choi2009consensus} is re-implemented with bids equal to the largest
+increase of the route value over all feasible insertion positions, a fully connected network, and the bid warping of
+Johnson et al.~\cite{johnson2012nonsubmodular}. Time windows break the diminishing marginal gains on which the
+convergence of CBBA rests, and without bid warping it did not converge on some development snapshots. CBBA plans from
+scratch at every call, stops at convergence or at the hard budget, and pays for its planning time like every other
+method. It runs with the periodic and with the event trigger, and also on the deadlines of the cost-aware fallback with
+$\lambda=1$. Moment propagation with the cost-aware fallback accepts a given-up task if its nominal finish meets the
+deadline and $\mathrm{E}[F_j]+z_\lambda\mathrm{sd}[F_j]\le d_j$. No parameter was tuned in study~6.
+
 \subsection{Pre-registered protocol}\label{sec:protocol}
-The evaluation consists of five studies, each with its own held-out seeds, written protocol and frozen code.
+The evaluation consists of six studies, each with its own held-out seeds, written protocol and frozen code.
+Table~\ref{tab:hyp} summarises their hypotheses and outcomes.
 Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute price, $z$, the buffer and
 the error models were fixed. Before each study, the configurations, the models and the code were frozen with SHA-256
 hashes, which the held-out runs checked before starting. Study~1 tested AnytimeSwarm-R against fixed and adaptive
@@ -133,6 +144,11 @@ as a task earns. It tests the cost-aware fallback against the nominal fallback o
 margin of $-0.5$\,pp against the tuned proportional buffer (H17) and the tuned model without fallback (H18), each
 followed by superiority in a fixed sequence, and superiority over the nominal model (H19). The scores at $\lambda=0.5$
 and 2 are secondary, as is the loss when a competitor is tuned for one late cost and used at another.
+
+Study~6 uses new held-out seeds 12000--12029 in tier B, the matrix of study~4 and nine methods. Its primary family, with
+the score $u_1$, tests the proposed replanner against CBBA with the periodic trigger (H20), CBBA on the proposed model
+against CBBA (H21), and moment propagation with the cost-aware fallback against moment propagation with the nominal
+fallback (H22) and without fallback (H23). All other comparisons, including those at $\lambda=0$, are secondary.
 
 In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
 paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the

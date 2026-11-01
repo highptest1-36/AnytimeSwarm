@@ -1,4 +1,4 @@
-% Fig. 1: overview of AnytimeSwarm-CC (pdflatex fig_overview.tex -> copy fig_overview.pdf to ../figures/)
+% Fig. 1: overview of LTCC (pdflatex fig_overview.tex -> copy fig_overview.pdf to ../figures/)
 \documentclass[tikz,border=2pt]{standalone}
 \input{figstyle}
 \begin{document}
@@ -30,7 +30,7 @@
 \draw[arr] (5.95,9.1) -- (6.95,9.1);
 % replanner
 \filldraw[draw=ink, line width=0.8pt, fill=white, rounded corners=2pt] (7.05,8.5) rectangle (9.75,9.9);
-\node[T, font=\fontsize{8}{9}\selectfont\bfseries] at (8.4,9.62) {AnytimeSwarm-CC};
+\node[T, font=\fontsize{8}{9}\selectfont\bfseries] at (8.4,9.62) {LTCC};
 \slab{7.25}{8.8}{0.42}{0.32}{0.22}{sBlue}
 \slab{7.88}{8.8}{0.42}{0.32}{0.22}{sSand}
 \slab{8.51}{8.8}{0.42}{0.32}{0.22}{sRose}
@@ -111,7 +111,8 @@
 \draw[late, line width=1.1pt] (7.3,3.14) -- (7.3,3.58);
 \node[Ts, anchor=east, text=late] at (7.28,3.36) {$\tilde d_j$};
 \draw[edge, line width=0.55pt, dash pattern=on 2pt off 1pt, fill=white] (7.6,3.24) rectangle (8.6,3.48);
-\node[Ts, anchor=north] at (7.75,3.18) {given up: fallback $d'_j=d_j$};
+\draw[late!65, line width=0.9pt, dash pattern=on 1.5pt off 1pt] (8.2,3.14) -- (8.2,3.58);
+\node[Ts, anchor=north, align=center] at (7.75,3.16) {given up: attempt only if\\$\Pr[F_j\le d_j]\ge\lambda/(1+\lambda)$};
 \node[Ts, align=center] at (7.57,1.5)
   {$\tilde d_j=t_0+\dfrac{d_j-t_0-b_0-z s_0}{1+b_1+z s_1}$};
 \node[Ts, align=center] at (7.57,0.75) {exact for a linear error model;\\repair and search reuse it unchanged};

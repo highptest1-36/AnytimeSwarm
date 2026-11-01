@@ -1,7 +1,15 @@
 \section{Discussion and limitations}\label{sec:discussion}
-The five studies suggest an order of priorities for a multi-UAV replanner under uncertain execution. The planning
-model matters most. Moving every deadline by a margin that grows with the lead time raised the utility by more than any
-choice of stopping rule or trigger, on three independent sets of held-out seeds and also without search. The trigger
+The six studies answer the four research questions as follows. On RQ1, the spread of the finish-time error grows
+almost linearly with the lead time, and a chance constraint built on it reduces to one effective deadline per task that
+fast heuristics use unchanged. On RQ2, the planning model matters most, the trigger second and the stopping rule
+least. On RQ3, the replanner served more reward than a constant buffer, the nominal model, a conventional planner and
+CBBA, and as much as a tuned proportional buffer and moment propagation, but software-in-the-loop flights confirmed only
+the fallback. On RQ4, the probability of meeting the deadline decided which given-up tasks to attempt without tuning,
+and this beat competitors tuned for the cost of lateness at one task reward, though not at twice that cost.
+
+The order of priorities deserves a closer look. Moving every deadline by a margin that grows with the lead time raised
+the utility by more than any choice of stopping rule or trigger, on three independent sets of held-out seeds, without
+search and with CBBA in place of ALNS. The trigger
 comes second. Periodic replanning helped every method on the nominal model, but only by \val{KDabsAblTrig}\,pp on the
 chance-constrained model, which suggests that both correct the same accumulated deviations, one before and one after
 they occur. The stopping rule comes last. On the proposed model, it was equivalent to a matched fixed budget in
@@ -17,8 +25,16 @@ suitable slope captures most of it, and the intercept of the calibrated model ad
 not improve on the tuned buffer. Its value lies in setting the slope from flight data and in a predicted probability of
 meeting the deadline that ranked the tasks by their risk (Supplementary Section~S7). Under high disturbances, the slope that the calibrated model
 implied was almost the one tuned on utility. Moment propagation evaluates the actual legs of a route and was slightly
-better by an amount within the noise, but it reduced the search rate. A planner with a tighter budget or larger fleets
-would feel this cost more, whereas a planner with a generous budget may prefer the more detailed model.
+better by an amount within the noise, but it reduced the search rate. With a cost of lateness, its detail paid off in
+study~6, by \val{WDabsCAMPCAOne}\,pp at one task reward and \val{WDabsCAMPCATwo}\,pp at two. A planner with a tight
+budget or a large fleet may therefore prefer the closed form, and a planner with a generous budget and costly lateness
+the more detailed model.
+
+The comparison with CBBA places the gain in the planning model rather than in the allocation method. On the nominal
+model, CBBA and ALNS reached almost the same utility, and on the proposed model CBBA came within
+\val{WDabsCACBBACAOne}\,pp of the proposed replanner at a late cost of one task reward while it planned for
+\val{WMsCBBACA}\,ms per call. The effective deadlines can thus be handed to an auction-based allocator without changing
+its bidding rule, and in principle also to a distributed one, which study~6 did not test.
 
 The fallback was the largest single effect of studies~3 and~4. A hard chance constraint discards every task whose
 probability of being served on time falls below $\Phi(z)$, even when a vehicle has nothing better to do. Study~4 shows
@@ -33,8 +49,10 @@ at all, and that requires a probability of meeting the deadline. The calibrated 
 form, so the break-even rule of Eq.~\eqref{eq:theta} becomes another effective deadline and needs no tuning. At a late
 cost of one task reward, it served more than a buffer and a safety factor that had both been tuned for this cost, and it
 stayed ahead of the buffer at half and twice this cost whenever the buffer had been tuned for one task reward. At twice
-the cost, a buffer without fallback tuned for that cost was better. The rule prices each attempt on its own and ignores the delay that a fallback
-task causes to later tasks on its route. A route-level version that also charges this delay is the natural next step.
+the cost, a buffer without fallback tuned for that cost was better. Study~6 shows that the rule is not tied to the closed
+form. Applied to moment propagation, which also gives a probability of meeting the deadline, it behaved as in the
+closed form, with a loss without late cost, a break-even near half a task reward and a gain that grew with the cost. The rule prices each attempt on its own and ignores the delay that a fallback task causes to later
+tasks on its route. A route-level version that also charges this delay is the natural next step.
 
 The two tiers play different roles. The kinematic tier is fast enough to run tens of thousands of missions and resolves
 differences of a few percentage points. The software-in-the-loop tier adds the autopilot, the vehicle dynamics and
@@ -51,10 +69,12 @@ within a mission removes this assumption but served \val{XDabsOnlCC}\,pp less re
 shown. The chance constraint is imposed on every task separately rather than jointly on a route. The fallback, the
 models of study~4 and the cost-aware fallback were designed after the held-out results of earlier studies and were
 therefore tested on new seeds. The cost-aware fallback assumes that the cost of a late arrival is known and
-proportional to the reward of the task, and study~5 tested it in tier B only.
+proportional to the reward of the task, and studies~5 and~6 tested it in tier B only. CBBA ran centrally with a fully
+connected network, the most favourable case for its communication, so its robustness to lost links was not part of the
+comparison.
 Tier C uses three UAVs and fifteen tasks per mission. Software-in-the-loop simulation reproduces the autopilot and the
 vehicle dynamics but not the sensors, the radio link or the weather of a field test, and the wind is constant during a
 mission. The latency factor emulates a slower planning computer instead of measuring one. Because the stopping rules
 read a wall clock, repeated runs are not bit-identical, and the mean utility of a method varied by up to
-\val{JRepeatDiffMax}\,pp between two runs of the same missions. Finally, all methods share one ALNS and one family of
-scenarios, and other search methods or mission types may change the size of the gains.
+\val{JRepeatDiffMax}\,pp between two runs of the same missions. Finally, all methods except CBBA share one ALNS, all
+share one family of scenarios, and other mission types may change the size of the gains.

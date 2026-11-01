@@ -1,31 +1,64 @@
 \section{Proposed method}\label{sec:method}
-AnytimeSwarm-CC takes three decisions in every replanning cycle (Fig.~\ref{fig:overview}, Algorithm~\ref{alg:cycle}).
-The chance-constrained planning model decides which plans are acceptable under the calibrated execution error, the
-stopping rule decides when to stop computing and publish, and the trigger decides when to replan. A feasibility-first
-repair and an anytime ALNS produce the plan. Two earlier variants serve as baselines. AnytimeSwarm uses the same
-stopping rule with a deterministic delay cost on the nominal model, and AnytimeSwarm-R uses an execution-aware delay
-cost on the nominal model.
+\mname{} (lead-time-scaled chance constraints) takes four decisions in every replanning cycle
+(Fig.~\ref{fig:overview}, Algorithm~\ref{alg:cycle}). The chance-constrained planning model decides which plans are
+acceptable under the calibrated execution error. The cost-aware fallback decides which of the tasks that this model
+gives up are still worth attempting, given the cost of a late arrival. The stopping rule decides when to stop computing
+and publish, and the trigger decides when to replan. The first two decisions are the contribution of this paper. Both
+reduce to one effective deadline per task, so a feasibility-first repair and an anytime ALNS, or any other heuristic
+that checks deadlines, produce the plan unchanged. Table~\ref{tab:notation} lists the notation. Two earlier variants
+serve as baselines. AnytimeSwarm uses the same stopping rule with a deterministic delay cost on the nominal model, and
+AnytimeSwarm-R uses an execution-aware delay cost on the nominal model.
+
+\begin{table}[t]
+\caption{Notation.}\label{tab:notation}
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Symbol & Meaning \\
+\midrule
+$t_0$ & time of the planning snapshot \\
+$r_j,\,d_j,\,w_j$ & release time, deadline and reward of task $j$ \\
+$f_j,\,F_j$ & planned (nominal) and actual finish time of task $j$ \\
+$h_j=f_j-t_0$ & lead time of task $j$ \\
+$e_j=F_j-f_j$ & finish-time error, $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$ \\
+$m(h),\,s(h)$ & mean and spread of the error, $b_0+b_1h$ and $s_0+s_1h$ \\
+$z$ & safety factor; protected tasks meet $d_j$ with probability $\ge\Phi(z)$ \\
+$\tilde d_j(z)$ & effective deadline, Eq.~\eqref{eq:cc} \\
+$\tilde H,\,H$ & tasks no UAV can finish by $\tilde d_j$, resp.\ by $d_j$, on a direct flight \\
+$\lambda$ & cost of a late arrival, in units of the task reward \\
+$\theta(\lambda),\,z_\lambda$ & break-even probability $\lambda/(1+\lambda)$ and $\Phi^{-1}(\theta(\lambda))$ \\
+$d'_j$ & planning deadline used by repair and search \\
+$\tau,\,B$ & planning time of a call and its hard budget \\
+$\kappa,\,L$ & latency factor and communication latency \\
+$u_\lambda$ & score $U-\lambda\,n_{\mathrm{late}}/n$ of a mission \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure*}[t]
 \centering
 \fig{fig_overview}{\linewidth}
-\caption{Overview of AnytimeSwarm-CC. Top: the replanning loop between the mission, the planning snapshot, the
+\caption{Overview of \mname{}. Top: the replanning loop between the mission, the planning snapshot, the
 replanner and the execution tier. Bottom: one replanning call. The calibrated error model gives a margin that grows
-with the lead time, the chance constraint turns it into an effective deadline per task, the nominal fallback keeps the
-tasks that no vehicle could otherwise reach, and the anytime search stops when the predicted gain no longer pays for the
-delay. The plan is released after the emulated planning delay $\kappa\tau$ and the latency $L$.}\label{fig:overview}
+with the lead time, the chance constraint turns it into an effective deadline per task, the cost-aware fallback keeps a
+given-up task only if its probability of meeting the deadline outweighs the cost $\lambda$ of a late arrival, and the
+anytime search stops when the predicted gain no longer pays for the delay. The plan is released after the emulated planning delay $\kappa\tau$ and the latency $L$.}\label{fig:overview}
 \end{figure*}
 
 \begin{algorithm}[t]
-\caption{One replanning call of AnytimeSwarm-CC}\label{alg:cycle}
+\caption{One replanning call of \mname{}}\label{alg:cycle}
 \small
 \begin{algorithmic}[1]
 \Require snapshot at time $t_0$: committed tasks, open tasks with $(r_j,d_j,w_j)$, UAV states; previous plan $\pi^-$;
-error model $(b_0,b_1,s_0,s_1)$, safety factor $z$, expected latency $\bar L$, latency factor $\kappa$
-\State $\tilde d_j \gets \min\{d_j,\; t_0+(d_j-t_0-b_0-z s_0)/(1+b_1+z s_1)\}$ for every open task
+error model $(b_0,b_1,s_0,s_1)$, safety factor $z$, late cost $\lambda$, expected latency $\bar L$, latency factor
+$\kappa$
+\State $z_\lambda \gets \Phi^{-1}(\lambda/(1+\lambda))$;\; $z_p\gets\max\{z,z_\lambda\}$
+\Comment{$z_\lambda=-\infty$ for $\lambda=0$}
+\State $\tilde d_j(\cdot) \gets \min\{d_j,\; t_0+(d_j-t_0-b_0-\cdot\, s_0)/(1+b_1+\cdot\, s_1)\}$ for every open task
 \Comment{Eq.~\eqref{eq:cc}}
-\State $d'_j \gets d_j$ if no UAV can finish $j$ by $\tilde d_j$ but one can by $d_j$, else $d'_j\gets\tilde d_j$
-\Comment{Eq.~\eqref{eq:fallback}}
+\State $d'_j \gets \min\{d_j,\tilde d_j(z_\lambda)\}$ if no UAV can finish $j$ by $\tilde d_j(z_p)$ but one can by
+$d_j$, else $d'_j\gets\tilde d_j(z_p)$ \Comment{Eq.~\eqref{eq:costfb}}
 \State $\pi \gets$ \Call{FeasibilityFirstRepair}{$\pi^-$, $d'$};\; $\pi^\ast \gets \pi$;\; $\tau \gets 0$
 \Repeat
   \State destroy and repair $\pi$ with adaptively chosen operators; accept by simulated annealing
@@ -157,15 +190,35 @@ d'_j=\begin{cases} \min\{d_j,\tilde d_j(z_\lambda)\}, & j\in\tilde H(z_p)\setmin
 \end{equation}
 with $\tilde H(z_p)$ the set of tasks that no vehicle can finish by $\tilde d_j(z_p)$ on a direct flight.
 
-The rule has three properties. For $\lambda=0$, $z_\lambda=-\infty$ and Eq.~\eqref{eq:costfb} is the nominal fallback
-of Eq.~\eqref{eq:fallback}. For $\lambda\ge\Phi(z)/(1-\Phi(z))$, $z_\lambda\ge z$, no task falls back, and the model is
-the chance constraint at $z_\lambda$. In between, a fallback task is attempted only if its expected contribution is
-not negative under the error model. The rule adds no parameter to tune, because $z$ keeps its value and $\lambda$ is a
-property of the application. Where $1+b_1+z_\lambda s_1\le0.05$, which occurs only for $\lambda<0.03$, the nominal
-deadline is used. The rule ignores the delay that a fallback task causes to the tasks after it on the same route. A
-margin without a probability of meeting the deadline, such as a proportional buffer, has no counterpart of $z_\lambda$,
-so its fallback deadline has to be tuned for every value of $\lambda$. The cost-aware fallback was designed after the
-held-out results of study~4 and is evaluated on new seeds in study~5.
+\begin{prop}\label{prop:costfb}
+Let $s_0,s_1\ge0$, let $1+b_1+z s_1>0$ for every finite $z$ used, and read $\tilde d_j(-\infty)$ as $d_j$. (i) For
+$\lambda=0$, Eq.~\eqref{eq:costfb} is the nominal fallback of Eq.~\eqref{eq:fallback}. (ii) For
+$\lambda\ge\Phi(z)/(1-\Phi(z))$, no task falls back, and every planned task meets $\tilde d_j(z_\lambda)$. (iii) Under
+the error model of Eq.~\eqref{eq:errmodel}, every task planned to finish by $d'_j$ has an expected contribution
+$w_j\Pr[F_j\le d_j]-\lambda w_j\Pr[F_j>d_j]\ge0$ if its route starts as planned. (iv) Every planning deadline $d'_j$ is
+non-increasing in $\lambda$.
+\end{prop}
+\begin{proof}
+(i) $z_\lambda=-\infty$ gives $z_p=z$ and $\min\{d_j,\tilde d_j(-\infty)\}=d_j$. (ii) $z_\lambda\ge z$ holds if and only
+if $\theta(\lambda)\ge\Phi(z)$, that is, $\lambda\ge\Phi(z)/(1-\Phi(z))$. Then $z_p=z_\lambda$, and a task that cannot
+meet $\tilde d_j(z_p)$ cannot meet $\min\{d_j,\tilde d_j(z_\lambda)\}$ either, so it is given up. (iii) A protected task
+meets its deadline with probability at least $\Phi(z_p)\ge\Phi(z_\lambda)$ and a fallback task with probability at least
+$\Phi(z_\lambda)$, both by Proposition~\ref{prop:cc}. Hence $p\ge\theta(\lambda)$, and the expected contribution
+$w_j\big((1+\lambda)p-\lambda\big)$ is not negative. (iv) With $s_0,s_1\ge0$, $\tilde d_j(z)$ does not increase with
+$z$, and $z_\lambda$ and $z_p$ do not decrease with $\lambda$. A fallback task stays one when $\lambda$ grows, because
+$z_p$ does not decrease. A protected task can become a fallback task only while $z_\lambda<z$, and then $z_p=z$ does not
+change. In each case the deadline does not increase.
+\end{proof}
+
+For $\lambda$ between these limits, the rule attempts a given-up task only if its expected contribution is not
+negative. It adds no parameter to tune, because $z$ keeps its value and $\lambda$ is a property of the application.
+Where $1+b_1+z_\lambda s_1\le0.05$, which occurs only for $\lambda<0.03$, the nominal deadline is used. The rule needs
+only a probability of meeting the deadline, so it applies to any planning model that provides one, such as moment
+propagation, where the given-up tasks are accepted if $\mathrm{E}[F_j]+z_\lambda\mathrm{sd}[F_j]\le d_j$. It ignores
+the delay that a fallback task causes to the tasks after it on the same route. A margin without a probability of
+meeting the deadline, such as a proportional buffer, has no counterpart of $z_\lambda$, so its fallback deadline has to
+be tuned for every value of $\lambda$. The cost-aware fallback was designed after the held-out results of study~4 and is
+evaluated on new seeds in studies~5 and~6.
 
 \subsection{Stopping rule and trigger}\label{sec:stop}
 Every 5\,ms, the stopping rule compares the predicted gain $\widehat{\Delta J}$ of searching $H=10$\,ms longer with the
@@ -183,7 +236,7 @@ of the tasks that a later start would lose,
 where $\sigma_j(\tau)$ is the start shift of the route of task $j$ caused by waiting for the plan, $\mathrm{tol}_j$ the
 margin of the task to its deadline plus the waiting times before it on its route~\cite{savelsbergh1992vrptw}, $\bar L$
 the expected latency and $v_j$ the value of the task in Eq.~\eqref{eq:obj}. On the effective deadlines, the mean error
-is already part of the tolerance, so AnytimeSwarm-CC uses $m\equiv0$. $\Lambda_{\mathrm{R}}$ does not decrease with
+is already part of the tolerance, so \mname{} uses $m\equiv0$. $\Lambda_{\mathrm{R}}$ does not decrease with
 $\tau$, and it reduces to the exact loss of a deterministic plan when the spread vanishes (Supplementary
 Section~S1). A hard budget $B$ bounds every call. The replanner replans on every event and at least every
 $T_{\max}=60$\,s of mission time, a rolling-horizon policy in the terminology of

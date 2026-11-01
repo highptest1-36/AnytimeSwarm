@@ -26,19 +26,30 @@ probability that a team misses its objectives~\cite{ponda2012chance}. Per-custom
 time windows were formulated for routing with stochastic travel and service times by Li et al.~\cite{li2010vrptw}.
 Ehmke et al.~\cite{ehmke2015ensuring} propagate the mean and variance of the arrival time along a route, approximate
 the waiting for a time window by Clark's moments of a maximum~\cite{clark1961greatest}, and use the result as a
-feasibility check inside routing heuristics. The proposed model differs in three respects. Its error model is fitted
-to the finish times observed in closed loop rather than assumed per arc, it is applied in a replanner that runs between
-events with a publication delay, and it adds a fallback for the tasks that a hard chance constraint gives up. Moment
-propagation, a proportional buffer and a constant buffer are re-implemented as baselines on the same search.
+feasibility check inside routing heuristics. Soft time windows take the opposite route and charge a penalty for every
+late service inside the objective. Ta\c{s} et al.~\cite{tas2013stochastic} minimise transportation costs plus expected
+early and late service costs under stochastic travel times with tabu search, which requires the distribution of the
+lateness of every route during the search. For multi-UAV systems, Gao et al.~\cite{gao2025drcc} formulate a
+distributionally robust chance-constrained task assignment with time windows under uncertain fuel consumption and
+solve a mixed-integer reformulation, Wang et al.~\cite{wang2024uncertain} estimate the effect of uncertain flight times
+on completion times and time-window violations without Monte Carlo simulation, and Zhou and
+Tokekar~\cite{zhou2022risk} select risk-averse multi-robot assignments through the conditional value at risk. These
+formulations rely on mixed-integer, sampling-based or greedy solvers over a planning horizon, and none of them is
+evaluated as a replanner that has to publish a plan within a fraction of a second after every event.
+
+The proposed model differs in four respects. Its error model is fitted to the finish times observed in closed loop
+rather than assumed per arc. It is applied in a replanner that runs between events within a fraction of a second, with
+a publication delay. It adds a fallback for the tasks that a hard chance constraint gives up. And it prices a late
+arrival only in this fallback, through a break-even probability that again yields a deterministic deadline, so the
+search keeps its objective and its fast feasibility checks, whereas soft time windows change both. Moment propagation,
+a proportional buffer, a constant buffer and the consensus-based bundle algorithm (CBBA)~\cite{choi2009consensus} are
+re-implemented as baselines.
 
 \subsection{Metareasoning and anytime algorithms}
-Anytime algorithms~\cite{dean1988analysis,zilberstein1996using} and the
-rational allocation of computation~\cite{russell1991right,boddy1994deliberation} decide how long a
-planner should compute. Hansen and Zilberstein derive a monitoring policy over a performance
-profile~\cite{hansen2001monitoring}. Svegliato et al.\ predict the performance of an anytime algorithm
-online~\cite{svegliato2018meta}, and Sung
-et al.\ learn when an anytime motion planner should stop~\cite{sung2021quit}. Situated temporal planning accounts for
-the passage of time during planning~\cite{cashmore2018clock,shperberg2021situated}, and
-deadline-aware search adapts to a fixed deadline~\cite{dionne2011deadline}. Two of these rules, static performance
-profiles and online performance prediction, are re-implemented as baselines, so that the value of controlling
-computation can be compared with the value of the planning model.
+Anytime algorithms~\cite{dean1988analysis,zilberstein1996using} and the rational allocation of
+computation~\cite{russell1991right,boddy1994deliberation} decide how long a planner should compute, from performance
+profiles~\cite{hansen2001monitoring}, online performance prediction~\cite{svegliato2018meta} or learned stopping
+policies~\cite{sung2021quit}. Situated temporal planning and deadline-aware search account for the passage of time
+during planning~\cite{cashmore2018clock,shperberg2021situated,dionne2011deadline}. Two of these rules are
+re-implemented as baselines, so that the value of controlling computation can be compared with the value of the
+planning model.

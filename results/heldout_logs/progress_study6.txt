@@ -1,0 +1,12 @@
+[study6] 2026-11-01T07:36:04+00:00 freeze check
+journal_core/study6.py: OK
+experiments/b6_grid.py: OK
+experiments/analyze_study6.py: OK
+experiments/configs/S6_B.yaml: OK
+tools/run_study6.sh: OK
+tests/test_study6.py: OK
+docs/14_PROTOCOL_V6.md: OK
+[study6] 2026-11-01T07:36:04+00:00 tier B S6_B
+[ok] 29160 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s6_heldout_B.csv
+[study6] 2026-11-01T09:22:34+00:00 tier B analysis
+[study6] 2026-11-01T09:22:38+00:00 done

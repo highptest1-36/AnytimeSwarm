@@ -141,3 +141,21 @@ Feature rows:
 - None of the papers above treats when to stop the replanner (metareasoning or a learned stopping rule) for task allocation. Computation time is at most reported as an outcome.
 - Calibrated uncertainty appears only in Qian & Fu 2026, as an edge-reliability LCB. None calibrates finish-time error to buffer deadlines.
 - SITL or physics validation appears in Calvo & Capitan 2025 (Gazebo + PX4 SITL + ROS) and Ali et al. 2026 (Gazebo + ArduPilot SITL).
+
+## Bổ sung 01/11/2026 (bảng tab_related, cột "Late cost" và "Online"; nguồn: tóm tắt trên trang nhà xuất bản)
+- Taş, Dellaert, van Woensel & de Kok (2013), Computers & OR 40(1):214–224, doi:10.1016/j.cor.2012.06.008
+  (`tas2013stochastic`). VRP với thời gian đi ngẫu nhiên và soft time windows; mục tiêu = chi phí vận chuyển + chi phí phục
+  vụ sớm/trễ kỳ vọng; tabu search. TW ✓, Unc ✓, Late cost ✓, Online –.
+- Ehmke, Campbell & Urban (2015), EJOR 240(2):539–550 (`ehmke2015ensuring`). VRPTW với mức phục vụ (chance constraint
+  theo khách hàng), lan truyền mô-men trong heuristic. TW ✓, Unc ✓, Late cost – (ràng buộc mức phục vụ, không phải chi
+  phí), Online –.
+- Zhou & Tokekar (2022), IEEE T-RO 38(5):3064–3084, doi:10.1109/TRO.2022.3158227 (`zhou2022risk`). Phân công đa robot
+  theo CVaR, thuật toán tham lam tuần tự. TW –, Unc ✓, Online – (không báo cáo replanning trong nhiệm vụ).
+- Gao, Zheng, Mei, Zheng & Zhong (2025), Drones 9(9):633, doi:10.3390/drones9090633 (`gao2025drcc`). Phân công UAV
+  dị thể có time windows, chance constraint phân phối bền vững (Wasserstein), xấp xỉ CVaR → MILP. TW ✓, Unc ✓ (nhiên
+  liệu), Online –.
+- Wang, Jia, Guo & Hou (2024), Aerospace 11(3):214, doi:10.3390/aerospace11030214 (`wang2024uncertain`). Ước lượng
+  nhanh thời điểm hoàn thành và xác suất vi phạm time window dưới thời gian bay bất định, không cần Monte Carlo. TW ✓,
+  Unc ✓, Online –.
+- Johnson, Choi, Ponda & How (2012), IEEE CDC, pp. 4702–4708, doi:10.1109/CDC.2012.6425867 (`johnson2012nonsubmodular`).
+  Bid warping cho CBBA với hàm điểm không submodular; dùng trong cài đặt CBBA của nghiên cứu 6 (không có trong bảng).

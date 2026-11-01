@@ -1,0 +1,59 @@
+# Study 6, tier B held-out
+
+## Primary family, lambda = 1, Holm (H20 proposed vs CBBA, H21 CBBA on the proposed model vs CBBA, H22 cost-aware vs nominal fallback in moment propagation, H23 vs no fallback)
+
+| comparison | diff pp [95% CI] | p | p Holm |
+|---|---|---|---|
+| CBBA | +12.77 [+11.91, +13.63] | 0.0000 | 0.0000 |
+| CBBAModel | +12.12 [+11.31, +12.93] | 0.0000 | 0.0000 |
+| MPFb | +2.71 [+2.13, +3.27] | 0.0000 | 0.0000 |
+| MPNoFb | +3.30 [+2.83, +3.79] | 0.0000 | 0.0000 |
+
+## Secondary (descriptive): A minus B at every late cost
+
+| comparison | lambda 0 | lambda 0.5 | lambda 1 | lambda 2 |
+|---|---|---|---|---|
+| CBBA (CA - CBBA) | +4.86 [+4.22, +5.50] | +8.82 [+8.08, +9.56] | +12.77 [+11.91, +13.63] | +20.69 [+19.55, +21.83] |
+| CBBAModel (CBBACA - CBBA) | +3.27 [+2.66, +3.86] | +7.69 [+7.00, +8.38] | +12.12 [+11.31, +12.93] | +20.98 [+19.90, +22.05] |
+| MPFb (MPCA - MP) | -2.96 [-3.42, -2.52] | -0.13 [-0.64, +0.36] | +2.71 [+2.13, +3.27] | +8.38 [+7.61, +9.15] |
+| MPNoFb (MPCA - MPnf) | +6.25 [+5.85, +6.66] | +4.78 [+4.35, +5.22] | +3.30 [+2.83, +3.79] | +0.35 [-0.25, +0.95] |
+| CBBAEvent (CA - CBBAe) | +6.72 [+6.04, +7.40] | +10.24 [+9.49, +10.98] | +13.75 [+12.90, +14.59] | +20.78 [+19.69, +21.87] |
+| CBBAModelEvent (CBBACA - CBBAe) | +5.13 [+4.48, +5.77] | +9.12 [+8.39, +9.84] | +13.10 [+12.28, +13.92] | +21.07 [+20.00, +22.15] |
+| CAMPCA (CA - MPCA) | +1.41 [+1.00, +1.80] | +0.32 [-0.14, +0.77] | -0.76 [-1.31, -0.24] | -2.94 [-3.65, -2.24] |
+| CACBBACA (CA - CBBACA) | +1.60 [+1.22, +1.98] | +1.12 [+0.68, +1.57] | +0.65 [+0.13, +1.17] | -0.29 [-0.99, +0.39] |
+| CACCfb (CA - CCfb) | -1.30 [-1.67, -0.93] | +0.56 [+0.13, +0.98] | +2.42 [+1.91, +2.92] | +6.13 [+5.44, +6.82] |
+| CBBAForty (CBBA - Forty) | -0.99 [-1.48, -0.51] | -0.77 [-1.36, -0.17] | -0.54 [-1.27, +0.18] | -0.10 [-1.10, +0.92] |
+| CAForty (CA - Forty) | +3.87 [+3.34, +4.39] | +8.05 [+7.43, +8.67] | +12.23 [+11.49, +12.96] | +20.59 [+19.58, +21.58] |
+
+## Per regime (lambda 1 | lambda 0)
+
+CBBA lambda 1 mid w1: +12.83 [+11.49, +14.13]
+CBBA lambda 1 mid w0.5: +9.78 [+8.52, +11.03]
+CBBA lambda 1 high w1: +17.51 [+16.06, +18.94]
+CBBA lambda 1 high w0.5: +10.98 [+9.60, +12.37]
+CBBA lambda 0 mid w1: +7.46 [+6.60, +8.28]
+CBBA lambda 0 mid w0.5: +4.19 [+3.29, +5.06]
+CBBA lambda 0 high w1: +8.04 [+6.95, +9.10]
+CBBA lambda 0 high w0.5: -0.24 [-1.29, +0.82]
+CBBAModel lambda 1 mid w1: +11.86 [+10.60, +13.09]
+CBBAModel lambda 1 mid w0.5: +9.00 [+7.72, +10.27]
+CBBAModel lambda 1 high w1: +17.25 [+15.86, +18.65]
+CBBAModel lambda 1 high w0.5: +10.39 [+9.06, +11.77]
+CBBAModel lambda 0 mid w1: +5.70 [+4.87, +6.52]
+CBBAModel lambda 0 mid w0.5: +2.27 [+1.38, +3.14]
+CBBAModel lambda 0 high w1: +7.07 [+6.03, +8.11]
+CBBAModel lambda 0 high w0.5: -1.99 [-3.02, -0.94]
+
+## Means
+
+| method | U | u_0.5 | u_1 | u_2 | late | ms/call | iterations or rounds |
+|---|---|---|---|---|---|---|---|
+| Proposed (ALNS, cost-aware fallback) | 53.42 | 49.81 | 46.21 | 39.01 | 4.91 | 40.2 | 467.4 |
+| Proposed, nominal fallback | 54.71 | 49.26 | 43.80 | 32.88 | 7.34 | 40.2 | 404.3 |
+| CBBA, periodic | 48.56 | 41.00 | 33.44 | 18.32 | 10.57 | 5.1 | 2.8 |
+| CBBA, event-triggered | 46.69 | 39.58 | 32.46 | 18.23 | 9.77 | 13.2 | 4.3 |
+| CBBA on the proposed model | 51.82 | 48.69 | 45.56 | 39.30 | 4.25 | 2.1 | 2.1 |
+| Moment propagation, cost-aware fallback | 52.01 | 49.49 | 46.98 | 41.95 | 3.52 | 40.3 | 433.2 |
+| Moment propagation, nominal fallback | 54.97 | 49.62 | 44.27 | 33.57 | 7.18 | 40.2 | 382.8 |
+| Moment propagation, no fallback | 45.75 | 44.71 | 43.67 | 41.60 | 1.51 | 40.2 | 498.5 |
+| Nominal model (ALNS) | 49.55 | 41.76 | 33.98 | 18.42 | 11.02 | 40.1 | 413.2 |

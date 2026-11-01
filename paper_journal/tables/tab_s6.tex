@@ -1,0 +1,18 @@
+\begin{table}[t]
+\caption{Study~6, tier B held-out results: mean score $u_\lambda$ (\%) for a late arrival that costs $\lambda$ mean task rewards ($\lambda=0$ is the utility), tasks served late per mission and planning time per call. Methods with the cost-aware fallback use $\lambda=1$. 270 missions, 12 configurations each.}\label{tab:s6}
+\centering\small
+\begin{tabular}{lrrrrrr}
+\toprule
+Method & $\lambda=0$ & $0.5$ & $1$ & $2$ & Late & ms \\
+\midrule
+Proposed (ALNS, cost-aware fallback) & 53.42 & 49.81 & 46.21 & 39.01 & 4.91 & 40.2 \\
+CBBA on the proposed model & 51.82 & 48.69 & 45.56 & 39.30 & 4.25 & 2.1 \\
+CBBA, periodic & 48.56 & 41.00 & 33.44 & 18.32 & 10.57 & 5.1 \\
+CBBA, event-triggered & 46.69 & 39.58 & 32.46 & 18.23 & 9.77 & 13.2 \\
+Moment propagation, cost-aware fallback & 52.01 & 49.49 & 46.98 & 41.95 & 3.52 & 40.3 \\
+Moment propagation, nominal fallback & 54.97 & 49.62 & 44.27 & 33.57 & 7.18 & 40.2 \\
+Moment propagation, no fallback & 45.75 & 44.71 & 43.67 & 41.60 & 1.51 & 40.2 \\
+Nominal model (ALNS) & 49.55 & 41.76 & 33.98 & 18.42 & 11.02 & 40.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
