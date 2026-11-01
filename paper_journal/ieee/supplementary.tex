@@ -32,6 +32,9 @@
 \IfFileExists{../tables/numbers_s6.tex}{\input{../tables/numbers_s6.tex}}{}
 \IfFileExists{../tables/numbers_extra.tex}{\input{../tables/numbers_extra.tex}}{}
 \IfFileExists{../tables/numbers_demo.tex}{\input{../tables/numbers_demo.tex}}{}
+\IfFileExists{../tables/numbers_robust.tex}{\input{../tables/numbers_robust.tex}}{}
+\IfFileExists{../tables/numbers_calib.tex}{\input{../tables/numbers_calib.tex}}{}
+\IfFileExists{../tables/numbers_s7.tex}{\input{../tables/numbers_s7.tex}}{}
 \newcommand{\mname}{LTCC}  % name of the proposed method
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
@@ -52,8 +55,9 @@ Replanning Under Uncertain Execution}
 This document contains the parts of the evaluation that the main paper only summarises: the stopping rule and its two
 delay costs with their properties, the scenario generator and the fitted error models, the exact-execution benchmark of
 the stopping rules, the full results of study~1, further results of study~2 per regime and in tier C, the regimes of
-study~3 and the reliability of the error model in study~4. Section, equation and table numbers without the prefix S
-refer to the main paper.
+study~3, the reliability of the error model in study~4, the re-scoring that motivated study~5, the calibration of the
+predicted probability in studies 4--7, the sensitivity of all tier B tests to the resampling unit and further results of
+study~7. Section, equation and table numbers without the prefix S refer to the main paper.
 \end{abstract}
 
 \section{Stopping rule and delay costs}\label{sec:Sstop}
@@ -148,7 +152,7 @@ the nominal model. The dotted line marks perfect calibration.}\label{fig:Scovera
 \section{Study 5: cost of a late arrival}\label{sec:Sstudy5}
 Fig.~\ref{fig:Slatepen} scores the held-out runs of studies 3 and 4 again with a cost of $\lambda$ mean task rewards for
 every late arrival, $u_\lambda=U-\lambda\,n_{\mathrm{late}}/n$. The analysis was done after study~4C, was not
-pre-registered and used no new runs. The fallback of study~3 raised the number of tasks served late from
+planned in a protocol and used no new runs. The fallback of study~3 raised the number of tasks served late from
 \val{PSThreeLateNoFb} to \val{PSThreeLateFb} per mission, and the fallback within moment propagation from
 \val{PSFourLateNoFb} to \val{PSFourLateFb}. A comparison changes sign at the late cost
 $\lambda^\ast=\Delta U/\Delta(n_{\mathrm{late}}/n)$. For the fallback, $\lambda^\ast$ was \val{PSThreeFbPropStar} in
@@ -165,6 +169,52 @@ proposed model with fallback stayed behind at every $\lambda$, by \val{PSFourCCP
 difference in $u_\lambda$ with 95\% bootstrap intervals over 270 missions. Exploratory analysis without new
 runs.}\label{fig:Slatepen}
 \end{figure}
+
+\section{Calibration of the predicted probability}\label{sec:Scalib}
+Every tier B run since study~4 bins its executed tasks by the probability of meeting the deadline that the error model
+of the disturbance level predicted at the last published plan, and counts how many of them met it. From these bins,
+Fig.~\ref{fig:Scalib} shows the reliability of the prediction for the proposed model in studies 4--6 and, in its right
+panel, under the shifted execution errors of study~7b. Over studies 4--6, the expected calibration error,
+$\mathrm{ECE}=\sum_i|k_i-p_i|/N$ with $k_i$ the tasks on time and $p_i$ the sum of the predicted probabilities in
+decile $i$, ranged from \val{VCalEceMin} to \val{VCalEceMax}\,pp. The upper tail, a predicted probability of at least
+0.8, is where a chance constraint acts. There, \val{VCalObsHiFiveMid}\% of the tasks were served on time under mid
+disturbances in study~5, against a predicted \val{VCalPredHiFiveMid}\%, and \val{VCalObsHiFiveHigh}\% under high
+disturbances, against \val{VCalPredHiFiveHigh}\%. Below the tail, the model was conservative under high disturbances,
+where it predicted a lower probability than was observed, and slightly optimistic under mid disturbances. Under the
+shifted errors of study~7b, the ECE was \val{VCalEceSGauss}\,pp for the calibrated Gaussian errors,
+\val{VCalEceSTthree}\,pp for Student-$t$ errors, \val{VCalEceSOutlier}\,pp with rare long delays,
+\val{VCalEceSBias}\,pp with a speed bias per UAV and \val{VCalEceSPareto}\,pp with Pareto latency, with Brier scores of
+\val{VCalBrierSGauss}, \val{VCalBrierSTthree}, \val{VCalBrierSOutlier}, \val{VCalBrierSBias} and
+\val{VCalBrierSPareto}. In the upper tail, the share on time under these conditions was \val{VCalObsHiSGauss},
+\val{VCalObsHiSTthree}, \val{VCalObsHiSOutlier}, \val{VCalObsHiSBias} and \val{VCalObsHiSPareto}\%, against predicted
+means of \val{VCalPredHiSGauss}, \val{VCalPredHiSTthree}, \val{VCalPredHiSOutlier}, \val{VCalPredHiSBias} and
+\val{VCalPredHiSPareto}\%.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_calib}{\linewidth}
+\caption{Reliability of the predicted probability of meeting the deadline for the proposed model: share of executed
+tasks that met their deadline against the mean predicted probability, per decile with at least 30 tasks. Left and
+centre: studies 4--6 under mid and high disturbances. Right: study~7b under high disturbances with the calibrated
+Gaussian errors and with errors that the model does not describe. The dotted line marks perfect
+calibration.}\label{fig:Scalib}
+\end{figure*}
+
+\section{Sensitivity to the resampling unit}\label{sec:Scluster}
+The primary tests resample missions. The nine missions of one seed have independent scenarios but share the execution
+disturbances, which are keyed to the seed, the UAV and the task. Table~\ref{tab:Scluster} repeats every tier B primary
+test of studies 2--6 with a paired bootstrap over the \val{VClNClusters} seeds. The intervals were \val{VClRatioMin} to
+\val{VClRatioMax} times as wide as over missions (median \val{VClRatioMed}). They were mostly narrower, because every
+seed contains one mission of each fleet scale and event profile, so that resampling seeds removes the variation between
+these strata. \val{VClNChanged} of the \val{VClNTests} outcomes changed. In H9, the advantage of the proportional buffer
+over the proposed model, which had missed significance over missions, became significant over seeds (interval
+\val{VClHNineCI}\,pp for the proposed model minus the buffer, Holm-adjusted $p={}$\val{VClHNineP}). The tier C
+hypotheses have one mission per seed and are not affected.
+
+\inputtable{tab_cluster}
+
+\section{Study 7: further results}\label{sec:Sstudy7}
+\input{supp/s6_study7}
 
 \bibliographystyle{IEEEtran}
 \bibliography{../references}

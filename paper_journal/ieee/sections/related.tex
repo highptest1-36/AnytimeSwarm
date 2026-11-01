@@ -49,7 +49,11 @@ The proposed model differs in four respects. Its error model is fitted to the fi
 rather than assumed per arc. It is applied in a replanner that runs between events within a fraction of a second, with
 a publication delay. It adds a fallback for the tasks that a hard chance constraint gives up. And it prices a late
 arrival only in this fallback, through a break-even probability that again yields a deterministic deadline, so the
-search keeps its objective and its fast feasibility checks, whereas soft time windows change both. Moment propagation,
+search keeps its objective and its fast feasibility checks, whereas soft time windows change both. The closest use of
+a probability as an acceptance test in multi-UAV allocation is the uncertainty-gated allocation of Qian and
+Fu~\cite{ucdg2026drones}, which removes an agent--task pair from a one-task-per-UAV matching when a lower confidence
+bound fails. There the test acts on single assignments under intermittent communication, whereas here it acts on the
+deadlines of every task along a route, with an error that grows with the lead time. Moment propagation,
 a proportional buffer, a constant buffer and the consensus-based bundle algorithm (CBBA)~\cite{choi2009consensus} are
 re-implemented as baselines.
 

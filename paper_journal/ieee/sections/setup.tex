@@ -2,7 +2,8 @@
 \subsection{Scenarios and kinematic tier}
 Missions are created by a seeded generator (Supplementary Table~\ref{S-tab:params}). The map is a square with a side of 10\,km and the
 depot at its centre, half of the tasks are clustered around three hotspots, and half of them are known at the start
-while the others arrive in batches. Time windows have a slack of 180 to 600\,s and services last 30 to 90\,s. Three
+while the others arrive in batches. Time windows have a slack of 180 to 600\,s and services last 30 to 90\,s. Task
+rewards are 1, 2, 3 or 5 with probabilities 0.4, 0.3, 0.2 and 0.1, so the mean reward is $\bar w=2.1$. Three
 fleet scales with 5, 10 and 20 UAVs and 25, 50 and 140 tasks are combined with three event profiles, namely six arrival
 batches, three batches with two UAV failures, and three batches with four tightened deadlines.
 
@@ -88,7 +89,9 @@ $n_0=50$ with $z=0.5$ for online calibration. On development missions, the three
 Study~5 charges every late arrival with $\lambda$ times the mean task reward of the mission and scores a run by
 $u_\lambda=U-\lambda\,n_{\mathrm{late}}/n$, where $U$ is the utility, $n_{\mathrm{late}}$ the number of tasks served
 late and $n$ the number of tasks. $\lambda=0$ gives the utility of studies 1--4. The cost-aware fallback of
-Section~\ref{sec:costfb} is run with the $\lambda$ it is scored with and the $z$ of study~4, without any further tuning.
+Section~\ref{sec:costfb} is run with the $\lambda$ it is scored with and the $z$ of study~4, without any further tuning,
+and with the proportional cost model, $\theta_j=\lambda/(1+\lambda)$. Because $U$ is a share of the total reward, the
+score $u_\lambda$ instead charges every late arrival the fixed cost $\lambda\bar w$, a mismatch that study~7 removes.
 Its competitors are tuned for every $\lambda\in\{0.5,1,2\}$ and disturbance level on development missions. These are
 the proportional buffer with $c\in\{0.1,0.2,0.3,0.45,0.6,0.75,0.9,1.2\}$, with or without the nominal fallback, and the
 proposed model without fallback with $z\in\{-0.5,0,0.5,1,1.5\}$. A grid that first ended at $c=0.3$ and $z=0$ was
@@ -104,31 +107,55 @@ convergence of CBBA rests, and without bid warping it did not converge on some d
 scratch at every call, stops at convergence or at the hard budget, and pays for its planning time like every other
 method. It runs with the periodic and with the event trigger, and also on the deadlines of the cost-aware fallback with
 $\lambda=1$. Moment propagation with the cost-aware fallback accepts a given-up task if its nominal finish meets the
-deadline and $\mathrm{E}[F_j]+z_\lambda\mathrm{sd}[F_j]\le d_j$. No parameter was tuned in study~6.
+deadline and $\mathrm{E}[F_j]+z_j\mathrm{sd}[F_j]\le d_j$. No parameter was tuned in study~6.
 
-\subsection{Pre-registered protocol}\label{sec:protocol}
-The evaluation consists of six studies, each with its own held-out seeds, written protocol and frozen code, and each
+Study~7 tests two assumptions of the method. Study~7a removes the mismatch between the cost model of the rule and the
+score of studies 5 and 6. The cost-aware fallback runs with the proportional cost model and with the fixed cost model,
+$\theta_j=\lambda\bar w/(w_j+\lambda\bar w)$ with the mean reward $\bar w=2.1$ of the generator, and every run is
+scored with both $u_\lambda$ and $u^w_\lambda=U-\lambda R_{\mathrm{late}}/R$, where $R_{\mathrm{late}}$ is the reward of
+the tasks served late and $R$ the total reward, so that each cost model has its own score. The proportional buffer and
+the model without fallback are tuned again on development missions for every $\lambda$, disturbance level and score,
+from the candidates of study~5. Study~7b keeps the error model, $z$ and every tuned parameter of the calibrated high
+level, but draws the execution errors from structures that the model does not describe. Speed and service errors
+follow a Student-$t$ law with three degrees of freedom at the same standard deviation; rare long delays add, with
+probability 0.1, an exponential delay with a mean of 90\,s to a leg, as a detour or a holding pattern would; a
+persistent speed bias per UAV and mission with a standard deviation of 8\% correlates the errors along a route; and a
+Pareto dissemination delay with the median of the lognormal one and a tail index of 1.5 replaces the lognormal delay.
+The calibrated Gaussian level serves as control. Study~7b compares the nominal model, the constant and the proportional
+buffer, the proposed model with the nominal and with the cost-aware fallback ($\lambda=1$, both cost models) and moment
+propagation with the cost-aware fallback.
+
+\subsection{Protocol}\label{sec:protocol}
+The evaluation consists of seven studies, each with its own held-out seeds, written protocol and frozen code, and each
 study after the first was designed after the held-out results of the earlier ones. Table~\ref{tab:hyp} lists their
 primary hypotheses. Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute
-price, $z$, the buffers and the error models were fixed. Before each study, the configurations, the models and the code
-were frozen with SHA-256 hashes, which the held-out runs checked before starting.
+price, $z$, the buffers and the error models were fixed. Before each study, the written protocol with its hypotheses,
+the configurations, the models and the code were frozen with SHA-256 hashes and committed to the version history, and
+the held-out runs checked the hashes before starting. The protocols were not lodged with an external registry. They are
+published with the code, together with the commit of every freeze and every deviation.
 
 Study~1 tested AnytimeSwarm-R against fixed and adaptive stopping rules on the nominal model (Supplementary
 Section~\ref{S-sec:Sstudy1}). Studies 2--6 share one tier B matrix. It crosses two disturbance levels (mid, high), high
 latency, three latency factors ($\kappa_B=10, 50, 200$) and two time-window factors (original and halved), which gives
 twelve configurations of 270 held-out missions each, with new seeds 5000--5029, 7000--7029, 8000--8029, 10000--10029
-and 12000--12029 for studies 2, 3, 4, 5 and 6. Study~2 compares fifteen methods (Supplementary
+and 12000--12029 for studies 2, 3, 4, 5 and 6, and 13000--13029 and 14000--14029 for studies 7a and 7b. Study~2 compares fifteen methods (Supplementary
 Table~\ref{S-tab:s2main}), and its tier C part flies 30 missions with mid disturbances and $\kappa_B=50$ (seeds
 6000--6009). Study~4C flies \val{GN} missions under high disturbances with halved windows, where tier B predicted the
 largest effect (seeds 9000--9011). Its size was computed beforehand from a tier B counterpart on development seeds, and
 one interim analysis after half of the missions uses O'Brien--Fleming bounds, so that the flights could stop early
-without inflating the error rate. Studies 5 and 6 test their primary hypotheses with the score $u_1$.
+without inflating the error rate. Studies 5 and 6 test their primary hypotheses with the score $u_1$, study~7a with
+$u_1$ and $u^w_1$, and study~7b with $U$ and $u_1$.
 
 In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
 paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the
 Holm procedure~\cite{holm1979simple}. Non-inferiority uses a margin of $-0.5$\,pp and is followed by a superiority
 test in a fixed sequence, and equivalence is tested with two one-sided tests. All other comparisons are
-descriptive. A tier C run in which a vehicle does not take off in time, or whose real-time factor leaves $[1.6, 2.2]$,
+descriptive. The nine missions of one seed have independent scenarios but share the execution disturbances, which are
+keyed to the seed. Every tier B primary test of studies 2--6 was therefore repeated with a paired bootstrap over the 30
+seeds (Supplementary Table~\ref{S-tab:Scluster}). The intervals were \val{VClRatioMin} to \val{VClRatioMax} times as
+wide as over missions, mostly narrower, because every seed contains one mission of each fleet scale and event profile.
+Only the outcome of H9 changed. There, the advantage of the proportional buffer over the proposed model became
+significant (Holm-adjusted $p={}$\val{VClHNineP}). A tier C run in which a vehicle does not take off in time, or whose real-time factor leaves $[1.6, 2.2]$,
 is repeated once. Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with the methods of a
 configuration run in turn. A separately written validator found no infeasible plan among \val{JValidatorPlans}
 development plans. The protocols and their deviations are available with the code.

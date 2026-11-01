@@ -1,0 +1,15 @@
+[grid] dev7b_lat: 45 missions x 12 configurations, workers=8
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40+periodic:60          periodic:60      U=0.4822 late=14.49 dropD= 2.38 dropX=80.89 calls= 26.2 ms=  40.2 (8s)
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40~buf=60+periodic:60   periodic:60      U=0.5480 late= 9.58 dropD= 0.24 dropX=35.24 calls= 25.9 ms=  40.3 (14s)
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40~prop=auto;fb=nominal+periodic:60 periodic:60      U=0.5714 late=10.00 dropD= 1.11 dropX=30.58 calls= 24.9 ms=  40.2 (21s)
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40~mp=auto;lam=1+periodic:60 periodic:60      U=0.5786 late= 5.29 dropD= 0.09 dropX=13.60 calls= 26.2 ms=  40.3 (28s)
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40~z=auto4;fb=nominal+periodic:60 periodic:60      U=0.5855 late= 9.07 dropD= 1.38 dropX=31.73 calls= 25.4 ms=  40.2 (35s)
+  high_gauss high_pareto k= 50 w=1 alns_fixed@40~z=auto4;lam=1+periodic:60 periodic:60      U=0.5918 late= 6.44 dropD= 0.04 dropX= 4.47 calls= 25.5 ms=  40.1 (41s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40+periodic:60          periodic:60      U=0.3440 late=13.16 dropD= 3.20 dropX=23.87 calls= 21.6 ms=  40.1 (47s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40~buf=60+periodic:60   periodic:60      U=0.3467 late= 8.22 dropD= 0.04 dropX= 4.60 calls= 22.0 ms=  40.1 (52s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40~prop=auto;fb=nominal+periodic:60 periodic:60      U=0.3993 late=10.24 dropD= 2.33 dropX=10.82 calls= 21.2 ms=  40.2 (58s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40~mp=auto;lam=1+periodic:60 periodic:60      U=0.2844 late= 2.71 dropD= 0.02 dropX= 2.09 calls= 22.8 ms=  40.5 (65s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40~z=auto4;fb=nominal+periodic:60 periodic:60      U=0.3850 late=10.89 dropD= 2.67 dropX=12.82 calls= 21.2 ms=  40.2 (70s)
+  high_gauss high_pareto k= 50 w=0.5 alns_fixed@40~z=auto4;lam=1+periodic:60 periodic:60      U=0.3420 late= 4.78 dropD= 0.02 dropX= 0.36 calls= 22.1 ms=  40.1 (76s)
+[ok] 540 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/dev7b_lat.csv

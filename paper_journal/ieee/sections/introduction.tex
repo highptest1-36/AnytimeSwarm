@@ -34,19 +34,24 @@ given-up tasks to attempt, without tuning?
 To answer them, the paper proposes \mname{} (lead-time-scaled chance constraints), a replanner that plans against a
 chance constraint on the finish time of every task and keeps the fast heuristics of the nominal model. Its central
 observation is that the probability of meeting a deadline, which a buffer lacks, lets a replanner price lateness
-without tuning. The contributions are threefold. The first is the planning model. Because wind and airspeed errors
-persist over a leg, the spread of the error grows linearly with the lead time and not with its square root, as
-independent increments would imply. With an affine error model, a chance constraint on every task reduces exactly to an
-effective deadline, which the repair and the search of the nominal model use unchanged (Proposition~\ref{prop:cc}). A
-cost-aware fallback attempts a given-up task only if its probability of meeting the deadline outweighs the cost of a
-late arrival. In closed form, this rule is again an effective deadline, and it has no parameter to tune
-(Proposition~\ref{prop:costfb}). The second is a sequence of six pre-registered studies on held-out missions with
-re-implemented baselines. These include stopping rules from the metareasoning
+without tuning. Neither Gaussian chance constraints, nor feasibility checks under uncertainty that plug into an
+existing routing heuristic~\cite{ehmke2015ensuring}, nor ALNS or CBBA are new. The contribution lies in the interface
+between them and in the decision rule built on it, and it is threefold. The first is the planning model. Because wind
+and airspeed errors persist over a leg, the spread of the finish-time error, calibrated from closed-loop execution,
+grows linearly with the lead time and not with its square root, as independent increments would imply. With an affine
+error model, a chance constraint on every task reduces exactly to an effective deadline, which the repair and the
+search of the nominal model use unchanged (Proposition~\ref{prop:cc}). A cost-aware fallback attempts a given-up task
+only if its probability of meeting the deadline outweighs the cost of a late arrival. In closed form, this rule is
+again an effective deadline per task, for a late cost proportional to the reward as well as for a fixed one, and it has
+no parameter to tune (Proposition~\ref{prop:costfb}). The rule needs only a probability of meeting the deadline, so it
+also applies to moment propagation. The second is a sequence of seven studies on held-out missions, each with a
+protocol frozen before its held-out runs, with re-implemented baselines. These include stopping rules from the metareasoning
 literature~\cite{boddy1994deliberation,zilberstein1996using,svegliato2018meta}, fixed and size-scaled budgets, a
 constant time buffer~\cite{agra2013robust}, a proportional buffer, moment propagation along the
 route~\cite{ehmke2015ensuring}, CBBA~\cite{choi2009consensus} and a conventional event-triggered planner. Competitors
-are tuned for every cost of a late arrival, and ablations separate the effects of the planning model, the fallback, the
-stopping rule and the trigger. The third is a software-in-the-loop evaluation with PX4
+are tuned for every cost of a late arrival, ablations separate the effects of the planning model, the fallback, the
+stopping rule and the trigger, and a final study tests execution errors that the calibrated model does not describe.
+The third is a software-in-the-loop evaluation with PX4
 autopilots~\cite{meier2015px4} in Gazebo~\cite{koenig2004gazebo} and ROS~2~\cite{macenski2022ros2}, after a rescaling
 that keeps every dimensionless ratio of the decision problem, with a number of flights computed beforehand from the
 kinematic tier.
@@ -66,5 +71,5 @@ by \val{FAbsPropTwo} points. On a further set of seeds, the replanner served \va
 \val{WDabsCBBAModelOne} points when it planned on the proposed model, and the cost-aware fallback improved moment
 propagation as well. In software-in-the-loop flights with PX4 and Gazebo,
 the fallback raised the utility by \val{XDabsTcNoFb} percentage points, whereas the advantage over the nominal model was
-not confirmed, as the kinematic tier had predicted for the same missions. An earlier pre-registered study, in which
+not confirmed, as the kinematic tier had predicted for the same missions. An earlier study, in which
 only the stopping rule was made execution-aware, found no significant gain in utility (Section~\ref{sec:study1}).

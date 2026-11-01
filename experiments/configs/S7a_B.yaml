@@ -1,0 +1,33 @@
+# Study 7a, tier B (docs/16_PROTOCOL_V7.md): cost-aware fallback with the proportional and the fixed late-cost model,
+# against competitors tuned per late cost, disturbance level and score (journal_core/study7.TUNED7). Frozen before any
+# study-7 held-out run. Options inside a method are separated by ";".
+frozen: true
+heldout_seeds: {start: 13000, n: 30}
+grid:
+  name: s7a_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [mid, high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@40~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=0.5;cost=fee+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=0.5+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=2;cost=fee+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=2+periodic:60"
+    - "alns_fixed@40~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40+periodic:60"
+    - "alns_fixed@40~prop=0.45;fb=nominal+periodic:60"
+    - "alns_fixed@40~prop=0.75;fb=nominal+periodic:60"
+    - "alns_fixed@40~prop=0.3;fb=none+periodic:60"
+    - "alns_fixed@40~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@40~prop=0.6;fb=none+periodic:60"
+    - "alns_fixed@40~prop=0.75;fb=none+periodic:60"
+    - "alns_fixed@40~z=0+periodic:60"
+    - "alns_fixed@40~z=0.5+periodic:60"
+    - "alns_fixed@40~z=1+periodic:60"
+  workers: 4

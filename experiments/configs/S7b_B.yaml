@@ -1,0 +1,22 @@
+# Study 7b, tier B (docs/16_PROTOCOL_V7.md): execution errors outside the calibrated model. Error model, z and every
+# tuned parameter are those of the calibrated high level. Frozen before any study-7 held-out run.
+frozen: true
+heldout_seeds: {start: 14000, n: 30}
+grid:
+  name: s7b_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [high_gauss, high_t3, high_outlier, high_uavbias]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@40+periodic:60"
+    - "alns_fixed@40~buf=60+periodic:60"
+    - "alns_fixed@40~prop=auto;fb=nominal+periodic:60"
+    - "alns_fixed@40~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@40~mp=auto;lam=1+periodic:60"
+  workers: 4
