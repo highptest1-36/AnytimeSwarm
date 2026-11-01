@@ -1,0 +1,24 @@
+# Study 6, tier B (docs/14_PROTOCOL_V6.md): CBBA as a published baseline, and the cost-aware fallback for moment
+# propagation. Frozen before any study-6 held-out run. Options inside a method are separated by ";".
+frozen: true
+heldout_seeds: {start: 12000, n: 30}
+grid:
+  name: s6_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [mid, high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@40~z=auto4;lam=1+periodic:60"
+    - "cbba+periodic:60"
+    - "cbba~z=auto4;lam=1+periodic:60"
+    - "cbba+event"
+    - "alns_fixed@40~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@40~mp=auto;fb=nominal+periodic:60"
+    - "alns_fixed@40~mp=auto+periodic:60"
+    - "alns_fixed@40~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40+periodic:60"
+  workers: 4
