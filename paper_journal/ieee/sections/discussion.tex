@@ -39,13 +39,11 @@ same way, so it is not tied to the closed form. At twice the cost, a tuned buffe
 prices each attempt on its own and ignores the delay that a fallback task causes to later tasks on its route, and a
 route-level version that also charges this delay is the natural next step.
 
-The two tiers play different roles. The kinematic tier runs tens of thousands of missions and resolves differences of a
-few percentage points. The software-in-the-loop tier adds the autopilot, the vehicle dynamics and the timing of a real
-planning loop, but the cost of a flight limits it to a few dozen missions. In both tier C studies, tier B predicted the
-utility of a flight closely and anticipated every tier C comparison on the same missions, including those that were
-not significant. The flights therefore support the transfer of the kinematic results and confirm the fallback, but the
-advantage of the chance constraint over the nominal model rests on tier B. The development estimate that sized
-study~4C overstated this advantage, so tier C studies should be sized from a conservative effect.
+The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over tens of
+thousands of missions, whereas a flight with autopilot and vehicle dynamics is costly. Tier B predicted every tier C
+comparison on the same missions, so the flights support the transfer of the kinematic results and confirm the
+fallback, but the advantage over the nominal model rests on tier B, and tier C studies should be sized from a
+conservative effect.
 
 Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
 level, so the level is assumed to be known. Online calibration removes this assumption but served

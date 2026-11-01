@@ -31,6 +31,7 @@
 \IfFileExists{../tables/numbers_s5.tex}{\input{../tables/numbers_s5.tex}}{}
 \IfFileExists{../tables/numbers_s6.tex}{\input{../tables/numbers_s6.tex}}{}
 \IfFileExists{../tables/numbers_extra.tex}{\input{../tables/numbers_extra.tex}}{}
+\IfFileExists{../tables/numbers_demo.tex}{\input{../tables/numbers_demo.tex}}{}
 \newcommand{\mname}{LTCC}  % name of the proposed method
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
@@ -104,6 +105,17 @@ method, per regime (mean over $\kappa_B$, \val{LNMissions} missions, 95\% paired
 \end{figure}
 
 \section{Study 4: regimes and reliability of the error model}\label{sec:Sstudy4}
+Fig.~\ref{fig:replication} summarises the replication of the main comparisons on the held-out seeds of studies 2,
+3 and 4.
+
+\begin{figure}[t]
+\centering
+\fig{fig_replication}{\linewidth}
+\caption{Replication on three independent sets of held-out tier B seeds: utility of the proposed replanner minus each
+method, pooled over twelve configurations, with 95\% paired bootstrap intervals over 270 missions per study. Study~2
+used the replanner without fallback.}\label{fig:replication}
+\end{figure}
+
 Fig.~\ref{fig:s4} shows the paired differences of study~4 per regime. All three advantages of the proposed model, over
 the constant buffer, the nominal model and the conventional planner, held in each of the four regimes.
 

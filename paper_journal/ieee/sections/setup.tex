@@ -41,7 +41,8 @@ in time. Speeds are multiplied by $S_X/S_T$, energy by $S_X$ and the distance pr
 ratio of the decision problem is preserved, and $\kappa_C=S_T\kappa_B$. The commanded ground speed of each leg follows
 the speed error and the scaled wind of tier B with the same random numbers, while acceleration, attitude dynamics,
 position tracking and communication are those of the simulated vehicles. Gazebo runs in lockstep with PX4 at twice
-real time, and mission time is simulation time.
+real time, and mission time is simulation time. Every task is drawn in the Gazebo scene as a pillar whose colour shows
+its outcome, and the PX4 logs record the flown trajectories (Fig.~\ref{fig:demo}).
 
 \begin{figure*}[t]
 \centering

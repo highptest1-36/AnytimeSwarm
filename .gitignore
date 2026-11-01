@@ -33,3 +33,8 @@ paper_journal/*.blg
 paper_journal/*.spl
 paper_journal/figures_src/*.aux
 paper_journal/figures_src/*.log
+
+# illustrative tier C flights: raw PX4 logs (~100 MB each) and raw GUI captures are not versioned
+results/tier_c/demo/ulog/
+results/tier_c/demo/shots/
+results/tier_c/demo/.start_*

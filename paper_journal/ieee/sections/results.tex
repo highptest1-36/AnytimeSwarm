@@ -55,15 +55,8 @@ more than the nominal model (\val{XCIFortyAll}, H13), that is, \val{QURelCCBuf}\
 (Supplementary Fig.~\ref{S-fig:s4}), and with repair only and no ALNS the proposed model still served
 \val{XDabsRepCCRep}\,pp more than the nominal one. Across the three independent sets of held-out seeds, every advantage
 over the constant buffer, the nominal model and the conventional planner was significant, and each grew once the
-fallback was added (Fig.~\ref{fig:replication}).
+fallback was added (Table~\ref{tab:hyp}, Supplementary Fig.~\ref{S-fig:replication}).
 
-\begin{figure}[t]
-\centering
-\fig{fig_replication}{\linewidth}
-\caption{Replication on three independent sets of held-out tier B seeds: utility of the proposed replanner minus each
-method, pooled over twelve configurations, with 95\% paired bootstrap intervals over 270 missions per study. Study~2
-used the replanner without fallback.}\label{fig:replication}
-\end{figure}
 
 \inputtable{tab_s4}
 
@@ -103,6 +96,24 @@ seeds, did not appear on the held-out missions even in tier B, so its absence in
 rather than the transfer to the autopilot. Over the full tier B grid, the advantage in this regime was
 \val{XDabsFortyHighWHalf}\,pp, which would need about \val{HNPowerNomGrid} missions per method to be confirmed in
 tier C.
+
+Fig.~\ref{fig:demo} illustrates the mechanism on one development mission, flown once with the proposed model with
+fallback and once with the nominal model under high disturbances with halved windows. The nominal model sent a UAV to
+a task that it reached after the deadline, while the proposed model served the same task on time with another UAV and
+then one more task, so it served \val{ZDemoServedProp} of the \val{ZDemoNTasks} tasks on time against
+\val{ZDemoServedNom}, with \val{ZDemoLateProp} instead of \val{ZDemoLateNom} late arrival. These flights ran with the
+graphical interface, at a real-time factor of \val{ZDemoRTFNom} to \val{ZDemoRTFProp}, and serve as an illustration
+only. All statistics in this section rest on the held-out flights without interface.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_demo_gazebo}{0.80\linewidth}\\[2pt]
+\fig{fig_demo_tracks}{0.54\linewidth}
+\caption{Illustrative tier C flight on a development mission (seed 1, high disturbances, windows $\times0.5$). Top:
+Gazebo scene with PX4-controlled X500 quadrotors; every task is a pillar coloured by its outcome. Bottom: top view of
+the trajectories recorded by PX4 for the proposed model with fallback and the nominal model on the same mission.
+These flights ran with the graphical interface and are not part of any statistical test.}\label{fig:demo}
+\end{figure*}
 
 \begin{figure}[t]
 \centering
