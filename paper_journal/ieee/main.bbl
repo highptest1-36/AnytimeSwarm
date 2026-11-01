@@ -26,15 +26,20 @@ B.~P. Gerkey and M.~J. Matari{\'c}, ``A formal analysis and taxonomy of task
   allocation in multi-robot systems,'' \emph{The International Journal of
   Robotics Research}, vol.~23, no.~9, pp. 939--954, 2004.
 
-\bibitem{pillac2013review}
-V.~Pillac, M.~Gendreau, C.~Gu{\'e}ret, and A.~L. Medaglia, ``A review of
-  dynamic vehicle routing problems,'' \emph{European Journal of Operational
-  Research}, vol. 225, no.~1, pp. 1--11, 2013.
-
 \bibitem{psaraftis2016dynamic}
 H.~N. Psaraftis, M.~Wen, and C.~A. Kontovas, ``Dynamic vehicle routing
   problems: Three decades and counting,'' \emph{Networks}, vol.~67, no.~1, pp.
   3--31, 2016.
+
+\bibitem{soeffker2022review}
+N.~Soeffker, M.~W. Ulmer, and D.~C. Mattfeld, ``Stochastic dynamic vehicle
+  routing in the light of prescriptive analytics: A review,'' \emph{European
+  Journal of Operational Research}, vol. 298, no.~3, pp. 801--820, 2022.
+
+\bibitem{skaltsis2023review}
+G.~M. Skaltsis, H.-S. Shin, and A.~Tsourdos, ``A review of task allocation
+  methods for {UAVs},'' \emph{Journal of Intelligent \& Robotic Systems}, vol.
+  109, p.~76, 2023.
 
 \bibitem{choi2009consensus}
 H.-L. Choi, L.~Brunet, and J.~P. How, ``Consensus-based decentralized auctions
@@ -45,12 +50,6 @@ H.-L. Choi, L.~Brunet, and J.~P. How, ``Consensus-based decentralized auctions
 S.~Ropke and D.~Pisinger, ``An adaptive large neighborhood search heuristic for
   the pickup and delivery problem with time windows,'' \emph{Transportation
   Science}, vol.~40, no.~4, pp. 455--472, 2006.
-
-\bibitem{errico2016apriori}
-F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, and L.-M. Rousseau, ``A priori
-  optimization with recourse for the vehicle routing problem with hard time
-  windows and stochastic service times,'' \emph{European Journal of Operational
-  Research}, vol. 249, no.~1, pp. 55--66, 2016.
 
 \bibitem{agra2013robust}
 A.~Agra, M.~Christiansen, R.~Figueiredo, L.~M. Hvattum, M.~Poss, and
@@ -63,6 +62,17 @@ J.~F. Ehmke, A.~M. Campbell, and T.~L. Urban, ``Ensuring service levels in
   \emph{European Journal of Operational Research}, vol. 240, no.~2, pp.
   539--550, 2015.
 
+\bibitem{rostami2021correlated}
+B.~Rostami, G.~Desaulniers, F.~Errico, and A.~Lodi, ``Branch-price-and-cut
+  algorithms for the vehicle routing problem with stochastic and correlated
+  travel times,'' \emph{Operations Research}, vol.~69, no.~2, pp. 436--455,
+  2021.
+
+\bibitem{cheng2024weather}
+C.~Cheng, Y.~Adulyasak, and L.-M. Rousseau, ``Robust drone delivery with
+  weather information,'' \emph{Manufacturing \& Service Operations Management},
+  vol.~26, no.~4, pp. 1402--1421, 2024.
+
 \bibitem{ponda2012chance}
 S.~S. Ponda, L.~B. Johnson, and J.~P. How, ``Distributed chance-constrained
   task allocation for autonomous multi-agent teams,'' in \emph{Proceedings of
@@ -74,17 +84,6 @@ Z.~Gao, M.~Zheng, Y.~Mei, A.~Zheng, and H.~Zhong, ``Distributionally robust
   under uncertain fuel consumption,'' \emph{Drones}, vol.~9, no.~9, p. 633,
   2025.
 
-\bibitem{dean1988analysis}
-T.~Dean and M.~Boddy, ``An analysis of time-dependent planning,'' in
-  \emph{Proceedings of the Seventh National Conference on Artificial
-  Intelligence (AAAI-88)}.\hskip 1em plus 0.5em minus 0.4em\relax AAAI Press,
-  1988, pp. 49--54.
-
-\bibitem{russell1991right}
-S.~Russell and E.~Wefald, \emph{Do the Right Thing: Studies in Limited
-  Rationality}.\hskip 1em plus 0.5em minus 0.4em\relax Cambridge, MA: MIT
-  Press, 1991.
-
 \bibitem{zilberstein1996using}
 S.~Zilberstein, ``Using anytime algorithms in intelligent systems,'' \emph{AI
   Magazine}, vol.~17, no.~3, pp. 73--83, 1996.
@@ -95,6 +94,11 @@ J.~Svegliato, K.~H. Wray, and S.~Zilberstein, ``Meta-level control of anytime
   Twenty-Seventh International Joint Conference on Artificial Intelligence
   (IJCAI-18)}.\hskip 1em plus 0.5em minus 0.4em\relax IJCAI Organization, 2018,
   pp. 1499--1505.
+
+\bibitem{herrmann2023metareasoning}
+J.~W. Herrmann, \emph{Metareasoning for Robots: Adapting in Dynamic and
+  Uncertain Environments}, ser. Synthesis Lectures on Computer Science.\hskip
+  1em plus 0.5em minus 0.4em\relax Cham: Springer, 2023.
 
 \bibitem{tas2013stochastic}
 D.~Ta{\c{s}}, N.~Dellaert, T.~van Woensel, and T.~de~Kok, ``Vehicle routing
@@ -124,6 +128,24 @@ S.~Macenski, T.~Foote, B.~Gerkey, C.~Lalancette, and W.~Woodall, ``Robot
   operating system 2: Design, architecture, and uses in the wild,''
   \emph{Science Robotics}, vol.~7, no.~66, p. eabm6074, 2022.
 
+\bibitem{chakraa2023mrta}
+H.~Chakraa, F.~Gu{\'e}rin, E.~Leclercq, and D.~Lefebvre, ``Optimization
+  techniques for multi-robot task allocation problems: Review on the
+  state-of-the-art,'' \emph{Robotics and Autonomous Systems}, vol. 168, p.
+  104492, 2023.
+
+\bibitem{rojasviloria2021drones}
+D.~Rojas~Viloria, E.~L. Solano-Charris, A.~Mu{\~n}oz-Villamizar, and J.~R.
+  Montoya-Torres, ``Unmanned aerial vehicles/drones in vehicle routing
+  problems: A literature review,'' \emph{International Transactions in
+  Operational Research}, vol.~28, no.~4, pp. 1626--1657, 2021.
+
+\bibitem{zhao2025throughput}
+L.~Zhao, S.~Li, Z.~Tan, A.~Hawbani, S.~Timotheou, and K.~Yu, ``A multi-{UAV}
+  cooperative task scheduling in dynamic environments: Throughput
+  maximization,'' \emph{IEEE Transactions on Computers}, vol.~74, no.~2, pp.
+  442--454, 2025.
+
 \bibitem{solomon1987algorithms}
 M.~M. Solomon, ``Algorithms for the vehicle routing and scheduling problems
   with time window constraints,'' \emph{Operations Research}, vol.~35, no.~2,
@@ -138,6 +160,11 @@ P.~Vansteenwegen, W.~Souffriau, and D.~Van~Oudheusden, ``The orienteering
 S.~Wang, W.~Sun, and M.~Huang, ``An adaptive large neighborhood search for the
   multi-depot dynamic vehicle routing problem with time windows,''
   \emph{Computers \& Industrial Engineering}, vol. 191, p. 110122, 2024.
+
+\bibitem{wang2022phases}
+W.~Wang, M.~Lv, L.~Ru, B.~Lu, S.~Hu, and X.~Chang, ``Multi-{UAV} unbalanced
+  targets coordinated dynamic task allocation in phases,'' \emph{Aerospace},
+  vol.~9, no.~9, p. 491, 2022.
 
 \bibitem{choudhury2022dynamic}
 S.~Choudhury, J.~K. Gupta, M.~J. Kochenderfer, D.~Sadigh, and J.~Bohg,
@@ -170,15 +197,6 @@ Y.~Cong, Y.~Li, X.~Zhu, and Z.~Wang, ``An event-triggered path-based bid
   assignment method for energy-aware dynamic multi-{UAV} task allocation,''
   \emph{Drones}, vol.~10, no.~9, p. 684, 2026.
 
-\bibitem{vieira2003rescheduling}
-G.~E. Vieira, J.~W. Herrmann, and E.~Lin, ``Rescheduling manufacturing systems:
-  A framework of strategies, policies, and methods,'' \emph{Journal of
-  Scheduling}, vol.~6, no.~1, pp. 39--62, 2003.
-
-\bibitem{ouelhadj2009survey}
-D.~Ouelhadj and S.~Petrovic, ``A survey of dynamic scheduling in manufacturing
-  systems,'' \emph{Journal of Scheduling}, vol.~12, no.~4, pp. 417--431, 2009.
-
 \bibitem{calvo2025heterogeneous}
 {\'A}.~Calvo and J.~Capit{\'a}n, ``Heterogeneous multirobot task allocation for
   long-endurance missions in dynamic scenarios,'' \emph{IEEE Transactions on
@@ -194,20 +212,31 @@ L.~Zhou and P.~Tokekar, ``Risk-aware submodular optimization for multirobot
   coordination,'' \emph{IEEE Transactions on Robotics}, vol.~38, no.~5, pp.
   3064--3084, 2022.
 
+\bibitem{bruni2023drone}
+M.~E. Bruni, S.~Khodaparasti, and G.~Perboli, ``The drone latency location
+  routing problem under uncertainty,'' \emph{Transportation Research Part C:
+  Emerging Technologies}, vol. 156, p. 104322, 2023.
+
 \bibitem{wang2024uncertain}
 J.~Wang, G.~Jia, Z.~Guo, and Z.~Hou, ``Impact of uncertain flight time on
   heterogeneous {UAVs}' task planning with temporal constraints,''
   \emph{Aerospace}, vol.~11, no.~3, p. 214, 2024.
 
-\bibitem{gendreau1996stochastic}
-M.~Gendreau, G.~Laporte, and R.~S{\'e}guin, ``Stochastic vehicle routing,''
-  \emph{European Journal of Operational Research}, vol.~88, no.~1, pp. 3--12,
-  1996.
+\bibitem{bomboi2022stochastic}
+F.~Bomboi, C.~Buchheim, and J.~Pruente, ``On the stochastic vehicle routing
+  problem with time windows, correlated travel times, and time dependency,''
+  \emph{4OR}, vol.~20, no.~2, pp. 217--239, 2022.
 
-\bibitem{bent2004scenario}
-R.~W. Bent and P.~Van~Hentenryck, ``Scenario-based planning for partially
-  dynamic vehicle routing with stochastic customers,'' \emph{Operations
-  Research}, vol.~52, no.~6, pp. 977--987, 2004.
+\bibitem{lacerda2022decision}
+B.~Lacerda, A.~Gautier, A.~Rutherford, A.~Stephens, C.~Street, and N.~Hawes,
+  ``Decision-making under uncertainty for multi-robot systems,'' \emph{AI
+  Communications}, vol.~35, no.~4, pp. 433--441, 2022.
+
+\bibitem{errico2016apriori}
+F.~Errico, G.~Desaulniers, M.~Gendreau, W.~Rei, and L.-M. Rousseau, ``A priori
+  optimization with recourse for the vehicle routing problem with hard time
+  windows and stochastic service times,'' \emph{European Journal of Operational
+  Research}, vol. 249, no.~1, pp. 55--66, 2016.
 
 \bibitem{li2010vrptw}
 X.~Li, P.~Tian, and S.~C.~H. Leung, ``Vehicle routing problems with time
@@ -219,10 +248,11 @@ X.~Li, P.~Tian, and S.~C.~H. Leung, ``Vehicle routing problems with time
 C.~E. Clark, ``The greatest of a finite set of random variables,''
   \emph{Operations Research}, vol.~9, no.~2, pp. 145--162, 1961.
 
-\bibitem{hansen2001monitoring}
-E.~A. Hansen and S.~Zilberstein, ``Monitoring and control of anytime
-  algorithms: A dynamic programming approach,'' \emph{Artificial Intelligence},
-  vol. 126, no. 1--2, pp. 139--157, 2001.
+\bibitem{dukkanci2021energy}
+O.~Dukkanci, B.~Y. Kara, and T.~Bekta{\c{s}}, ``Minimizing energy and cost in
+  range-limited drone deliveries with speed optimization,''
+  \emph{Transportation Research Part C: Emerging Technologies}, vol. 125, p.
+  102985, 2021.
 
 \bibitem{sung2021quit}
 Y.~Sung, L.~P. Kaelbling, and T.~Lozano-P{\'e}rez, ``Learning when to quit:
@@ -243,31 +273,15 @@ S.~S. Shperberg, A.~Coles, E.~Karpas, W.~Ruml, and S.~E. Shimony, ``Situated
   (ICAPS)}, vol.~31.\hskip 1em plus 0.5em minus 0.4em\relax AAAI Press, 2021,
   pp. 340--348.
 
-\bibitem{dionne2011deadline}
-A.~Dionne, J.~Thayer, and W.~Ruml, ``Deadline-aware search using on-line
-  measures of behavior,'' in \emph{Proceedings of the International Symposium
-  on Combinatorial Search (SoCS)}, vol.~2, no.~1.\hskip 1em plus 0.5em minus
-  0.4em\relax AAAI Press, 2011, pp. 39--46.
-
 \bibitem{savelsbergh1992vrptw}
 M.~W.~P. Savelsbergh, ``The vehicle routing problem with time windows:
   Minimizing route duration,'' \emph{ORSA Journal on Computing}, vol.~4, no.~2,
   pp. 146--154, 1992.
 
-\bibitem{potvin1993parallel}
-J.-Y. Potvin and J.-M. Rousseau, ``A parallel route building algorithm for the
-  vehicle routing and scheduling problem with time windows,'' \emph{European
-  Journal of Operational Research}, vol.~66, no.~3, pp. 331--340, 1993.
-
-\bibitem{shaw1998cp}
-P.~Shaw, ``Using constraint programming and local search methods to solve
-  vehicle routing problems,'' in \emph{Principles and Practice of Constraint
-  Programming -- CP98}, ser. Lecture Notes in Computer Science, vol.
-  1520.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 1998, pp. 417--431.
-
-\bibitem{kirkpatrick1983annealing}
-S.~Kirkpatrick, C.~D. Gelatt, and M.~P. Vecchi, ``Optimization by simulated
-  annealing,'' \emph{Science}, vol. 220, no. 4598, pp. 671--680, 1983.
+\bibitem{mara2022alns}
+S.~T.~W. Mara, R.~Norcahyo, P.~Jodiawan, L.~Lusiantoro, and A.~P. Rifai, ``A
+  survey of adaptive large neighborhood search algorithms and applications,''
+  \emph{Computers \& Operations Research}, vol. 146, p. 105903, 2022.
 
 \bibitem{mccullagh1989glm}
 P.~McCullagh and J.~A. Nelder, \emph{Generalized Linear Models}, 2nd~ed.\hskip

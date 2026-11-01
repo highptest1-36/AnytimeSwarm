@@ -159,3 +159,30 @@ Feature rows:
   Unc ✓, Online –.
 - Johnson, Choi, Ponda & How (2012), IEEE CDC, pp. 4702–4708, doi:10.1109/CDC.2012.6425867 (`johnson2012nonsubmodular`).
   Bid warping cho CBBA với hàm điểm không submodular; dùng trong cài đặt CBBA của nghiên cứu 6 (không có trong bảng).
+
+## Bổ sung 01/11/2026 (đợt 2): cập nhật trích dẫn sang tài liệu 2021–2025
+Mỗi mục đã kiểm chứng qua trang nhà xuất bản, DOI, RePEc/DBLP hoặc kho lưu trữ của trường (xem lịch sử phiên làm việc).
+- skaltsis2023review: J. Intell. Robot. Syst. 109:76 (2023), doi:10.1007/s10846-023-02011-0 (Cranfield DSpace).
+- chakraa2023mrta: Robot. Auton. Syst. 168:104492 (2023), doi:10.1016/j.robot.2023.104492.
+- soeffker2022review: EJOR 298(3):801–820 (2022), doi:10.1016/j.ejor.2021.07.014 (RePEc, DBLP).
+- rostami2021correlated: Oper. Res. 69(2):436–455 (2021), doi:10.1287/opre.2020.2037 (RePEc, INFORMS).
+- bomboi2022stochastic: 4OR 20(2):217–239 (2022, online 2021), doi:10.1007/s10288-021-00476-z (TU Dortmund).
+- mara2022alns: Comput. Oper. Res. 146:105903 (2022), doi:10.1016/j.cor.2022.105903.
+- herrmann2023metareasoning: Springer Synthesis Lectures on Computer Science (2023), ISBN 978-3-031-32236-5 (UMD).
+- rojasviloria2021drones: Int. Trans. Oper. Res. 28(4):1626–1657 (2021), doi:10.1111/itor.12783.
+- bruni2023drone: Transp. Res. C 156:104322 (2023), doi:10.1016/j.trc.2023.104322 (PoliTo IRIS). Bảng: TW –, Unc ✓
+  (thời gian bay bất định, robust optimisation).
+- cheng2024weather: MSOM 26(4):1402–1421 (2024), doi:10.1287/msom.2022.0339 (RePEc, INFORMS). Bảng: TW ✓, Unc ✓ (gió),
+  Late cost ✓ (chỉ số rủi ro tính cả xác suất và độ lớn của việc trễ), Online ∘ (lịch được sửa buổi chiều theo dự báo).
+- wang2022phases: Aerospace 9(9):491 (2022), doi:10.3390/aerospace9090491 (MDPI, DOAJ). CBBA cải tiến cho nhiệm vụ động
+  và time windows.
+- lacerda2022decision: AI Communications 35(4):433–441 (2022), doi:10.3233/AIC-220118 (IOS Press, DBLP).
+- dukkanci2021energy: Transp. Res. C 125:102985 (2021), doi:10.1016/j.trc.2021.102985.
+- zhao2025throughput: IEEE Trans. Computers 74(2):442–454 (2025, online 10/2024), doi:10.1109/TC.2024.3483636.
+Không dùng (không kiểm chứng được): Svegliato và cs. ICRA 2022 "Metareasoning for safe decision making"; Aerostack2
+(mới là preprint arXiv); PBW-CBBA (không rõ năm, nơi đăng).
+Bỏ khỏi bài chính (không thiết yếu, đã có tài liệu mới thay): pillac2013review, dean1988analysis, russell1991right,
+hansen2001monitoring, dionne2011deadline, potvin1993parallel, shaw1998cp, kirkpatrick1983annealing,
+vieira2003rescheduling, ouelhadj2009survey, gendreau1996stochastic, bent2004scenario.
+Kết quả: bài chính 54 tài liệu, 29 (54%) từ 2021 trở lại; tài liệu cũ còn lại là phương pháp thống kê, công cụ, bài toán
+gốc và các baseline được cài lại.

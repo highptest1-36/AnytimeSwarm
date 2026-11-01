@@ -3,7 +3,7 @@ Teams of unmanned aerial vehicles (UAVs) are used for inspection, delivery and m
 may appear, a vehicle may fail, or a deadline may be moved forward. A central planner then repairs the routes of the
 whole fleet within a fraction of a second, while some UAVs may already wait for new instructions. Dynamic vehicle
 routing and multi-robot task allocation offer many methods for this
-repair~\cite{gerkey2004formal,pillac2013review,psaraftis2016dynamic}, and auction methods such as the consensus-based
+repair~\cite{gerkey2004formal,psaraftis2016dynamic,soeffker2022review,skaltsis2023review}, and auction methods such as the consensus-based
 bundle algorithm (CBBA)~\cite{choi2009consensus} or metaheuristics such as adaptive large neighbourhood search
 (ALNS)~\cite{ropke2006adaptive} find good plans within such budgets.
 
@@ -11,10 +11,10 @@ Most of these replanners plan for nominal execution. When UAVs meet wind, fly sl
 task, part of the slack that the plan promises is consumed by errors that the planner does not see, and tasks near the
 end of a route are served late. The error grows with the time until a task is reached, so a constant time margin is too
 large for early tasks and too small for late ones. Stochastic and robust routing protect schedules against such
-errors~\cite{errico2016apriori,agra2013robust,ehmke2015ensuring}, and chance-constrained allocation bounds the
+errors~\cite{agra2013robust,ehmke2015ensuring,rostami2021correlated,cheng2024weather}, and chance-constrained allocation bounds the
 probability of failure~\cite{ponda2012chance,gao2025drcc}. These models are usually solved by sampling or by exact
 methods that are too slow for the time available between two events. A second line of work treats the computation time
-of an anytime planner as a decision~\cite{dean1988analysis,russell1991right,zilberstein1996using,svegliato2018meta}.
+of an anytime planner as a decision~\cite{zilberstein1996using,svegliato2018meta,herrmann2023metareasoning}.
 It is not known which of the two, the planning model or the control of computation, matters more for a replanner that
 faces uncertain execution.
 

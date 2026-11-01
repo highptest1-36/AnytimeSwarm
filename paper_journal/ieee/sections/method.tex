@@ -73,10 +73,10 @@ $d_j$, else $d'_j\gets\tilde d_j(z_p)$ \Comment{Eq.~\eqref{eq:costfb}}
 \subsection{Repair and anytime search}
 The previous plan is restricted to the open tasks and walked once, keeping a task only if the route up to it is still
 feasible, and tasks of failed UAVs and new tasks are inserted by parallel regret-2
-insertion~\cite{potvin1993parallel,ropke2006adaptive}. This feasibility-first repair yields a publishable plan within
+insertion~\cite{ropke2006adaptive}. This feasibility-first repair yields a publishable plan within
 milliseconds. ALNS~\cite{ropke2006adaptive} then improves it with four destroy operators (random, worst,
-related~\cite{shaw1998cp} and route-segment removal), four greedy or regret-2 repair operators with and without noise,
-adaptive operator selection and simulated-annealing acceptance~\cite{kirkpatrick1983annealing}. All intermediate
+related and route-segment removal), four greedy or regret-2 repair operators with and without noise,
+adaptive operator selection and simulated-annealing acceptance, the standard components of ALNS~\cite{ropke2006adaptive,mara2022alns}. All intermediate
 solutions are feasible, so the best plan found so far can be published at any time. The temperature decreases per
 iteration and all variants share the random seed, so every stopping rule follows the same search trajectory and differs
 only in the moment at which it stops.
@@ -238,6 +238,6 @@ margin of the task to its deadline plus the waiting times before it on its route
 the expected latency and $v_j$ the value of the task in Eq.~\eqref{eq:obj}. On the effective deadlines, the mean error
 is already part of the tolerance, so \mname{} uses $m\equiv0$. $\Lambda_{\mathrm{R}}$ does not decrease with
 $\tau$, and it reduces to the exact loss of a deterministic plan when the spread vanishes (Supplementary
-Section~S1). A hard budget $B$ bounds every call. The replanner replans on every event and at least every
+Section~\ref{S-sec:Sstop}). A hard budget $B$ bounds every call. The replanner replans on every event and at least every
 $T_{\max}=60$\,s of mission time, a rolling-horizon policy in the terminology of
-rescheduling~\cite{vieira2003rescheduling,ouelhadj2009survey}.
+dynamic routing~\cite{soeffker2022review}.
