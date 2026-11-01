@@ -1,6 +1,6 @@
 \section{Evaluation}\label{sec:setup}
 \subsection{Scenarios and kinematic tier}
-Missions are created by a seeded generator (Supplementary Table~S1). The map is a square with a side of 10\,km and the
+Missions are created by a seeded generator (Supplementary Table~\ref{S-tab:params}). The map is a square with a side of 10\,km and the
 depot at its centre, half of the tasks are clustered around three hotspots, and half of them are known at the start
 while the others arrive in batches. Time windows have a slack of 180 to 600\,s and services last 30 to 90\,s. Three
 fleet scales with 5, 10 and 20 UAVs and 25, 50 and 140 tasks are combined with three event profiles, namely six arrival
@@ -106,53 +106,27 @@ $\lambda=1$. Moment propagation with the cost-aware fallback accepts a given-up 
 deadline and $\mathrm{E}[F_j]+z_\lambda\mathrm{sd}[F_j]\le d_j$. No parameter was tuned in study~6.
 
 \subsection{Pre-registered protocol}\label{sec:protocol}
-The evaluation consists of six studies, each with its own held-out seeds, written protocol and frozen code.
-Table~\ref{tab:hyp} summarises their hypotheses and outcomes.
-Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute price, $z$, the buffer and
-the error models were fixed. Before each study, the configurations, the models and the code were frozen with SHA-256
-hashes, which the held-out runs checked before starting. Study~1 tested AnytimeSwarm-R against fixed and adaptive
-stopping rules on the nominal model (Supplementary Section~S4).
+The evaluation consists of six studies, each with its own held-out seeds, written protocol and frozen code, and each
+study after the first was designed after the held-out results of the earlier ones. Table~\ref{tab:hyp} lists their
+primary hypotheses. Development used seeds 0--9 in tier B and 0--2 in tier C, on which the predictor, the compute
+price, $z$, the buffers and the error models were fixed. Before each study, the configurations, the models and the code
+were frozen with SHA-256 hashes, which the held-out runs checked before starting.
 
-Study~2 evaluates the chance-constrained model on held-out seeds 5000--5029 in tier B and 6000--6009 in tier C. Its
-matrix crosses two execution levels (mid, high), high latency, three latency factors ($\kappa_B=10, 50, 200$) and two
-time-window factors (original and halved), which gives twelve configurations of 270 missions each, with the fifteen
-methods of Table~\ref{tab:s2main}. H1 states that the proposed replanner serves more reward than each of six baselines
-(ALNS with 40\,ms, the size-scaled budget, online prediction, the performance profile, AnytimeSwarm-R and the constant
-buffer), and H2 compares it with the conventional planner. H3 tests whether the proposed stopping rule is equivalent to
-a fixed budget of 40\,ms on the proposed model, with a margin of $\pm0.5$ percentage points. In tier C, H4 compares the
-proposed replanner with ALNS with 40\,ms and the conventional planner on 30 missions with mid disturbances and
-$\kappa_B=50$. Study~3 was designed after the held-out results of study~2. Of two fallbacks compared on development
-seeds, the nominal one was selected by a rule stated beforehand. Study~3 uses new held-out seeds 7000--7029 in tier B
-and the matrix of study~2. Its primary family compares the fallback variant with the replanner of study~2 over all
-configurations (H5), with the constant buffer under high disturbances with halved windows (H6), and with ALNS with
-40\,ms (H7) and the constant buffer (H8) over all configurations.
-
-Study~4 uses new held-out seeds 8000--8029 in tier B, the same matrix and eleven methods. Its primary family tests the
-proposed model with fallback against the proportional buffer (H9), non-inferiority against moment propagation with a
-margin of $-0.5$\,pp, followed by superiority in a fixed sequence (H10), the fallback within moment propagation (H11),
-and the proposed model against the constant buffer (H12) and the nominal model (H13). Online calibration, the learned
-stopping rule, repair without search and a reliability check of the error model are secondary. Study~4C flies the
-proposed replanner with and without fallback and the nominal model in tier C under high disturbances with halved
-windows, where tier B predicted the largest effect, on \val{GN} missions with seeds 9000--9011. The sample size was computed
-beforehand from a tier B counterpart on development seeds. One interim analysis after half of the missions uses
-O'Brien--Fleming bounds, so that the flights could stop early without inflating the error rate. H14 compares the
-fallback variant with the nominal model and H15 with the variant without fallback.
-
-Study~5 was designed after the held-out results of study~4. It uses new held-out seeds 10000--10029 in tier B, the
-matrix of study~4 and seventeen methods. Its primary family uses the score $u_1$, in which a late arrival costs as much
-as a task earns. It tests the cost-aware fallback against the nominal fallback of study~4 (H16), non-inferiority with a
-margin of $-0.5$\,pp against the tuned proportional buffer (H17) and the tuned model without fallback (H18), each
-followed by superiority in a fixed sequence, and superiority over the nominal model (H19). The scores at $\lambda=0.5$
-and 2 are secondary, as is the loss when a competitor is tuned for one late cost and used at another.
-
-Study~6 uses new held-out seeds 12000--12029 in tier B, the matrix of study~4 and nine methods. Its primary family, with
-the score $u_1$, tests the proposed replanner against CBBA with the periodic trigger (H20), CBBA on the proposed model
-against CBBA (H21), and moment propagation with the cost-aware fallback against moment propagation with the nominal
-fallback (H22) and without fallback (H23). All other comparisons, including those at $\lambda=0$, are secondary.
+Study~1 tested AnytimeSwarm-R against fixed and adaptive stopping rules on the nominal model (Supplementary
+Section~\ref{S-sec:Sstudy1}). Studies 2--6 share one tier B matrix. It crosses two disturbance levels (mid, high), high
+latency, three latency factors ($\kappa_B=10, 50, 200$) and two time-window factors (original and halved), which gives
+twelve configurations of 270 held-out missions each, with new seeds 5000--5029, 7000--7029, 8000--8029, 10000--10029
+and 12000--12029 for studies 2, 3, 4, 5 and 6. Study~2 compares fifteen methods (Supplementary
+Table~\ref{S-tab:s2main}), and its tier C part flies 30 missions with mid disturbances and $\kappa_B=50$ (seeds
+6000--6009). Study~4C flies \val{GN} missions under high disturbances with halved windows, where tier B predicted the
+largest effect (seeds 9000--9011). Its size was computed beforehand from a tier B counterpart on development seeds, and
+one interim analysis after half of the missions uses O'Brien--Fleming bounds, so that the flights could stop early
+without inflating the error rate. Studies 5 and 6 test their primary hypotheses with the score $u_1$.
 
 In all studies, the utility difference of two methods is averaged per mission over the configurations and tested with a
 paired bootstrap~\cite{efron1993bootstrap} of 10\,000 resamples over missions. Primary families are corrected with the
-Holm procedure~\cite{holm1979simple}, and equivalence is tested with two one-sided tests. All other comparisons are
+Holm procedure~\cite{holm1979simple}. Non-inferiority uses a margin of $-0.5$\,pp and is followed by a superiority
+test in a fixed sequence, and equivalence is tested with two one-sided tests. All other comparisons are
 descriptive. A tier C run in which a vehicle does not take off in time, or whose real-time factor leaves $[1.6, 2.2]$,
 is repeated once. Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with the methods of a
 configuration run in turn. A separately written validator found no infeasible plan among \val{JValidatorPlans}

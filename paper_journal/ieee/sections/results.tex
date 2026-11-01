@@ -8,74 +8,51 @@ the results that motivated it.
 \subsection{Study 1 in brief: execution-aware stopping on the nominal model}\label{sec:study1}
 Study~1 made only the stopping rule execution-aware and kept the nominal planning model. In \val{JNRunsMain} tier B
 runs, AnytimeSwarm-R needed \val{JMsRedAS}\% less computation per call than AnytimeSwarm, but its advantage over ALNS
-with 40\,ms was \val{JDFixedForty}\,percentage points (pp) with a Holm-adjusted $p$ of \val{JPFixedForty}, and its
-advantages over AnytimeSwarm and the stagnation rule were not significant either. Periodic replanning raised the
-utility of every method by \val{JTrigMin} to \val{JTrigMax}\,pp. Supplementary Sections~S3 and~S4 report these results
-in full, together with an exact-execution benchmark, tier C flights and a scalability study with 40 UAVs. Study~2 was
-designed after these results and moves the error model from the decision to stop into the planning model.
+with 40\,ms was \val{JDFixedForty}\,percentage points (pp) with a Holm-adjusted $p$ of \val{JPFixedForty}. Periodic
+replanning raised the utility of every method by \val{JTrigMin} to \val{JTrigMax}\,pp. Supplementary
+Sections~\ref{S-sec:Sstatic} and~\ref{S-sec:Sstudy1} report these results in full, together with an exact-execution
+benchmark, tier C flights and a scalability study with 40 UAVs. Study~2 moved the error model from the decision to stop
+into the planning model.
 
 \subsection{Study 2: the chance-constrained model against baselines}\label{sec:study2}
 Study~2 comprises \val{KNRuns} tier B runs, that is, \val{KNMissions} held-out missions in \val{KNConfigs}
-configurations with \val{KNMethods} methods (Table~\ref{tab:s2main}). The proposed replanner, still without fallback,
-reached the highest utility, \val{KUProp}\%. Its advantage over the six baselines of H1 ranged from \val{KDmBuf}\,pp
-over the constant buffer to \val{KDmForty}\,pp over ALNS with 40\,ms, and every Holm-adjusted $p$-value was below
-0.001, so H1 holds for all six comparisons. Against the conventional planner, the advantage was \val{KDConv}\,pp, or
-\val{KURelConv}\%, so H2 holds as well. The advantage comes from fewer late tasks. The proposed replanner served
+configurations with \val{KNMethods} methods (Supplementary Table~\ref{S-tab:s2main}). The proposed replanner, still
+without fallback, reached the highest utility, \val{KUProp}\%. Its advantage over the six baselines of H1 ranged from
+\val{KDmBuf}\,pp over the constant buffer to \val{KDmForty}\,pp over ALNS with 40\,ms (all Holm-adjusted $p<0.001$),
+and over the conventional planner it was \val{KDConv}\,pp, or \val{KURelConv}\% (H2). The proposed replanner served
 \val{KLateProp} tasks per mission after their deadline, \val{KLateRedForty}\% fewer than the \val{KLateForty} of ALNS
-with 40\,ms, and it lost no task to a late plan. On the nominal model, the stopping rules hardly differed. Their
-utilities lay between \val{KUForty}\% and \val{KURisk}\%, although their computation ranged from \val{KMsOnl} to
-\val{KMsAS}\,ms per call (Supplementary Fig.~S4).
+with 40\,ms. On the nominal model, the stopping rules hardly differed, with utilities between \val{KUForty}\% and
+\val{KURisk}\% although their computation ranged from \val{KMsOnl} to \val{KMsAS}\,ms per call (Supplementary
+Fig.~\ref{S-fig:Ss2main}). On the chance-constrained model, the stopping rule was equivalent to a fixed budget of
+40\,ms (H3, 90\% interval \val{KTostCI}\,pp inside $\pm0.5$\,pp), but it still guarded against long budgets: at
+$\kappa_B=200$, the full budget of 250\,ms lost \val{KLostFixKTwoHundred} tasks per mission to late plans.
 
-\inputtable{tab_s2_main}
-
-The ablations confirm that the planning model carries the gain (Table~\ref{tab:s2main}, bottom). With a fixed budget
-of 40\,ms instead of the proposed stopping rule, utility changed by \val{KDAblStop}\,pp. The 90\% interval of this
-difference, \val{KTostCI}\,pp, lies inside the margin of $\pm0.5$\,pp, so the stopping rule is equivalent to the fixed
-budget on the chance-constrained model (H3). It still guards against long budgets on slow planners. At $\kappa_B=200$,
-the full budget lost \val{KLostFixKTwoHundred} tasks per mission to late plans and served \val{KDFixKTwoHundred}\,pp less
-reward. With the event trigger, the proposed replanner lost \val{KDAblTrig}\,pp, far less than the \val{JTrigMin} to
-\val{JTrigMax}\,pp that periodic replanning added on the nominal model of study~1.
-
-The gain was not uniform. The proposed replanner was better than the constant buffer in \val{KWinBuf} of the
-\val{KNConfigs} configurations and worse in \val{KLossBuf}, all of them under high disturbances with halved windows,
-where it served \val{KDBufWHalfHigh}\,pp relative to the buffer. With short windows and large errors, the effective
-deadline of many tasks falls before the earliest possible arrival, so the planner gives up tasks that a less cautious
-plan still serves in time. This weakness motivated the fallback of Section~\ref{sec:fallback}.
+The gain was not uniform. The proposed replanner was worse than the constant buffer in \val{KLossBuf} of the
+\val{KNConfigs} configurations, all of them under high disturbances with halved windows, where it served
+\val{KDBufWHalfHigh}\,pp relative to the buffer. With short windows and large errors, the effective deadline of many
+tasks falls before the earliest possible arrival, so the planner gives up tasks that a less cautious plan still serves
+in time. This weakness motivated the fallback of Section~\ref{sec:fallback}.
 
 \subsection{Study 3: nominal fallback for given-up tasks}\label{sec:study3}
-Study~3 comprises \val{LNRuns} tier B runs on \val{LNMissions} new held-out missions in \val{LNConfigs} configurations
-with five methods (Table~\ref{tab:s3}). It first replicates study~2. The replanner of study~2 again lost to the
-constant buffer under high disturbances with halved windows, by \val{LDPropBufHighWHalf}\,pp, so the weakness is
-systematic.
-
-The fallback variant reached a utility of \val{LUFB}\%, the highest of all methods, and all four primary comparisons
-were significant (Holm-adjusted $p<0.001$). It served \val{LDPropAll}\,pp more reward than the replanner of study~2
-(H5), that is, \val{LURelProp}\% more, and \val{LDBufHighWHalf}\,pp more than the constant buffer under high
-disturbances with halved windows (H6). Over all configurations, it served \val{LDFortyAll}\,pp more than ALNS with
-40\,ms (H7, \val{LURelForty}\%) and \val{LDBufAll}\,pp more than the constant buffer (H8, \val{LURelBuf}\%). The gain over
-the replanner of study~2 was concentrated where the chance constraint gives up tasks, with \val{LDPropHighWHalf}\,pp
-under high disturbances with halved windows (Supplementary Fig.~S7).
-
-\inputtable{tab_s3}
-
-The fallback has a price in punctuality. A fallback task is planned against its nominal deadline and is often served
-late. The fallback variant served \val{LLateFB} tasks late per mission, \val{LLateIncProp}\% more than the replanner of
-study~2, although still \val{LLateRedForty}\% fewer than ALNS with 40\,ms, and it lost \val{LLostFB} tasks per mission
-to late plans. A late service yields no reward, so these attempts cost only flight time. The case in which a late
-arrival has a cost of its own is the subject of study~5 (Section~\ref{sec:study5}).
+Study~3 comprises \val{LNRuns} tier B runs on \val{LNMissions} new held-out missions (Supplementary
+Table~\ref{S-tab:s3}). The replanner of study~2 again lost to the constant buffer under high disturbances with halved
+windows, by \val{LDPropBufHighWHalf}\,pp, so the weakness is systematic. The fallback variant reached the highest
+utility, \val{LUFB}\%, and all four primary comparisons were significant (Holm-adjusted $p<0.001$). It served
+\val{LDPropAll}\,pp more than the replanner of study~2 (H5), \val{LDBufHighWHalf}\,pp more than the constant buffer in
+the weak regime (H6), and \val{LDFortyAll} and \val{LDBufAll}\,pp more than ALNS with 40\,ms and the constant buffer
+over all configurations (H7, H8). The fallback has a price in punctuality. A fallback task is planned against its
+nominal deadline and is often served late, and the fallback variant served \val{LLateFB} tasks late per mission,
+\val{LLateIncProp}\% more than the replanner of study~2. The case in which a late arrival has a cost of its own is the
+subject of study~5.
 
 \subsection{Study 4: planning models and the generality of the fallback}\label{sec:study4}
-Study~4 comprises \val{QNRuns} tier B runs on \val{QNMissions} new held-out missions in \val{QNConfigs} configurations
-(Table~\ref{tab:s4}, Fig.~\ref{fig:s4}). All planning models use the same search with 40\,ms and the periodic trigger,
-so they differ only in the margin and the fallback.
-
-The study replicates the main result on a third set of held-out seeds. With the fallback, the proposed model served
+Study~4 comprises \val{QNRuns} tier B runs on \val{QNMissions} new held-out missions (Table~\ref{tab:s4}). All planning
+models use the same search with 40\,ms and the periodic trigger, so they differ only in the margin and the fallback. The
+study replicates the main result on a third set of held-out seeds. With the fallback, the proposed model served
 \val{XDabsBufAll}\,pp more reward than the constant buffer (95\% CI \val{XCIBufAll}, H12) and \val{XDabsFortyAll}\,pp
-more than the nominal model (\val{XCIFortyAll}, H13), that is, \val{QURelCCBuf}\% and \val{QURelCCForty}\% more, with
-Holm-adjusted $p<0.001$ in both cases. Against the conventional planner, the advantage was \val{XDabsCCConv}\,pp, or
-\val{QURelCCConv}\%. All three advantages held in each of the four regimes (Fig.~\ref{fig:s4}). The proposed model
-served \val{QLateCC} tasks late per mission, \val{QLateRedForty}\% fewer than the \val{QLateForty} of the nominal model.
-The gain does not depend on the search. With repair only and no ALNS, the proposed model still served
+more than the nominal model (\val{XCIFortyAll}, H13), that is, \val{QURelCCBuf}\% and \val{QURelCCForty}\% more, and
+\val{QURelCCConv}\% more than the conventional planner. All three advantages held in each of the four regimes
+(Supplementary Fig.~\ref{S-fig:s4}), and with repair only and no ALNS the proposed model still served
 \val{XDabsRepCCRep}\,pp more than the nominal one. Across the three independent sets of held-out seeds, every advantage
 over the constant buffer, the nominal model and the conventional planner was significant, and each grew once the
 fallback was added (Fig.~\ref{fig:replication}).
@@ -90,71 +67,42 @@ used the replanner without fallback.}\label{fig:replication}
 
 \inputtable{tab_s4}
 
-\begin{figure*}[t]
-\centering
-\fig{fig_s4}{0.85\linewidth}
-\caption{Study~4, tier B, held-out seeds 8000--8029: utility of the proposed model with fallback minus each other
-planning model, per regime (mean over $\kappa_B$, \val{QNMissions} missions, 95\% paired bootstrap intervals). All
-models use the same search with 40\,ms.}\label{fig:s4}
-\end{figure*}
-
 The three models whose margin grows with the lead time reached utilities within \val{XRangeScaled}\,pp of each other.
 The proportional buffer served \val{XDabsPropBufAll}\,pp more than the proposed model (\val{XCIPropBufAll},
-Holm-adjusted $p={}$\val{QPPropBufAll}), so H9 is not supported, and the direction favours the buffer. Moment
-propagation served \val{XDabsMPAll}\,pp more (\val{XCIMPAll}). The lower limit of this interval lies below the margin of
-$-0.5$\,pp, so non-inferiority was not shown ($p={}$\val{QPMPAll}), and superiority was not tested in the fixed
-sequence. As stated in the protocol, the intercept and the mean correction of the calibrated model therefore add no
-utility beyond a tuned proportional margin, and moment propagation was slightly better by a non-significant amount.
-Moment propagation was also more expensive. With the effective deadline, the search completed \val{XDabsItMsMP} more
-iterations per millisecond of planning (\val{QItMsCC} against \val{QItMsMP}, \val{XCIItMsMP}). Under high disturbances,
-the tuned slope of the proportional buffer, \val{XPropCHigh}, nearly equals the slope of \val{XSlopeHigh} that the
-calibrated model gives at the selected $z$, and the two models differ mainly in an intercept of \val{XInterceptHigh}\,s.
-Under mid disturbances, the tuned slope of \val{XPropCMid} is larger than the calibrated \val{XSlopeMid}, which comes
-with an intercept of \val{XInterceptMid}\,s.
-
-The fallback carried over to moment propagation. Without it, moment propagation served \val{XDabsFbMPAll}\,pp less
-(\val{XCIFbMPAll}, Holm-adjusted $p<0.001$, H11) and \val{XDabsFbMPHighWHalf}\,pp less under high disturbances with
-halved windows. It then served only \val{QLateMPnf} tasks late per mission, because it did not attempt the tasks that
-the constraint gave up, but at \val{QUMPnf}\% it reached the lowest utility of all models, below the nominal model.
-The fallback is thus not specific to the effective deadline. A hard chance constraint on every task, however it is
-evaluated, gives up tasks that are still worth attempting.
-
-Among the secondary comparisons, online calibration, which needs neither the disturbance level nor a level-specific
-$z$, served \val{XDabsOnlCC}\,pp less than the proposed model with known level (\val{XCIOnlCC}), and non-inferiority was
-not shown. The learned stopping rule added \val{XDabsFullCC}\,pp to the proposed model (\val{XCIFullCC}) at
-\val{QMsFull} instead of \val{QMsCC}\,ms per call, and the complete replanner served \val{XDabsFullConv}\,pp, or
-\val{QURelFullConv}\%, more than the conventional planner. Among the tasks served by the proposed model, the share
-served on time was \val{QCovObsCCMid}\% under mid disturbances, against a mean predicted probability of
-\val{QCovPredCCMid}\%, and \val{QCovObsCCHigh}\% under high disturbances, against \val{QCovPredCCHigh}\%, so the error
-model ranks tasks by risk and errs on the safe side under high disturbances (Supplementary Fig.~S8).
+Holm-adjusted $p={}$\val{QPPropBufAll}), so H9 is not supported. Moment propagation served \val{XDabsMPAll}\,pp more,
+and the interval of the proposed model minus moment propagation, \val{XCIMPAll}, crossed the margin of $-0.5$\,pp, so
+non-inferiority was not shown (H10). The intercept and the mean correction of the calibrated model
+therefore add no utility beyond a tuned proportional margin. The closed form was cheaper, with \val{XDabsItMsMP} more
+search iterations per millisecond than moment propagation (\val{QItMsCC} against \val{QItMsMP}). The fallback carried
+over to moment propagation. Without it, moment propagation served \val{XDabsFbMPAll}\,pp less (\val{XCIFbMPAll}, H11)
+and, at \val{QUMPnf}\%, the lowest utility of all models, below the nominal model. A hard chance constraint on every
+task, however it is evaluated, thus gives up tasks that are still worth attempting. Among the secondary comparisons,
+online calibration served \val{XDabsOnlCC}\,pp less than the model with known disturbance level, the learned stopping
+rule added \val{XDabsFullCC}\,pp, and the error model ranked the served tasks by risk, with \val{QCovObsCCHigh}\%
+served on time under high disturbances against a predicted \val{QCovPredCCHigh}\% (Supplementary
+Fig.~\ref{S-fig:Scoverage}).
 
 \subsection{Software-in-the-loop flights}\label{sec:s2-tierc}
-In study~2, all \val{KCRuns} held-out flights were completed with mid disturbances and the original windows
-(Supplementary Section~S5). The proposed replanner without fallback served \val{KCLateRedForty}\% fewer tasks late than
-ALNS with 40\,ms, but the utility differences of \val{KCDForty}\,pp to ALNS with 40\,ms and \val{KCDConv}\,pp to the
-conventional planner were not significant (Holm-adjusted $p$ of \val{KCPForty} and \val{KCPConv}), so H4 was not
-supported. Tier B predicted the utility of a flight closely ($r=$\,\val{KBCr} over \val{KBCn} runs), but its own estimate
-of the effect on these missions was only \val{KBgzDForty}\,pp. With a per-mission standard deviation of
-\val{KCSdForty}\,pp, a confirmation would have needed about \val{KCNPowerForty} missions per method. Study~4C was
-therefore placed in the regime where tier B predicted the largest effect, and its size was computed from a tier B
-counterpart on development seeds.
+In study~2, \val{KCRuns} held-out flights with mid disturbances and the original windows did not confirm the advantage of
+the replanner without fallback (H4; \val{KCDForty}\,pp to ALNS with 40\,ms, Holm-adjusted $p={}$\val{KCPForty};
+Supplementary Section~\ref{S-sec:Ss2-tierc}). Tier B predicted the utility of a flight closely ($r=$\,\val{KBCr}), but
+also expected only \val{KBgzDForty}\,pp on these missions, too little to be confirmed by about \val{KCNPowerForty}
+missions per method. Study~4C was therefore placed in the regime where tier B predicted the largest effect. It flew
+\val{GNFlights} flights on \val{HNB} new held-out missions with the complete replanner, with and without fallback, and
+ALNS with 40\,ms on the nominal model. Every flight ran within the valid range of the real-time factor, with a mean of
+\val{GRTF}, and the interim analysis did not cross the O'Brien--Fleming bound.
 
-Study~4C flew \val{HNB} new held-out missions under high disturbances with halved windows (seeds 9000--9011,
-\val{GNFlights} flights). It compared the complete proposed replanner, with the learned stopping rule and the fallback,
-against the same replanner without fallback and against ALNS with 40\,ms on the nominal model, all with the periodic
-trigger. Every flight ran within the
-valid range of the real-time factor, with a mean of \val{GRTF}. A single flight outside it on the first attempt was
-repeated and served the same utility. The interim analysis after half of the missions did not cross the
-O'Brien--Fleming bound, so all missions were flown.
-
-The fallback carried over to the flights. With it, the proposed replanner served \val{XDabsTcNoFb}\,pp more reward than
-without it (95\% CI \val{XCITcNoFb}, Holm-adjusted $p<0.001$, H15), that is, \val{GUFB}\% against \val{GUNoFb}\%, or
-\val{HURelNoFb}\% more. It was better in \val{HWinNoFb} of the \val{GN} missions and worse in \val{HLossNoFb}. Without
-fallback, the replanner served the fewest tasks late, \val{GLateNoFb} per mission against \val{GLateFB}, as in tier B.
-Against ALNS with 40\,ms on the nominal model, the proposed replanner served \val{XDabsTcNom}\,pp less (\val{XCITcNom},
-$p={}$\val{GPNom}), so H14 is not supported. The two methods reached similar utilities, \val{GUFB}\% and \val{GUNom}\%,
-and served similar numbers of tasks late, \val{GLateFB} and \val{GLateNom} per mission, although the proposed replanner
-planned for \val{GMsFB} instead of \val{GMsNom}\,ms per call.
+The fallback carried over to the flights. With it, the replanner served \val{XDabsTcNoFb}\,pp more reward than without
+it (95\% CI \val{XCITcNoFb}, Holm-adjusted $p<0.001$, H15), that is, \val{GUFB}\% against \val{GUNoFb}\%, or
+\val{HURelNoFb}\% more, and it was better in \val{HWinNoFb} of the \val{GN} missions. Against the nominal model, it
+served \val{XDabsTcNom}\,pp less (\val{XCITcNom}, $p={}$\val{GPNom}), so H14 is not supported. Tier B predicted both
+outcomes (Fig.~\ref{fig:s4c}). On the same missions, its counterpart gave \val{XDabsTcBNom}\,pp less than the nominal
+model and \val{XDabsTcBNoFb}\,pp more than the model without fallback, with a correlation of $r=$\,\val{HBCr} over
+\val{HBCn} flights. The advantage over the nominal model that sized the study, \val{XDabsTcDevNom}\,pp on development
+seeds, did not appear on the held-out missions even in tier B, so its absence in tier C reflects the sampled missions
+rather than the transfer to the autopilot. Over the full tier B grid, the advantage in this regime was
+\val{XDabsFortyHighWHalf}\,pp, which would need about \val{HNPowerNomGrid} missions per method to be confirmed in
+tier C.
 
 \begin{figure}[t]
 \centering
@@ -165,63 +113,35 @@ fallback minus ALNS with 40\,ms on the nominal model and minus the replanner wit
 estimate on development seeds from which the size of the study was computed.}\label{fig:s4c}
 \end{figure}
 
-Tier B predicted both outcomes (Fig.~\ref{fig:s4c}). On the same missions, its counterpart gave \val{XDabsTcBNom}\,pp
-less than the nominal model (\val{XCITcBNom}) and \val{XDabsTcBNoFb}\,pp more than the model without fallback
-(\val{XCITcBNoFb}), and it predicted the utility of a flight with a correlation of $r=$\,\val{HBCr} over \val{HBCn}
-flights. The size of the study had been computed from development seeds, where the counterpart gave
-\val{XDabsTcDevNom}\,pp over the nominal model (\val{XCITcDevNom}). On the held-out missions, this advantage did not
-appear even in tier B, so its absence in tier C reflects the sampled missions rather than the transfer to the autopilot.
-In the full tier B grid of study~4, which averages over more missions, three latency factors and fleets of 5 to 20
-UAVs, the proposed model served \val{XDabsFortyHighWHalf}\,pp more than the nominal model in this regime. With the per-mission
-standard deviation of \val{HSdNom}\,pp observed in tier C, confirming an advantage of this size would require about
-\val{HNPowerNomGrid} missions per method. Tier C thus confirms on an autopilot and a physics engine that the fallback is
-needed and that tier B predicts the flights, but it does not resolve the advantage over the nominal model.
-
 \subsection{Study 5: the cost of a late arrival}\label{sec:study5}
-The utility of studies 1--4 counts only the reward of tasks served on time, so a late service earns nothing and costs
-nothing. Before study~5, the held-out runs of studies 3, 4 and 4C were scored again with a cost of $\lambda$ mean task
-rewards for every late arrival (Supplementary Fig.~S9). This analysis was not pre-registered and used no new runs. The
-advantage of the proposed model over the nominal model grew with the late cost, from \val{XDabsFortyAll}\,pp at
-$\lambda=0$ to \val{PSFourCCFortyOneAbs}\,pp at $\lambda=1$ and \val{PSFourCCFortyTwoAbs}\,pp at $\lambda=2$, because it
-served fewer tasks late. Over the conventional planner, it grew from \val{XDabsCCConv} to \val{PSFourCCConvTwoAbs}\,pp.
-The fallback behaved in the opposite way. Its advantage vanished at a late cost $\lambda^\ast$ of
-\val{PSThreeFbPropStar} in study~3, \val{PSFourMPMPnfStar} for moment propagation in study~4 and \val{PCFbNoFbStar} in
-tier C. At $\lambda=1$, the fallback of study~3 lowered the score by \val{PSThreeFbPropOneAbs}\,pp
-(\val{PSThreeFbPropOne}). The nominal fallback thus trades punctuality for reward, and the trade pays off only if a late
-arrival costs less than about one task reward. Study~5 tests on new seeds whether the cost-aware fallback of
-Section~\ref{sec:costfb} removes this limitation.
-
-Study~5 comprises \val{FNRuns} tier B runs on \val{FNMissions} new held-out missions in the twelve configurations of
-study~4 (Table~\ref{tab:s5}, Fig.~\ref{fig:s5}). All methods use the same search with 40\,ms and, except the
-conventional planner, the periodic trigger. For $\lambda=0$, the cost-aware fallback is the nominal fallback by
-construction.
+The utility of studies 1--4 counts only tasks served on time, so a late service earns nothing and costs nothing. Scored
+again with a cost of $\lambda$ mean task rewards for every late arrival, in an exploratory analysis without new runs
+(Supplementary Fig.~\ref{S-fig:Slatepen}), the advantage of the proposed model over the nominal model grew from
+\val{XDabsFortyAll}\,pp at $\lambda=0$ to \val{PSFourCCFortyTwoAbs}\,pp at $\lambda=2$. The fallback behaved in the
+opposite way. Its advantage vanished at a late cost $\lambda^\ast$ of \val{PSThreeFbPropStar} in study~3,
+\val{PSFourMPMPnfStar} for moment propagation in study~4 and \val{PCFbNoFbStar} in tier C. The nominal fallback thus
+pays off only if a late arrival costs less than about one task reward. Study~5 tests the cost-aware fallback of
+Section~\ref{sec:costfb} on \val{FNMissions} new held-out missions (\val{FNRuns} runs, Table~\ref{tab:s5},
+Fig.~\ref{fig:s5}). For $\lambda=0$, it is the nominal fallback by construction.
 
 All four primary hypotheses were supported. At $\lambda=1$, the cost-aware fallback reached a score of
 \val{FUCAOneOne}\% against \val{FUCCfbOne}\% for the nominal fallback, \val{XDabsFiveCCfbOne}\,pp more (95\% CI
-\val{XCIFiveCCfbOne}, Holm-adjusted $p<0.001$, H16). It served \val{FLateCAOne} tasks late per mission instead of
-\val{FLateCCfb}, that is, \val{FLateRedCCfb}\% fewer. Against the proportional buffer tuned for $\lambda=1$,
-non-inferiority was shown, and in the fixed sequence the cost-aware fallback was better by \val{XDabsFivePropOne}\,pp
-(\val{XCIFivePropOne}, $p<0.001$, H17). Against the model without fallback with $z$ tuned for $\lambda=1$, it was better
-by \val{XDabsFiveCCnfOne}\,pp (\val{XCIFiveCCnfOne}, $p<0.001$, H18). Over the nominal model, the advantage was
-\val{XDabsFiveFortyOne}\,pp (\val{XCIFiveFortyOne}, H19), and over the conventional planner \val{XDabsFiveConvOne}\,pp.
-Both tuned competitors had been selected on development missions from sixteen and five candidates for the late cost of
-the score, whereas the cost-aware fallback used the $z$ of study~4 and no tuning for $\lambda$.
+\val{XCIFiveCCfbOne}, Holm-adjusted $p<0.001$, H16), and served \val{FLateRedCCfb}\% fewer tasks late. Against the
+proportional buffer tuned for $\lambda=1$, non-inferiority was shown, and in the fixed sequence it was better by
+\val{XDabsFivePropOne}\,pp (\val{XCIFivePropOne}, $p<0.001$, H17). Against the model without fallback with $z$ tuned
+for $\lambda=1$, it was better by \val{XDabsFiveCCnfOne}\,pp (\val{XCIFiveCCnfOne}, $p<0.001$, H18), and over the
+nominal model by \val{XDabsFiveFortyOne}\,pp (H19). Both tuned competitors had been selected on development missions
+from sixteen and five candidates for the late cost of the score, whereas the cost-aware fallback used the $z$ of
+study~4. The advantage came from high disturbances, where it served \val{XDabsFivePropOneHigh} and
+\val{XDabsFiveCCnfOneHigh}\,pp more than the two tuned competitors. Under mid disturbances, the methods were on par,
+and with the original windows both tuned competitors were better, by \val{XDabsFivePropOneMidWOne} and
+\val{XDabsFiveCCnfOneMidWOne}\,pp.
 
-In practical units, a mission had \val{YTasksCA} tasks on average. Per 100 tasks, the cost-aware fallback served
-\val{YOnTimeCA} on time and \val{YLateHundredCA} late, the nominal fallback \val{YOnTimeCCfb} and
-\val{YLateHundredCCfb}, and the nominal model \val{YOnTimeForty} and \val{YLateHundredForty}. A late arrival was thus
-\val{YWastedShareCA}\% of all arrivals with the cost-aware fallback, against \val{YWastedShareCCfb}\% with the nominal
-fallback and \val{YWastedShareForty}\% with the nominal model. The fleet flew \val{YKmCA}\,km per mission instead of
-\val{YKmCCfb} and \val{YKmForty}\,km, or \val{YKmPerTaskCA}\,km per task served on time instead of
-\val{YKmPerTaskCCfb} and \val{YKmPerTaskForty}\,km, which is consistent with fewer flights to tasks that were likely to
-be reached too late.
-
-The advantage over the tuned competitors came from high disturbances. There, the cost-aware fallback served
-\val{XDabsFivePropOneHigh}\,pp more than the tuned buffer (\val{XCIFivePropOneHigh}) and \val{XDabsFiveCCnfOneHigh}\,pp
-more than the tuned model without fallback (\val{XCIFiveCCnfOneHigh}). Under mid disturbances, the differences were
-within \val{XCIFivePropOneMid} and \val{XCIFiveCCnfOneMid}\,pp, so the methods were on par. With mid disturbances and
-the original windows, both tuned competitors were better, by \val{XDabsFivePropOneMidWOne}\,pp
-(\val{XCIFivePropOneMidWOne}) and \val{XDabsFiveCCnfOneMidWOne}\,pp (\val{XCIFiveCCnfOneMidWOne}).
+In practical units, per 100 tasks the cost-aware fallback served \val{YOnTimeCA} on time and \val{YLateHundredCA} late,
+the nominal fallback \val{YOnTimeCCfb} and \val{YLateHundredCCfb}, and the nominal model \val{YOnTimeForty} and
+\val{YLateHundredForty}. A late arrival was thus \val{YWastedShareCA}\% of all arrivals, against \val{YWastedShareCCfb}\%
+and \val{YWastedShareForty}\%, and the fleet flew \val{YKmCA}\,km per mission instead of \val{YKmCCfb} and
+\val{YKmForty}\,km, consistent with fewer flights to tasks that were likely to be reached too late.
 
 \inputtable{tab_s5}
 
@@ -234,38 +154,28 @@ $\lambda$ of the score. 95\% paired bootstrap intervals over \val{FNMissions} mi
 \end{figure}
 
 At other late costs, the picture was mixed (Fig.~\ref{fig:s5}). At $\lambda=0.5$, the cost-aware fallback was on par
-with the tuned buffer (\val{XCIFivePropHalf}\,pp) and better than the tuned model without fallback, by
-\val{XDabsFiveCCnfHalf}\,pp (\val{XCIFiveCCnfHalf}), and the nominal fallback, by \val{XDabsFiveCCfbHalf}\,pp
-(\val{XCIFiveCCfbHalf}). At $\lambda=2$, it stayed \val{XDabsFiveCCfbTwo}\,pp above the nominal fallback and matched the
-tuned model without fallback (\val{XCIFiveCCnfTwo}\,pp), but the proportional buffer tuned for $\lambda=2$ was better by
-\val{XDabsFivePropTwo}\,pp (\val{XCIFivePropTwo}), and moment propagation without fallback by
-\val{XDabsFiveMPnfTwo}\,pp (\val{XCIFiveMPnfTwo}). At this cost, a fallback task needs a probability of at least
-\val{FThetaTwo} of meeting its deadline, and the rule still attempts such tasks. It prices every attempt on its own and
-ignores the delay that a fallback task causes to the tasks after it on the same route, which weighs more when lateness
-is expensive.
-
-The competitors have to be tuned again for every late cost, whereas the cost-aware fallback only takes $\lambda$ as an
-input. Tuned for $\lambda=1$ and scored at $\lambda=2$, the proportional buffer stayed \val{XDabsFivePropFixTwo}\,pp
-behind the cost-aware fallback (\val{XCIFivePropFixTwo}), and scored at $\lambda=0.5$ it stayed
-\val{XDabsFivePropFixHalf}\,pp behind (\val{XCIFivePropFixHalf}). The model without fallback tuned for $\lambda=1$ lost
-\val{XDabsFiveCCnfFixHalf}\,pp at $\lambda=0.5$ (\val{XCIFiveCCnfFixHalf}). A wrong late cost also costs the cost-aware
-fallback. Run with $\lambda=1$ and scored at $\lambda=2$, it lost \val{XDabsFiveCAFixTwo}\,pp against the run with
-$\lambda=2$ (\val{XCIFiveCAFixTwo}), and scored at $\lambda=0.5$ it lost nothing (\val{XCIFiveCAFixHalf}\,pp). When a
-late arrival costs nothing, the rule has a price. Run with $\lambda=1$, it served \val{FUCostCCfb}\,pp less utility than
-the nominal fallback (\val{FUCAOne}\% against \val{FUCCfb}\%).
+with the tuned buffer (\val{XCIFivePropHalf}\,pp) and better than the tuned model without fallback and the nominal
+fallback. At $\lambda=2$, it stayed \val{XDabsFiveCCfbTwo}\,pp above the nominal fallback and matched the tuned model
+without fallback, but the proportional buffer tuned for $\lambda=2$ was better by \val{XDabsFivePropTwo}\,pp
+(\val{XCIFivePropTwo}), and moment propagation without fallback by \val{XDabsFiveMPnfTwo}\,pp. At this cost, a fallback
+task needs a probability of at least \val{FThetaTwo} of meeting its deadline, and the rule ignores the delay that it
+causes to the tasks after it on the same route, which weighs more when lateness is expensive. The competitors, however,
+have to be tuned again for every late cost. Tuned for $\lambda=1$, the proportional buffer stayed
+\val{XDabsFivePropFixTwo}\,pp behind the cost-aware fallback at $\lambda=2$ and \val{XDabsFivePropFixHalf}\,pp behind
+at $\lambda=0.5$. A wrong late cost also costs the cost-aware fallback, \val{XDabsFiveCAFixTwo}\,pp when it was run with
+$\lambda=1$ and scored at $\lambda=2$. When a late arrival costs nothing, the rule run with $\lambda=1$ served
+\val{FUCostCCfb}\,pp less utility than the nominal fallback.
 
 \subsection{Study 6: a published allocator and the generality of the cost-aware fallback}\label{sec:study6}
-Study~6 comprises \val{WNRuns} tier B runs on \val{WNMissions} new held-out missions in the twelve configurations of
-study~4 (Table~\ref{tab:s6}, Fig.~\ref{fig:s6}). Every method with the cost-aware fallback was run with $\lambda=1$, and
-the scores for other late costs are computed from the same runs.
-
-All four primary hypotheses were supported, each with a Holm-adjusted $p<0.001$. With the score $u_1$, the proposed
-replanner exceeded CBBA by \val{WDabsCBBAOne}\,pp (95\% CI \val{WCICBBAOne}, H20). CBBA itself gained
-\val{WDabsCBBAModelOne}\,pp (\val{WCICBBAModelOne}, H21) when it planned on the deadlines of the cost-aware fallback.
-Within moment propagation, the cost-aware fallback scored \val{WDabsMPFbOne}\,pp above the nominal fallback
-(\val{WCIMPFbOne}, H22) and \val{WDabsMPNoFbOne}\,pp above the model without fallback (\val{WCIMPNoFbOne}, H23). The
-advantage of the cost-aware over the nominal fallback in the proposed model was \val{WDabsCACCfbOne}\,pp
-(\val{WCICACCfbOne}), which replicates H16 on a second set of seeds.
+Study~6 comprises \val{WNRuns} tier B runs on \val{WNMissions} new held-out missions (Table~\ref{tab:s6},
+Fig.~\ref{fig:s6}). Every method with the cost-aware fallback was run with $\lambda=1$, and the scores for other late
+costs are computed from the same runs. All four primary hypotheses were supported, each with a Holm-adjusted
+$p<0.001$. With the score $u_1$, the proposed replanner exceeded CBBA by \val{WDabsCBBAOne}\,pp (95\% CI
+\val{WCICBBAOne}, H20), and CBBA itself gained \val{WDabsCBBAModelOne}\,pp (\val{WCICBBAModelOne}, H21) when it planned
+on the deadlines of the cost-aware fallback. Within moment propagation, the cost-aware fallback scored
+\val{WDabsMPFbOne}\,pp above the nominal fallback (\val{WCIMPFbOne}, H22) and \val{WDabsMPNoFbOne}\,pp above the model
+without fallback (\val{WCIMPNoFbOne}, H23). The advantage of the cost-aware over the nominal fallback in the proposed
+model, \val{WDabsCACCfbOne}\,pp (\val{WCICACCfbOne}), replicates H16 on a second set of seeds.
 
 \inputtable{tab_s6}
 
@@ -278,24 +188,20 @@ $\lambda=1$ and are scored at every $\lambda$ from the same runs.}\label{fig:s6}
 \end{figure}
 
 The difference to CBBA lies in the planning model and not in the search or in the cost of computation. CBBA converged
-after \val{WItersCBBA} consensus rounds and \val{WMsCBBA}\,ms per call on average, against 40\,ms for ALNS, so its
-planning delay was small. On the nominal model it reached almost the utility of ALNS, \val{WDabsCBBAFortyZero}\,pp
-less (\val{WCICBBAFortyZero}). On utility alone ($\lambda=0$), the proposed replanner served \val{WDabsCBBAZero}\,pp,
-or \val{WURelCACBBA}\%, more than CBBA, and \val{WDabsCBBAEventZero}\,pp more than CBBA with the event trigger. CBBA
-served \val{WLateCBBA} tasks late per mission, the proposed replanner \val{WLateCA}. On the proposed model, CBBA served
-\val{WLateCBBACA} tasks late and came within \val{WDabsCACBBACAOne}\,pp of the proposed replanner at $\lambda=1$
-(\val{WCICACBBACAOne}), with \val{WMsCBBACA}\,ms per call. Most of the gain therefore does not depend on ALNS. The
-exception was the regime of high disturbances with halved windows at $\lambda=0$, where the proposed replanner and CBBA
-were on par (\val{WDCBBAZeroHighWHalf}\,pp), because a fallback for $\lambda=1$ gives up tasks that a late arrival would
-not penalise at $\lambda=0$.
+after \val{WItersCBBA} consensus rounds and \val{WMsCBBA}\,ms per call on average, against 40\,ms for ALNS, and on the
+nominal model it reached almost the utility of ALNS (\val{WCICBBAFortyZero}\,pp). On utility alone ($\lambda=0$), the
+proposed replanner served \val{WDabsCBBAZero}\,pp, or \val{WURelCACBBA}\%, more than CBBA, and \val{WDabsCBBAEventZero}\,pp
+more than CBBA with the event trigger. CBBA served \val{WLateCBBA} tasks late per mission, the proposed replanner
+\val{WLateCA}. On the proposed model, CBBA came within \val{WDabsCACBBACAOne}\,pp of the proposed replanner at
+$\lambda=1$, with \val{WMsCBBACA}\,ms per call, so most of the gain does not depend on ALNS. The exception was the regime
+of high disturbances with halved windows at $\lambda=0$, where the proposed replanner and CBBA were on par
+(\val{WDCBBAZeroHighWHalf}\,pp), because a fallback for $\lambda=1$ gives up tasks that a late arrival would not
+penalise at $\lambda=0$.
 
-The cost-aware fallback behaved within moment propagation as Proposition~\ref{prop:costfb} predicts. Without a late
-cost it lost \val{WDabsMPFbZero}\,pp against the nominal fallback (\val{WCIMPFbZero}), it broke even at $\lambda=0.5$
-(\val{WDMPFbHalf}\,pp), and its advantage grew to \val{WDabsMPFbTwo}\,pp at $\lambda=2$. Against the model without
-fallback, it was ahead up to $\lambda=1$ and on par at $\lambda=2$ (\val{WDMPNoFbTwo}\,pp). With the cost-aware
-fallback, moment propagation scored \val{WDabsCAMPCAOne}\,pp more than the closed-form model at $\lambda=1$ (interval of
-the closed form minus moment propagation \val{WCICAMPCAOne}) and \val{WDabsCAMPCATwo}\,pp more at $\lambda=2$,
-whereas the closed form was \val{WDabsCAMPCAZero}\,pp better at $\lambda=0$. Moment propagation served
-\val{WLateMPCA} tasks late per mission, against \val{WLateCA}. Once lateness has a cost, the variance that moment
-propagation tracks leg by leg therefore pays off, even though it ran fewer search iterations per call
-(\val{WItersMPCA} against \val{WItersCA}).
+Within moment propagation, the cost-aware fallback behaved as in the closed form. Without a late cost it lost
+\val{WDabsMPFbZero}\,pp against the nominal fallback, it broke even at $\lambda=0.5$, and its advantage grew to
+\val{WDabsMPFbTwo}\,pp at $\lambda=2$. With the cost-aware fallback, moment propagation scored \val{WDabsCAMPCAOne}\,pp
+more than the closed-form model at $\lambda=1$ (closed form minus moment propagation \val{WCICAMPCAOne}) and
+\val{WDabsCAMPCATwo}\,pp more at $\lambda=2$, whereas the closed form was \val{WDabsCAMPCAZero}\,pp better at
+$\lambda=0$. Once lateness has a cost, the variance that moment propagation tracks leg by leg therefore pays off, even
+though it ran fewer search iterations per call (\val{WItersMPCA} against \val{WItersCA}).

@@ -76,8 +76,10 @@ AnytimeSwarm and the stagnation rule.
 \input{supp/s4_study1}
 
 \section{Study 2: regimes and software-in-the-loop details}\label{sec:Sstudy2}
-Fig.~\ref{fig:Ss2main} shows the paired differences of Table~\ref{tab:s2main} of the main paper together with the
-computation of every method.
+Table~\ref{tab:s2main} lists the results of all methods and ablations of study~2, and Fig.~\ref{fig:Ss2main} shows their
+paired differences together with the computation of every method.
+
+\inputtable{tab_s2_main}
 
 \begin{figure}[t]
 \centering
@@ -90,7 +92,9 @@ utility against mean computation per call. Ablations are omitted.}\label{fig:Ss2
 \input{supp/s5_study2}
 
 \section{Study 3: regimes}\label{sec:Sstudy3}
-Fig.~\ref{fig:Ss3} shows the paired differences of study~3 per regime.
+Table~\ref{tab:s3} lists the results of study~3, and Fig.~\ref{fig:Ss3} shows its paired differences per regime.
+
+\inputtable{tab_s3}
 
 \begin{figure}[t]
 \centering
@@ -99,7 +103,18 @@ Fig.~\ref{fig:Ss3} shows the paired differences of study~3 per regime.
 method, per regime (mean over $\kappa_B$, \val{LNMissions} missions, 95\% paired bootstrap intervals).}\label{fig:Ss3}
 \end{figure}
 
-\section{Study 4: reliability of the error model}\label{sec:Sstudy4}
+\section{Study 4: regimes and reliability of the error model}\label{sec:Sstudy4}
+Fig.~\ref{fig:s4} shows the paired differences of study~4 per regime. All three advantages of the proposed model, over
+the constant buffer, the nominal model and the conventional planner, held in each of the four regimes.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s4}{0.85\linewidth}
+\caption{Study~4, tier B, held-out seeds 8000--8029: utility of the proposed model with fallback minus each other
+planning model, per regime (mean over $\kappa_B$, \val{QNMissions} missions, 95\% paired bootstrap intervals). All
+models use the same search with 40\,ms.}\label{fig:s4}
+\end{figure}
+
 Fig.~\ref{fig:Scoverage} groups the tasks that were served in study~4 by the probability of meeting the deadline that
 the error model of their disturbance level predicted at the last published plan, and compares it with the share served
 on time. The plans of the proposed model and of the nominal model are evaluated with the same error model. Under mid
