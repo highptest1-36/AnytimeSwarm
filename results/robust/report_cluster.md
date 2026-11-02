@@ -27,5 +27,16 @@
 | H21 | CBBA on proposed model vs. CBBA | +12.12 | [+11.31, +12.93] | 0.0000 | [+11.49, +12.72] | 0.0000 | 0.76 | supported -> supported |
 | H22 | MP: cost-aware vs. nominal fb | +2.71 | [+2.13, +3.27] | 0.0000 | [+2.13, +3.26] | 0.0000 | 0.98 | supported -> supported |
 | H23 | MP: cost-aware vs. no fallback | +3.30 | [+2.83, +3.79] | 0.0000 | [+2.90, +3.69] | 0.0000 | 0.82 | supported -> supported |
+| H24 | fixed-cost vs. proportional rule | +0.24 | [-0.20, +0.67] | 0.2864 | [-0.18, +0.66] | 0.2686 | 0.97 | not supported -> not supported |
+| H25 | fixed-cost rule vs. tuned buffer (NI) | +1.34 | [+0.77, +1.90] | 0.0000 | [+0.76, +1.92] | 0.0000 | 1.03 | NI shown -> NI shown |
+| H26 | prop. rule vs. buffer tuned for $u^w_1$ (NI) | +0.20 | [-0.40, +0.79] | 0.0218 | [-0.34, +0.74] | 0.0114 | 0.91 | NI shown -> NI shown |
+| H27 | Student-$t$ errors: nominal fb vs. nominal | +5.40 | [+4.81, +5.98] | 0.0000 | [+4.83, +5.94] | 0.0000 | 0.95 | supported -> supported |
+| H28 | Student-$t$ errors: cost-aware vs. nominal fb | +3.64 | [+2.78, +4.52] | 0.0000 | [+2.83, +4.51] | 0.0000 | 0.96 | supported -> supported |
+| H27 | rare long delays: nominal fb vs. nominal | +5.67 | [+5.04, +6.30] | 0.0000 | [+5.11, +6.24] | 0.0000 | 0.89 | supported -> supported |
+| H28 | rare long delays: cost-aware vs. nominal fb | +3.87 | [+2.96, +4.78] | 0.0000 | [+3.07, +4.73] | 0.0000 | 0.91 | supported -> supported |
+| H27 | speed bias per UAV: nominal fb vs. nominal | +4.83 | [+4.25, +5.42] | 0.0000 | [+4.21, +5.50] | 0.0000 | 1.10 | supported -> supported |
+| H28 | speed bias per UAV: cost-aware vs. nominal fb | +3.64 | [+2.79, +4.50] | 0.0000 | [+2.76, +4.50] | 0.0000 | 1.02 | supported -> supported |
+| H27 | Pareto latency: nominal fb vs. nominal | +5.25 | [+4.62, +5.88] | 0.0000 | [+4.60, +5.95] | 0.0000 | 1.07 | supported -> supported |
+| H28 | Pareto latency: cost-aware vs. nominal fb | +3.60 | [+2.73, +4.48] | 0.0000 | [+2.90, +4.37] | 0.0000 | 0.84 | supported -> supported |
 
-outcomes changed: 1 of 25; width ratio min 0.69, median 0.97, max 1.18
+outcomes changed: 1 of 36; width ratio min 0.69, median 0.97, max 1.18

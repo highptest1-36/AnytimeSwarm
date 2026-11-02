@@ -1,11 +1,13 @@
 \section{Discussion and limitations}\label{sec:discussion}
-The six studies answer the four research questions as follows. On RQ1, the spread of the finish-time error grows
+The seven studies answer the four research questions as follows. On RQ1, the spread of the finish-time error grows
 almost linearly with the lead time, and a chance constraint built on it reduces to one effective deadline per task that
 fast heuristics use unchanged. On RQ2, the planning model matters most, the trigger second and the stopping rule
 least. On RQ3, the replanner served more reward than a constant buffer, the nominal model, a conventional planner and
-CBBA, and as much as a tuned proportional buffer and moment propagation, but software-in-the-loop flights confirmed only
-the fallback. On RQ4, the probability of meeting the deadline decided which given-up tasks to attempt without tuning,
-and this beat competitors tuned for the cost of lateness at one task reward, though not at twice that cost.
+CBBA, and as much as a tuned proportional buffer and moment propagation, also under errors that its model does not
+describe, but software-in-the-loop flights confirmed only the fallback. On RQ4, the probability of meeting the deadline
+decided which given-up tasks to attempt without tuning. With a fixed late cost of one task reward, this beat
+competitors tuned for that cost on two sets of seeds, and with a cost proportional to the reward it was as good as
+them, but not at twice that cost when the cost is proportional to the reward.
 
 The order of priorities holds across the designs. A margin that grows with the lead time raised the utility by more
 than any choice of stopping rule or trigger, on three independent sets of held-out seeds, without search and with CBBA
@@ -35,9 +37,20 @@ a cost, the question is no longer only how large the margin is but which tasks a
 requires a probability. The closed form turns the break-even rule of Eq.~\eqref{eq:theta} into another effective
 deadline, which served more than a buffer and a safety factor tuned for one task reward and stayed ahead of the buffer
 whenever the buffer had been tuned for a different cost. Applied to moment propagation, the same rule behaved in the
-same way, so it is not tied to the closed form. At twice the cost, a tuned buffer without fallback was better. The rule
-prices each attempt on its own and ignores the delay that a fallback task causes to later tasks on its route, and a
-route-level version that also charges this delay is the natural next step.
+same way, so it is not tied to the closed form. The rule depends on the cost model, and study~7a shows that this
+matters less than expected. Run with the cost model of the score, it did not differ significantly from the mismatched
+rule at one task reward, and it closed the gap to the tuned buffer at twice the cost only when the cost was fixed. When
+the cost was proportional to the reward, a tuned buffer without fallback stayed better at twice the cost. The rule
+prices each attempt on its own and ignores the delay that a fallback task causes to later tasks on its route, which
+weighs more when lateness is expensive, and a route-level version that also charges this delay is the natural next
+step.
+
+The guarantee of the effective deadline rests on a Gaussian error model, but the results did not depend on it in the
+departures tested. Heavy-tailed errors, rare long delays, a speed bias per UAV and heavy-tailed latency left the
+advantage over the nominal model between \val{UDabsHTwentySevenBias} and \val{UDabsHTwentySevenOutlier}\,pp, against
+\val{UBCtlCCfb}\,pp under the calibrated errors. The bias per UAV, which correlates the errors along a route, reduced it
+most. The model ranks tasks by their risk, and a ranking is less sensitive to the shape of the tails than the
+probability itself, which became slightly optimistic in the upper tail only with rare long delays.
 
 The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over tens of
 thousands of missions, whereas a flight with autopilot and vehicle dynamics is costly. Tier B predicted every tier C
@@ -47,14 +60,18 @@ conservative effect.
 
 Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
 level, so the level is assumed to be known. Online calibration removes this assumption but served
-\val{XDabsOnlCC}\,pp less reward, and its non-inferiority was not shown. The chance constraint is imposed on every task
-separately rather than jointly on a route. The fallback, the models of study~4 and the cost-aware fallback were
-designed after the held-out results of earlier studies and were therefore tested on new seeds. The cost-aware fallback
-assumes that the cost of a late arrival is known and proportional to the reward of the task, and it was tested in
+\val{XDabsOnlCC}\,pp less reward, and its non-inferiority was not shown. The guarantees of Propositions~\ref{prop:cc}
+and~\ref{prop:costfb} hold under the Gaussian error model, and study~7b covered only four departures from it, at sizes
+fixed in advance and under high disturbances. The chance constraint is imposed on every task separately rather than
+jointly on a route, and the cost-aware fallback is a local break-even rule. The fallback, the models of study~4, the
+cost-aware fallback and study~7 were designed after the held-out results of earlier studies and were therefore tested
+on new seeds. The cost-aware fallback assumes that the cost of a late arrival is known. Study~7a covered a cost
+proportional to the reward and a fixed cost, but not a cost that grows with the lateness, and the rule was tested in
 tier B only. CBBA ran centrally with a fully connected network, the most favourable case for its communication, so its
 robustness to lost links was not part of the comparison. Tier C uses three UAVs and fifteen tasks per mission, and
 software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the sensors, the radio link
-or the weather of a field test. The latency factor emulates a slower planning computer instead of measuring one, and
+or the weather of a field test. No field flights were made, and the rescaled tier C missions share their disturbance
+model with tier B, so the transfer to real vehicles remains to be shown. The latency factor emulates a slower planning computer instead of measuring one, and
 because the stopping rules read a wall clock, the mean utility of a method varied by up to \val{JRepeatDiffMax}\,pp
 between two runs of the same missions. Finally, all methods share one family of scenarios, and other mission types may
 change the size of the gains.

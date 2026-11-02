@@ -69,7 +69,12 @@ more than a proportional buffer and a safety factor tuned for this cost. At twic
 by \val{FAbsPropTwo} points. On a further set of seeds, the replanner served \val{WDabsCBBAZero} points, or
 \val{WURelCACBBA}\%, more utility than CBBA. With a late cost of one task reward, CBBA itself gained
 \val{WDabsCBBAModelOne} points when it planned on the proposed model, and the cost-aware fallback improved moment
-propagation as well. In software-in-the-loop flights with PX4 and Gazebo,
+propagation as well. Studies 5 and 6 had run the rule for a late cost proportional to the reward but scored it with a
+fixed cost per late arrival. On a further set of seeds, the rule matched to the score did not differ significantly from
+the mismatched one at one task reward, beat the buffer tuned for this score by \val{UDabsHTwentyFive} points, and
+removed the deficit to the tuned buffer at twice the cost. Under execution errors that the calibrated model does not
+describe, the proposed model kept an advantage of \val{UDabsHTwentySevenBias} to \val{UDabsHTwentySevenOutlier}
+points over the nominal model. In software-in-the-loop flights with PX4 and Gazebo,
 the fallback raised the utility by \val{XDabsTcNoFb} percentage points, whereas the advantage over the nominal model was
 not confirmed, as the kinematic tier had predicted for the same missions. An earlier study, in which
 only the stopping rule was made execution-aware, found no significant gain in utility (Section~\ref{sec:study1}).

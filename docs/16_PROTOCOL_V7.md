@@ -104,4 +104,17 @@ All outcomes are reported, including unsupported or reversed hypotheses. Deviati
 
 ## 8. Deviations
 
-(none yet)
+1. (2026-11-02, after the held-out runs) Section 5 says "ten tests, for each of the five shifted conditions". The design
+   of section 2 has four shifted conditions (t3, outlier, uavbias, Pareto latency) besides the Gaussian control, and the
+   frozen analysis script tests H27 and H28 for these four, i.e. eight tests under Holm. The text of section 5 was wrong;
+   the frozen code was followed. All eight adjusted p-values are below 0.001, so ten tests would not change any outcome.
+2. Section 6 lists a seed-cluster bootstrap as sensitivity analysis; it was added to experiments/robust_cluster.py
+   (not frozen) after the runs. No outcome of study 7 changed.
+
+3. The frozen analysis computes the per-regime differences of 7a (secondary, descriptive) with tuned(), which needs both
+   disturbance levels in one frame, so it produced none. They were computed with the same rule in
+   experiments/paper_s7fig.py (macros UX...). No primary result is affected.
+4. The figure of the frozen script mixed U and u_1 in panel (b); the manuscript figure is drawn by
+   experiments/paper_s7fig.py from the same data and shows the primary comparisons H27 and H28.
+
+Held-out runs: 2026-11-01 19:29 to 2026-11-02 03:28 UTC, 55 080 (7a) + 45 360 + 11 340 (7b) runs, no failure.

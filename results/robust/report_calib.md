@@ -14,3 +14,11 @@
 | 6 | proposed | high | 60303 | 5.20 | 85.1 | 80.6 | 94.4 | 93.7 | 55.4 | nan |
 | 6 | nominal | mid | 78643 | 2.76 | 82.0 | 80.4 | 96.5 | 97.4 | 63.2 | nan |
 | 6 | nominal | high | 70111 | 9.28 | 69.1 | 60.2 | 95.3 | 94.5 | 29.3 | nan |
+
+## Study 7b: errors outside the calibrated model (proposed model, cost-aware fallback lam = 1)
+
+| 7b | proposed | Gaussian (calibrated) | 60745 | 4.54 | 84.6 | 80.8 | 94.0 | 93.7 | 55.6 | 0.118 |
+| 7b | proposed | Student-$t$ | 61027 | 4.46 | 85.1 | 80.9 | 94.8 | 93.7 | 55.9 | 0.114 |
+| 7b | proposed | Rare long delays | 59747 | 3.56 | 82.5 | 80.5 | 92.6 | 93.6 | 54.8 | 0.129 |
+| 7b | proposed | Bias per UAV | 60569 | 4.59 | 84.2 | 80.8 | 93.2 | 93.7 | 55.5 | 0.122 |
+| 7b | proposed | Pareto latency | 60701 | 4.43 | 84.6 | 80.8 | 94.0 | 93.7 | 55.5 | 0.118 |

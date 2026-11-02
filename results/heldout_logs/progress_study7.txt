@@ -1,0 +1,18 @@
+[study7] 2026-11-01T19:29:00+00:00 freeze check
+journal_core/study7.py: OK
+experiments/b7_grid.py: OK
+experiments/analyze_study7.py: OK
+experiments/configs/S7a_B.yaml: OK
+experiments/configs/S7b_B.yaml: OK
+experiments/configs/S7b_lat_B.yaml: OK
+tools/run_study7.sh: OK
+tests/test_study7.py: OK
+docs/16_PROTOCOL_V7.md: OK
+[study7] 2026-11-01T19:29:00+00:00 tier B S7a_B
+[ok] 55080 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s7a_heldout_B.csv
+[study7] 2026-11-01T23:22:26+00:00 tier B S7b_B
+[ok] 45360 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s7b_heldout_B.csv
+[study7] 2026-11-02T02:40:02+00:00 tier B S7b_lat_B
+[ok] 11340 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/s7b_lat_heldout_B.csv
+[study7] 2026-11-02T03:28:19+00:00 tier B analysis
+[study7] 2026-11-02T03:28:27+00:00 done

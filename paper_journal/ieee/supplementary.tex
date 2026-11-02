@@ -35,6 +35,7 @@
 \IfFileExists{../tables/numbers_robust.tex}{\input{../tables/numbers_robust.tex}}{}
 \IfFileExists{../tables/numbers_calib.tex}{\input{../tables/numbers_calib.tex}}{}
 \IfFileExists{../tables/numbers_s7.tex}{\input{../tables/numbers_s7.tex}}{}
+\IfFileExists{../tables/numbers_s7x.tex}{\input{../tables/numbers_s7x.tex}}{}
 \newcommand{\mname}{LTCC}  % name of the proposed method
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
 \newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
@@ -203,7 +204,7 @@ calibration.}\label{fig:Scalib}
 \section{Sensitivity to the resampling unit}\label{sec:Scluster}
 The primary tests resample missions. The nine missions of one seed have independent scenarios but share the execution
 disturbances, which are keyed to the seed, the UAV and the task. Table~\ref{tab:Scluster} repeats every tier B primary
-test of studies 2--6 with a paired bootstrap over the \val{VClNClusters} seeds. The intervals were \val{VClRatioMin} to
+test of studies 2--7 with a paired bootstrap over the \val{VClNClusters} seeds. The intervals were \val{VClRatioMin} to
 \val{VClRatioMax} times as wide as over missions (median \val{VClRatioMed}). They were mostly narrower, because every
 seed contains one mission of each fleet scale and event profile, so that resampling seeds removes the variation between
 these strata. \val{VClNChanged} of the \val{VClNTests} outcomes changed. In H9, the advantage of the proportional buffer

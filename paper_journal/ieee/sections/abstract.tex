@@ -5,13 +5,15 @@ lead time, because disturbances persist over a leg. The proposed replanner,
 \mname{}, exploits this structure. With an affine error model, a chance constraint on the finish time of every task reduces
 exactly to an effective deadline, which fast heuristics reuse unchanged. A cost-aware fallback attempts a task that
 the constraint gives up only if its probability of meeting the deadline outweighs the cost of a late arrival, again in
-closed form and without tuning. In six pre-registered studies on held-out missions of a kinematic simulator, the
-chance-constrained model served more reward than the nominal model and a constant time buffer on three independent
-sets of seeds, by \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points on the last one, and
+closed form and without tuning. In seven studies on held-out missions of a kinematic simulator, each with a protocol
+frozen in advance, the chance-constrained model served more reward than the nominal model and a constant time buffer on
+three independent sets of seeds, by \val{XDabsFortyAll} and \val{XDabsBufAll} percentage points on the last one, and
 \val{WURelCACBBA}\% more than the consensus-based bundle algorithm on a further set. A tuned proportional buffer and
 moment propagation came within \val{XRangeScaled} points. When a late arrival cost one task reward, the cost-aware
-fallback outscored the nominal fallback by \val{FAbsCCfbOne} points, and a proportional buffer and a safety factor
-tuned for this cost by \val{FAbsPropOne} and \val{FAbsCCnfOne} points (all $p<0.001$), and it improved moment
-propagation as well. At twice this cost, the tuned buffer was better. In PX4 software-in-the-loop flights, the
+fallback outscored the nominal fallback by \val{FAbsCCfbOne} points and a proportional buffer tuned for this cost by
+\val{FAbsPropOne} points (both $p<0.001$), and it improved moment propagation as well. A rule matched to the late-cost
+model of the score beat the tuned buffer again on new seeds, by \val{UDabsHTwentyFive} points. At twice this cost, the
+tuned buffer was better or equal. Under errors that the model does not describe, namely heavy tails, rare long delays,
+a speed bias per vehicle and heavy-tailed latency, the advantages persisted. In PX4 software-in-the-loop flights, the
 fallback raised the utility by \val{HURelNoFb}\%, whereas the advantage over the nominal model was not confirmed.
 \end{abstract}

@@ -125,7 +125,7 @@ def main():
     ax.set_ylabel("utility difference (pp)")
     ax.set_xticks(LAMBDAS)
     ax.grid(alpha=0.3)
-    ax.legend(frameon=False, fontsize=6.8, loc="upper right")
+    ax.legend(frameon=False, fontsize=6.0, loc="lower left", handlelength=1.4, borderaxespad=0.2)
     fig.tight_layout()
     fig.savefig(P / "figures" / "fig_latepen.pdf")
     plt.close(fig)

@@ -1,5 +1,6 @@
 \section{Results}\label{sec:results}
-Table~\ref{tab:hyp} summarises the pre-registered primary hypotheses of studies 2--6 and their outcomes. The
+Table~\ref{tab:hyp} summarises the primary hypotheses of studies 2--7, as fixed in their frozen protocols, and their
+outcomes. The
 subsections report each study in the order in which it was designed, so that every design decision can be traced to
 the results that motivated it.
 
@@ -216,3 +217,52 @@ more than the closed-form model at $\lambda=1$ (closed form minus moment propaga
 \val{WDabsCAMPCATwo}\,pp more at $\lambda=2$, whereas the closed form was \val{WDabsCAMPCAZero}\,pp better at
 $\lambda=0$. Once lateness has a cost, the variance that moment propagation tracks leg by leg therefore pays off, even
 though it ran fewer search iterations per call (\val{WItersMPCA} against \val{WItersCA}).
+
+\subsection{Study 7: late-cost model and errors outside the model}\label{sec:study7}
+Study~7 comprises \val{UANRuns} tier B runs in study~7a and \val{UBNRuns} in study~7b, each on 270 new held-out missions
+(Fig.~\ref{fig:s7}, Supplementary Section~\ref{S-sec:Sstudy7}). For the scores $u_\lambda$ and $u^w_\lambda$, the
+development selection of the tuned buffer differed only at $\lambda=1$ under high disturbances, with $c=0.45$ for
+$u_1$ and $c=0.6$ for $u^w_1$, both without fallback.
+
+Matching the rule to the score changed little at a late cost of one task reward. With $u_1$, which charges a fixed
+cost per late arrival, the fixed-cost rule scored \val{USCAFeeOneFee}\% and the proportional rule of studies 5 and 6
+\val{USCAPropOneFee}\%, a difference of \val{UDHTwentyFour}\,pp (Holm-adjusted $p={}$\val{UPHTwentyFour}), so H24 is
+not supported. Against the proportional buffer tuned for $u_1$, at \val{USPropOneFee}\%, the fixed-cost rule was
+non-inferior and better by \val{UDHTwentyFive}\,pp ($p<0.001$, H25), which replicates H17 on a new set of seeds. With
+$u^w_1$, which charges a cost proportional to the reward, the proportional rule was non-inferior to the buffer tuned
+for that score (\val{UDHTwentySix}\,pp, Holm-adjusted $p={}$\val{UPHTwentySix}, H26), but not better
+($p={}$\val{UPSupHTwentySix}).
+
+The match mattered more at a higher cost, and each rule did better on its own score. The fixed-cost rule scored
+\val{UDFeeCApropTwoFee}\,pp above the proportional rule with $u_2$, and the proportional rule scored
+\val{UDabsFeeCApropOneW} and \val{UDabsFeeCApropTwoW}\,pp above the fixed-cost rule with $u^w_1$ and $u^w_2$. With
+$u_2$, the matched rule reached the buffer tuned for this score (\val{UDFeePropTwoFee}\,pp), whereas the proportional
+rule stayed behind it, as in study~5 (\val{UDPropPropTwoFee}\,pp). With $u^w_2$, both rules stayed behind the buffer
+tuned for that score, the matched proportional rule by \val{UDabsPropPropTwoW}\,pp. At $\lambda=0.5$, all of them were
+within half a point. The mismatch in studies 5 and 6 thus lowered the score of the cost-aware fallback slightly rather
+than raised it, and the weakness at twice the cost remains for a late cost that is proportional to the reward.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_s7}{0.92\linewidth}
+\caption{Study~7, tier B. (a) Study~7a, held-out seeds 13000--13029: cost-aware fallback with the fixed-cost and with
+the proportional rule minus the proportional buffer tuned for the same score and late cost. (b) Study~7b, held-out
+seeds 14000--14029, high disturbances: the two primary comparisons under the calibrated Gaussian errors (shaded) and
+under four kinds of error that the model does not describe. 95\% paired bootstrap intervals over 270
+missions.}\label{fig:s7}
+\end{figure*}
+
+Errors that the model does not describe lowered the utility of every method only slightly. The nominal model served
+\val{UBUFortyGauss}\% under the calibrated errors and between \val{UBUFortyOutlier}\% with rare long delays and
+\val{UBUFortyTthree}\% with Student-$t$ errors, so the departures were moderate. The advantages of the proposed model
+held under all four of them, and all eight primary comparisons were significant (Holm-adjusted $p<0.001$). With the
+nominal fallback, the proposed model served \val{UDabsHTwentySevenBias} to \val{UDabsHTwentySevenOutlier}\,pp more than
+the nominal model (H27), against \val{UBCtlCCfb}\,pp under the calibrated errors. The smallest advantage occurred with a
+speed bias per UAV, which correlates the errors along a route in a way the model does not represent. On $u_1$, the
+cost-aware fallback scored \val{UDabsHTwentyEightPareto} to \val{UDabsHTwentyEightOutlier}\,pp more than the nominal
+fallback (H28), and \val{UDabsBCAPropTthree} to \val{UDabsBCAPropOutlier}\,pp more than the proportional buffer of
+study~4. Rare long delays raised the mean finish-time error of the proposed model from \val{UBErrGauss} to
+\val{UBErrOutlier}\,s, and its predicted probability became slightly optimistic in the upper tail, with
+\val{VCalObsHiSOutlier}\% of the tasks served on time against a predicted \val{VCalPredHiSOutlier}\% (Supplementary
+Section~\ref{S-sec:Scalib}). Under the other departures, the upper tail stayed within about one point of its
+prediction, on the conservative side for Student-$t$ errors.

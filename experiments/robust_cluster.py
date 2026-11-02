@@ -3,7 +3,7 @@
 The primary analyses resample missions. The nine missions of one seed (three fleet scales x three event profiles) have
 independent scenarios, but the execution disturbances are keyed to the seed, the UAV and the task
 (journal_core/execution.py), so they share the wind direction and the per-leg error streams. This script repeats every
-tier B primary test of studies 2-6 with a paired cluster bootstrap that resamples seeds (30 clusters of nine missions,
+tier B primary test of studies 2-7 with a paired cluster bootstrap that resamples seeds (30 clusters of nine missions,
 the paired difference of a mission averaged over the configurations as in the primary analyses), and compares the
 intervals, p-values and Holm-adjusted outcomes with the mission bootstrap. Tier C hypotheses (H4, H14, H15) have one
 mission per seed and are not affected. Exploratory; no new runs.
@@ -91,6 +91,25 @@ def main():
          ("6", "H22", "MP: cost-aware vs. nominal fb", s6, A + "mp=auto;lam=1" + T, A + "mp=auto;fb=nominal" + T,
           "u1", "sup"),
          ("6", "H23", "MP: cost-aware vs. no fallback", s6, A + "mp=auto;lam=1" + T, A + "mp=auto" + T, "u1", "sup")]
+    f7a, f7b = TB / "s7a_heldout_B.csv", [TB / "s7b_heldout_B.csv", TB / "s7b_lat_heldout_B.csv"]
+    if f7a.exists() and all(f.exists() for f in f7b):
+        import analyze_study7 as a7
+        s7 = pd.read_csv(f7a)
+        xf = a7.score(s7, 1.0, "fee")
+        xf = pd.concat([xf, a7.tuned(xf, "fee", 1.0, "Prop")], ignore_index=True).assign(u1=lambda d: d.u)
+        xw = a7.score(s7, 1.0, "w")
+        xw = pd.concat([xw, a7.tuned(xw, "w", 1.0, "Prop")], ignore_index=True).assign(u1=lambda d: d.u)
+        fee = A + "z=auto4;lam=1;cost=fee" + T
+        H += [("7a", "H24", "fixed-cost vs. proportional rule", xf, fee, ca, "u1", "sup"),
+              ("7a", "H25", "fixed-cost rule vs. tuned buffer (NI)", xf, fee, "Prop@fee1", "u1", "ni"),
+              ("7a", "H26", "prop. rule vs. buffer tuned for $u^w_1$ (NI)", xw, ca, "Prop@w1", "u1", "ni")]
+        b = pd.concat([pd.read_csv(f) for f in f7b], ignore_index=True)
+        b = b.assign(u1=b.utility_rate - b.late_served / b.n_tasks)
+        for xl, ll, key, lab in a7.SHIFTS:
+            sub = b[(b.exec_level == xl) & (b.latency_level == ll)]
+            H += [("7b", "H27", f"{lab}: nominal fb vs. nominal", sub, cc4, "alns_fixed@40" + T, "utility_rate",
+                   "sup"),
+                  ("7b", "H28", f"{lab}: cost-aware vs. nominal fb", sub, ca, cc4, "u1", "sup")]
     rows = []
     for fam, h, lab, df, a, b, metric, kind in H:
         d = paired(df, a, b, metric)
