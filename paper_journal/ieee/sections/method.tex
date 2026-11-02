@@ -42,8 +42,8 @@ $u_\lambda,\,u^w_\lambda$ & scores $U-\lambda\,n_{\mathrm{late}}/n$ and $U-\lamb
 \caption{Overview of \mname{}. Top: the replanning loop between the mission, the planning snapshot, the
 replanner and the execution tier. Bottom: one replanning call. The calibrated error model gives a margin that grows
 with the lead time, the chance constraint turns it into an effective deadline per task, the cost-aware fallback keeps a
-given-up task only if its probability of meeting the deadline outweighs the cost $\lambda$ of a late arrival, and the
-anytime search stops when the predicted gain no longer pays for the delay. The plan is released after the emulated planning delay $\kappa\tau$ and the latency $L$.}\label{fig:overview}
+given-up task only if its probability of meeting the deadline reaches the break-even value $c_j/(w_j+c_j)$ set by the
+reward $w_j$ and the cost $c_j$ of a late arrival, and the anytime search stops when the predicted gain no longer pays for the delay. The plan is released after the emulated planning delay $\kappa\tau$ and the latency $L$.}\label{fig:overview}
 \end{figure*}
 
 \begin{algorithm}[t]
@@ -136,7 +136,7 @@ The repair and the search use $\tilde d_j$ instead of $d_j$, while the executor 
 deadline.
 
 \begin{prop}\label{prop:cc}
-Let $1+b_1+z s_1>0$. (i) A finish time satisfies Eq.~\eqref{eq:ccfinish} if and only if $f_j\le\tilde d_j$. (ii) Under
+Let $1+b_1+z s_1>0$ and $s_0,s_1\ge0$, so that $s(h)\ge0$ for every lead time $h\ge0$. (i) A finish time satisfies Eq.~\eqref{eq:ccfinish} if and only if $f_j\le\tilde d_j$. (ii) Under
 the error model of Eq.~\eqref{eq:errmodel}, a task planned to finish at $f_j\le\tilde d_j$ meets its deadline with
 probability at least $\Phi(z)$ if its route starts as planned. (iii) With $b_0=b_1=s_0=s_1=0$, $\tilde d_j=d_j$ and the
 planning model is the nominal one.
@@ -145,7 +145,9 @@ planning model is the nominal one.
 Substituting Eq.~\eqref{eq:errmodel} into Eq.~\eqref{eq:ccfinish} gives
 $f_j(1+b_1+zs_1)\le d_j-b_0-zs_0+(b_1+zs_1)t_0$, and dividing by the positive factor gives (i). For (ii), the actual
 finish is $F_j=f_j+e_j$ with $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$ and $h_j=f_j-t_0$. By (i),
-$d_j-f_j-m(h_j)\ge z\,s(h_j)$, hence $\Pr[F_j\le d_j]=\Phi\big((d_j-f_j-m(h_j))/s(h_j)\big)\ge\Phi(z)$. Part (iii) is
+$d_j-f_j-m(h_j)\ge z\,s(h_j)$. If $s(h_j)>0$, then
+$\Pr[F_j\le d_j]=\Phi\big((d_j-f_j-m(h_j))/s(h_j)\big)\ge\Phi(z)$. If $s(h_j)=0$, which happens only for $s_0=0$ and
+$h_j=0$, the error equals $m(h_j)$ with certainty, $F_j\le d_j$ holds, and the probability is one. Part (iii) is
 immediate.
 \end{proof}
 

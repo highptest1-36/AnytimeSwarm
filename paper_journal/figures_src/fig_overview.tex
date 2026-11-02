@@ -112,7 +112,7 @@
 \node[Ts, anchor=east, text=late] at (7.28,3.36) {$\tilde d_j$};
 \draw[edge, line width=0.55pt, dash pattern=on 2pt off 1pt, fill=white] (7.6,3.24) rectangle (8.6,3.48);
 \draw[late!65, line width=0.9pt, dash pattern=on 1.5pt off 1pt] (8.2,3.14) -- (8.2,3.58);
-\node[Ts, anchor=north, align=center] at (7.75,3.16) {given up: attempt only if\\$\Pr[F_j\le d_j]\ge\lambda/(1+\lambda)$};
+\node[Ts, anchor=north, align=center] at (7.75,3.16) {given up: attempt only if\\$\Pr[F_j\le d_j]\ge c_j/(w_j+c_j)$};
 \node[Ts, align=center] at (7.57,1.5)
   {$\tilde d_j=t_0+\dfrac{d_j-t_0-b_0-z s_0}{1+b_1+z s_1}$};
 \node[Ts, align=center] at (7.57,0.75) {exact for a linear error model;\\repair and search reuse it unchanged};
@@ -121,7 +121,7 @@
 \fill[pRose, panel] (9.5,0.45) rectangle (12.75,7.05);
 \node[Hd] at (11.12,6.8) {Anytime search};
 \wslab{9.72}{5.7}{1.9}{0.5}{0.25}{sRose}
-\node[Ts, align=center] at (10.67,5.95) {feasibility-first repair\\(regret-2)};
+\node[Ts, align=center] at (10.67,5.95) {feasibility-first\\repair (regret-2)};
 \draw[arr] (10.67,5.7) -- (10.67,5.2);
 \wslab{9.72}{4.45}{1.9}{0.75}{0.25}{sRose}
 \node[Ts, align=center] at (10.67,4.83) {ALNS\\destroy and repair\\SA acceptance};

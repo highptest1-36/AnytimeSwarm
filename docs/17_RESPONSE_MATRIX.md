@@ -19,3 +19,18 @@ Mỗi dòng: góp ý → việc đã làm → vị trí (file/mục) → trạng
 | M3 | "Pre-registered" | Đổi thành protocol được khóa trước held-out (SHA-256 + commit), nói rõ không nộp registry ngoài | abstract, intro, setup, conclusion, supp, tab_hyp | Xong |
 | M4 | Data availability chỉ hứa sau xuất bản | Theo quyết định của tác giả (02/11): "available from the authors upon reasonable request"; code lưu ở repo private, cung cấp khi tạp chí yêu cầu | declarations.tex | Xong |
 | M5 | Table 1 ✓/– | Mỗi ô dựa trên bằng chứng ghi trong docs/09_RECENT_WORKS.md (lập 01/11); lần này chưa đọc lại bản gốc từng bài | tables/tab_related.tex | Nên tác giả rà lại trước khi nộp |
+
+## Vòng 2 (02/11/2026)
+
+| # | Góp ý vòng 2 | Việc đã làm | Vị trí | Trạng thái |
+|---|---|---|---|---|
+| R2-1 | Ngưỡng phí cố định dùng w̄=2.1, còn u_λ phạt λW/n | Giữ quy tắc (W chưa biết khi nhiệm vụ đang chạy; dùng W/n là thông tin tương lai, chạy lại trên seed held-out đã dùng sẽ vi phạm protocol). Thêm điểm u'_λ = U − λw̄ n_late/W khớp chính xác với c_j = λw̄; chấm lại 7a: H24 +0.26, H25 +1.35, λ=2 +0.10 (không đổi kết luận). W/n: trung bình 2.10, CV 8%, 1.64–2.76 | setup.tex Study 7; results 7a; supp Table S-s7const; experiments/paper_s7const.py | Xong |
+| R2-2 | Hình 1 còn λ/(1+λ) | Đổi thành c_j/(w_j+c_j); chú thích Hình 1 cập nhật; sửa luôn chữ bị cắt "feasibility-first repair" | figures_src/fig_overview.tex; method.tex | Xong |
+| R2-3 | "better or equal" ở λ=2 | Abstract, Introduction, Results, Discussion: "không khác biệt có ý nghĩa, chưa chứng minh tương đương"; buffer vẫn hơn khi chi phí tỉ lệ | abstract, introduction, results, discussion | Xong |
+| R2-4 | Prop. 1: s(h) ≥ 0 và trường hợp s(h)=0 | Thêm giả định s0,s1 ≥ 0 và nhánh tất định trong chứng minh | method.tex | Xong |
+| R2-5 | "Robustness under the tested model departures" | Abstract, Introduction, Discussion, Conclusion dùng "four tested departures" và nói rõ không suy ra cho mọi sai số | các mục tương ứng | Xong |
+| R2-6 | Chú thích Hình 8 | Nêu đủ bốn điều kiện và tham số; control không thuộc họ giả thuyết chính | results.tex | Xong |
+| R2-7 | Đánh đổi utility–budget (5–40 ms) | Không có dữ liệu (held-out chỉ 40 ms); bỏ câu suy đoán "tight budget", nêu ưu điểm thực của dạng đóng (đơn giản, cắm được vào CBBA), MP hơn khi chi phí trễ cao | discussion.tex | Xong (không chạy mới) |
+| R2-8 | Bootstrap theo block | Đã đúng: trung bình mỗi mission qua cấu hình rồi mới cluster theo seed | — | Không cần sửa |
+| R2-9 | Reproducibility package | Giữ "upon reasonable request" theo quyết định tác giả; chuẩn bị sẵn REPRODUCE.md + gói zip cục bộ | REPRODUCE.md; ../submission_package/ | Xong |
+| R2-10 | PX4 cho cost-aware fallback | Không làm (power thấp, reviewer không bắt buộc); đã nằm trong Limitations/Future work | — | Không làm |

@@ -35,6 +35,15 @@ disturbances with the original windows, \val{UXRFeeMidWHalf}\,pp with halved win
 advantage came from high disturbances and short windows, and with mid disturbances and the original windows the tuned
 buffer was ahead.
 
+The fixed-cost rule assumes a cost of $\lambda\bar w$ per late arrival with the mean reward $\bar w=2.1$ of the
+generator, whereas $u_\lambda$ charges $\lambda R/n$ with the realised mean reward of the mission, which ranged from
+\val{UCWnMin} to \val{UCWnMax} over the held-out missions. Table~\ref{tab:Ss7const} repeats the comparisons of the
+fixed-cost rule with $u'_\lambda=U-\lambda\bar w\,n_{\mathrm{late}}/R$, which charges exactly $\lambda\bar w$. All
+differences changed by at most a few hundredths of a point, and no conclusion changed. Using the realised $R/n$ in the
+rule itself is not possible during a mission, because $R$ includes the tasks that have not yet arrived.
+
+\inputtable{tab_s7const}
+
 Study~7b ran on seeds 14000--14029 under high disturbances. Table~\ref{tab:s7} gives the utility and the score $u_1$ of
 every method under the calibrated Gaussian errors and the four departures. The mean finish-time error of the proposed
 model with the cost-aware fallback was \val{UBErrGauss}, \val{UBErrTthree}, \val{UBErrOutlier}, \val{UBErrBias} and

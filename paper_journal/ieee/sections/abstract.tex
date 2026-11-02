@@ -13,7 +13,8 @@ moment propagation came within \val{XRangeScaled} points. When a late arrival co
 fallback outscored the nominal fallback by \val{FAbsCCfbOne} points and a proportional buffer tuned for this cost by
 \val{FAbsPropOne} points (both $p<0.001$), and it improved moment propagation as well. A rule matched to the late-cost
 model of the score beat the tuned buffer again on new seeds, by \val{UDabsHTwentyFive} points. At twice this cost, the
-tuned buffer was better or equal. Under errors that the model does not describe, namely heavy tails, rare long delays,
-a speed bias per vehicle and heavy-tailed latency, the advantages persisted. In PX4 software-in-the-loop flights, the
+rule showed no significant advantage over the tuned buffer, which remained better when the late cost was proportional
+to the task reward. Under four tested departures from the error model, namely heavy tails, rare long delays, a speed
+bias per vehicle and heavy-tailed latency, the advantages persisted. In PX4 software-in-the-loop flights, the
 fallback raised the utility by \val{HURelNoFb}\%, whereas the advantage over the nominal model was not confirmed.
 \end{abstract}

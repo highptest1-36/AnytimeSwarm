@@ -231,25 +231,33 @@ not supported. Against the proportional buffer tuned for $u_1$, at \val{USPropOn
 non-inferior and better by \val{UDHTwentyFive}\,pp ($p<0.001$, H25), which replicates H17 on a new set of seeds. With
 $u^w_1$, which charges a cost proportional to the reward, the proportional rule was non-inferior to the buffer tuned
 for that score (\val{UDHTwentySix}\,pp, Holm-adjusted $p={}$\val{UPHTwentySix}, H26), but not better
-($p={}$\val{UPSupHTwentySix}).
+($p={}$\val{UPSupHTwentySix}). With $u'_1$, which charges exactly the fixed cost $\bar w$ that the rule assumes
+instead of the realised mean reward of the mission, the two differences were \val{UCDCApropOne} and
+\val{UCDPropOne}\,pp (Supplementary Table~\ref{S-tab:Ss7const}), so the difference between the two definitions of the
+fixed cost does not affect these conclusions.
 
 The match mattered more at a higher cost, and each rule did better on its own score. The fixed-cost rule scored
 \val{UDFeeCApropTwoFee}\,pp above the proportional rule with $u_2$, and the proportional rule scored
 \val{UDabsFeeCApropOneW} and \val{UDabsFeeCApropTwoW}\,pp above the fixed-cost rule with $u^w_1$ and $u^w_2$. With
-$u_2$, the matched rule reached the buffer tuned for this score (\val{UDFeePropTwoFee}\,pp), whereas the proportional
-rule stayed behind it, as in study~5 (\val{UDPropPropTwoFee}\,pp). With $u^w_2$, both rules stayed behind the buffer
-tuned for that score, the matched proportional rule by \val{UDabsPropPropTwoW}\,pp. At $\lambda=0.5$, all of them were
-within half a point. The mismatch in studies 5 and 6 thus lowered the score of the cost-aware fallback slightly rather
-than raised it, and the weakness at twice the cost remains for a late cost that is proportional to the reward.
+$u_2$, the matched rule showed no significant difference to the buffer tuned for this score
+(\val{UDFeePropTwoFee}\,pp), whereas the proportional rule stayed significantly behind it, as in study~5
+(\val{UDPropPropTwoFee}\,pp). The interval of the matched rule does not establish equivalence either, since it extends
+beyond the margin of $\pm0.5$\,pp. With $u^w_2$, both rules stayed behind the buffer tuned for that score, the matched
+proportional rule by \val{UDabsPropPropTwoW}\,pp. At $\lambda=0.5$, all point estimates were within half a point, with
+no significant difference to the tuned buffer. The mismatch in studies 5 and 6 thus lowered the score of the
+cost-aware fallback slightly rather than raised it, and the weakness at twice the cost remains for a late cost that is
+proportional to the reward.
 
 \begin{figure*}[t]
 \centering
 \fig{fig_s7}{0.92\linewidth}
 \caption{Study~7, tier B. (a) Study~7a, held-out seeds 13000--13029: cost-aware fallback with the fixed-cost and with
 the proportional rule minus the proportional buffer tuned for the same score and late cost. (b) Study~7b, held-out
-seeds 14000--14029, high disturbances: the two primary comparisons under the calibrated Gaussian errors (shaded) and
-under four kinds of error that the model does not describe. 95\% paired bootstrap intervals over 270
-missions.}\label{fig:s7}
+seeds 14000--14029, high disturbances: the two primary comparisons under the calibrated Gaussian errors (shaded
+control, not part of the primary family) and under the four tested departures from the error model, namely Student-$t$
+speed and service errors with three degrees of freedom, rare long delays (probability 0.1 per leg, exponential with a
+mean of 90\,s), a persistent speed bias per UAV (standard deviation 8\%) and a Pareto dissemination delay (tail index
+1.5). 95\% paired bootstrap intervals over 270 missions.}\label{fig:s7}
 \end{figure*}
 
 Errors that the model does not describe lowered the utility of every method only slightly. The nominal model served

@@ -3,8 +3,8 @@ The seven studies answer the four research questions as follows. On RQ1, the spr
 almost linearly with the lead time, and a chance constraint built on it reduces to one effective deadline per task that
 fast heuristics use unchanged. On RQ2, the planning model matters most, the trigger second and the stopping rule
 least. On RQ3, the replanner served more reward than a constant buffer, the nominal model, a conventional planner and
-CBBA, and as much as a tuned proportional buffer and moment propagation, also under errors that its model does not
-describe, but software-in-the-loop flights confirmed only the fallback. On RQ4, the probability of meeting the deadline
+CBBA, and as much as a tuned proportional buffer and moment propagation, also under the tested departures from its
+error model, but software-in-the-loop flights confirmed only the fallback. On RQ4, the probability of meeting the deadline
 decided which given-up tasks to attempt without tuning. With a fixed late cost of one task reward, this beat
 competitors tuned for that cost on two sets of seeds, and with a cost proportional to the reward it was as good as
 them, but not at twice that cost when the cost is proportional to the reward.
@@ -23,8 +23,11 @@ propagation were within \val{XRangeScaled}\,pp of each other in utility. Because
 margin $c\,h$ with a suitable slope captures most of it, and under high disturbances the tuned slope nearly equalled
 the one that the calibrated model implies. Moment propagation evaluates the actual legs of a route and reduced the
 search rate, but with a cost of lateness its detail paid off in study~6, by \val{WDabsCAMPCAOne}\,pp at one task reward
-and \val{WDabsCAMPCATwo}\,pp at two. A planner with a tight budget or a large fleet may therefore prefer the closed
-form, and a planner with a generous budget and costly lateness the more detailed model. The comparison with CBBA places
+and \val{WDabsCAMPCATwo}\,pp at two. The closed form ran \val{XDabsItMsMP} more search iterations per millisecond in
+study~4, a modest gain, and the studies did not vary the planning budget, so they do not show that it wins under
+tighter budgets. Its advantage lies elsewhere. It needs one division per task, no model of the individual legs and no
+change to the feasibility checks of a heuristic, which is what allowed CBBA to use it unchanged. Where lateness is
+costly and the planner can afford to evaluate every leg, the more detailed model scored higher. The comparison with CBBA places
 the gain in the planning model rather than in the allocation method. On the proposed model, CBBA came within
 \val{WDabsCACBBACAOne}\,pp of the proposed replanner while it planned for \val{WMsCBBACA}\,ms per call, so the
 effective deadlines can be handed to an auction-based allocator without changing its bidding rule.
@@ -39,14 +42,15 @@ deadline, which served more than a buffer and a safety factor tuned for one task
 whenever the buffer had been tuned for a different cost. Applied to moment propagation, the same rule behaved in the
 same way, so it is not tied to the closed form. The rule depends on the cost model, and study~7a shows that this
 matters less than expected. Run with the cost model of the score, it did not differ significantly from the mismatched
-rule at one task reward, and it closed the gap to the tuned buffer at twice the cost only when the cost was fixed. When
+rule at one task reward. At twice the cost, only with a fixed cost did the difference to the tuned buffer cease to be
+significant, without establishing equivalence. When
 the cost was proportional to the reward, a tuned buffer without fallback stayed better at twice the cost. The rule
 prices each attempt on its own and ignores the delay that a fallback task causes to later tasks on its route, which
 weighs more when lateness is expensive, and a route-level version that also charges this delay is the natural next
 step.
 
-The guarantee of the effective deadline rests on a Gaussian error model, but the results did not depend on it in the
-departures tested. Heavy-tailed errors, rare long delays, a speed bias per UAV and heavy-tailed latency left the
+The guarantee of the effective deadline rests on a Gaussian error model, but the results did not depend on it under
+the tested model departures, which does not imply robustness to arbitrary execution errors. Heavy-tailed errors, rare long delays, a speed bias per UAV and heavy-tailed latency left the
 advantage over the nominal model between \val{UDabsHTwentySevenBias} and \val{UDabsHTwentySevenOutlier}\,pp, against
 \val{UBCtlCCfb}\,pp under the calibrated errors. The bias per UAV, which correlates the errors along a route, reduced it
 most. The model ranks tasks by their risk, and a ranking is less sensitive to the shape of the tails than the

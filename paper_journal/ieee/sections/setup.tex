@@ -113,9 +113,14 @@ Study~7 tests two assumptions of the method. Study~7a removes the mismatch betwe
 score of studies 5 and 6. The cost-aware fallback runs with the proportional cost model and with the fixed cost model,
 $\theta_j=\lambda\bar w/(w_j+\lambda\bar w)$ with the mean reward $\bar w=2.1$ of the generator, and every run is
 scored with both $u_\lambda$ and $u^w_\lambda=U-\lambda R_{\mathrm{late}}/R$, where $R_{\mathrm{late}}$ is the reward of
-the tasks served late and $R$ the total reward, so that each cost model has its own score. The proportional buffer and
-the model without fallback are tuned again on development missions for every $\lambda$, disturbance level and score,
-from the candidates of study~5. Study~7b keeps the error model, $z$ and every tuned parameter of the calibrated high
+the tasks served late and $R$ the total reward, so that each cost model has its own score. The fixed-cost rule uses
+the mean reward $\bar w$ of the generator, because the total reward of a mission is not known while tasks are still
+arriving, whereas $u_\lambda$ charges a late arrival the realised mean reward $R/n$ of the mission. Over the held-out
+missions, $R/n$ was \val{UCWnMean} on average, with a coefficient of variation of \val{UCWnCv}\% and a range of
+\val{UCWnMin} to \val{UCWnMax}. Study~7a is therefore also reported with $u'_\lambda=U-\lambda\bar w\,n_{\mathrm{late}}/R$,
+which charges exactly the cost that the rule assumes. The proportional buffer and the model without fallback are tuned
+again on development missions for every $\lambda$, disturbance level and score, from the candidates of study~5.
+Study~7b keeps the error model, $z$ and every tuned parameter of the calibrated high
 level, but draws the execution errors from structures that the model does not describe. Speed and service errors
 follow a Student-$t$ law with three degrees of freedom at the same standard deviation; rare long delays add, with
 probability 0.1, an exponential delay with a mean of 90\,s to a leg, as a detour or a holding pattern would; a
