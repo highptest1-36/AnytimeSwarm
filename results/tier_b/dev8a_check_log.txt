@@ -1,0 +1,15 @@
+[grid] dev8a_check: 18 missions x 10 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+[guard] machine busy, waiting: wsl: ./build/px4_sitl_default/bin/px4 -d -i 1
+  high high k= 50 w=0.5 alns_fixed@5~z=auto4;lam=1;cost=fee+periodic:60 periodic:60      U=0.3196 late= 5.39 dropD= 0.00 dropX= 1.89 calls= 22.5 ms=   5.9 (318s)
+  high high k= 50 w=0.5 alns_fixed@5~z=auto4;lam=1+periodic:60 periodic:60      U=0.3119 late= 5.17 dropD= 0.00 dropX= 0.33 calls= 22.2 ms=   6.1 (319s)
+  high high k= 50 w=0.5 alns_fixed@5~mp=auto;lam=1+periodic:60 periodic:60      U=0.2714 late= 3.33 dropD= 0.00 dropX= 2.83 calls= 23.1 ms=   6.2 (319s)
+  high high k= 50 w=0.5 alns_fixed@5~prop=0.45;fb=none+periodic:60 periodic:60      U=0.2994 late= 5.94 dropD= 0.00 dropX= 1.00 calls= 22.1 ms=   5.4 (320s)
+  high high k= 50 w=0.5 alns_fixed@5+periodic:60           periodic:60      U=0.3074 late=14.39 dropD= 2.78 dropX=21.22 calls= 21.3 ms=   5.2 (321s)
+  high high k= 50 w=0.5 alns_fixed@250~z=auto4;lam=1;cost=fee+periodic:60 periodic:60      U=0.3141 late= 5.44 dropD= 0.61 dropX= 1.72 calls= 22.4 ms= 251.5 (349s)
+[guard] machine busy, waiting: wsl: ./build/px4_sitl_default/bin/px4 -d -i 1
+  high high k= 50 w=0.5 alns_fixed@250~z=auto4;lam=1+periodic:60 periodic:60      U=0.3185 late= 5.28 dropD= 0.00 dropX= 0.33 calls= 22.3 ms= 251.2 (637s)
+  high high k= 50 w=0.5 alns_fixed@250~mp=auto;lam=1+periodic:60 periodic:60      U=0.2706 late= 3.78 dropD= 0.00 dropX= 3.11 calls= 23.1 ms= 251.6 (668s)
+  high high k= 50 w=0.5 alns_fixed@250~prop=0.45;fb=none+periodic:60 periodic:60      U=0.3002 late= 5.67 dropD= 0.00 dropX= 1.28 calls= 22.4 ms= 250.5 (698s)
+  high high k= 50 w=0.5 alns_fixed@250+periodic:60         periodic:60      U=0.2817 late=12.94 dropD= 9.17 dropX=20.50 calls= 22.4 ms= 250.2 (726s)
+[ok] 180 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/dev8a_check.csv

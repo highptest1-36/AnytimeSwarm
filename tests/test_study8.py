@@ -31,7 +31,7 @@ def test_timed_charges_the_whole_call():
     assert out["elapsed_ms"] >= 20.0
     assert len(log) == 1 and log[0][1] == 5.0 and log[0][3] == 7
     c = timing_columns(log, 10.0)
-    assert c["n_calls"] == 1 and c["over_budget_share"] == 1.0
+    assert c["n_calls"] == 1 and c["over_ms_mean"] == pytest.approx(out["elapsed_ms"] - 10.0)
     assert c["model_ms_mean"] == pytest.approx(out["elapsed_ms"] - 5.0)
     assert c["iters_per_search_ms"] == pytest.approx(7 / 5.0)
 

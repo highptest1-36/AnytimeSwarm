@@ -72,7 +72,8 @@ def timing_columns(log: list, budget_ms: float) -> dict:
             "call_ms_max": float(tot.max()), "search_ms_mean": float(srch.mean()),
             "model_ms_mean": float((tot - srch).mean()), "repair_ms_mean": float(np.nanmean(rep)),
             "iters_per_search_ms": float(it.sum() / srch.sum()) if srch.sum() > 0 else 0.0,
-            "over_budget_share": float(np.mean(tot > budget_ms)), "n_calls": int(a.shape[0])}
+            "over_ms_mean": float(np.maximum(tot - budget_ms, 0.0).mean()),
+            "over_ms_p99": float(np.percentile(np.maximum(tot - budget_ms, 0.0), 99)), "n_calls": int(a.shape[0])}
 
 
 # ---------------------------------------------------------------------------------------------- 8c: explicit options
@@ -125,7 +126,8 @@ PROFILES8 = {"incidents": {"bursts": 8, "beta": (1.2, 2.5), "dirichlet": 0.6, "b
              "attrition": {"batches": 4, "failures": {"small8": 1, "medium8": 2, "large8": 3}},
              "priorities": {"batches": 4, "deadline_cuts": 8}}
 LOAD_GRID = (0.6, 0.8, 1.0, 1.25, 1.5)
-LOAD8 = None                     # selected on development seeds (docs/18_PROTOCOL_V8.md section 4a)
+# selected on development seeds by the rule of docs/18_PROTOCOL_V8.md section 4a (results/tier_b/dev8_load_*.csv)
+LOAD8 = 1.0
 
 
 def _xy(rng, w, hot, centre=None, frac=0.0, sd=0.0):

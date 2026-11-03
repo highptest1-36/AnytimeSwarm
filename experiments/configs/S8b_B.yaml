@@ -1,0 +1,26 @@
+# Study 8b, tier B (docs/18_PROTOCOL_V8.md section 4): the emergency-response scenario family
+# (journal_core/study8.generate_scenario8, LOAD8 = 1.0), every model and tuned parameter transferred from the conference
+# family without re-tuning; the whole planning call is charged to the publication delay. Frozen before any study-8
+# held-out run.
+frozen: true
+heldout_seeds: {start: 16000, n: 30}
+grid:
+  name: s8b_heldout_B
+  split: heldout
+  scales: [small8, medium8, large8]
+  exec: [mid, high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@40+periodic:60"
+    - "alns_fixed@40~z=auto4;fb=nominal+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@40~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@40~prop=0.3;fb=none+periodic:60"
+    - "alns_fixed@40~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@40~z=1+periodic:60"
+    - "alns_fixed@40~z=0.5+periodic:60"
+  workers: 4

@@ -30,7 +30,7 @@ tier B (studies 5 and 7)?
   mean task reward, the score of studies 5-7). u_1 is the primary score of every study-8 hypothesis except H34.
 - Seeds. Every seed of studies 1-7 is used and is not touched. Development: tier B seeds 0-9, tier C seeds 0-2.
   Pilot seeds 19000-19099: tier B counterpart of tier C missions only, to size study 8c; never used for a
-  confirmatory test. Held-out: 15000-15029 (8a), 16000-16029 (8b), 17000-170xx (8c, tier C and its tier B
+  confirmatory test. Held-out: 15000-15029 (8a), 16000-16029 (8b), 17000-17019 (8c, tier C and its tier B
   counterpart, number from section 5a).
 - Machine: the laptop of studies 1-7 (WSL2 Ubuntu 24.04), tier B with 4 workers, machine guard as before
   (tools/run_guarded.py), held-out runs only while no other heavy process runs.
@@ -75,7 +75,10 @@ model (`alns_fixed@40+periodic:60`) with nominal execution, no latency, kappa 10
 both families (90 missions each); choose the LOAD8 whose mean utility U on the new family is closest to the mean U of
 the conference family under the same settings. No other method is run before LOAD8 is set.
 
-Result: (to be filled)
+Result (2026-11-04, tools/p8_dev.sh load, results/tier_b/dev8_load_*.csv, 90 missions each): conference family U 88.67%
+(completion 85.99%). New family: LOAD8 0.6 82.86%, 0.8 82.63%, 1.0 83.78%, 1.25 80.89%, 1.5 78.68%. Selected
+LOAD8 = 1.0 (|dU| 4.89 pp, the smallest). The utility of the new family hardly changes between 0.6 and 1.0 because a
+share of the urgent tasks cannot be reached in time whatever the load; at equal load it is about 5 pp harder.
 
 ### 4b. Development check (after 4a)
 
@@ -83,7 +86,17 @@ Every method of the held-out list on development seeds 0-2 (27 missions), exec m
 check the implementation and that no condition is degenerate. No parameter of the family or of a method is changed
 after this check.
 
-Result: (to be filled)
+Result (tools/p8_dev.sh check, results/tier_b/dev8b_check.csv, 972 runs, no failure): no condition is degenerate.
+Mean U of the nominal model 55.5% (mid) and 44.0% (high); halved windows 42.5% against 63.5% with the original
+windows (all methods). The other methods range from 37% to 63%; the urgent tasks served on time range from 6% to 30%.
+Building the planning model took 0.09 ms per call for the nominal model, 0.25-0.38 ms for the buffers and the model
+without fallback, 0.5-1.0 ms for the closed form with a fallback and 0.8-1.4 ms for moment propagation (budget 40 ms).
+Nothing was changed after this check.
+
+8a implementation check (tools/p8_dev.sh budget, results/tier_b/dev8a_check.csv, seeds 0-1, exec high, kappa 50,
+windows 0.5, 5 and 250 ms; 180 runs, no failure): at 5 ms the whole call took 5.2 ms (nominal) to 6.1 ms (moment
+propagation) on average, of which 0.06-1.0 ms was model construction; every call ends slightly above the budget, so
+the overrun is reported in milliseconds (over_ms_mean, over_ms_p99) instead of as a share of calls.
 
 ### 4c. Held-out matrix
 
@@ -132,16 +145,35 @@ missions). Missions n = ceil((1.96 + 0.84)^2 s_C^2 / delta^2) (80% power, two-si
 Before the freeze, three smoke flights (development seed 0, profile arrivals, one per method) check the stack; they
 are not analysed.
 
-Result: (to be filled)
+Pilot result (2026-11-04, tools/p8_dev.sh pilot, results/tier_b/pilot8c_gz.csv, 300 missions x 3 methods, no failure):
+
+| CAfee - CCfb, per mission | mean | sd | missions by the rule |
+|---|---|---|---|
+| u_1 | +2.87 pp | 15.07 pp | 651 (bound: 90; power at 90 missions about 18%) |
+| late arrivals | -0.70 | 1.12 | 60 |
+| U | -1.82 pp | 10.20 pp | - |
+
+Mean late arrivals per mission: CCfb 2.01, CAfee 1.31, Prop 0.80. With fifteen tasks, one late arrival moves u_1 by
+6.7 pp, so the net score of a single mission is coarse and its difference between two methods varies widely. A
+powered test of u_1 in tier C would need about 650 missions (about 2 000 flights), which the laptop cannot fly.
+
+Design decision after the pilot, before the freeze and before any held-out flight (deviation 1 in section 9): the
+primary endpoint of 8c is the number of late arrivals per mission, the quantity on which the cost-aware fallback acts
+and which the pilot sizes at n = 60 missions by the rule above (delta = 0.75 x 0.70, s_C = 1.3 x 1.12; 60 is a
+multiple of 6). The net score u_1 is tested second in a fixed sequence (section 6) and reported with its interval and
+its tier B prediction whatever the outcome; it is not powered, and the manuscript says so. With 60 missions the planned
+look is single: the interim look of study 4C is dropped because stopping early would leave the secondary comparisons
+even less precise.
 
 ### 5b. Held-out flights
 
-Seeds 17000 to 17000 + n/3 - 1. Group-sequential with one interim look after the first half of the seeds and
-O'Brien-Fleming bounds for two looks (two-sided nominal levels 0.0052 and 0.048, as study 4C); the study stops early
-only if H35 crosses the interim bound. Valid real-time factor [1.6, 2.2]; a run outside is repeated once with the same
-seed and replaces the original (sensitivity analysis with the originals). A mission enters the analysis when all three
-methods have a valid run. Tier B counterpart on the same held-out seeds (experiments/configs/S8c_B_gz.yaml), run before
-the flights.
+Seeds 17000-17019 (20 seeds x 3 profiles = 60 missions, 180 flights), one analysis after all flights, two-sided level
+0.05. Valid real-time factor [1.6, 2.2]; a run outside is repeated once with the same seed and replaces the original
+(sensitivity analysis with the originals). A flight that ends without a result (stack failure) is retried by the
+runner (twice per pass, and once more in the pass that repeats the invalid runs), as in study 4C. A mission enters
+the analysis when all three methods have a valid run. Tier B counterpart on the same held-out seeds
+(experiments/configs/S8c_B_gz.yaml), run before the flights. Order of the held-out runs (tools/run_study8.sh): tier B
+counterpart of 8c, tier C flights, 8b, 8a.
 
 ## 6. Primary hypotheses
 
@@ -156,19 +188,20 @@ the flights.
 - H33: CAfee vs Prop (tuned) on u_1: non-inferior at -0.5 pp; superiority tested after non-inferiority.
 - H34: CCfb - Forty on U > 0 (superiority; the planning-model gain without late cost).
 
-8c (one test, group sequential):
-- H35: CAfee - CCfb on u_1 in tier C differs from zero; supported if the difference is positive and p is below the
-  bound of the look.
+8c (fixed sequence at two-sided 0.05; H36 is tested only if H35 is supported):
+- H35: CAfee - CCfb on the number of late arrivals per mission in tier C differs from zero; supported if the
+  difference is negative and p < 0.05.
+- H36: CAfee - CCfb on u_1 in tier C differs from zero; supported if positive and p < 0.05 (not powered, see 5a).
 
 ## 7. Analysis
 
-experiments/analyze_study8.py (8a, 8b) and experiments/analyze_study8c.py (8c, --stage interim|final). As in studies
+experiments/analyze_study8.py (8a, 8b) and experiments/analyze_study8c.py (8c). As in studies
 2-7: per mission the paired difference averaged over the configurations, paired bootstrap over missions (10 000
 resamples, seed 0), 95% percentile interval, two-sided p (non-inferiority: one-sided share at or below the margin),
 Holm within each family. Secondary and descriptive:
 - 8a: U and u_1 per budget, method and kappa; the nominal model; iterations per search millisecond; whole-call time
-  (mean, 95th and 99th percentile, share of calls above the budget) and model-construction time per method; the
-  smallest budget at which each method comes within 0.5 pp of its best mean u_1.
+  (mean, 99th percentile and maximum, time above the budget) and model-construction time per method; the smallest
+  budget at which each method comes within 0.5 pp of its best mean u_1.
 - 8b: U and u_1 of every method per disturbance level and per profile; CAprop, MPCA and CCnf; urgent tasks served on
   time; calibration of the transferred error model (expected calibration error, upper tail p >= 0.8); comparison of
   the effect sizes with the conference family (study 7a), descriptive.
@@ -176,7 +209,10 @@ Holm within each family. Secondary and descriptive:
   arrivals, planning time, RTF sensitivity.
 - Sensitivity: seed-cluster bootstrap for 8a and 8b (as experiments/robust_cluster.py).
 - Peak memory of a planning call (tracemalloc), measured afterwards on development missions because tracemalloc slows
-  the planner; descriptive only.
+  the planner; descriptive only (experiments/paper_profile8.py, not frozen).
+- Figures: experiments/paper_s8fig.py, not frozen, presentation only (same paired bootstrap as the analyses; it adds
+  no statistic). The analysis scripts were run on the development files (results/study8/report_dev.md,
+  report_c_dev.md) before the freeze to check that they run as specified.
 
 ## 8. Reporting
 
@@ -186,4 +222,8 @@ validation) and that tier C is software-in-the-loop simulation. Deviations are l
 
 ## 9. Deviations
 
-(none yet)
+1. (2026-11-04, after the pilot of section 5a, before the freeze and before any held-out run) The rule of section 5a
+   gave 651 missions for the u_1 endpoint of 8c, above the bound of 90, where the power would have been about 18%.
+   The primary endpoint of 8c was changed from u_1 to the number of late arrivals per mission (H35, n = 60 by the same
+   rule), u_1 became the second test of a fixed sequence (H36), and the interim look was dropped. The commit of the
+   first version of this protocol (198154b) records the original rule.

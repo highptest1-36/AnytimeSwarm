@@ -1,0 +1,4 @@
+[grid] dev8_load_1.0: 90 missions x 1 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  nominal none k= 10 w=1 alns_fixed@40+periodic:60          periodic:60      U=0.8378 late= 0.34 dropD= 0.12 dropX= 0.00 calls= 27.9 ms=  40.2 (27s)
+[ok] 90 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/dev8_load_1.0.csv

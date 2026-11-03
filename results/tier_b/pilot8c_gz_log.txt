@@ -1,0 +1,6 @@
+[grid] pilot8c_gz: 300 missions x 3 configurations, workers=4
+[grid] env {'python': '3.12.3', 'platform': 'Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.39', 'processor': 'x86_64', 'cpu_count': 16, 'numpy': '2.4.6', 'sklearn': '1.9.1', 'ortools': '9.15.6755'}
+  high none k= 50 w=0.5 alns_fixed@40~z=0.5;lam=1;cost=fee+periodic:60 periodic:60      U=0.2810 late= 1.31 dropD= 0.00 dropX= 0.22 calls= 19.1 ms=  40.3 (60s)
+  high none k= 50 w=0.5 alns_fixed@40~z=0.5;fb=nominal+periodic:60 periodic:60      U=0.2992 late= 2.01 dropD= 0.10 dropX= 1.00 calls= 18.4 ms=  40.4 (118s)
+  high none k= 50 w=0.5 alns_fixed@40~prop=0.45;fb=none+periodic:60 periodic:60      U=0.2287 late= 0.80 dropD= 0.00 dropX= 0.06 calls= 19.5 ms=  40.2 (179s)
+[ok] 900 rows -> /mnt/d/paper/TAIMMA_2027/AnytimeSwarm/AnytimeSwarm_Journal/results/tier_b/pilot8c_gz.csv

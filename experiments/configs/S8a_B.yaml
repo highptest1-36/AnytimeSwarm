@@ -1,0 +1,51 @@
+# Study 8a, tier B (docs/18_PROTOCOL_V8.md section 3): planning budget. Conference family, high disturbances, the
+# proposed replanner and its strongest competitors at ALNS budgets of 5-250 ms; the whole planning call is charged to
+# the publication delay (journal_core/study8.timed). Frozen before any study-8 held-out run.
+frozen: true
+heldout_seeds: {start: 15000, n: 30}
+grid:
+  name: s8a_heldout_B
+  split: heldout
+  scales: [small, medium, large]
+  exec: [high]
+  lat: [high]
+  kappas: [10, 50, 200]
+  windows: [1, 0.5]
+  ms_per_task: 1.0
+  methods:
+    - "alns_fixed@5~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@5~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@5~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@5~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@5+periodic:60"
+    - "alns_fixed@10~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@10~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@10~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@10~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@10+periodic:60"
+    - "alns_fixed@20~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@20~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@20~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@20~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@20+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@40~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@40~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@40~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@40+periodic:60"
+    - "alns_fixed@80~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@80~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@80~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@80~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@80+periodic:60"
+    - "alns_fixed@160~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@160~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@160~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@160~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@160+periodic:60"
+    - "alns_fixed@250~z=auto4;lam=1;cost=fee+periodic:60"
+    - "alns_fixed@250~z=auto4;lam=1+periodic:60"
+    - "alns_fixed@250~mp=auto;lam=1+periodic:60"
+    - "alns_fixed@250~prop=0.45;fb=none+periodic:60"
+    - "alns_fixed@250+periodic:60"
+  workers: 4

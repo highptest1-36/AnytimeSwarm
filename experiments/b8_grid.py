@@ -3,8 +3,8 @@
 Worker: experiments/b7_grid._one7, unchanged, with two additions. The solver is timed over the whole planning call
 (study8.timed: the publication delay runs from the construction of the planning model to the return of the solver,
 the search time is kept separately), and every run reports the timing of its calls (call_ms_mean/p50/p95/p99/max,
-search_ms_mean, model_ms_mean, repair_ms_mean, iters_per_search_ms, over_budget_share, n_calls). The scales small8,
-medium8 and large8 are missions of the emergency-response family (study8.generate_scenario8, tasks per scale x LOAD8;
+search_ms_mean, model_ms_mean, repair_ms_mean, iters_per_search_ms, over_ms_mean/p99 = time above the budget,
+n_calls). The scales small8, medium8 and large8 are missions of the emergency-response family (study8.generate_scenario8, tasks per scale x LOAD8;
 the environment variable ATSWARM_LOAD8 overrides LOAD8 for the load selection on development seeds only); runs on
 them also report the urgent tasks served on time and late (n_urgent, urgent_on_time, urgent_late). The conference
 scales and everything else (method grammar, seeds, guard, output, --resume) are those of b7_grid / b2_grid.
