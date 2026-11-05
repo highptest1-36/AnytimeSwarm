@@ -32,7 +32,7 @@ TB = ROOT / "results" / "tier_b"
 
 W1, W2 = 3.36, 6.99          # column and text width (in)
 LAM = "λ"                # upright Greek lambda in plain text
-MINUS = "−"
+MINUS = "-"                  # plain hyphen-minus in labels and tick labels (user preference)
 
 RC = {
     "font.family": "serif", "font.serif": ["STIXGeneral", "Liberation Serif", "DejaVu Serif"],
@@ -47,7 +47,7 @@ RC = {
     "legend.frameon": False, "legend.handlelength": 1.8, "legend.handletextpad": 0.4,
     "legend.columnspacing": 1.0, "legend.borderaxespad": 0.2, "legend.labelspacing": 0.3,
     "text.color": "black", "axes.labelcolor": "black", "xtick.color": "black", "ytick.color": "black",
-    "pdf.fonttype": 42, "ps.fonttype": 42,
+    "pdf.fonttype": 42, "ps.fonttype": 42, "axes.unicode_minus": False,
     "savefig.bbox": "tight", "savefig.pad_inches": 0.02, "savefig.dpi": 600,
 }
 

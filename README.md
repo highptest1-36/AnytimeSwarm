@@ -42,12 +42,12 @@ and Holm correction within each study. pp = percentage points of the served rewa
 | LTCC vs. nominal model (study 4) | utility | +5.07 pp [+4.63, +5.52] | supported |
 | LTCC vs. constant 60 s buffer (study 4) | utility | +4.22 pp [+3.74, +4.68] | supported |
 | LTCC vs. CBBA (study 6) | utility | +4.86 pp (+10.0%) | descriptive |
-| LTCC vs. tuned proportional buffer / moment propagation (study 4) | utility | −0.38 / −0.25 pp | similar utility |
+| LTCC vs. tuned proportional buffer / moment propagation (study 4) | utility | -0.38 / -0.25 pp | similar utility |
 | Cost-aware vs. nominal fallback, late cost of one task reward (study 5) | u₁ | +2.42 pp [+1.81, +3.02] | supported |
 | Cost-aware fallback vs. proportional buffer tuned for that cost (studies 5, 7a) | u₁ | +0.90 pp, +1.34 pp | supported |
 | Advantage over the nominal model under four error departures (study 7b) | utility | +4.83 to +5.67 pp | supported, 4 of 4 |
 | Tier C (PX4 SITL): fallback vs. no fallback (study 4C) | utility | +10.35 pp (+56%) | supported |
-| Tier C (PX4 SITL): LTCC vs. nominal model (study 4C) | utility | −0.57 pp [−3.49, +2.29] | not supported |
+| Tier C (PX4 SITL): LTCC vs. nominal model (study 4C) | utility | -0.57 pp [-3.49, +2.29] | not supported |
 
 The full list of the 28 pre-registered hypotheses and their outcomes is Table 4 of the paper.
 
