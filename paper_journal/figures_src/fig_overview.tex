@@ -68,21 +68,21 @@
 \node[Tx] at (6.49,4.48) {$f\le\tilde d$,\ Eq.~(2)};
 \draw[black!30, line width=0.4pt] (5.62,4.12) -- (7.36,4.12);
 \node[Tx] at (6.49,3.65) {protected tasks:\\ $\Pr[\text{on time}]\ge\Phi(z)$};
-\node[Tx, text=black!65] at (6.49,2.62) {one division\\ per task};
+\node[Tx] at (6.49,2.62) {one division\\ per task};
 \draw[arr] (5.32,4.48) -- (5.5,4.48);
 
 % ================================================================= C: cost-aware fallback (top-down)
 \node[box, text width=3.25cm] (c1) at (9.8,5.9) {break-even probability\\ $\theta_j=c_j/(w_j+c_j)$, Eq.~(3)};
 \node[box, text width=3.25cm, fill=hPeach!45] (c2) at (9.8,4.85) {protected deadline feasible\\ at safety factor $\max(z,z_j)$?};
 \node[box, text width=3.25cm] (c3) at (9.8,3.6) {yes: keep protected deadline\\ no: fallback deadline at $z_j$};
-\node[Tx, text width=3.3cm, text=black!70] at (9.8,2.55) {attempt only if fallback-feasible,\\ otherwise omit the task};
+\node[Tx, text width=3.3cm] at (9.8,2.55) {attempt only if fallback-feasible,\\ otherwise omit the task};
 \draw[arr] (c1) -- (c2);
 \draw[arr] (c2) -- (c3);
 
 % ================================================================= D: anytime search (top-down)
 \node[box, text width=2.45cm] (d1) at (13.4,5.95) {feasibility-first repair};
 \node[box, text width=2.45cm] (d2) at (13.4,5.0) {ALNS: destroy\\ and repair};
-\node[box, text width=2.45cm, fill=pMint] (d3) at (13.4,3.9) {stop when the predicted\\ gain no longer pays for\\ the delay, or at 250\,ms};
+\node[box, text width=2.45cm, fill=pMint] (d3) at (13.4,3.9) {stop when the gain\\ no longer pays,\\ or at 250\,ms};
 \node[box, text width=2.45cm, fill=hLav!70] (d4) at (13.4,2.75) {best plan};
 \draw[arr] (d1) -- (d2);
 \draw[arr] (d2) -- (d3);
@@ -90,7 +90,7 @@
 \draw[arr] ([yshift=-3.5pt]d2.east) -- ++(0.18,0) |- ([yshift=3.5pt]d2.east);
 
 % ================================================================= E: execution (top-down)
-\node[box, text width=2.2cm] (e1) at (16.45,5.95) {release after planning\\ delay and latency};
+\node[box, text width=2.2cm] (e1) at (16.45,5.95) {release after delay\\ and latency};
 \filldraw[draw=black!45, line width=0.4pt, fill=ground] (15.4,3.85) -- (17.05,3.85) -- (17.5,4.3) -- (15.85,4.3) -- cycle;
 \pillar{15.75}{3.95}{0.28}{ontime}
 \pillar{16.55}{4.12}{0.28}{ontime}
@@ -110,15 +110,15 @@
 
 % ================================================================= feedback
 \draw[farr] (16.45,6.9) -- (16.45,7.35) -- (1.52,7.35) -- (1.52,6.9);
-\node[Tx, fill=white, inner sep=1.5pt, text=fb] at (8.95,7.35) {telemetry: UAV states, finish times, failures $\rightarrow$ next snapshot};
+\node[Tx, fill=white, inner sep=1.5pt] at (8.95,7.35) {telemetry: UAV states, finish times, failures $\rightarrow$ next snapshot};
 
 % ================================================================= F: offline calibration
 \filldraw[draw=head!70, dash pattern=on 3pt off 2pt, line width=0.55pt, rounded corners=4pt, fill=pLav]
   (3.25,0.1) rectangle (14.85,1.65);
 \node[Hd, anchor=west] at (3.35,1.42) {F\enspace Offline calibration on development missions};
-\node[box, text width=2.6cm] (f1) at (4.6,0.6) {fit the error model\\ per disturbance level};
-\node[box, text width=2.6cm] (f2) at (8.6,0.6) {select the safety factor $z$\\ per disturbance level};
-\node[box, text width=2.6cm] (f3) at (13.4,0.6) {fit the gain predictor\\ (Poisson GLM)};
+\node[box, text width=2.9cm] (f1) at (4.6,0.6) {fit the error model\\ per disturbance level};
+\node[box, text width=2.9cm] (f2) at (8.6,0.6) {select safety factor $z$\\ per disturbance level};
+\node[box, text width=2.9cm] (f3) at (13.4,0.6) {fit the gain predictor\\ (Poisson GLM)};
 \draw[carr] (f1.north) -- (4.6,2.0);
 \draw[carr] (f2.north) -- (8.6,1.82) -- (6.5,1.82) -- (6.5,2.0);
 \draw[carr] (8.6,1.82) -- (9.8,1.82) -- (9.8,2.0);

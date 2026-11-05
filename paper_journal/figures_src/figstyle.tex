@@ -1,10 +1,13 @@
 % Shared style of the architecture figures (fig_overview, fig_tierc): Times text as in the paper body, upright and
 % never bold; pastel stage panels, isometric slabs, ground planes and quadrotor icons. Drawn at print size (18 cm wide).
 \usepackage[T1]{fontenc}
-\usepackage{mathptmx}
+\usepackage{tgheros}                       % Helvetica-like sans serif, as in the data figures (Arial metrics)
+\renewcommand{\familydefault}{\sfdefault}
 \usepackage{amsmath}
+\usepackage{sansmath}
+\AtBeginDocument{\sansmath}
 \usetikzlibrary{arrows.meta,calc,positioning,backgrounds,patterns,decorations.pathmorphing,shapes.geometric}
-\definecolor{ink}{HTML}{1A1A1A}
+\definecolor{ink}{HTML}{000000}
 \definecolor{edge}{HTML}{3C3C3C}
 \definecolor{muted}{HTML}{7A7A7A}
 \definecolor{head}{HTML}{1F3A5F}
@@ -24,7 +27,7 @@
   T/.style={font=\fontsize{7.6}{9}\selectfont, align=center},
   Ts/.style={font=\fontsize{7}{8.2}\selectfont, align=center},
   Tm/.style={font=\fontsize{6.8}{8}\selectfont\ttfamily},
-  Hd/.style={font=\fontsize{8.8}{10.4}\selectfont, text=head},
+  Hd/.style={font=\fontsize{8.8}{10.4}\selectfont, text=ink},
   arr/.style={-{Stealth[length=4.4pt,width=3.6pt]}, line width=0.7pt, draw=ink},
   arrm/.style={-{Stealth[length=4pt,width=3.2pt]}, line width=0.6pt, draw=muted},
   darr/.style={arr, dash pattern=on 2.6pt off 1.6pt},
@@ -32,7 +35,7 @@
   panel/.style={rounded corners=4pt, line width=0.5pt},
   frame/.style={draw=black!55, line width=0.6pt, rounded corners=6pt, fill=white},
   num/.style={circle, draw=head, line width=0.6pt, inner sep=0.6pt, minimum size=11pt,
-              font=\fontsize{7.6}{8}\selectfont, text=head},
+              font=\fontsize{7.6}{8}\selectfont, text=ink},
 }
 % \slab{x}{y}{width}{height}{depth}{colour}: isometric slab, front face at (x,y)
 \newcommand{\slab}[6]{%

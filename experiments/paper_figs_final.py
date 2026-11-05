@@ -35,11 +35,13 @@ LAM = "λ"                # upright Greek lambda in plain text
 MINUS = "-"                  # plain hyphen-minus in labels and tick labels (user preference)
 
 RC = {
-    "font.family": "serif", "font.serif": ["STIXGeneral", "Liberation Serif", "DejaVu Serif"],
-    "mathtext.fontset": "stix", "mathtext.default": "regular",
-    "font.size": 8, "axes.labelsize": 8, "axes.titlesize": 8, "xtick.labelsize": 8, "ytick.labelsize": 8,
-    "legend.fontsize": 7.5, "legend.title_fontsize": 7.5,
-    "axes.linewidth": 0.6, "xtick.major.width": 0.6, "ytick.major.width": 0.6,
+    # Arial-metric sans serif (Liberation Sans): thicker strokes, clearer than a thin serif at print size
+    "font.family": "sans-serif", "font.sans-serif": ["Liberation Sans", "Arial", "Helvetica", "DejaVu Sans"],
+    "mathtext.fontset": "custom", "mathtext.rm": "Liberation Sans", "mathtext.it": "Liberation Sans:italic",
+    "mathtext.bf": "Liberation Sans:bold", "mathtext.default": "regular",
+    "font.size": 8.5, "axes.labelsize": 8.5, "axes.titlesize": 8.5, "xtick.labelsize": 8, "ytick.labelsize": 8,
+    "legend.fontsize": 8, "legend.title_fontsize": 8,
+    "axes.linewidth": 0.8, "xtick.major.width": 0.8, "ytick.major.width": 0.8,
     "xtick.major.size": 2.5, "ytick.major.size": 2.5, "xtick.direction": "out", "ytick.direction": "out",
     "lines.linewidth": 1.3, "lines.markersize": 4.5, "errorbar.capsize": 1.8,
     "axes.grid": True, "grid.color": "0.88", "grid.linewidth": 0.5, "axes.axisbelow": True,
