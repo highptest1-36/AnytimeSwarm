@@ -1,0 +1,66 @@
+This section states the planning deadlines of Section~\ref{sec:method} of the main paper in full and proves
+Propositions~\ref{prop:cc} and~\ref{prop:costfb}. For task $j$, $f_j$ is the planned finish time, $d_j$ the deadline,
+$w_j$ the reward, $h_j=f_j-t_0$ the lead time and $F_j=f_j+e_j$ the actual finish time, with
+$e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$ and $m$, $s$ as in Eq.~\eqref{eq:errmodel}. The effective deadline of
+Eq.~\eqref{eq:cc} at safety factor $z$ is written $\tilde d_j(z)$, and $\tilde d_j(-\infty)$ is read as $d_j$.
+
+\subsection{Planning deadlines}
+Let $\tilde H$ be the set of tasks that no vehicle can finish by $\tilde d_j(z)$ on a direct flight, and $H$ the set of
+tasks that no vehicle can finish by $d_j$. The nominal fallback plans against
+\begin{equation}\label{eq:Sfallback}
+d'_j=\begin{cases} d_j, & j\in\tilde H\setminus H,\\ \tilde d_j(z), & \text{otherwise.}\end{cases}
+\end{equation}
+For the cost-aware fallback, let $\theta_j=c_j/(w_j+c_j)$ be the break-even probability of Eq.~\eqref{eq:theta},
+$z_j=\Phi^{-1}(\theta_j)$ with $z_j=-\infty$ for $c_j=0$, and $z_{p,j}=\max(z,z_j)$. With $\tilde H_p$ the set of tasks
+that no vehicle can finish by $\tilde d_j(z_{p,j})$ on a direct flight, the planning deadline is
+\begin{equation}\label{eq:Scostfb}
+d'_j=\begin{cases} \min\{d_j,\tilde d_j(z_j)\}, & j\in\tilde H_p\setminus H,\\ \tilde d_j(z_{p,j}), &
+\text{otherwise.}\end{cases}
+\end{equation}
+A task that cannot meet this deadline either is given up. Finding $\tilde H_p$ and $H$ requires one direct-flight check
+per task and vehicle. Where $1+b_1+z_js_1\le0.05$, the effective deadline is not defined and the nominal deadline is
+used, without the guarantee of part (iii) of Proposition~\ref{prop:costfb}. With the error models of this paper, this
+happens only for $\theta_j<0.03$, which none of the studied late costs produces. Every planner caps the effective deadline
+at $d_j$, so that no task is planned beyond its nominal deadline.
+
+\subsection{Proposition 1}
+In full, Proposition~\ref{prop:cc} states the following. Let $1+b_1+zs_1>0$ and $s_0,s_1\ge0$. (i) A finish time
+satisfies $f_j+m(f_j-t_0)+z\,s(f_j-t_0)\le d_j$ if and only if $f_j\le\tilde d_j(z)$. (ii) Under the error model, a task
+planned to finish at $f_j\le\tilde d_j(z)$ meets its deadline with probability at least $\Phi(z)$ if its route starts as
+planned. (iii) With $b_0=b_1=s_0=s_1=0$, $\tilde d_j(z)=d_j$ and the planning model is the nominal one.
+
+\begin{proof}
+Substituting the error model gives $f_j(1+b_1+zs_1)\le d_j-b_0-zs_0+(b_1+zs_1)t_0$, and dividing by the positive factor
+gives (i). For (ii), $F_j=f_j+e_j$ with $e_j\sim\mathcal{N}(m(h_j),s(h_j)^2)$. By (i), $d_j-f_j-m(h_j)\ge z\,s(h_j)$. If
+$s(h_j)>0$, then $\Pr[F_j\le d_j]=\Phi\big((d_j-f_j-m(h_j))/s(h_j)\big)\ge\Phi(z)$. If $s(h_j)=0$, which happens only
+for $s_0=0$ and $h_j=0$, the error equals $m(h_j)$ with certainty, $F_j\le d_j$ holds, and the probability is one. Part
+(iii) is immediate.
+\end{proof}
+
+The cap at $d_j$ matters only where $\tilde d_j(z)>d_j$, which happens when $z<0$ or the mean error is negative. It then
+adds the nominal deadline to the constraint, which becomes tighter, so part (ii) still holds, whereas the equivalence of
+part (i) refers to the uncapped deadline.
+
+\subsection{Proposition 2}
+In full, Proposition~\ref{prop:costfb} states the following. Let $s_0,s_1\ge0$, $1+b_1+zs_1>0$ and $1+b_1+z_js_1>0$
+for every finite $z_j$. (i) If $c_j=0$ for every task, Eq.~\eqref{eq:Scostfb} is the nominal fallback of
+Eq.~\eqref{eq:Sfallback}. (ii) A task with $\theta_j\ge\Phi(z)$ never falls back, and it is planned against
+$\tilde d_j(z_j)$. (iii) Under the error model, every task planned to finish by $d'_j$ has an expected contribution
+$w_j\Pr[F_j\le d_j]-c_j\Pr[F_j>d_j]\ge0$ if its route starts as planned. (iv) If every $c_j$ is non-decreasing in
+$\lambda$, every planning deadline $d'_j$ is non-increasing in $\lambda$.
+
+\begin{proof}
+(i) $z_j=-\infty$ gives $z_{p,j}=z$ and $\min\{d_j,\tilde d_j(-\infty)\}=d_j$. (ii) $z_j\ge z$ holds if and only if
+$\theta_j\ge\Phi(z)$. Then $z_{p,j}=z_j$, and a task that cannot meet $\tilde d_j(z_{p,j})$ cannot meet
+$\min\{d_j,\tilde d_j(z_j)\}$ either, so it is given up. (iii) A protected task meets its deadline with probability at
+least $\Phi(z_{p,j})\ge\Phi(z_j)$, and a fallback task with probability at least $\Phi(z_j)$, both by
+Proposition~\ref{prop:cc}, whose part (ii) also holds with the cap at $d_j$. Hence $p\ge\theta_j$, and the expected
+contribution $(w_j+c_j)p-c_j$ is not negative. (iv) $\theta_j$ and $z_j$ do not decrease with $\lambda$, and with
+$s_0,s_1\ge0$, $\tilde d_j(z)$ does not increase with $z$. A fallback task stays one when $\lambda$ grows, because
+$z_{p,j}$ does not decrease. A protected task can become a fallback task only while $z_j<z$, and then $z_{p,j}=z$ does not
+change. In each case the deadline does not increase.
+\end{proof}
+
+Part (iii) is a local criterion. It prices each attempt on its own and ignores the delay that a fallback task causes to
+the tasks after it on the same route, as well as the reassignments it may trigger, so it does not guarantee that
+attempting the task raises the utility of the whole plan.

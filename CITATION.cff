@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code or the results, please cite the paper below."
+title: "LTCC: Lead-Time-Scaled Chance Constraints for Fast Multi-UAV Replanning"
+authors:
+  - family-names: Ha
+    given-names: Cao-Phuc
+    email: caophucai@gmail.com
+    affiliation: "Department of Artificial Intelligence, FPT University, Ho Chi Minh City, Vietnam"
+  - family-names: Nguyen Vu Minh
+    given-names: Anh
+    affiliation: "Department of Artificial Intelligence, FPT University, Ho Chi Minh City, Vietnam"
+  - family-names: Le
+    given-names: Phu-Nguyen
+    email: nguyenlp@vaa.edu.vn
+    affiliation: "Faculty of Electrical and Electronics Engineering, Vietnam Aerospace University, Ho Chi Minh City, Vietnam"
+preferred-citation:
+  type: unpublished
+  title: "Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-UAV Replanning Under Uncertain Execution"
+  authors:
+    - family-names: Ha
+      given-names: Cao-Phuc
+    - family-names: Nguyen Vu Minh
+      given-names: Anh
+    - family-names: Le
+      given-names: Phu-Nguyen
+  notes: "Manuscript under review"
+  year: 2026

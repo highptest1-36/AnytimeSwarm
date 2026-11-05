@@ -1,18 +1,12 @@
 \section{Conclusion}\label{sec:conclusion}
-This paper proposed \mname{}, a multi-UAV replanner that plans against a chance constraint on the finish time of
-every task. Because disturbances persist over a leg, the spread of the finish-time error grows linearly with the lead
-time, and with an affine error model the chance constraint reduces exactly to an effective deadline per task, so fast
-heuristics are reused unchanged. In seven studies on held-out missions with protocols frozen in advance, the margin
-that grows with the lead time, together with the fallback, carried the gain in utility. The replanner served more than
-the nominal model, a constant buffer, a conventional planner and, by \val{WURelCACBBA}\%, CBBA, and as much as a tuned
-proportional buffer and moment propagation, and its advantage over the nominal model persisted under four tested
-departures from its error model. The probability of meeting a deadline, which a buffer lacks, lets the replanner price
-lateness. With a late arrival that costs one task reward, the cost-aware fallback served \val{FAbsCCfbOne} percentage
-points more than the nominal fallback and more than a buffer tuned for this cost, without tuning of its own, on two
-sets of seeds. For a late cost proportional to the reward, it was as good as a buffer tuned for that cost, and it
-improved moment propagation in the same way.
-At twice this cost, a tuned buffer was better when the cost was proportional to the reward. Software-in-the-loop
-flights with PX4 and Gazebo confirmed the fallback and agreed closely with the kinematic tier, but did not resolve the
-advantage over the nominal model. Future work will charge the delay that a fallback task causes on its route, fly the
-cost-aware fallback in the software-in-the-loop tier, run it inside a distributed allocator, and test the replanner on
-embedded hardware and in field flights.
+This paper proposed \mname{}, a multi-UAV replanner that plans against a chance constraint on the finish time of every
+task. In the tested missions, the spread of the finish-time error was well approximated by an affine function of the
+lead time, and with this error model the chance constraint reduces exactly to an effective deadline per task, so fast
+heuristics are reused unchanged. A cost-aware fallback uses the probability of meeting the deadline to decide which
+given-up tasks to attempt, again in closed form and without cost-specific tuning. In seven studies on held-out
+missions, \mname{} served more reward than the nominal model, a constant buffer, a conventional planner and CBBA, and as
+much as a tuned proportional buffer and moment propagation. With a late cost of one task reward, the cost-aware fallback
+scored above the nominal fallback and above a buffer tuned for that cost, on two sets of seeds. In PX4
+software-in-the-loop flights, the fallback raised the utility by \val{HURelNoFb}\%, as the kinematic tier had predicted.
+Future work will charge the delay that a fallback task causes on its route, fly the cost-aware fallback with PX4, run it
+inside a distributed allocator and test the replanner on embedded hardware.

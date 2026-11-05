@@ -38,15 +38,12 @@ without tuning. The advantage over ALNS with 40\,ms was \val{JDFFKappa10}\,pp fo
 \val{JDFFKappa50}\,pp for $\kappa_B=50$, and \val{JDFFExecLow}\,pp under low and \val{JDFFExecMid}\,pp under mid
 disturbances.
 
-\inputtable{tab_main}
+\inputtable{tabm_main}
 
 \begin{figure}[t]
 \centering
 \fig{fig_main}{\linewidth}
-\caption{Tier B primary matrix, held-out seeds 3000--3029: (a) mean utility against mean planning time per call over
-all \val{JNConfigsMain} configurations (regret-2 repair, at \val{JURepair}\% and 1\,ms, is not shown); (b) paired
-difference of AnytimeSwarm-R minus ALNS with 40\,ms and minus AnytimeSwarm per configuration (execution level, latency
-level, $\kappa_B$, trigger) with 95\% bootstrap intervals over \val{JNMain} missions.}\label{fig:main}
+\caption{Study 1, tier B. (a) Mean utility against mean planning time per call; regret-2 repair (\val{JURepair}\%, 1\,ms) is not shown. (b) AnytimeSwarm-R minus ALNS with 40\,ms and minus AnytimeSwarm per configuration, with 95\% intervals over \val{JNMain} missions.}\label{fig:main}
 \end{figure}
 
 \subsection{Replanning triggers}\label{sec:res-triggers}
@@ -127,7 +124,7 @@ to late plans,
 the adaptive rules, with \val{JCMsRisk}\,ms per call against \val{JCMsAS}\,ms for AnytimeSwarm, a reduction of
 \val{JCMsRedAS}\% (\val{JCDMsAS}\,ms).
 
-\inputtable{tab_tierc}
+\inputtable{tabm_tierc}
 
 The same \val{JNC} missions were also run in tier B with the rescaled parameters of tier C. Tier B predicted the outcome
 of a flight well. The utility of a run in tier C correlated with that of the same run in tier B with $r=$ \val{JBCr}
@@ -148,7 +145,5 @@ the weakest search method, while the order of the three short-computation method
 \begin{figure}[t]
 \centering
 \fig{fig_bc}{\linewidth}
-\caption{Tier B against tier C on the same \val{JNC} held-out missions (three UAVs, mid disturbances, $\kappa_B=50$):
-(a) paired difference of AnytimeSwarm-R minus each baseline with 95\% bootstrap intervals; (b) utility of every run in
-tier C against the same run in tier B (dashed: equality).}\label{fig:bc}
+\caption{Study 1, tier B against tier C on the same \val{JNC} missions. (a) AnytimeSwarm-R minus each baseline, with 95\% intervals. (b) Utility of every run in tier C against the same run in tier B; the dashed line marks equality.}\label{fig:bc}
 \end{figure}

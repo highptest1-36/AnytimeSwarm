@@ -13,12 +13,12 @@ reach its regret. Over all scales, AnytimeSwarm reached \val{EqRegretAS}\% again
 \val{EqRegretBaseMax}\% for four baselines that include a fixed budget and a stagnation patience tuned per fleet scale
 on development data.
 
-\inputtable{tab_static_scale}
+\inputtable{tabm_static_scale}
 
 Fig.~\ref{fig:static} shows where this advantage comes from. On the medium and large scales, the quality--compute
 frontier of AnytimeSwarm lies below those of fixed budgets and stagnation stopping over the range of practical
-computation (Fig.~\ref{fig:static}a). Grouped by the improvement that a 500\,ms search can still find
-(Fig.~\ref{fig:static}b), AnytimeSwarm spent \val{AllocASNone}\,ms on snapshots that cannot be improved and
+computation (Fig.~\ref{fig:static}a--c). Grouped by the improvement that a 500\,ms search can still find
+(Fig.~\ref{fig:static}d), AnytimeSwarm spent \val{AllocASNone}\,ms on snapshots that cannot be improved and
 \val{AllocASHigh}\,ms on those with the largest available improvement. Only \val{AllocASShare}\% of its computation went
 to snapshots without any possible gain, compared with more than half for the baselines. The learned predictor is
 essential for this allocation. It reached an area under the ROC curve~\cite{fawcett2006roc} of \val{AUCLearned} for the
@@ -27,11 +27,10 @@ improvement rate.
 
 \begin{figure}[t]
 \centering
-\begin{minipage}[b]{0.62\linewidth}\centering\fig{fig_static_frontier}{\linewidth}\\[-1pt]{\small (a)}\end{minipage}\hfill
-\begin{minipage}[b]{0.36\linewidth}\centering\fig{fig_static_allocation}{\linewidth}\\[-1pt]{\small (b)}\end{minipage}
-\caption{Exact execution, test seeds 2000--2029: (a) quality--compute frontiers on identical search trajectories (open
-markers: baselines tuned per scale; star: selected AnytimeSwarm setting); (b) mean computation per snapshot, grouped by
-the improvement that a 500\,ms search can still find.}\label{fig:static}
+\fig{fig_static_frontier}{\linewidth}\hspace{0.15in}\fig{fig_static_allocation}{\linewidth}
+\caption{Exact execution on test seeds 2000--2029. (a)--(c) Quality--compute frontiers on identical search
+trajectories. (d) Mean computation per snapshot, grouped by the improvement that a 500\,ms search can still
+find.}\label{fig:static}
 \end{figure}
 
 \subsection{Reproduction on the evaluation platform}\label{sec:repro}

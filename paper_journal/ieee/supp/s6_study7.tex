@@ -6,8 +6,7 @@ proportional buffer was \val{USelPropHalfFee}, \val{USelPropOneFee} and \val{USe
 \val{USelPropOneW} and \val{USelPropTwoW}. Table~\ref{tab:Ss7a} gives the scores of the main methods.
 
 \begin{table}[t]
-\caption{Study~7a, tier B, held-out seeds 13000--13029: mean score (\%) of the cost-aware fallback with the
-fixed-cost and the proportional rule, and of the proportional buffer tuned for the score and late cost of the column.}
+\caption{Study 7a: mean score (\%) of the two rules and of the tuned proportional buffer.}
 \label{tab:Ss7a}
 \centering\footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -42,7 +41,7 @@ fixed-cost rule with $u'_\lambda=U-\lambda\bar w\,n_{\mathrm{late}}/R$, which ch
 differences changed by at most a few hundredths of a point, and no conclusion changed. Using the realised $R/n$ in the
 rule itself is not possible during a mission, because $R$ includes the tasks that have not yet arrived.
 
-\inputtable{tab_s7const}
+\inputtable{tabm_s7const}
 
 Study~7b ran on seeds 14000--14029 under high disturbances. Table~\ref{tab:s7} gives the utility and the score $u_1$ of
 every method under the calibrated Gaussian errors and the four departures. The mean finish-time error of the proposed
@@ -53,4 +52,4 @@ model with the cost-aware fallback was \val{UBErrGauss}, \val{UBErrTthree}, \val
 \val{UDabsBCAMPCAGauss} to \val{UDabsBCAMPCATthree}\,pp above the closed form, with every interval including zero in
 both cases. Moment propagation served less utility than the closed form under every condition.
 
-\inputtable{tab_s7}
+\inputtable{tabm_s7}

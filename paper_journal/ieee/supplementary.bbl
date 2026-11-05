@@ -39,6 +39,23 @@ C.~Voudouris and E.~Tsang, ``Guided local search and its application to the
   traveling salesman problem,'' \emph{European Journal of Operational
   Research}, vol. 113, no.~2, pp. 469--499, 1999.
 
+\bibitem{svegliato2018meta}
+J.~Svegliato, K.~H. Wray, and S.~Zilberstein, ``Meta-level control of anytime
+  algorithms with online performance prediction,'' in \emph{Proceedings of the
+  Twenty-Seventh International Joint Conference on Artificial Intelligence
+  (IJCAI-18)}.\hskip 1em plus 0.5em minus 0.4em\relax IJCAI Organization, 2018,
+  pp. 1499--1505.
+
+\bibitem{clark1961greatest}
+C.~E. Clark, ``The greatest of a finite set of random variables,''
+  \emph{Operations Research}, vol.~9, no.~2, pp. 145--162, 1961.
+
+\bibitem{johnson2012nonsubmodular}
+L.~B. Johnson, H.-L. Choi, S.~S. Ponda, and J.~P. How, ``Allowing
+  non-submodular score functions in distributed task allocation,'' in
+  \emph{Proceedings of the 51st IEEE Conference on Decision and Control (CDC)},
+  2012, pp. 4702--4708.
+
 \bibitem{fawcett2006roc}
 T.~Fawcett, ``An introduction to {ROC} analysis,'' \emph{Pattern Recognition
   Letters}, vol.~27, no.~8, pp. 861--874, 2006.
@@ -57,16 +74,9 @@ M.~Boddy and T.~L. Dean, ``Deliberation scheduling for problem solving in
 S.~Zilberstein, ``Using anytime algorithms in intelligent systems,'' \emph{AI
   Magazine}, vol.~17, no.~3, pp. 73--83, 1996.
 
-\bibitem{svegliato2018meta}
-J.~Svegliato, K.~H. Wray, and S.~Zilberstein, ``Meta-level control of anytime
-  algorithms with online performance prediction,'' in \emph{Proceedings of the
-  Twenty-Seventh International Joint Conference on Artificial Intelligence
-  (IJCAI-18)}.\hskip 1em plus 0.5em minus 0.4em\relax IJCAI Organization, 2018,
-  pp. 1499--1505.
-
-\bibitem{agra2013robust}
-A.~Agra, M.~Christiansen, R.~Figueiredo, L.~M. Hvattum, M.~Poss, and
-  C.~Requejo, ``The robust vehicle routing problem with time windows,''
-  \emph{Computers \& Operations Research}, vol.~40, no.~3, pp. 856--866, 2013.
+\bibitem{jabali2015selfimposed}
+O.~Jabali, R.~Leus, T.~Van~Woensel, and T.~de~Kok, ``Self-imposed time windows
+  in vehicle routing problems,'' \emph{OR Spectrum}, vol.~37, no.~2, pp.
+  331--352, 2015.
 
 \end{thebibliography}

@@ -66,11 +66,18 @@ CSV files in `results/tier_b/` and `results/tier_c/`:
     python paper_latepen.py; python analyze_study5.py; python analyze_study6.py; python paper_extra.py
     python analyze_study7.py; python paper_s7fig.py; python paper_s7const.py
     python robust_cluster.py; python paper_calib.py
-    cd ../paper_journal/ieee
+    cd ..
+    python experiments/paper_figs_final.py        # final style of every data figure (presentation only)
+    python experiments/paper_tables_final.py      # tabm_*.tex: short captions, method names, table notes
+    cd paper_journal/figures_src
+    pdflatex fig_overview; pdflatex fig_tierc      # TikZ diagrams; copy both PDFs to ../figures/
+    cd ../ieee
     pdflatex main; bibtex main; pdflatex main; pdflatex supplementary; bibtex supplementary; pdflatex supplementary; pdflatex main
 
-`paper_s7fig.py` redraws `fig_s7.pdf` after `analyze_study7.py` (protocol V7, deviation 4). Bootstrap resampling uses a
-fixed seed, so the intervals and p-values are reproduced exactly.
+`paper_s7fig.py` redraws `fig_s7.pdf` after `analyze_study7.py` (protocol V7, deviation 4). `paper_figs_final.py` then
+redraws all data figures in one style from the same data, and `paper_tables_final.py` copies the generated tables to
+`tabm_*.tex` with short captions and the method names of the text; neither changes a number. Bootstrap resampling uses
+a fixed seed, so the intervals and p-values are reproduced exactly.
 
 ## 5. Re-running the experiments (hours)
 

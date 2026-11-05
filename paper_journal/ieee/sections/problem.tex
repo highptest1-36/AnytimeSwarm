@@ -1,30 +1,26 @@
 \section{Problem formulation}\label{sec:problem}
 A central planner is called whenever a replanning trigger fires. Each UAV keeps the task that it is currently flying to
-or serving, which determines when and where it becomes available again and how much energy it has left. Each open task
-$j$ has a location, a release time $r_j$, a deadline $d_j$ by which its service must be completed, a service duration
-and a reward $w_j$. A plan assigns an ordered sequence of open tasks to each UAV, and tasks may remain unassigned, so
-the planning problem is a prize-collecting routing problem with time
-windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Arrival, start and finish times along a route are
-computed as usual for time windows~\cite{savelsbergh1992vrptw}. A route is feasible if every service ends before its
-deadline and the UAV returns to the depot with an energy reserve of 10\% of its capacity. A plan $\pi$ is evaluated by
-\begin{equation}\label{eq:obj}
-J(\pi)=\alpha R(\pi)-\gamma E(\pi)-\delta C(\pi),
-\end{equation}
-where $R$ is the reward of the tasks served on time, $E$ the flown distance in kilometres and $C$ the number of tasks
-that move to another UAV than in the previous plan, with $\alpha=1$, $\gamma=0.05$ per kilometre and $\delta=0.3$. $W$
-denotes the total reward of the open tasks.
+or serving, which fixes when and where it becomes available again and how much energy it has left. Each open task has a
+location, a release time, a deadline by which its service must end, a service duration and a reward. A plan assigns an
+ordered sequence of open tasks to each UAV, and tasks may remain unassigned, so the planning problem is a
+prize-collecting routing problem with time windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Arrival
+and finish times along a route follow the usual rules for time windows~\cite{savelsbergh1992vrptw}. A route is feasible
+if every service ends before its deadline and the UAV returns to the depot with 10\% of its energy. The objective of a
+plan is the reward of the tasks served on time, minus 0.05 per kilometre flown and 0.3 per task that moves to another
+UAV than in the previous plan. The two small penalties only guide the search, against detours and against plans that
+change more than needed between calls. The evaluation uses the utility defined below, which counts served reward only.
 
-Computation is not free. A plan computed for $\tau$ milliseconds is released $\kappa\tau$ milliseconds later in mission
-time, where the latency factor $\kappa$ represents planning computers slower than the evaluation computer. An idle UAV
-waits for the new plan, so its route starts later, and tasks whose deadline can no longer be met are lost. The plan
-then reaches the vehicles after a dissemination latency $L$ that the planner does not control.
+Computation takes mission time. A plan computed for some milliseconds is released a multiple of this time later, and
+this latency factor emulates a planning computer that is slower than the evaluation computer. An idle UAV waits for the
+new plan, so its route starts later, and the plan reaches the vehicles only after a dissemination latency that the
+planner does not control.
 
 The planner uses a nominal model with straight legs at the cruise speed of each UAV and nominal service durations. The
-executed finish time of task $j$ is $F_j=f_j+e_j$, where $f_j$ is the nominal finish time at publication and $e_j$ an
-execution error caused by acceleration, wind, speed tracking and service-time variability. A task yields its reward only
-if $F_j\le d_j$. As in dispatching practice, a UAV skips a task at departure if the nominal estimate from its actual
-state already misses the deadline, and the task returns to the pool. The utility of a mission is the reward of all tasks
-served on time divided by the total reward of the mission. Three replanning triggers are considered. The event trigger
-replans on task arrivals, UAV failures and deadline changes, the periodic trigger in addition every $T$ seconds, and
-the deviation trigger in addition when a finish time deviates from the plan by more than $\theta$ seconds. During
-planning, every UAV finishes its committed task and then waits, and events are queued.
+executed finish time of a task differs from its planned finish time by an execution error caused by acceleration,
+wind, speed tracking and variable service times, and a task yields its reward only if its service ends before the
+deadline. As in dispatching practice, a UAV skips a task at departure if its nominal estimate already misses the
+deadline, and the task returns to the pool. The utility of a mission is the reward of the tasks served on time divided
+by the total reward. Three replanning triggers are considered. The event trigger replans on task arrivals, UAV failures
+and deadline changes, the periodic trigger also every 60\,s, and the deviation trigger also when a finish time
+deviates from the plan by more than a threshold. During planning, every UAV finishes its committed task and then
+waits, and events are queued.

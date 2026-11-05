@@ -8,8 +8,8 @@
 \usepackage{textcomp}
 \usepackage{booktabs}
 \usepackage{xcolor}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
+\usepackage{threeparttable}
+\usepackage{array}
 \usepackage{xr-hyper}
 \usepackage[hidelinks]{hyperref}
 \externaldocument[S-]{supplementary}  % \ref{S-...}: labels of the supplementary material
@@ -23,13 +23,15 @@
 \SetMathAlphabet{\mathtt}{bold}{OT1}{pcr}{b}{n}
 \SetSymbolFont{symbols}{bold}{OMS}{cmsy}{b}{n}
 \renewcommand\boldmath{\@nomath\boldmath\mathversion{bold}}}
-% generated tables are written as single floats; in this two-column layout they span both columns
+% generated tables are written as single floats; in this two-column layout they span both columns. Inside tables,
+% bold and italic text is set upright (manuscript style: no bold or italic).
+\newcommand{\uprighttext}{\def\textbf##1{##1}\def\textit##1{##1}}
 \newcommand{\inputtable}[1]{\IfFileExists{../tables/#1.tex}{\begingroup\def\table{\@dblfloat{table}}%
-  \def\endtable{\end@dblfloat}\input{../tables/#1.tex}\endgroup}{\todo{table \detokenize{#1}}}}
+  \def\endtable{\end@dblfloat}\uprighttext\input{../tables/#1.tex}\endgroup}{\todo{table \detokenize{#1}}}}
 \makeatother
-\newtheorem{prop}{Proposition}
-\providecommand{\QED}{\hfill$\blacksquare$}
-\newenvironment{proof}{\par\noindent\textit{Proof:}\ }{\QED\par}
+% propositions in upright type; the proofs are in the supplementary material
+\newcounter{prop}
+\newenvironment{prop}{\par\smallskip\refstepcounter{prop}\noindent Proposition~\theprop.\ }{\par\smallskip}
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
 \IfFileExists{../tables/static_numbers.tex}{\input{../tables/static_numbers.tex}}{}
 \IfFileExists{../tables/static_numbers_XL.tex}{\input{../tables/static_numbers_XL.tex}}{}
@@ -55,7 +57,12 @@
 \IfFileExists{../tables/numbers_s7c.tex}{\input{../tables/numbers_s7c.tex}}{}
 \newcommand{\mname}{LTCC}  % name of the proposed method
 \newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
-\newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\includegraphics[width=#2]{../figures/#1.pdf}}{\fbox{\todo{figure \detokenize{#1}}}}}
+% figures are drawn at print size: include them at natural size, shrunk only if wider than the line (the second
+% argument is kept for compatibility and ignored)
+\newsavebox{\ltccfigbox}
+\newcommand{\fig}[2]{\IfFileExists{../figures/#1.pdf}{\sbox{\ltccfigbox}{\includegraphics{../figures/#1.pdf}}%
+  \ifdim\wd\ltccfigbox>\linewidth\resizebox{\linewidth}{!}{\usebox{\ltccfigbox}}\else\usebox{\ltccfigbox}\fi}%
+  {\fbox{\todo{figure \detokenize{#1}}}}}
 
 \begin{document}
 \history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}

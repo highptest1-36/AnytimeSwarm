@@ -1,57 +1,59 @@
 % Summary of the primary hypotheses of studies 2-7 (frozen protocols). Hand-written; every number is a \val macro from
 % the generated numbers_*.tex files, and every outcome follows the report of the study (results/study*/report*.md).
 \begin{table}[t]
-\caption{Primary hypotheses of studies 2--7 on held-out missions, as fixed in the frozen protocols, and their outcomes.
-Differences are the first method minus the second, in percentage points with 95\% paired bootstrap intervals (for H27
-and H28 the range over the four conditions); $U$ is the utility, $u_1$ the score with a fixed late cost of one mean task
-reward and $u^w_1$ the score with a late cost of one reward of the task. Primary families are Holm-corrected; NI:
-non-inferiority with a margin of $-0.5$\,pp; sup.: superiority tested after NI in a fixed sequence. With a bootstrap
-over seeds instead of missions, the proportional buffer was significantly better than the proposed model in H9
-(Supplementary Table~\ref{S-tab:Scluster}); no other outcome changed. Study~1 is reported in Supplementary
-Section~\ref{S-sec:Sstudy1}.}\label{tab:hyp}
+\caption{Primary hypotheses and outcomes.}\label{tab:hyp}
 \centering\footnotesize
-\setlength{\tabcolsep}{2.6pt}
+\setlength{\tabcolsep}{3pt}
+\begin{threeparttable}
 \begin{tabular}{@{}cllcll@{}}
 \toprule
 Study & H & Comparison & Score & Difference (pp) & Outcome \\
 \midrule
-2 & H1 & proposed, no fallback, vs.\ six baselines & $U$ & \val{KDmBuf} to \val{KDmForty} & supported, 6 of 6 \\
-  & H2 & proposed, no fallback, vs.\ conventional & $U$ & \val{KDConv} & supported \\
+2 & H1 & \mname{}, no fallback, vs.\ six baselines & $U$ & \val{KDmBuf} to \val{KDmForty} & supported, 6 of 6 \\
+  & H2 & \mname{}, no fallback, vs.\ conventional planner & $U$ & \val{KDConv} & supported \\
   & H3 & stopping rule vs.\ fixed 40\,ms (equivalence) & $U$ & \val{KDAblStop} & equivalent \\
-  & H4 & tier C: proposed vs.\ ALNS 40\,ms & $U$ & \val{KCDForty} & not supported \\
+  & H4 & tier C: \mname{}, no fallback, vs.\ nominal model & $U$ & \val{KCDForty} & not supported \\
 \midrule
-3 & H5 & nominal fallback vs.\ no fallback & $U$ & \val{LDPropAll} & supported \\
-  & H6 & nominal fallback vs.\ buffer, high, windows $\times0.5$ & $U$ & \val{LDBufHighWHalf} & supported \\
-  & H7 & nominal fallback vs.\ ALNS 40\,ms & $U$ & \val{LDFortyAll} & supported \\
-  & H8 & nominal fallback vs.\ constant buffer & $U$ & \val{LDBufAll} & supported \\
+3 & H5 & \mname{}, nominal fallback vs.\ no fallback & $U$ & \val{LDPropAll} & supported \\
+  & H6 & \mname{}, nominal fallback vs.\ constant buffer, high, windows halved & $U$ & \val{LDBufHighWHalf} & supported \\
+  & H7 & \mname{}, nominal fallback vs.\ nominal model & $U$ & \val{LDFortyAll} & supported \\
+  & H8 & \mname{}, nominal fallback vs.\ constant buffer & $U$ & \val{LDBufAll} & supported \\
 \midrule
-4 & H9 & proposed vs.\ proportional buffer & $U$ & \val{QDPropBufAll} & not supported \\
-  & H10 & proposed vs.\ moment propagation (NI) & $U$ & \val{QDMPAll} & NI not shown \\
-  & H11 & nominal fallback within moment propagation & $U$ & \val{QDFbMPAll} & supported \\
-  & H12 & proposed vs.\ constant buffer & $U$ & \val{QDBufAll} & supported \\
-  & H13 & proposed vs.\ nominal model & $U$ & \val{QDFortyAll} & supported \\
+4 & H9 & \mname{} vs.\ proportional buffer & $U$ & \val{QDPropBufAll} & not supported \\
+  & H10 & \mname{} vs.\ moment propagation (NI) & $U$ & \val{QDMPAll} & NI not shown \\
+  & H11 & moment propagation: nominal fallback vs.\ no fallback & $U$ & \val{QDFbMPAll} & supported \\
+  & H12 & \mname{} vs.\ constant buffer & $U$ & \val{QDBufAll} & supported \\
+  & H13 & \mname{} vs.\ nominal model & $U$ & \val{QDFortyAll} & supported \\
 \midrule
-4C & H14 & tier C: proposed vs.\ nominal model & $U$ & \val{GDNom} & not supported \\
-   & H15 & tier C: nominal fallback vs.\ no fallback & $U$ & \val{GDNoFb} & supported \\
+4C & H14 & tier C: \mname{} vs.\ nominal model & $U$ & \val{GDNom} & not supported \\
+   & H15 & tier C: \mname{}, nominal fallback vs.\ no fallback & $U$ & \val{GDNoFb} & supported \\
 \midrule
 5 & H16 & cost-aware vs.\ nominal fallback & $u_1$ & \val{FDCCfbOne} & supported \\
-  & H17 & cost-aware vs.\ proportional buffer tuned for $\lambda$ & $u_1$ & \val{FDPropOne} & supported, sup. \\
-  & H18 & cost-aware vs.\ no fallback, $z$ tuned for $\lambda$ & $u_1$ & \val{FDCCnfOne} & supported, sup. \\
-  & H19 & cost-aware vs.\ nominal model & $u_1$ & \val{FDFortyOne} & supported \\
+  & H17 & cost-aware fallback vs.\ tuned proportional buffer & $u_1$ & \val{FDPropOne} & supported, sup. \\
+  & H18 & cost-aware fallback vs.\ \mname{}, no fallback, tuned safety factor & $u_1$ & \val{FDCCnfOne} & supported, sup. \\
+  & H19 & cost-aware fallback vs.\ nominal model & $u_1$ & \val{FDFortyOne} & supported \\
 \midrule
-6 & H20 & proposed vs.\ CBBA & $u_1$ & \val{WDCBBAOne} & \val{YOutCBBAOne} \\
-  & H21 & CBBA on the proposed model vs.\ CBBA & $u_1$ & \val{WDCBBAModelOne} & \val{YOutCBBAModelOne} \\
-  & H22 & moment prop.: cost-aware vs.\ nominal fallback & $u_1$ & \val{WDMPFbOne} & \val{YOutMPFbOne} \\
-  & H23 & moment prop.: cost-aware vs.\ no fallback & $u_1$ & \val{WDMPNoFbOne} & \val{YOutMPNoFbOne} \\
+6 & H20 & \mname{}, cost-aware fallback vs.\ CBBA & $u_1$ & \val{WDCBBAOne} & \val{YOutCBBAOne} \\
+  & H21 & CBBA on \mname{} deadlines vs.\ CBBA & $u_1$ & \val{WDCBBAModelOne} & \val{YOutCBBAModelOne} \\
+  & H22 & moment propagation: cost-aware vs.\ nominal fallback & $u_1$ & \val{WDMPFbOne} & \val{YOutMPFbOne} \\
+  & H23 & moment propagation: cost-aware vs.\ no fallback & $u_1$ & \val{WDMPNoFbOne} & \val{YOutMPNoFbOne} \\
 \midrule
 7a & H24 & fixed-cost vs.\ proportional rule & $u_1$ & \val{UDHTwentyFour} & \val{UOutHTwentyFour} \\
-  & H25 & fixed-cost rule vs.\ buffer tuned for $u_1$ & $u_1$ & \val{UDHTwentyFive} & \val{UOutHTwentyFive} \\
-  & H26 & proportional rule vs.\ buffer tuned for $u^w_1$ & $u^w_1$ & \val{UDHTwentySix} & NI shown \\
+  & H25 & fixed-cost rule vs.\ tuned proportional buffer & $u_1$ & \val{UDHTwentyFive} & \val{UOutHTwentyFive} \\
+  & H26 & proportional rule vs.\ tuned proportional buffer (NI) & $u^w_1$ & \val{UDHTwentySix} & NI shown \\
 \midrule
-7b & H27 & nominal fallback vs.\ nominal model, shifted errors & $U$ & \val{UDabsHTwentySevenBias} to
+7b & H27 & \mname{}, nominal fallback vs.\ nominal model, four error departures & $U$ & \val{UDabsHTwentySevenBias} to
 \val{UDabsHTwentySevenOutlier} & supported, 4 of 4 \\
-  & H28 & cost-aware vs.\ nominal fallback, shifted errors & $u_1$ & \val{UDabsHTwentyEightPareto} to
+  & H28 & cost-aware vs.\ nominal fallback, four error departures & $u_1$ & \val{UDabsHTwentyEightPareto} to
 \val{UDabsHTwentyEightOutlier} & supported, 4 of 4 \\
 \bottomrule
 \end{tabular}
+\begin{tablenotes}[flushleft]\scriptsize
+\item[] Differences are the first method minus the second, with 95\% paired bootstrap intervals (ranges over the four
+conditions for H27 and H28). $U$: utility; $u_1$, $u^w_1$: scores of Eq.~\eqref{eq:score} with $\lambda=1$. NI:
+non-inferiority with a margin of 0.5\,pp; sup.: superiority tested after non-inferiority. Holm correction within each
+study. With a bootstrap over seeds, the proportional buffer became significantly better in H9; no other outcome
+changed. Study~1 is reported in Supplementary Section~\ref{S-sec:Sstudy1}.
+\end{tablenotes}
+\end{threeparttable}
 \end{table}

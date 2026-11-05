@@ -39,7 +39,7 @@ N.~Soeffker, M.~W. Ulmer, and D.~C. Mattfeld, ``Stochastic dynamic vehicle
 \bibitem{skaltsis2023review}
 G.~M. Skaltsis, H.-S. Shin, and A.~Tsourdos, ``A review of task allocation
   methods for {UAVs},'' \emph{Journal of Intelligent \& Robotic Systems}, vol.
-  109, p.~76, 2023.
+  109, no.~4, p.~76, 2023.
 
 \bibitem{choi2009consensus}
 H.-L. Choi, L.~Brunet, and J.~P. How, ``Consensus-based decentralized auctions
@@ -84,6 +84,11 @@ Z.~Gao, M.~Zheng, Y.~Mei, A.~Zheng, and H.~Zhong, ``Distributionally robust
   under uncertain fuel consumption,'' \emph{Drones}, vol.~9, no.~9, p. 633,
   2025.
 
+\bibitem{jabali2015selfimposed}
+O.~Jabali, R.~Leus, T.~Van~Woensel, and T.~de~Kok, ``Self-imposed time windows
+  in vehicle routing problems,'' \emph{OR Spectrum}, vol.~37, no.~2, pp.
+  331--352, 2015.
+
 \bibitem{zilberstein1996using}
 S.~Zilberstein, ``Using anytime algorithms in intelligent systems,'' \emph{AI
   Magazine}, vol.~17, no.~3, pp. 73--83, 1996.
@@ -106,6 +111,11 @@ D.~Ta{\c{s}}, N.~Dellaert, T.~van Woensel, and T.~de~Kok, ``Vehicle routing
   costs,'' \emph{Computers \& Operations Research}, vol.~40, no.~1, pp.
   214--224, 2013.
 
+\bibitem{bomboi2022stochastic}
+F.~Bomboi, C.~Buchheim, and J.~Pruente, ``On the stochastic vehicle routing
+  problem with time windows, correlated travel times, and time dependency,''
+  \emph{4OR}, vol.~20, no.~2, pp. 217--239, 2022.
+
 \bibitem{boddy1994deliberation}
 M.~Boddy and T.~L. Dean, ``Deliberation scheduling for problem solving in
   time-constrained environments,'' \emph{Artificial Intelligence}, vol.~67,
@@ -120,12 +130,12 @@ L.~Meier, D.~Honegger, and M.~Pollefeys, ``{PX4}: A node-based multithreaded
 \bibitem{koenig2004gazebo}
 N.~Koenig and A.~Howard, ``Design and use paradigms for {Gazebo}, an
   open-source multi-robot simulator,'' in \emph{Proceedings of the IEEE/RSJ
-  International Conference on Intelligent Robots and Systems (IROS)}, 2004, pp.
-  2149--2154.
+  International Conference on Intelligent Robots and Systems (IROS)}, vol.~3,
+  2004, pp. 2149--2154.
 
 \bibitem{macenski2022ros2}
-S.~Macenski, T.~Foote, B.~Gerkey, C.~Lalancette, and W.~Woodall, ``Robot
-  operating system 2: Design, architecture, and uses in the wild,''
+S.~Macenski, T.~Foote, B.~Gerkey, C.~Lalancette, and W.~Woodall, ``{Robot
+  Operating System 2}: Design, architecture, and uses in the wild,''
   \emph{Science Robotics}, vol.~7, no.~66, p. eabm6074, 2022.
 
 \bibitem{chakraa2023mrta}
@@ -139,12 +149,6 @@ D.~Rojas~Viloria, E.~L. Solano-Charris, A.~Mu{\~n}oz-Villamizar, and J.~R.
   Montoya-Torres, ``Unmanned aerial vehicles/drones in vehicle routing
   problems: A literature review,'' \emph{International Transactions in
   Operational Research}, vol.~28, no.~4, pp. 1626--1657, 2021.
-
-\bibitem{zhao2025throughput}
-L.~Zhao, S.~Li, Z.~Tan, A.~Hawbani, S.~Timotheou, and K.~Yu, ``A multi-{UAV}
-  cooperative task scheduling in dynamic environments: Throughput
-  maximization,'' \emph{IEEE Transactions on Computers}, vol.~74, no.~2, pp.
-  442--454, 2025.
 
 \bibitem{solomon1987algorithms}
 M.~M. Solomon, ``Algorithms for the vehicle routing and scheduling problems
@@ -165,6 +169,12 @@ S.~Wang, W.~Sun, and M.~Huang, ``An adaptive large neighborhood search for the
 W.~Wang, M.~Lv, L.~Ru, B.~Lu, S.~Hu, and X.~Chang, ``Multi-{UAV} unbalanced
   targets coordinated dynamic task allocation in phases,'' \emph{Aerospace},
   vol.~9, no.~9, p. 491, 2022.
+
+\bibitem{zhao2025throughput}
+L.~Zhao, S.~Li, Z.~Tan, A.~Hawbani, S.~Timotheou, and K.~Yu, ``A multi-{UAV}
+  cooperative task scheduling in dynamic environments: Throughput
+  maximization,'' \emph{IEEE Transactions on Computers}, vol.~74, no.~2, pp.
+  442--454, 2025.
 
 \bibitem{choudhury2022dynamic}
 S.~Choudhury, J.~K. Gupta, M.~J. Kochenderfer, D.~Sadigh, and J.~Bohg,
@@ -221,11 +231,6 @@ M.~E. Bruni, S.~Khodaparasti, and G.~Perboli, ``The drone latency location
 J.~Wang, G.~Jia, Z.~Guo, and Z.~Hou, ``Impact of uncertain flight time on
   heterogeneous {UAVs}' task planning with temporal constraints,''
   \emph{Aerospace}, vol.~11, no.~3, p. 214, 2024.
-
-\bibitem{bomboi2022stochastic}
-F.~Bomboi, C.~Buchheim, and J.~Pruente, ``On the stochastic vehicle routing
-  problem with time windows, correlated travel times, and time dependency,''
-  \emph{4OR}, vol.~20, no.~2, pp. 217--239, 2022.
 
 \bibitem{lacerda2022decision}
 B.~Lacerda, A.~Gautier, A.~Rutherford, A.~Stephens, C.~Street, and N.~Hawes,

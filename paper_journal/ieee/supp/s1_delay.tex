@@ -1,5 +1,8 @@
 \subsection{Learned stopping rule}
-Every 5\,ms, the stopping rule compares the predicted gain of searching for another $H=10$\,ms with the cost of doing so.
+The objective of a plan $\pi$ in Section~\ref{sec:problem} of the main paper is $J(\pi)=\alpha R(\pi)-\gamma
+E(\pi)-\delta C(\pi)$, where $R$ is the reward of the tasks served on time, $E$ the flown distance in kilometres and $C$
+the number of tasks that move to another UAV, with $\alpha=1$, $\gamma=0.05$ per kilometre and $\delta=0.3$. $W$ denotes
+the total reward of the open tasks. Every 5\,ms, the stopping rule compares the predicted gain of searching for another $H=10$\,ms with the cost of doing so.
 With $\widehat{\Delta J}$ as the predicted gain, the search stops at time $\tau$ if
 \begin{equation}\label{eq:Sstop}
 \widehat{\Delta J}\;\le\;C_{\mathrm{delay}}(\tau)+\mu W H .

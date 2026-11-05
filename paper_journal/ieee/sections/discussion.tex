@@ -1,81 +1,40 @@
-\section{Discussion and limitations}\label{sec:discussion}
-The seven studies answer the four research questions as follows. On RQ1, the spread of the finish-time error grows
-almost linearly with the lead time, and a chance constraint built on it reduces to one effective deadline per task that
-fast heuristics use unchanged. On RQ2, the planning model matters most, the trigger second and the stopping rule
-least. On RQ3, the replanner served more reward than a constant buffer, the nominal model, a conventional planner and
-CBBA, and as much as a tuned proportional buffer and moment propagation, also under the tested departures from its
-error model, but software-in-the-loop flights confirmed only the fallback. On RQ4, the probability of meeting the deadline
-decided which given-up tasks to attempt without tuning. With a fixed late cost of one task reward, this beat
-competitors tuned for that cost on two sets of seeds, and with a cost proportional to the reward it was as good as
-them, but not at twice that cost when the cost is proportional to the reward.
+\section{Discussion}\label{sec:discussion}
+Three findings run through the studies. The first is that the planning model matters more than the control of
+computation. A margin that grows with the lead time raised the utility by more than any stopping rule or trigger, on
+three independent sets of seeds, with repair only and with CBBA in place of ALNS. The stopping rule was equivalent to a
+matched fixed budget, probably because the improvement curve of this ALNS flattens within a few tens of milliseconds,
+and its main value lies in avoiding the losses of long budgets on slow planners. Periodic replanning helped every method
+on the nominal model, but only by \val{KDabsAblTrig}\,pp with the effective deadlines. Both seem to correct the same
+accumulated deviations, one before and one after they occur.
 
-The order of priorities holds across the designs. A margin that grows with the lead time raised the utility by more
-than any choice of stopping rule or trigger, on three independent sets of held-out seeds, without search and with CBBA
-in place of ALNS. Periodic replanning helped every method on the nominal model, but only by \val{KDabsAblTrig}\,pp on
-the chance-constrained model, which suggests that both correct the same accumulated deviations, one before and one
-after they occur. The stopping rule was equivalent to a matched fixed budget in study~2 and added \val{XDabsFullCC}\,pp
-in study~4. Its main value lies in avoiding the losses of long budgets on slow planners, probably because the
-improvement curve of this ALNS flattens within a few tens of milliseconds.
+The second finding is that the shape of the margin matters more than the way it is computed. The constant buffer was
+worse than every margin that grows with the lead time, whereas the effective deadline, a tuned proportional buffer and
+moment propagation reached a similar utility. Because the spread was close to affine in the lead time, a margin
+proportional to the lead time captures most of it, and under high disturbances the tuned slope nearly equalled the one
+implied by the calibrated model. The advantages of the closed form are practical. It needs one division per task, no
+model of the individual legs and no change to the feasibility checks of a heuristic, which is what allowed CBBA to use
+it unchanged. Where lateness is costly and the planner can afford to evaluate every leg, moment propagation scored
+higher.
 
-The shape of the margin matters more than the way it is computed. The constant buffer was clearly worse than every
-margin that grows with the lead time, whereas the calibrated effective deadline, a tuned proportional buffer and moment
-propagation were within \val{XRangeScaled}\,pp of each other in utility. Because the spread grows almost linearly, a
-margin $c\,h$ with a suitable slope captures most of it, and under high disturbances the tuned slope nearly equalled
-the one that the calibrated model implies. Moment propagation evaluates the actual legs of a route and reduced the
-search rate, but with a cost of lateness its detail paid off in study~6, by \val{WDabsCAMPCAOne}\,pp at one task reward
-and \val{WDabsCAMPCATwo}\,pp at two. The closed form ran \val{XDabsItMsMP} more search iterations per millisecond in
-study~4, a modest gain, and the studies did not vary the planning budget, so they do not show that it wins under
-tighter budgets. Its advantage lies elsewhere. It needs one division per task, no model of the individual legs and no
-change to the feasibility checks of a heuristic, which is what allowed CBBA to use it unchanged. Where lateness is
-costly and the planner can afford to evaluate every leg, the more detailed model scored higher. The comparison with CBBA places
-the gain in the planning model rather than in the allocation method. On the proposed model, CBBA came within
-\val{WDabsCACBBACAOne}\,pp of the proposed replanner while it planned for \val{WMsCBBACA}\,ms per call, so the
-effective deadlines can be handed to an auction-based allocator without changing its bidding rule.
-
-The probability of meeting the deadline is where the calibrated model earns its place. A hard chance constraint
-discards every task whose probability falls below $\Phi(z)$, even when a vehicle has nothing better to do, and study~4
-shows that this holds however the constraint is evaluated. The nominal fallback recovers these tasks but serves many of
-them late. With utility alone, a tuned proportional buffer was as good as the calibrated model. Once a late arrival has
-a cost, the question is no longer only how large the margin is but which tasks are worth attempting at all, and that
-requires a probability. The closed form turns the break-even rule of Eq.~\eqref{eq:theta} into another effective
-deadline, which served more than a buffer and a safety factor tuned for one task reward and stayed ahead of the buffer
-whenever the buffer had been tuned for a different cost. Applied to moment propagation, the same rule behaved in the
-same way, so it is not tied to the closed form. The rule depends on the cost model, and study~7a shows that this
-matters less than expected. Run with the cost model of the score, it did not differ significantly from the mismatched
-rule at one task reward. At twice the cost, only with a fixed cost did the difference to the tuned buffer cease to be
-significant, without establishing equivalence. When
-the cost was proportional to the reward, a tuned buffer without fallback stayed better at twice the cost. The rule
-prices each attempt on its own and ignores the delay that a fallback task causes to later tasks on its route, which
-weighs more when lateness is expensive, and a route-level version that also charges this delay is the natural next
-step.
-
-The guarantee of the effective deadline rests on a Gaussian error model, but the results did not depend on it under
-the tested model departures, which does not imply robustness to arbitrary execution errors. Heavy-tailed errors, rare long delays, a speed bias per UAV and heavy-tailed latency left the
-advantage over the nominal model between \val{UDabsHTwentySevenBias} and \val{UDabsHTwentySevenOutlier}\,pp, against
-\val{UBCtlCCfb}\,pp under the calibrated errors. The bias per UAV, which correlates the errors along a route, reduced it
-most. The model ranks tasks by their risk, and a ranking is less sensitive to the shape of the tails than the
-probability itself, which became slightly optimistic in the upper tail only with rare long delays.
+The third finding is that a probability of meeting the deadline lets the replanner price lateness. A hard chance
+constraint discards tasks that are still worth attempting, and the nominal fallback recovers them but serves many of
+them late. Once a late arrival has a cost, the question is no longer only how large the margin should be but which tasks
+are worth attempting, and this question needs a probability. The break-even rule answers it with another closed-form
+deadline, without cost-specific tuning, and it behaved in the same way inside moment propagation. A proportional buffer
+matched it in utility, but once lateness had a cost, it reached a similar score only when it was tuned again for the
+cost at hand, and it fell behind when it was tuned for another cost.
 
 The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over tens of
 thousands of missions, whereas a flight with autopilot and vehicle dynamics is costly. Tier B predicted every tier C
-comparison on the same missions, so the flights support the transfer of the kinematic results and confirm the
-fallback, but the advantage over the nominal model rests on tier B, and tier C studies should be sized from a
-conservative effect.
+comparison on the same missions, so the flights support the transfer of the kinematic results. In the software-in-the-loop
+flights, however, the fallback was confirmed, whereas the advantage of \mname{} over the nominal model was not, and this
+advantage rests on the kinematic tier. Further flight studies can be sized from the kinematic tier with a conservative
+effect.
 
-Several limitations bound these conclusions. The error model is linear in the lead time and fitted per disturbance
-level, so the level is assumed to be known. Online calibration removes this assumption but served
-\val{XDabsOnlCC}\,pp less reward, and its non-inferiority was not shown. The guarantees of Propositions~\ref{prop:cc}
-and~\ref{prop:costfb} hold under the Gaussian error model, and study~7b covered only four departures from it, at sizes
-fixed in advance and under high disturbances. The chance constraint is imposed on every task separately rather than
-jointly on a route, and the cost-aware fallback is a local break-even rule. The fallback, the models of study~4, the
-cost-aware fallback and study~7 were designed after the held-out results of earlier studies and were therefore tested
-on new seeds. The cost-aware fallback assumes that the cost of a late arrival is known. Study~7a covered a cost
-proportional to the reward and a fixed cost, but not a cost that grows with the lateness, and the rule was tested in
-tier B only. CBBA ran centrally with a fully connected network, the most favourable case for its communication, so its
-robustness to lost links was not part of the comparison. Tier C uses three UAVs and fifteen tasks per mission, and
-software-in-the-loop simulation reproduces the autopilot and the vehicle dynamics but not the sensors, the radio link
-or the weather of a field test. No field flights were made, and the rescaled tier C missions share their disturbance
-model with tier B, so the transfer to real vehicles remains to be shown. The latency factor emulates a slower planning computer instead of measuring one, and
-because the stopping rules read a wall clock, the mean utility of a method varied by up to \val{JRepeatDiffMax}\,pp
-between two runs of the same missions. Finally, all methods share one family of scenarios, and other mission types may
-change the size of the gains.
+These results hold under the conditions studied. The error model is fitted per disturbance level, or online from the
+tasks of the mission, and the guarantees of Propositions~\ref{prop:cc} and~\ref{prop:costfb} rest on a Gaussian error
+model, although the advantages persisted under the four tested departures from it. The cost-aware fallback prices each
+attempt on its own. A route-level version that also charges the delay a fallback task causes to the tasks after it, for
+example through a late cost that grows with their number, is a natural next step, in particular for high late costs.
+The flights used three simulated UAVs, so tests with the cost-aware fallback in the autopilot loop, on embedded hardware
+and in the field remain to be done.

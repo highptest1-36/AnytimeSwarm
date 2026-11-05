@@ -2,65 +2,52 @@
 \subsection{Dynamic task allocation and routing}
 Multi-robot task allocation~\cite{gerkey2004formal,chakraa2023mrta} and dynamic vehicle
 routing~\cite{psaraftis2016dynamic,soeffker2022review} reassign tasks when information changes, and recent reviews
-cover their use for UAVs~\cite{skaltsis2023review,rojasviloria2021drones}. Learning-based schedulers combine
-policy-gradient reinforcement learning with stable matching for dynamic multi-UAV task scheduling~\cite{zhao2025throughput}. The
-planning problem considered here is a prize-collecting routing problem with time
-windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}. Large neighbourhood search has been adapted to dynamic routing with time windows~\cite{alnsdvrp2024}. For multi-UAV
-systems, auction methods such as CBBA reach conflict-free assignments quickly~\cite{choi2009consensus} and have
-been extended to dynamic task arrivals with time windows~\cite{wang2022phases}.
-Recent work handles stochastic task completion with hierarchical policies~\cite{choudhury2022dynamic}, uncertain
-execution times with dynamic time slices~\cite{huang2024dynamic}, intermittent communication with uncertainty-gated
-distributed allocation~\cite{ucdg2026drones}, and events with assignment-preserving or local
-repair~\cite{hwang2026apr,shen2026localrepair}. Event-triggered and periodic allocation have been compared for
-multi-UAV systems~\cite{cong2026event}, in line with the policies discussed for stochastic dynamic
-routing~\cite{soeffker2022review}. Calvo and Capitan validate a repair-based architecture
-with PX4 and Gazebo~\cite{calvo2025heterogeneous}, and Ali et al.\ use ArduPilot software-in-the-loop
-simulation~\cite{ali2026sitl}. Table~\ref{tab:related} compares these approaches.
+cover their use for UAVs~\cite{skaltsis2023review,rojasviloria2021drones}. The planning problem considered here is a
+prize-collecting routing problem with time windows~\cite{solomon1987algorithms,vansteenwegen2011orienteering}, and large
+neighbourhood search has been adapted to dynamic routing with time windows~\cite{alnsdvrp2024}. Auction methods such
+as CBBA reach conflict-free assignments quickly~\cite{choi2009consensus} and have been extended to dynamic task
+arrivals with time windows~\cite{wang2022phases}, and learning-based schedulers combine reinforcement learning with
+stable matching for UAV-assisted mobile computing~\cite{zhao2025throughput}. Recent multi-UAV work handles stochastic task completion with hierarchical
+policies~\cite{choudhury2022dynamic}, uncertain execution times with dynamic time slices~\cite{huang2024dynamic},
+intermittent communication with uncertainty-gated allocation~\cite{ucdg2026drones}, and events with
+assignment-preserving or local repair~\cite{hwang2026apr,shen2026localrepair}. Event-triggered and periodic allocation
+have been compared for multi-UAV systems~\cite{cong2026event}, and online allocation architectures have been
+demonstrated in PX4 and ArduPilot software-in-the-loop simulation~\cite{calvo2025heterogeneous,ali2026sitl}. Table~\ref{tab:related}
+places these approaches next to \mname{}. Most of the multi-UAV approaches replan online, but few combine deadlines,
+execution uncertainty and a cost of lateness, and only the metareasoning work treats the computation time as a
+decision.
 
 \inputtable{tab_related}
 
 \subsection{Uncertainty in routing and allocation}
-Stochastic vehicle routing models travel and service times as random variables, including correlated and
+Stochastic vehicle routing treats travel and service times as random variables, including correlated and
 time-dependent travel times~\cite{rostami2021correlated,bomboi2022stochastic}, and multi-robot planning under
-uncertainty treats the durations of actions as random~\cite{lacerda2022decision}. With hard time windows and stochastic service times, a priori routes with
-recourse~\cite{errico2016apriori} and robust formulations over budgeted uncertainty
-sets~\cite{agra2013robust} protect the schedule against delays, at the price of a harder model. Sampling-based and
-learning-based policies plan against possible futures~\cite{soeffker2022review}, and chance-constrained task allocation bounds the
-probability that a team misses its objectives~\cite{ponda2012chance}. Per-customer chance constraints on the service
-time windows were formulated for routing with stochastic travel and service times by Li et al.~\cite{li2010vrptw}.
-Ehmke et al.~\cite{ehmke2015ensuring} propagate the mean and variance of the arrival time along a route, approximate
-the waiting for a time window by Clark's moments of a maximum~\cite{clark1961greatest}, and use the result as a
-feasibility check inside routing heuristics. Soft time windows take the opposite route and charge a penalty for every
-late service inside the objective. Ta\c{s} et al.~\cite{tas2013stochastic} minimise transportation costs plus expected
-early and late service costs under stochastic travel times with tabu search, which requires the distribution of the
-lateness of every route during the search. For multi-UAV systems, Gao et al.~\cite{gao2025drcc} formulate a
-distributionally robust chance-constrained task assignment with time windows under uncertain fuel consumption and
-solve a mixed-integer reformulation, Wang et al.~\cite{wang2024uncertain} estimate the effect of uncertain flight times
-on completion times and time-window violations without Monte Carlo simulation, and Zhou and
-Tokekar~\cite{zhou2022risk} select risk-averse multi-robot assignments through the conditional value at risk. For
-drone delivery, the energy and the range of a drone depend on its speed~\cite{dukkanci2021energy}, Bruni
-et al.~\cite{bruni2023drone} protect routes against uncertain flight times by robust
-optimisation, and Cheng et al.~\cite{cheng2024weather} build ambiguity sets of flight times from wind observations
-and schedule drones against an index that accounts for both the probability and the magnitude of lateness. These
-formulations rely on mixed-integer, sampling-based or greedy solvers over a planning horizon, and none of them is
-evaluated as a replanner that has to publish a plan within a fraction of a second after every event.
+uncertainty treats the durations of actions as random~\cite{lacerda2022decision}. A priori routes with recourse
+protect time windows against stochastic service times~\cite{errico2016apriori}, robust formulations protect them
+against uncertain travel times~\cite{agra2013robust}, and self-imposed time windows add buffer time to the
+schedule~\cite{jabali2015selfimposed}. Li et al.~\cite{li2010vrptw} modelled routing with time windows and stochastic
+travel and service times both as a chance-constrained program and as a stochastic program with recourse. Ehmke et al.~\cite{ehmke2015ensuring} propagate the mean and variance of the arrival time along a route, with
+Clark's approximation of the maximum of two normal variables~\cite{clark1961greatest}, and use the result as a
+feasibility check inside routing heuristics. Soft time windows instead charge a penalty for late service in the
+objective~\cite{tas2013stochastic}. For UAVs, Gao et al.~\cite{gao2025drcc} solve a distributionally robust
+chance-constrained task assignment as a mixed-integer program, Wang et al.~\cite{wang2024uncertain} estimate the effect
+of uncertain flight times on completion times, and Zhou and Tokekar~\cite{zhou2022risk} select risk-averse multi-robot
+assignments with the conditional value at risk. Drone delivery has been planned with speed-dependent
+energy~\cite{dukkanci2021energy}, robust flight times~\cite{bruni2023drone} and ambiguity sets built from wind
+observations~\cite{cheng2024weather}. Most of these formulations are solved with mixed-integer, sampling-based or greedy
+methods over a planning horizon rather than within the few milliseconds available between two events.
 
-The proposed model differs in four respects. Its error model is fitted to the finish times observed in closed loop
-rather than assumed per arc. It is applied in a replanner that runs between events within a fraction of a second, with
-a publication delay. It adds a fallback for the tasks that a hard chance constraint gives up. And it prices a late
-arrival only in this fallback, through a break-even probability that again yields a deterministic deadline, so the
-search keeps its objective and its fast feasibility checks, whereas soft time windows change both. The closest use of
-a probability as an acceptance test in multi-UAV allocation is the uncertainty-gated allocation of Qian and
-Fu~\cite{ucdg2026drones}, which removes an agent--task pair from a one-task-per-UAV matching when a lower confidence
-bound fails. There the test acts on single assignments under intermittent communication, whereas here it acts on the
-deadlines of every task along a route, with an error that grows with the lead time. Moment propagation,
-a proportional buffer, a constant buffer and the consensus-based bundle algorithm (CBBA)~\cite{choi2009consensus} are
-re-implemented as baselines.
+\mname{} differs in four respects. Its error model is fitted to the finish times observed in closed loop. It runs
+between events within milliseconds. It adds a fallback for the tasks that a hard chance constraint gives up. And it
+prices lateness only in this fallback, through a break-even probability that again yields a deadline, so the search
+keeps its objective and its feasibility checks. The closest use of a probability as an acceptance test is the
+uncertainty-gated allocation of Qian and Fu~\cite{ucdg2026drones}, which acts on single agent--task pairs of a
+one-task-per-UAV matching, whereas \mname{} acts on the deadline of every task along a route.
 
 \subsection{Metareasoning and anytime algorithms}
-Anytime algorithms and metareasoning~\cite{zilberstein1996using,herrmann2023metareasoning} decide how long a
-planner should compute, from performance profiles~\cite{boddy1994deliberation}, online performance
-prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}. Situated temporal planning and deadline-aware search account for the passage of time
-during planning~\cite{cashmore2018clock,shperberg2021situated}. Two of these rules are
-re-implemented as baselines, so that the value of controlling computation can be compared with the value of the
-planning model.
+Anytime algorithms and metareasoning decide how long a planner should
+compute~\cite{zilberstein1996using,herrmann2023metareasoning}, from performance profiles~\cite{boddy1994deliberation},
+online performance prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}. Situated
+temporal planning and deadline-aware metareasoning account for the time that passes during
+planning~\cite{cashmore2018clock,shperberg2021situated}. Two of these stopping rules serve as baselines, so that the
+value of controlling computation can be compared with the value of the planning model.
