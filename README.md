@@ -22,7 +22,15 @@ deadlines they check:
 
 ![Overview of LTCC](docs/images/overview.png)
 
-*Overview of LTCC. Top: the replanning loop. Bottom: the four stages of one replanning call.*
+*Architecture of LTCC. Regions A–E form the online replanning loop, region F the offline calibration on development
+missions. The proposed components (B, C) are marked.*
+
+<details>
+<summary>Conceptual overview (graphical abstract)</summary>
+
+![Graphical abstract](docs/images/graphical_abstract.png)
+
+</details>
 
 ## Main results
 

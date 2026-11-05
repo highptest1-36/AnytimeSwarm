@@ -5,17 +5,21 @@ model gives up are still worth attempting. The stopping rule decides when to pub
 replan. The first two decisions are the contribution of this paper, and both reduce to one deadline per task, so the
 repair and the search of the nominal model run unchanged.
 
-Fig.~\ref{fig:overview} shows the whole loop. An event, such as a new task or a failed UAV, starts a call on a snapshot
-of the open tasks, the UAV states and the previous plan. The replanner converts every deadline into a planning
-deadline, repairs and improves the plan with ALNS, and publishes the best plan found. The UAVs execute it, and the
-finish times they report update the next snapshot. Two earlier variants of the same replanner, AnytimeSwarm and
+Fig.~\ref{fig:overview} shows the architecture, read from left to right. An event, such as a new task or a failed UAV,
+or the periodic trigger starts a call on a snapshot of the open tasks, the UAV states and the previous plan (A). The
+planning model turns the calibrated finish-time error into an effective deadline for every task (B). The cost-aware
+fallback compares the probability of meeting the deadline of a given-up task with its break-even probability and keeps
+the protected deadline, a fallback deadline or none (C). Repair and ALNS then search on these deadlines until the
+stopping rule publishes the best plan (D). The UAVs execute it, and the finish times they report update the next
+snapshot (E). The error model, the safety factor and the gain predictor of the stopping rule are fitted once on
+development missions (F). Regions B and C are the proposed components, and A, D and E are standard. Two earlier variants of the same replanner, AnytimeSwarm and
 AnytimeSwarm-R, keep the nominal deadlines and differ only in their stopping rule, and they serve as baselines.
 
 \begin{figure*}[t]
 \centering
 \fig{fig_overview}{\linewidth}
-\caption{Overview of \mname{}. Top: the replanning loop. Bottom: the four stages of one replanning
-call.}\label{fig:overview}
+\caption{Architecture of \mname{}. Regions A--E form the online replanning loop, and region F the offline
+calibration on development missions. The proposed components are marked.}\label{fig:overview}
 \end{figure*}
 
 \subsection{Repair and anytime search}

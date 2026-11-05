@@ -1,167 +1,137 @@
-% Fig. 1: overview of LTCC (pdflatex fig_overview.tex -> copy fig_overview.pdf to ../figures/)
-% Top: the replanning loop. Bottom: the four stages of one replanning call. Drawn at print size (18 cm).
+% Fig. 1: architecture of LTCC (pdflatex fig_overview.tex -> copy fig_overview.pdf to ../figures/)
+% Regions A-E form the online replanning loop, F the offline calibration on development missions. The proposed
+% components (B, C) carry a thick border and a label. Drawn at print size (18 cm), Times as in the paper body.
 \documentclass[tikz,border=2pt]{standalone}
 \input{figstyle}
+\definecolor{calib}{HTML}{C0392B}
+\definecolor{fb}{HTML}{2F6DB5}
+\definecolor{pLav}{HTML}{EEEAF7}
+\definecolor{hBlue}{HTML}{C9DCF2}
+\definecolor{hCyan}{HTML}{BFE6E8}
+\definecolor{hPeach}{HTML}{F6D3BC}
+\definecolor{hLav}{HTML}{D9D0EE}
+\tikzset{
+  box/.style={draw=edge, line width=0.5pt, rounded corners=2pt, fill=white, align=center, inner sep=2.4pt,
+              font=\fontsize{7}{8.3}\selectfont},
+  Tx/.style={font=\fontsize{6.6}{7.8}\selectfont, align=center},
+  carr/.style={-{Stealth[length=3.8pt,width=3pt]}, line width=0.55pt, draw=calib},
+  farr/.style={-{Stealth[length=4.2pt,width=3.4pt]}, line width=0.7pt, draw=fb, dash pattern=on 3pt off 1.8pt},
+}
+% \region{x1}{y1}{x2}{y2}{fill}{header}{title}{border width}
+\newcommand{\region}[8]{%
+  \fill[#5, rounded corners=4pt] (#1,#2) rectangle (#3,#4);
+  \fill[#6, rounded corners=4pt] (#1,{#4-0.42}) rectangle (#3,#4);
+  \fill[#6] (#1,{#4-0.42}) rectangle (#3,{#4-0.2});
+  \draw[head, line width=#8, rounded corners=4pt] (#1,#2) rectangle (#3,#4);
+  \node[Hd, anchor=west] at ({#1+0.1},{#4-0.21}) {#7};
+}
+\newcommand{\proposed}[1]{\node[font=\fontsize{6}{6.5}\selectfont, text=white, fill=head, rounded corners=1.5pt,
+  inner sep=1.6pt, anchor=south east] at #1 {proposed};}
 \begin{document}
 \begin{tikzpicture}
-% ------------------------------------------------------------------ zoom band from the replanner to the detail frame
-\fill[pBlue!70] (7.65,5.25) -- (11.05,5.25) -- (17.95,4.8) -- (0.1,4.8) -- cycle;
 
-% ================================================================== top: the replanning loop
-\draw[frame] (0.1,5.25) rectangle (17.95,8.55);
+% ================================================================= regions of the online loop
+\region{0.1}{2.0}{2.95}{6.9}{pBlue}{hBlue}{A\enspace Snapshot}{0.5pt}
+\region{3.25}{2.0}{7.65}{6.9}{pBlue!40!white}{hCyan}{B\enspace Planning model}{1.2pt}
+\region{7.95}{2.0}{11.65}{6.9}{pSand}{hPeach}{C\enspace Cost-aware fallback}{1.2pt}
+\region{11.95}{2.0}{14.85}{6.9}{pBlue}{hBlue}{D\enspace Anytime search}{0.5pt}
+\region{15.15}{2.0}{17.75}{6.9}{pLav}{hLav}{E\enspace Execution}{0.5pt}
+\proposed{(7.5,6.93)}
+\proposed{(11.5,6.93)}
 
-% mission and events
-\groundplane{0.35}{5.95}{2.3}{1.2}{3}
-\fill[ink] (1.55,6.3) rectangle ++(0.13,0.09);
-\foreach \p in {(0.85,6.12),(2.25,6.1),(2.55,6.55),(1.0,6.6),(1.95,6.75),(2.95,6.35)}
-  \filldraw[draw=edge, fill=white, line width=0.4pt] \p circle (0.05);
-\draw[sBlue!80!black, line width=0.7pt, dash pattern=on 2pt off 1pt] (1.6,6.35) -- (1.0,6.6) -- (0.85,6.12);
-\draw[sMint!70!black, line width=0.7pt, dash pattern=on 2pt off 1pt] (1.6,6.35) -- (2.25,6.1) -- (2.55,6.55);
-\pic[scale=0.7] at (1.05,7.35) {quad=sBlue};
-\pic[scale=0.7] at (2.35,7.25) {quad=sMint};
-\foreach \y in {7.95,7.78} \draw[arrm] (0.35,\y) -- (0.95,\y);
-\node[Ts, anchor=west] at (1.0,7.86) {wind};
-\node[T] at (1.75,5.55) {Mission and events};
-\draw[arr] (3.45,6.65) -- (4.3,6.65);
-\node[Ts, anchor=south] at (3.87,6.7) {event};
+% ================================================================= A: trigger and snapshot
+\node[box, dash pattern=on 2.4pt off 1.4pt, text width=2.45cm, font=\fontsize{6.6}{7.8}\selectfont] (ev) at (1.52,5.85)
+  {trigger: new task,\\ UAV failure, deadline\\ change, or every 60\,s};
+\wslab{0.3}{4.4}{2.3}{0.4}{0.25}{sBlue}  \node[Tx] at (1.45,4.6) {open tasks: $d$, $w$, $c$};
+\wslab{0.3}{3.85}{2.3}{0.4}{0.25}{sBlue} \node[Tx] at (1.45,4.05) {UAV states};
+\wslab{0.3}{3.3}{2.3}{0.4}{0.25}{sBlue}  \node[Tx] at (1.45,3.5) {previous plan};
+\draw[arr] (ev.south) -- (1.45,4.92);
+\node[Tx] at (1.52,2.9) {snapshot at the time\\ of the call};
 
-% snapshot
-\wslab{4.45}{5.95}{1.9}{0.36}{0.35}{sSand}
-\wslab{4.45}{6.45}{1.9}{0.36}{0.35}{sBlue}
-\wslab{4.45}{6.95}{1.9}{0.36}{0.35}{sMint}
-\node[Ts] at (5.4,6.13) {previous plan};
-\node[Ts] at (5.4,6.63) {UAV states};
-\node[Ts] at (5.4,7.13) {open tasks};
-\node[T] at (5.55,5.55) {Snapshot};
-\draw[arr] (6.75,6.65) -- (7.6,6.65);
+% ================================================================= B: error model and effective deadline
+\filldraw[draw=edge, line width=0.45pt, rounded corners=2pt, fill=pMint] (3.42,2.2) rectangle (5.32,6.3);
+\node[Tx] at (4.37,6.05) {calibrated error};
+\fill[sMint!45] (3.85,3.65) -- (5.15,5.35) -- (5.15,4.25) -- (3.85,3.45) -- cycle;
+\draw[line width=0.8pt, sMint!45!black] (3.85,3.45) -- (5.15,4.25);
+\draw[line width=0.8pt, sMint!45!black, dash pattern=on 2.4pt off 1.4pt] (3.85,3.65) -- (5.15,5.35);
+\draw[-{Stealth[length=3pt]}, line width=0.5pt] (3.72,3.3) -- (5.22,3.3);
+\draw[-{Stealth[length=3pt]}, line width=0.5pt] (3.72,3.3) -- (3.72,5.7);
+\node[Tx, anchor=north] at (4.45,3.27) {lead time};
+\node[Tx, rotate=90] at (3.57,4.5) {error};
+\node[Tx, anchor=west] at (3.8,5.55) {mean $+\,z$ s.d.};
+\node[Tx, anchor=west] at (4.45,3.62) {mean};
+\node[Tx] at (4.37,2.55) {affine in lead time,\\ Eq.~(1)};
+\filldraw[draw=edge, line width=0.5pt, rounded corners=2pt, fill=white] (5.5,2.2) rectangle (7.48,6.3);
+\node[T] at (6.49,5.88) {effective\\ deadline};
+\node[Tx] at (6.49,5.12) {$f+m+z\,s\le d$};
+\node[Tx] at (6.49,4.8) {$\Updownarrow$};
+\node[Tx] at (6.49,4.48) {$f\le\tilde d$,\ Eq.~(2)};
+\draw[black!30, line width=0.4pt] (5.62,4.12) -- (7.36,4.12);
+\node[Tx] at (6.49,3.65) {protected tasks:\\ $\Pr[\text{on time}]\ge\Phi(z)$};
+\node[Tx, text=black!65] at (6.49,2.62) {one division\\ per task};
+\draw[arr] (5.32,4.48) -- (5.5,4.48);
 
-% replanner
-\wslab{7.75}{5.9}{3.2}{1.45}{0.5}{head}
-\node[T, font=\fontsize{9.5}{11}\selectfont] at (9.35,6.95) {LTCC replanner};
-\foreach \i/\c in {1/pBlue,2/pSand,3/pRose,4/pMint} {
-  \filldraw[draw=edge, line width=0.4pt, fill=\c] ({7.95+(\i-1)*0.72},6.12) rectangle ++(0.62,0.42);
-  \node[Ts] at ({8.26+(\i-1)*0.72},6.33) {\i};
-}
-\node[T] at (9.35,5.55) {Replanner (stages 1--4 below)};
-\draw[arr] (11.35,6.65) -- (12.2,6.65);
-\node[Ts, anchor=south] at (11.77,6.7) {plan};
+% ================================================================= C: cost-aware fallback (top-down)
+\node[box, text width=3.25cm] (c1) at (9.8,5.9) {break-even probability\\ $\theta_j=c_j/(w_j+c_j)$, Eq.~(3)};
+\node[box, text width=3.25cm, fill=hPeach!45] (c2) at (9.8,4.85) {protected deadline feasible\\ at safety factor $\max(z,z_j)$?};
+\node[box, text width=3.25cm] (c3) at (9.8,3.6) {yes: keep protected deadline\\ no: fallback deadline at $z_j$};
+\node[Tx, text width=3.3cm, text=black!70] at (9.8,2.55) {attempt only if fallback-feasible,\\ otherwise omit the task};
+\draw[arr] (c1) -- (c2);
+\draw[arr] (c2) -- (c3);
 
-% execution
-\groundplane{12.35}{5.95}{2.3}{1.2}{3}
-\fill[ink] (13.55,6.3) rectangle ++(0.13,0.09);
-\draw[sBlue!80!black, line width=0.8pt] (13.6,6.35) -- (13.05,6.6) -- (12.85,6.15);
-\draw[sMint!70!black, line width=0.8pt] (13.6,6.35) -- (14.3,6.15) -- (14.6,6.6);
-\pillar{13.05}{6.6}{0.28}{ontime}
-\pillar{12.85}{6.15}{0.28}{ontime}
-\pillar{14.3}{6.15}{0.28}{ontime}
-\pillar{14.6}{6.6}{0.28}{late}
-\pic[scale=0.7] at (13.0,7.35) {quad=sBlue};
-\pic[scale=0.7] at (14.3,7.3) {quad=sMint};
-\node[T] at (13.8,5.55) {Execution (tier B or PX4 tier C)};
-\draw[arr] (15.45,6.65) -- (16.0,6.65);
+% ================================================================= D: anytime search (top-down)
+\node[box, text width=2.45cm] (d1) at (13.4,5.95) {feasibility-first repair};
+\node[box, text width=2.45cm] (d2) at (13.4,5.0) {ALNS: destroy\\ and repair};
+\node[box, text width=2.45cm, fill=pMint] (d3) at (13.4,3.9) {stop when the predicted\\ gain no longer pays for\\ the delay, or at 250\,ms};
+\node[box, text width=2.45cm, fill=hLav!70] (d4) at (13.4,2.75) {best plan};
+\draw[arr] (d1) -- (d2);
+\draw[arr] (d2) -- (d3);
+\draw[arr] (d3) -- (d4);
+\draw[arr] ([yshift=-3.5pt]d2.east) -- ++(0.18,0) |- ([yshift=3.5pt]d2.east);
 
-% outcome
-\wslab{16.1}{6.25}{1.45}{0.8}{0.3}{sRose}
-\node[Ts] at (16.82,6.65) {utility,\\ late tasks};
-\node[T] at (16.95,5.55) {Outcome};
+% ================================================================= E: execution (top-down)
+\node[box, text width=2.2cm] (e1) at (16.45,5.95) {release after planning\\ delay and latency};
+\filldraw[draw=black!45, line width=0.4pt, fill=ground] (15.4,3.85) -- (17.05,3.85) -- (17.5,4.3) -- (15.85,4.3) -- cycle;
+\pillar{15.75}{3.95}{0.28}{ontime}
+\pillar{16.55}{4.12}{0.28}{ontime}
+\pillar{17.15}{3.97}{0.28}{late}
+\pic[scale=0.62] at (16.0,4.95) {quad=sBlue};
+\pic[scale=0.62] at (16.95,5.08) {quad=sMint};
+\node[Tx] at (16.45,3.55) {tier B or PX4 tier C};
+\node[box, text width=2.2cm, fill=hLav!70] (e3) at (16.45,2.75) {utility, late tasks};
+\draw[arr] (e1.south) -- (16.45,5.35);
+\draw[arr] (16.45,3.4) -- (e3.north);
 
-% feedback: telemetry back to the snapshot
-\draw[arr] (13.8,7.75) -- (13.8,8.2) -- (5.55,8.2) -- (5.55,7.6);
-\node[Ts, anchor=south, fill=white, inner sep=1pt] at (9.6,8.22) {telemetry: UAV states, finish times, failures};
+% ================================================================= forward flow between regions (orthogonal)
+\draw[arr] (2.75,4.0) -- (3.42,4.0);
+\draw[arr] (7.48,4.85) -- (c2.west);
+\draw[arr] (c3.east) -- (11.8,3.6) |- (d1.west);
+\draw[arr] (d4.east) -- (15.0,2.75) |- (e1.west);
 
-% ================================================================== bottom: one replanning call
-\draw[frame] (0.1,0.1) rectangle (17.95,4.8);
-% panels
-\foreach \i/\c in {0/pBlue,1/pSand,2/pRose,3/pMint}
-  \fill[panel, fill=\c] ({0.3+\i*4.45},0.3) rectangle ++(4.05,4.3);
-\foreach \i in {0,1,2} \draw[arr] ({4.4+\i*4.45},2.45) -- ({4.7+\i*4.45},2.45);
-% headers
-\foreach \i/\t in {0/Calibrated error model,1/Effective deadlines,2/Cost-aware fallback,3/Anytime search} {
-  \node[num] at ({0.6+\i*4.45},4.25) {\the\numexpr\i+1\relax};
-  \node[Hd, anchor=west] at ({0.85+\i*4.45},4.25) {\t};
-}
+% ================================================================= feedback
+\draw[farr] (16.45,6.9) -- (16.45,7.35) -- (1.52,7.35) -- (1.52,6.9);
+\node[Tx, fill=white, inner sep=1.5pt, text=fb] at (8.95,7.35) {telemetry: UAV states, finish times, failures $\rightarrow$ next snapshot};
 
-% ---- 1: calibrated error model
-\begin{scope}
-\fill[sBlue!25] (0.95,1.75) -- (3.95,3.35) -- (3.95,2.3) -- (0.95,1.5) -- cycle;
-\pgfmathsetseed{11}
-\foreach \k in {1,...,46} {
-  \pgfmathsetmacro{\h}{0.15+2.75*rnd}
-  \pgfmathsetmacro{\ey}{1.5+0.27*\h+(0.06+0.33*\h)*(rand)}
-  \fill[sBlue!70!black] ({0.95+\h},{max(\ey,1.42)}) circle (0.028);
-}
-\draw[line width=0.9pt, sBlue!60!black] (0.95,1.5) -- (3.95,2.3);
-\draw[line width=0.9pt, sBlue!60!black, dash pattern=on 3pt off 1.6pt] (0.95,1.75) -- (3.95,3.35);
-\draw[-{Stealth[length=3.4pt]}, line width=0.55pt] (0.85,1.35) -- (4.15,1.35);
-\draw[-{Stealth[length=3.4pt]}, line width=0.55pt] (0.85,1.35) -- (0.85,3.95);
-\node[Ts] at (2.5,1.13) {lead time};
-\node[Ts, rotate=90] at (0.6,2.65) {finish-time error};
-\draw[line width=0.9pt, sBlue!60!black] (1.05,3.85) -- ++(0.35,0);
-\node[Ts, anchor=west] at (1.45,3.85) {mean error};
-\draw[line width=0.9pt, sBlue!60!black, dash pattern=on 3pt off 1.6pt] (1.05,3.6) -- ++(0.35,0);
-\node[Ts, anchor=west] at (1.45,3.6) {with safety margin};
-\node[Ts, text width=3.8cm] at (2.32,0.62) {spread grows linearly with lead time,\\ fitted per disturbance level};
-\end{scope}
+% ================================================================= F: offline calibration
+\filldraw[draw=head!70, dash pattern=on 3pt off 2pt, line width=0.55pt, rounded corners=4pt, fill=pLav]
+  (3.25,0.1) rectangle (14.85,1.65);
+\node[Hd, anchor=west] at (3.35,1.42) {F\enspace Offline calibration on development missions};
+\node[box, text width=2.6cm] (f1) at (4.6,0.6) {fit the error model\\ per disturbance level};
+\node[box, text width=2.6cm] (f2) at (8.6,0.6) {select the safety factor $z$\\ per disturbance level};
+\node[box, text width=2.6cm] (f3) at (13.4,0.6) {fit the gain predictor\\ (Poisson GLM)};
+\draw[carr] (f1.north) -- (4.6,2.0);
+\draw[carr] (f2.north) -- (8.6,1.82) -- (6.5,1.82) -- (6.5,2.0);
+\draw[carr] (8.6,1.82) -- (9.8,1.82) -- (9.8,2.0);
+\draw[carr] (f3.north) -- (13.4,2.0);
 
-% ---- 2: effective deadlines
-\begin{scope}[shift={(4.45,0)}]
-\draw[-{Stealth[length=3.4pt]}, line width=0.55pt] (0.55,1.45) -- (4.15,1.45);
-\node[Ts, anchor=south east] at (4.15,1.47) {time};
-% task served soon
-\node[Ts, anchor=west] at (0.55,3.75) {task served soon};
-\filldraw[draw=edge, line width=0.4pt, fill=sSand] (0.75,3.15) rectangle (1.6,3.45);
-\fill[pattern=north east lines, pattern color=late!70] (1.8,3.15) rectangle (2.1,3.45);
-\draw[line width=1.0pt, ink] (1.8,3.05) -- (1.8,3.55);
-\draw[line width=1.0pt, late] (2.1,3.05) -- (2.1,3.55);
-\node[Ts, anchor=west] at (2.25,3.3) {small margin};
-% task late in the route
-\node[Ts, anchor=west] at (0.55,2.7) {task late in the route};
-\filldraw[draw=edge, line width=0.4pt, fill=sSand] (1.3,2.05) rectangle (2.15,2.35);
-\fill[pattern=north east lines, pattern color=late!70] (2.3,2.05) rectangle (3.4,2.35);
-\draw[line width=1.0pt, ink] (2.3,1.95) -- (2.3,2.45);
-\draw[line width=1.0pt, late] (3.4,1.95) -- (3.4,2.45);
-\node[Ts, anchor=north] at (2.85,1.95) {large margin};
-% legend for the two marks
-\draw[line width=1.0pt, ink] (0.6,1.0) -- ++(0,0.22);
-\node[Ts, anchor=west] at (0.67,1.11) {effective deadline};
-\draw[line width=1.0pt, late] (2.95,1.0) -- ++(0,0.22);
-\node[Ts, anchor=west] at (3.02,1.11) {deadline};
-\node[Ts, text width=3.8cm] at (2.32,0.62) {a chance constraint becomes one\\ deadline per task, checked as usual};
-\end{scope}
-
-% ---- 3: cost-aware fallback
-\begin{scope}[shift={(8.9,0)}]
-\node[Ts, anchor=west] at (0.55,3.75) {valuable task, low break-even};
-\filldraw[draw=edge, line width=0.4pt, fill=ontime!55] (0.75,3.15) rectangle ({0.75+0.70*3.0},3.45);
-\draw[edge, line width=0.4pt] (0.75,3.15) rectangle (3.75,3.45);
-\draw[line width=1.1pt, ink] ({0.75+0.30*3.0},3.05) -- ++(0,0.5);
-\node[Ts, text=ontime!70!black] at (3.3,3.3) {attempt};
-\node[Ts, anchor=west] at (0.55,2.7) {low-reward task, high break-even};
-\filldraw[draw=edge, line width=0.4pt, fill=black!25] (0.75,2.05) rectangle ({0.75+0.45*3.0},2.35);
-\draw[edge, line width=0.4pt] (0.75,2.05) rectangle (3.75,2.35);
-\draw[line width=1.1pt, ink] ({0.75+0.68*3.0},1.95) -- ++(0,0.5);
-\node[Ts, text=black!65] at (3.3,2.2) {give up};
-\node[Ts, anchor=north] at (0.75,1.98) {0};
-\node[Ts, anchor=north] at (3.75,1.98) {1};
-\filldraw[draw=edge, line width=0.4pt, fill=black!15] (0.6,1.18) rectangle ++(0.3,0.16);
-\node[Ts, anchor=west] at (0.95,1.26) {on-time probability};
-\draw[line width=1.1pt, ink] (3.12,1.15) -- ++(0,0.22);
-\node[Ts, anchor=west] at (3.19,1.26) {break-even};
-\node[Ts, text width=3.8cm] at (2.32,0.55) {attempt if on-time probability\\ reaches break-even; no cost tuning};
-\end{scope}
-
-% ---- 4: anytime search and publication
-\begin{scope}[shift={(13.35,0)}]
-\wslab{0.6}{3.3}{3.0}{0.5}{0.25}{sMint}
-\node[Ts] at (2.1,3.55) {repair: regret-2 insertion};
-\wslab{0.6}{2.4}{3.0}{0.5}{0.25}{sMint}
-\node[Ts] at (2.1,2.65) {ALNS: destroy, repair, accept};
-\wslab{0.6}{1.5}{3.0}{0.5}{0.25}{sMint}
-\node[Ts] at (2.1,1.75) {stop and publish best plan};
-\draw[arr] (2.1,3.3) -- (2.1,3.01);
-\draw[arr] (2.1,2.4) -- (2.1,2.11);
-\draw[arr] (3.74,2.5) arc (-70:70:0.22 and 0.16);
-\node[Ts, text width=3.8cm] at (2.37,0.62) {stop when the predicted gain no\\ longer pays for the delay; 250\,ms cap};
+% ================================================================= legend
+\begin{scope}[shift={(15.15,0.1)}]
+\draw[head!70, line width=0.5pt, rounded corners=4pt, fill=white] (0,0) rectangle (2.6,1.55);
+\draw[head, line width=1.2pt, rounded corners=1.5pt] (0.12,1.2) rectangle ++(0.5,0.2);
+\node[Tx, anchor=west] at (0.68,1.3) {proposed};
+\draw[arr] (0.12,0.95) -- ++(0.5,0);  \node[Tx, anchor=west] at (0.68,0.95) {online flow};
+\draw[carr] (0.12,0.62) -- ++(0.5,0); \node[Tx, anchor=west] at (0.68,0.62) {offline calibration};
+\draw[farr] (0.12,0.29) -- ++(0.5,0); \node[Tx, anchor=west] at (0.68,0.29) {feedback};
 \end{scope}
 \end{tikzpicture}
 \end{document}
