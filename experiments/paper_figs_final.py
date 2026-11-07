@@ -133,6 +133,34 @@ def zero(ax, horizontal=False):
     (ax.axvline if horizontal else ax.axhline)(0, color="black", lw=0.7, zorder=1)
 
 
+def better(ax, text, x=1.04):
+    """Upward arrow right of the axes, from zero to near the top, telling which sign favours which method.
+    Call after the y limits are final."""
+    from matplotlib.transforms import blended_transform_factory
+    lo, hi = ax.get_ylim()
+    tr = blended_transform_factory(ax.transAxes, ax.transData)
+    y0 = max(lo, 0.0)
+    y1 = y0 + 0.92 * (hi - y0)
+    ax.annotate("", xy=(x, y1), xytext=(x, y0), xycoords=tr, textcoords=tr, annotation_clip=False,
+                arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8, mutation_scale=7, shrinkA=0, shrinkB=0))
+    ax.text(x + 0.03, (y0 + y1) / 2, text, transform=tr, rotation=90, ha="left", va="center", fontsize=7.5,
+            clip_on=False)
+
+
+def better_h(ax, left, right, y=1.03):
+    """Left and right arrows above the axes, starting at zero, for a horizontal difference axis."""
+    from matplotlib.transforms import blended_transform_factory
+    lo, hi = ax.get_xlim()
+    tr = blended_transform_factory(ax.transData, ax.transAxes)
+    gap = 0.02 * (hi - lo)
+    for end, text, ha in ((lo + 0.04 * (hi - lo), left, "right"), (hi - 0.04 * (hi - lo), right, "left")):
+        start = gap if end > 0 else -gap
+        ax.annotate("", xy=(end, y), xytext=(start, y), xycoords=tr, textcoords=tr, annotation_clip=False,
+                    arrowprops=dict(arrowstyle="-|>", color="black", lw=0.8, mutation_scale=7, shrinkA=0,
+                                    shrinkB=0))
+        ax.text(start, y + 0.025, text, transform=tr, ha=ha, va="bottom", fontsize=7.5, clip_on=False)
+
+
 def handle(color, marker, line=False, fill=True):
     return Line2D([], [], color=color, marker=marker, ls="-" if line else "", lw=1.2, ms=4.5, mec=color,
                   mfc=color if fill else "white", mew=0.8)
@@ -218,6 +246,7 @@ def fig_s4c():
     ax.set_ylabel(f"LTCC, nominal fallback {MINUS} method (pp)")
     ax.yaxis.set_major_locator(matplotlib.ticker.MultipleLocator(5))
     ax.grid(axis="x", visible=False)
+    better(ax, "LTCC better")
     ax.legend([handle(TIER[k][1], TIER[k][2]) for k in TIER], [TIER[k][0] for k in TIER], loc="lower left",
               bbox_to_anchor=(0.0, 1.02), ncol=2)
     print("fig_s4c means (pp):", out)
@@ -257,6 +286,7 @@ def fig_s5():
     ax.set_xlim(xs[0] - 0.3, xs[-1] + 0.3)
     ax.set_xlabel(f"late cost {LAM} (mean task rewards)")
     ax.set_ylabel("score difference (pp)")
+    better(ax, "cost-aware better")
     ax.legend(loc="lower left", bbox_to_anchor=(0.0, 1.02), ncol=1, title=f"LTCC, cost-aware fallback {MINUS}",
               alignment="left")
     print("fig_s5 means (pp):", out)
@@ -277,7 +307,7 @@ def fig_s6():
         [("MPCA", "MP", "fb", f"(b) Moment propagation: cost-aware {MINUS} nominal fallback"),
          ("MPCA", "MPnf", "nofb", f"(b) Moment propagation: cost-aware {MINUS} no fallback")],
     ]
-    fig, axes = plt.subplots(1, 2, figsize=(W1, 2.2), gridspec_kw={"wspace": 0.38})
+    fig, axes = plt.subplots(1, 2, figsize=(W1, 2.2), gridspec_kw={"wspace": 0.62})
     lams = list(a6.LAMS)
     out = {}
     hs, labs = [], []
@@ -295,6 +325,8 @@ def fig_s6():
         ax.set_xlim(-0.4, len(lams) - 0.6)
         ax.set_xlabel(f"late cost {LAM}")
         panel(ax, tag)
+    better(axes[0], "LTCC better")
+    better(axes[1], "cost-aware better")
     axes[0].set_ylabel("score difference (pp)")
     legend_below(fig, axes, hs, labs, ncol=1)
     print("fig_s6 means (pp):", out)
@@ -310,37 +342,38 @@ def fig_s7():
     s7 = pd.read_csv(a7.TB / "s7a_heldout_B.csv")
     b = pd.concat([pd.read_csv(a7.TB / f) for f in ("s7b_heldout_B.csv", "s7b_lat_heldout_B.csv")], ignore_index=True)
     fig, ax = plt.subplots(1, 2, figsize=(W2, 2.6), gridspec_kw={"width_ratios": [1.0, 1.3], "wspace": 0.36})
-    fig.subplots_adjust(left=0.16, right=0.995, top=0.93, bottom=0.2)
+    fig.subplots_adjust(left=0.09, right=0.995, top=0.93, bottom=0.2)
     out = {}
 
     a = ax[0]
     rules = [("fee", "ca", "fixed-cost rule"), ("prop", "propru", "proportional rule")]
-    ticks, labels, groups, y = [], [], [], 0.0
-    for kind, gname in (("fee", "fixed late cost"), ("w", "late cost proportional\nto task reward")):
-        g0 = y
+    ticks, labels, heads, y = [], [], [], 0.0
+    for kind, gname in (("fee", "fixed late cost per late task"), ("w", "late cost proportional to task reward")):
+        heads.append((y - 0.75, gname))
         for lam in (0.5, 1.0, 2.0):
             x = a7.score(s7, lam, kind)
             x = pd.concat([x, a7.tuned(x, kind, lam, "Prop")], ignore_index=True)
             for k, (rule, key, _) in enumerate(rules):
                 m, lo, hi, _ = sup(paired(x, a7.ca(lam, rule), f"Prop@{kind}{lam:g}", "u"))
                 _, col, mk = METHOD[key]
-                ebar(a, y + 0.28 * (k - 0.5), 100 * m, 100 * lo, 100 * hi, col, mk, horizontal=True, ms=4)
+                # open marker: the 95% interval includes zero
+                ebar(a, y + 0.28 * (k - 0.5), 100 * m, 100 * lo, 100 * hi, col, mk, horizontal=True, ms=4,
+                     fill=not (lo < 0 < hi))
                 out[(kind, lam, rule)] = round(100 * m, 2)
             ticks.append(y)
             labels.append(f"{LAM} = {lam:g}")
             y += 1.0
-        groups.append(((g0 + y - 1.0) / 2, gname))
-        y += 0.6
+        y += 0.9
     zero(a, horizontal=True)
     a.set_yticks(ticks, labels)
-    a.set_ylim(y - 0.5, -0.6)
+    a.set_ylim(y - 1.3, -1.15)
     a.grid(axis="y", visible=False)
     a.set_xlabel(f"cost-aware fallback {MINUS} tuned proportional buffer (pp)")
-    for yc, gname in groups:
-        a.text(-0.30, yc, gname, transform=a.get_yaxis_transform(), rotation=90, ha="center", va="center",
-               fontsize=7.5, linespacing=1.0)
-    a.axhline(ticks[2] + 0.8, color="0.75", lw=0.6)
-    panel(a, "a", x=-0.30)
+    for yh, gname in heads:
+        a.text(0.015, yh, gname, transform=a.get_yaxis_transform(), ha="left", va="center", fontsize=7.5)
+    a.axhline((ticks[2] + heads[1][0]) / 2, color="0.75", lw=0.6)
+    better_h(a, "tuned buffer better", "cost-aware better")
+    panel(a, "a", x=-0.1)
 
     c = ax[1]
     conds = [a7.CONTROL] + a7.SHIFTS
@@ -355,6 +388,8 @@ def fig_s7():
             _, col, mk = METHOD[key]
             ebar(c, j + (k - 0.5) * 0.26, 100 * m, 100 * lo, 100 * hi, col, mk, ms=4.5)
             out[(metric, xl, ll)] = round(100 * m, 2)
+            if j == 0:      # dashed reference line at the control value
+                c.axhline(100 * m, color=col, ls=(0, (3, 2)), lw=0.8, zorder=1)
     c.axvspan(-0.5, 0.5, color="0.93", zorder=0, lw=0)
     c.axvline(0.5, color="0.75", lw=0.6)
     c.set_xlim(-0.5, len(conds) - 0.5)
@@ -365,8 +400,10 @@ def fig_s7():
         t.set_linespacing(1.05)
     c.grid(axis="x", visible=False)
     c.set_ylabel("difference (pp)")
+    better(c, "first method better", x=1.025)
     panel(c, "b")
-    legend_under(a, [handle(METHOD[k][1], METHOD[k][2]) for _, k, _ in rules], [r[2] for r in rules], ncol=2)
+    legend_under(a, [handle(METHOD[k][1], METHOD[k][2]) for _, k, _ in rules] + [handle("0.3", "o", fill=False)],
+                 [r[2] for r in rules] + ["interval includes 0"], ncol=2)
     legend_under(c, [handle(METHOD[k[3]][1], METHOD[k[3]][2]) for k in comps], [k[4] for k in comps], ncol=1)
     print("fig_s7 means (pp):", out)
     save(fig, "fig_s7")
