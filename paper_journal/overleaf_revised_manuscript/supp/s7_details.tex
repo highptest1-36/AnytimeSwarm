@@ -1,0 +1,118 @@
+% Details moved from the main text (methods, protocol and secondary results); every number is a \val macro.
+\subsection{Error structure}
+The comparison of spread models in Section~\ref{sec:method} of the main paper uses \val{ENPairsMid} and
+\val{ENPairsHigh} pairs of lead time and error from \val{ENMissions} development missions per disturbance level. A
+hybrid model $s(h)=\sqrt{q_0+q_1h+q_2h^2}$ also fitted worse than the linear spread, by \val{EDAicHybMid} and
+\val{EDAicHybHigh} points of the Akaike information criterion. The flight-time error of a single leg had a coefficient of
+variation of \val{EMpCvMid} and \val{EMpCvHigh} under mid and high disturbances, and missions explained only
+\val{EShareMissionMid}\% and \val{EShareMissionHigh}\% of the residual variance.
+
+\subsection{Parameters of the compared methods}\label{sec:Sparams}
+The performance profile rule predicts the gain of further search from a static profile over the elapsed time and the
+number of open tasks. The online prediction rule follows Svegliato et al.~\cite{svegliato2018meta}, but fits the
+saturating curve $q(t)=a-b\,e^{-ct}$ to the best objective found so far at every check, in place of the arctangent or
+logarithmic models of the original. Both use the delay cost and the price of computation of AnytimeSwarm-R. The size-scaled budget allows 1\,ms
+per open task, and the stagnation rule stops after 20\% of the budget without improvement. The proportional buffer
+accepts a planned finish $f_j$ if $f_j+c\,h_j\le d_j$. Moment propagation models the flight time of a leg of nominal
+duration $t$ as normal with mean $(1+a)t+c_0$ and standard deviation $c_vt$, and the service time with mean $(1+a_s)s$
+and standard deviation $c_ss$. Legs are independent, the start of service $\max(A_j,r_j)$ is approximated by Clark's
+moments~\cite{clark1961greatest}, and a finish is accepted if $\mathrm{E}[F_j]+z\,\mathrm{sd}[F_j]\le d_j$. The leg
+parameters are fitted on the legs of the development flights. Because the variance of one long leg can exceed that of
+the two legs it replaces, removing a task can make a route infeasible under this model, so every route is filtered once
+more before publication. With the cost-aware fallback, moment propagation accepts a given-up task if its nominal finish
+meets the deadline and $\mathrm{E}[F_j]+z_j\,\mathrm{sd}[F_j]\le d_j$. Online calibration starts from one error model
+fitted on both disturbance levels, with the weight of $n_0$ pairs, and refits Eq.~\eqref{eq:errmodel} at every call with
+the pairs of the tasks completed so far, so it needs neither the disturbance level nor a level-specific safety factor.
+The selected values are $c=0.45$ and 0.6, $z=1$ and 0.5 for moment propagation, and $n_0=50$ with $z=0.5$ for online
+calibration, under mid and high disturbances. On development missions, the three static models differed by less than
+0.2\,pp. CBBA bids the largest increase of the route value over all feasible insertion positions, plans from scratch at
+every call and stops at convergence or at the hard budget. Without the bid warping of Johnson et
+al.~\cite{johnson2012nonsubmodular}, it did not converge on some development snapshots. Within \mname{}, the stopping
+rule uses a zero mean error, because the effective deadlines already contain it.
+
+\subsection{Tuned competitors of studies 5 and 7}
+In study~5, the proportional buffer was tuned with $c\in\{0.1,0.2,0.3,0.45,0.6,0.75,0.9,1.2\}$, with or without the
+nominal fallback, and \mname{} without fallback with $z\in\{-0.5,0,0.5,1,1.5\}$, for every $\lambda\in\{0.5,1,2\}$ and
+disturbance level. A grid that first ended at $c=0.3$ and $z=0$ was extended after both values were selected on its
+edge, and the selection did not change. For $\lambda=1$, the selected buffer was \val{FSelPropOneMid} under mid and
+\val{FSelPropOneHigh} under high disturbances, and \mname{} without fallback had \val{FSelCCnfOneMid} and
+\val{FSelCCnfOneHigh}. Studies 5 and 6 ran the cost-aware fallback with the proportional cost model,
+$\theta_j=\lambda/(1+\lambda)$, but scored the runs with $u_\lambda$, which charges every late arrival a fixed cost;
+study~7a removes this mismatch. The fixed-cost rule of study~7a uses the mean reward $\bar w=2.1$ of the generator,
+because the total reward of a mission is not known while tasks are still arriving, whereas $u_\lambda$ charges the
+realised mean reward $R/n$ of the mission. Over the held-out missions, $R/n$ was \val{UCWnMean} on average, with a
+coefficient of variation of \val{UCWnCv}\% and a range of \val{UCWnMin} to \val{UCWnMax}, so study~7a is also reported
+with $u'_\lambda=U-\lambda\bar w\,n_{\mathrm{late}}/R$. In study~7a, the development selection of the tuned buffer
+differed between $u_\lambda$ and $u^w_\lambda$ only at $\lambda=1$ under high disturbances, with $c=0.45$ for $u_1$ and
+$c=0.6$ for $u^w_1$, both without fallback.
+
+Study~7b keeps the error model, the safety factor and every tuned parameter of the calibrated high level. Speed and
+service errors follow a Student-$t$ law with three degrees of freedom at the same standard deviation; rare long delays
+add, with probability 0.1, an exponential delay with a mean of 90\,s to a leg, as a detour or a holding pattern would; a
+persistent speed bias per UAV and mission with a standard deviation of 8\% correlates the errors along a route; and a
+Pareto dissemination delay with the median of the lognormal one and a tail index of 1.5 replaces the lognormal delay.
+It compares the nominal model, the constant and the proportional buffer, \mname{} with the nominal and with the
+cost-aware fallback ($\lambda=1$, both cost models) and moment propagation with the cost-aware fallback.
+
+\subsection{Protocol}
+Studies 2, 3, 4, 5 and 6 used the held-out seeds 5000-5029, 7000-7029, 8000-8029, 10000-10029 and 12000-12029,
+and studies 7a and 7b used 13000-13029 and 14000-14029. The tier C part of study~2 flew 30 missions with mid
+disturbances and a latency factor of 50 (seeds 6000-6009), and study~4C used seeds 9000-9011. The protocols were not
+lodged with an external registry. They are available with the code, together with the commit of every freeze and every
+deviation. A tier C run in which a vehicle does not take off in time is repeated once, like a run with an invalid
+real-time factor. Tier B runs four missions in parallel on an Intel Core i7-11800H laptop, with the methods of a
+configuration run in turn. A separately written validator found no infeasible plan among \val{JValidatorPlans}
+development plans. Because the stopping rules read a wall clock, the mean utility of a method varied by up to
+\val{JRepeatDiffMax}\,pp between two runs of the same missions. Equivalence (H3) was tested with two one-sided tests.
+
+\subsection{Further results of studies 2 to 4}
+In study~2, the 90\% interval of the stopping rule minus a fixed 40\,ms was \val{KTostCI}\,pp, inside the
+equivalence margin of $\pm0.5$\,pp. \mname{} without fallback served \val{KLateProp} tasks per mission after their
+deadline, against \val{KLateForty} for ALNS with 40\,ms. In the tier C part of study~2, the Holm-adjusted $p$ of H4 was
+\val{KCPForty}, and about \val{KCNPowerForty} missions per method would have been needed to confirm the difference that
+tier B predicted. In study~4, the interval of \mname{} minus the proportional buffer was \val{XCIPropBufAll}\,pp
+(Holm-adjusted $p={}$\val{QPPropBufAll}) and that of \mname{} minus moment propagation \val{XCIMPAll}\,pp. The loss of
+moment propagation without fallback had an interval of \val{XCIFbMPAll}\,pp. \mname{} ran \val{QItMsCC} search iterations per millisecond and
+moment propagation \val{QItMsMP}. Online calibration served \val{XDabsOnlCC}\,pp less than the model with a known
+disturbance level, and the learned stopping rule added \val{XDabsFullCC}\,pp. In study~4C, the $p$-value of H14 was
+\val{GPNom}. The advantage over the nominal model that sized the study was \val{XDabsTcDevNom}\,pp on development seeds.
+Over the full tier B grid, the advantage in this regime was \val{XDabsFortyHighWHalf}\,pp, which would need about
+\val{HNPowerNomGrid} missions per method to be confirmed in tier C. The interim analysis did not cross the
+O'Brien-Fleming bound. The illustrative flights of Fig.~\ref{fig:demo} ran with the graphical interface, at a
+real-time factor of \val{ZDemoRTFNom} to \val{ZDemoRTFProp}.
+
+\subsection{Further results of studies 5 and 6}
+In study~5, the advantage of the cost-aware fallback at $\lambda=1$ came from high disturbances, where it served
+\val{XDabsFivePropOneHigh} and \val{XDabsFiveCCnfOneHigh}\,pp more than the tuned proportional buffer and the tuned
+safety factor. Under mid disturbances, the methods were on par, and with the original windows both tuned competitors
+were better, by \val{XDabsFivePropOneMidWOne} and \val{XDabsFiveCCnfOneMidWOne}\,pp. At $\lambda=0.5$, the interval
+against the tuned buffer was \val{XCIFivePropHalf}\,pp. At $\lambda=2$, the cost-aware fallback stayed
+\val{XDabsFiveCCfbTwo}\,pp above the nominal fallback and matched the tuned safety factor, while the tuned buffer was
+better (\val{XCIFivePropTwo}\,pp) and moment propagation without fallback by \val{XDabsFiveMPnfTwo}\,pp. Tuned for
+$\lambda=1$, the proportional buffer stayed \val{XDabsFivePropFixHalf}\,pp behind the cost-aware fallback at
+$\lambda=0.5$. A wrong late cost also costs the cost-aware fallback, \val{XDabsFiveCAFixTwo}\,pp when it was run with
+$\lambda=1$ and scored at $\lambda=2$, and when a late arrival costs nothing, the rule run with $\lambda=1$ served
+\val{FUCostCCfb}\,pp less utility than the nominal fallback.
+
+In study~6, CBBA on the nominal model reached almost the utility of ALNS (\val{WCICBBAFortyZero}\,pp), and \mname{}
+served \val{WDabsCBBAEventZero}\,pp more than CBBA with the event trigger at $\lambda=0$. CBBA served \val{WLateCBBA}
+tasks late per mission and \mname{} \val{WLateCA}. Under high disturbances with halved windows at $\lambda=0$, \mname{}
+and CBBA were on par (\val{WDCBBAZeroHighWHalf}\,pp), because a fallback for $\lambda=1$ gives up tasks that a late
+arrival would not penalise at $\lambda=0$. Within moment propagation, the cost-aware fallback lost
+\val{WDabsMPFbZero}\,pp against the nominal fallback at $\lambda=0$ and gained \val{WDabsMPFbTwo}\,pp at $\lambda=2$.
+The interval of the closed form minus moment propagation, both with the cost-aware fallback, was \val{WCICAMPCAOne}\,pp
+at $\lambda=1$, and moment propagation ran \val{WItersMPCA} search iterations per call against \val{WItersCA}.
+
+\subsection{Further results of study 7}
+In study~7a, the fixed-cost rule scored \val{USCAFeeOneFee}\% with $u_1$, the proportional rule \val{USCAPropOneFee}\%
+and the tuned buffer \val{USPropOneFee}\%; the Holm-adjusted $p$ of H24 was \val{UPHTwentyFour}. H26 had a
+Holm-adjusted $p$ of \val{UPHTwentySix} for non-inferiority and $p={}$\val{UPSupHTwentySix} for superiority. The
+fixed-cost rule scored \val{UDFeeCApropTwoFee}\,pp above the proportional rule with $u_2$, and the proportional rule
+scored \val{UDabsFeeCApropOneW} and \val{UDabsFeeCApropTwoW}\,pp above the fixed-cost rule with $u^w_1$ and $u^w_2$.
+With $u_2$, the fixed-cost rule minus the tuned buffer was \val{UDFeePropTwoFee}\,pp, whereas the proportional rule
+stayed behind it (\val{UDPropPropTwoFee}\,pp). With $u^w_2$, the proportional rule stayed \val{UDabsPropPropTwoW}\,pp
+behind the buffer tuned for that score. With $u'_1$, the differences of H24 and H25 were \val{UCDCApropOne} and
+\val{UCDPropOne}\,pp. In study~7b, the nominal model served \val{UBUFortyGauss}\% under the calibrated errors and
+between \val{UBUFortyOutlier}\% with rare long delays and \val{UBUFortyTthree}\% with Student-$t$ errors. The cost-aware
+fallback scored \val{UDabsBCAPropTthree} to \val{UDabsBCAPropOutlier}\,pp more than the proportional buffer of study~4,
+and rare long delays raised the mean finish-time error of \mname{} from \val{UBErrGauss} to \val{UBErrOutlier}\,s.

@@ -16,6 +16,7 @@ SPEC = {
     # ---------------- main text ----------------
     "tab_s4": {
         "caption": r"Study 4: utility (\%) per planning model and regime.",
+        "last": [r"\mname{}, online calibration", r"\mname{}"],
         "replace": [
             ("Proposed planning model &", r"\mname{} &"),
             ("Proposed, online calibration &", r"\mname{}, online calibration &"),
@@ -30,6 +31,7 @@ SPEC = {
     },
     "tab_s5": {
         "caption": r"Study 5: score $u_\lambda$ (\%) for a late cost of $\lambda$ task rewards.",
+        "last": [r"\mname{}, nominal fallback", r"\mname{}, cost-aware fallback"],
         "replace": [
             ("Cost-aware fallback (proposed) &", r"\mname{}, cost-aware fallback &"),
             ("Nominal fallback (study 4) &", r"\mname{}, nominal fallback &"),
@@ -44,6 +46,7 @@ SPEC = {
     },
     "tab_s6": {
         "caption": r"Study 6: score $u_\lambda$ (\%), late tasks and planning time.",
+        "last": [r"\mname{}, cost-aware fallback"],
         "replace": [
             ("Proposed (ALNS, cost-aware fallback) &", r"\mname{}, cost-aware fallback &"),
             ("CBBA on the proposed model &", r"CBBA on \mname{} deadlines &"),
@@ -70,20 +73,21 @@ SPEC = {
     },
     "tab_main": {
         "caption": "Study 1: results of the tier B primary matrix.",
-        "replace": [],
+        "replace": [("AnytimeSwarm-R (proposed) &", "AnytimeSwarm-R &")],
         "note": r"270 held-out missions in 16 configurations. Utility and lost tasks per mission, mean planning time per "
                 r"call, and pooled paired difference of AnytimeSwarm-R minus each method (pp, 95\% bootstrap interval; "
                 r"Holm-adjusted $p$ for the three primary comparisons).",
     },
     "tab_tierc": {
         "caption": "Study 1: software-in-the-loop results.",
-        "replace": [],
+        "replace": [("AnytimeSwarm-R (proposed) &", "AnytimeSwarm-R &")],
         "note": r"30 held-out missions per method, mid disturbances, latency factor 50. Utility, tasks lost to late "
                 r"plans and skipped at departure per mission, planning time per call, and tier B utility on the same "
                 r"rescaled missions.",
     },
     "tab_s2_main": {
         "caption": "Study 2: tier B results of all methods.",
+        "last": [r"\mname{}, no fallback"],
         "replace": [
             (r"\textbf{Proposed} &", r"\mname{}, no fallback &"),
             (r"Constant 60 s buffer~\cite{agra2013robust} &", BUF + r"~\cite{jabali2015selfimposed} &"),
@@ -101,18 +105,23 @@ SPEC = {
     },
     "tab_s2_regime": {
         "caption": r"Study 2: utility (\%) per regime.",
-        "replace": [],
+        "replace": [("Proposed &", r"\mname{}, no fallback &"), ("Constant 60 s buffer &", BUF + " &"),
+                    ("Conventional &", "Conventional planner &")],
+        "last": [r"\mname{}, no fallback"],
         "note": r"Disturbance level, time-window factor and latency factor (10, 50, 200); tier B held-out missions.",
     },
     "tab_s2_tierc": {
         "caption": "Study 2: software-in-the-loop results.",
-        "replace": [],
+        "replace": [(r"\textbf{Proposed} &", r"\mname{}, no fallback &"), ("Constant 60 s buffer &", BUF + " &"),
+                    ("Conventional (40 ms, event-only) &", "Conventional planner &")],
+        "last": [r"\mname{}, no fallback"],
         "note": r"30 held-out missions per method, mid disturbances, latency factor 50. Utility, tasks served late, "
                 r"tasks skipped at departure, planning calls and computation per call, and tier B utility on the same "
                 r"rescaled missions.",
     },
     "tab_s3": {
         "caption": r"Study 3: utility (\%) per method and regime.",
+        "last": [r"\mname{}, no fallback", r"\mname{}, nominal fallback"],
         "replace": [
             (r"\textbf{Proposed with fallback} &", r"\mname{}, nominal fallback &"),
             ("Proposed (study 2) &", r"\mname{}, no fallback &"),
@@ -132,6 +141,8 @@ SPEC = {
     },
     "tab_s7": {
         "caption": r"Study 7b: utility $U$ / score $u_1$ (\%) under errors outside the model.",
+        "last": [r"\mname{}, nominal fallback", r"\mname{}, cost-aware, proportional rule",
+                 r"\mname{}, cost-aware, fixed-cost rule"],
         "replace": [
             ("Proposed, nominal fallback &", r"\mname{}, nominal fallback &"),
             ("Proposed, cost-aware (prop.) &", r"\mname{}, cost-aware, proportional rule &"),
@@ -152,6 +163,27 @@ SPEC = {
 }
 
 
+def move_last(name, text, labels):
+    """Move the rows that start with the given labels (in this order) to the end of their block of rows, so that the
+    proposed method is read last."""
+    if not labels:
+        return text
+    lines = text.split("\n")
+    rows = []
+    for lab in labels:
+        idx = [i for i, ln in enumerate(lines) if ln.startswith(lab + " &")]
+        if len(idx) != 1:
+            raise SystemExit(f"{name}: row {lab!r} found {len(idx)} times")
+        rows.append(idx[0])
+    first = min(rows)
+    end = next(i for i in range(first + 1, len(lines))
+               if lines[i].startswith("\\midrule") or lines[i].startswith("\\bottomrule"))
+    moved = [lines[i] for i in rows]
+    keep = [ln for i, ln in enumerate(lines) if i not in rows]
+    end -= sum(1 for i in rows if i < end)
+    return "\n".join(keep[:end] + moved + keep[end:])
+
+
 def convert(name, spec):
     src = (TAB / f"{name}.tex").read_text(encoding="utf-8")
     head, rest = src.split(r"\caption{", 1)
@@ -164,6 +196,7 @@ def convert(name, spec):
         if old not in out:
             raise SystemExit(f"{name}: text not found: {old}")
         out = out.replace(old, new, 1)
+    out = move_last(name, out, spec.get("last", []))
     note = ("\\begin{tablenotes}[flushleft]\\scriptsize\n\\item[] " + spec["note"] + "\n\\end{tablenotes}\n")
     if out.count("\\begin{tabular}") != 1:
         raise SystemExit(f"{name}: expected one tabular")
@@ -175,6 +208,23 @@ def convert(name, spec):
     print("wrote", target.name)
 
 
+def point_estimates():
+    """numbers_pt.tex: for every number macro vX, a macro vPtX with the point estimate only (interval removed, no
+    leading plus sign), used where a table shows point estimates (Table 4 of the paper)."""
+    import re
+    out = ["% generated by experiments/paper_tables_final.py -- point estimates of the number macros, do not edit"]
+    for f in sorted(TAB.glob("numbers*.tex")):
+        if f.name == "numbers_pt.tex":
+            continue
+        for m in re.finditer(r"\\csname v(\w+)\\endcsname\{([^}]*)\}", f.read_text(encoding="utf-8")):
+            v = m.group(2).split(" [")[0].strip()
+            v = v[1:] if v.startswith("+") else v
+            out.append(r"\expandafter\def\csname vPt" + m.group(1) + r"\endcsname{" + v + "}")
+    (TAB / "numbers_pt.tex").write_text("\n".join(out) + "\n", encoding="utf-8", newline="\n")
+    print("wrote numbers_pt.tex:", len(out) - 1, "macros")
+
+
 if __name__ == "__main__":
     for n, s in SPEC.items():
         convert(n, s)
+    point_estimates()

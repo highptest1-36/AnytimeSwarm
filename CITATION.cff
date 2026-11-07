@@ -1,26 +1,36 @@
 cff-version: 1.2.0
 message: "If you use this code or the results, please cite the paper below."
-title: "LTCC: Lead-Time-Scaled Chance Constraints for Fast Multi-UAV Replanning"
+title: "LTCC: Chance Constraints as Effective Deadlines for Fast UAV Replanning"
+repository-code: "https://github.com/highptest1-36/AnytimeSwarm"
 authors:
   - family-names: Ha
     given-names: Cao-Phuc
     email: caophucai@gmail.com
+    orcid: "https://orcid.org/0009-0004-7024-5166"
     affiliation: "Department of Artificial Intelligence, FPT University, Ho Chi Minh City, Vietnam"
-  - family-names: Nguyen Vu Minh
-    given-names: Anh
+  - family-names: Nguyen
+    given-names: Vu Minh Anh
+    orcid: "https://orcid.org/0009-0007-8206-3329"
     affiliation: "Department of Artificial Intelligence, FPT University, Ho Chi Minh City, Vietnam"
+  - family-names: Tran
+    given-names: Duong Thanh
+    orcid: "https://orcid.org/0009-0003-5096-8167"
+    affiliation: "Department of Integrative Biotechnology, Sungkyunkwan University, Suwon, Republic of Korea"
   - family-names: Le
     given-names: Phu-Nguyen
     email: nguyenlp@vaa.edu.vn
+    orcid: "https://orcid.org/0000-0001-6773-6336"
     affiliation: "Faculty of Electrical and Electronics Engineering, Vietnam Aerospace University, Ho Chi Minh City, Vietnam"
 preferred-citation:
   type: unpublished
-  title: "Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-UAV Replanning Under Uncertain Execution"
+  title: "Chance Constraints as Effective Deadlines for Fast Replanning of UAV Fleets Under Uncertainty"
   authors:
     - family-names: Ha
       given-names: Cao-Phuc
-    - family-names: Nguyen Vu Minh
-      given-names: Anh
+    - family-names: Nguyen
+      given-names: Vu Minh Anh
+    - family-names: Tran
+      given-names: Duong Thanh
     - family-names: Le
       given-names: Phu-Nguyen
   notes: "Manuscript under review"

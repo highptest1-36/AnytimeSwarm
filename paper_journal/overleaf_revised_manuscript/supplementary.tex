@@ -1,0 +1,290 @@
+% Supplementary material of the LTCC manuscript (Aerospace Science and Technology submission).
+% Build after main.tex: pdflatex supplementary && bibtex supplementary && pdflatex supplementary (x2)
+% Every number comes from the generated tables/numbers*.tex files; none is typed by hand.
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{newtxtext,newtxmath}
+\usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{xr-hyper}
+\usepackage[hidelinks]{hyperref}
+\externaldocument{main}
+% propositions and proofs in upright type
+\newcounter{prop}
+\renewcommand{\theprop}{S\arabic{prop}}
+\newenvironment{prop}{\par\smallskip\refstepcounter{prop}\noindent Proposition~\theprop.\ }{\par\smallskip}
+\providecommand{\QED}{\hfill$\blacksquare$}
+\newenvironment{proof}{\par\noindent Proof.\ }{\QED\par}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\newcommand{\mname}{LTCC}  % name of the proposed method
+\newcommand{\val}[1]{\ifcsname v#1\endcsname\csname v#1\endcsname\else\todo{#1}\fi}
+\makeatletter
+\@for\@numfile:=static_numbers,static_numbers_XL,static_numbers_scale,numbers,numbers_s2,numbers_s3,numbers_s3x,%
+numbers_err,numbers_s4,numbers_s4c,numbers_s4x,numbers_s4cx,numbers_latepen,numbers_s5,numbers_s6,numbers_extra,%
+numbers_demo,numbers_robust,numbers_calib,numbers_s7,numbers_s7x,numbers_s7c\do{%
+  \IfFileExists{tables/\@numfile.tex}{\input{tables/\@numfile.tex}}{}}
+\makeatother
+\newsavebox{\ltccfigbox}
+\newcommand{\fig}[2]{\sbox{\ltccfigbox}{\includegraphics{figures/#1.pdf}}%
+  \ifdim\wd\ltccfigbox>\linewidth\resizebox{\linewidth}{!}{\usebox{\ltccfigbox}}\else\usebox{\ltccfigbox}\fi}
+\newcommand{\uprighttext}{\def\textbf##1{##1}\def\textit##1{##1}}
+\newcommand{\inputtable}[1]{\begingroup\uprighttext\input{tables/#1.tex}\endgroup}
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+\title{Supplementary material for: Chance Constraints as Effective Deadlines for Fast Replanning of UAV Fleets Under Uncertainty}
+\author{Cao-Phuc Ha, Vu Minh Anh Nguyen, Duong Thanh Tran, and Phu-Nguyen Le}
+\date{}
+\maketitle
+
+\begin{abstract}
+This document contains the parts of the paper that the main text only summarises: the planning deadlines and the proofs
+of Propositions 1 and 2, the stopping rule and its two delay costs, the scenario generator and the fitted error models,
+the parameters of the compared methods and further details of the protocol, the exact-execution benchmark of the
+stopping rules, the full results of study~1, further results of study~2 per regime and in tier C, the regimes of
+study~3, the reliability of the error model in study~4, the re-scoring that motivated study~5, the calibration of the
+predicted probability in studies 4-7, the sensitivity of all tier B tests to the resampling unit and further results
+of studies 2-7. Section, equation and table numbers without the prefix S refer to the main paper.
+\end{abstract}
+
+\section{Planning deadlines and proofs}\label{sec:Sproofs}
+\input{supp/s0_proofs}
+
+\section{Stopping rule and delay costs}\label{sec:Sstop}
+\input{supp/s1_delay}
+
+\section{Scenario generator, error models and exact-execution snapshots}\label{sec:Sscen}
+\input{supp/s2_scen}
+
+\inputtable{tabm_errmodels}
+
+\section{Methods, protocol and further results}\label{sec:Sdetails}
+\input{supp/s7_details}
+
+\section{Exact execution: stopping rules at equal computation}\label{sec:Sstatic}
+\input{supp/s3_static}
+
+\section{Study 1: execution-aware stopping on the nominal planning model}\label{sec:Sstudy1}
+Study~1 compares AnytimeSwarm-R with the stopping rules of Table~\ref{tab:methods} on the nominal planning model, on held-out seeds 3000-3029 in tier B (270 missions over three scales and three profiles, and 90
+missions with 40 UAVs) and 4000-4009 in tier C (30 missions per method). Its primary matrix crosses two execution
+levels (low, mid), two latency levels (none, high), two latency factors ($\kappa_B=10, 50$) and two triggers (event,
+periodic every 60\,s). Its primary hypothesis is that AnytimeSwarm-R serves more reward than ALNS with 40\,ms,
+AnytimeSwarm and the stagnation rule.
+\input{supp/s4_study1}
+
+\section{Study 2: regimes and software-in-the-loop details}\label{sec:Sstudy2}
+Table~\ref{tab:s2main} lists the results of all methods and ablations of study~2, and Fig.~\ref{fig:Ss2main} shows their
+paired differences together with the computation of every method.
+
+\inputtable{tabm_s2_main}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s2_main}{\linewidth}
+\caption{Study 2, tier B. (a) Utility of \mname{} without fallback minus each method, with 95\% intervals over \val{KNMissions} missions. (b) Mean utility against mean computation per call.}\label{fig:Ss2main}
+\end{figure}
+
+\input{supp/s5_study2}
+
+\section{Study 3: regimes}\label{sec:Sstudy3}
+Table~\ref{tab:s3} lists the results of study~3, and Fig.~\ref{fig:Ss3} shows its paired differences per regime.
+
+\inputtable{tabm_s3}
+
+\begin{figure}[t]
+\centering
+\fig{fig_s3}{\linewidth}
+\caption{Study 3: utility of \mname{} with nominal fallback minus each method per regime, with 95\% intervals over \val{LNMissions} missions.}\label{fig:Ss3}
+\end{figure}
+
+\section{Study 4: regimes and reliability of the error model}\label{sec:Sstudy4}
+Fig.~\ref{fig:replication} summarises the replication of the main comparisons on the held-out seeds of studies 2,
+3 and 4.
+
+\begin{figure}[t]
+\centering
+\fig{fig_replication}{\linewidth}
+\caption{Replication on three independent sets of held-out seeds: utility of \mname{} minus each method, with 95\% intervals over 270 missions per study.}\label{fig:replication}
+\end{figure}
+
+Fig.~\ref{fig:s4} shows the paired differences of study~4 per regime. All three advantages of \mname{}, over
+the constant buffer, the nominal model and the conventional planner, held in each of the four regimes.
+
+\begin{figure}[t]
+\centering
+\fig{fig_s4}{0.85\linewidth}
+\caption{Study 4: utility of \mname{} with nominal fallback minus each planning model per regime, with 95\% intervals over \val{QNMissions} missions.}\label{fig:s4}
+\end{figure}
+
+Fig.~\ref{fig:Scoverage} groups the tasks that were served in study~4 by the probability of meeting the deadline that
+the error model of their disturbance level predicted at the last published plan, and compares it with the share served
+on time. The plans of \mname{} and of the nominal model are evaluated with the same error model. Under mid
+disturbances, the share served on time was \val{QCovObsCCMid}\% for \mname{}, against a mean predicted
+probability of \val{QCovPredCCMid}\%. Under high disturbances, it was \val{QCovObsCCHigh}\% against
+\val{QCovPredCCHigh}\%. Among the tasks with a predicted probability of at least one half, the shares were
+\val{QCovObsAboveCCMid}\% and \val{QCovObsAboveCCHigh}\%, against predicted means of \val{QCovPredAboveCCMid}\% and
+\val{QCovPredAboveCCHigh}\%. The model was thus slightly optimistic under mid and conservative under high disturbances,
+and it ranked the tasks by their risk in both cases.
+
+\begin{figure}[t]
+\centering
+\fig{fig_coverage}{\linewidth}
+\caption{Study 4: share of served tasks on time against the predicted probability, for \mname{} with nominal fallback and the nominal model. The dotted line marks perfect calibration.}\label{fig:Scoverage}
+\end{figure}
+
+\section{Study 5: cost of a late arrival}\label{sec:Sstudy5}
+Fig.~\ref{fig:Slatepen} scores the held-out runs of studies 3 and 4 again with a cost of $\lambda$ mean task rewards for
+every late arrival, $u_\lambda=U-\lambda\,n_{\mathrm{late}}/n$. The analysis was done after study~4C, was not
+planned in a protocol and used no new runs. The fallback of study~3 raised the number of tasks served late from
+\val{PSThreeLateNoFb} to \val{PSThreeLateFb} per mission, and the fallback within moment propagation from
+\val{PSFourLateNoFb} to \val{PSFourLateFb}. A comparison changes sign at the late cost
+$\lambda^\ast=\Delta U/\Delta(n_{\mathrm{late}}/n)$. For the fallback, $\lambda^\ast$ was \val{PSThreeFbPropStar} in
+study~3 and \val{PSFourMPMPnfStar} within moment propagation. In tier C, it was \val{PCFbNoFbStar}, with a difference of
+\val{PCFbNoFbOne}\,pp at $\lambda=1$. The advantage over the constant buffer shrank with $\lambda$ and vanished at
+\val{PSFourCCBufStar}, because the buffer of 60\,s served fewer tasks late than \mname{} with nominal fallback (\val{QLateBuf} against \val{QLateCC} per mission). Against the proportional buffer, the
+proposed model with fallback stayed behind at every $\lambda$, by \val{PSFourCCPropBufOneAbs}\,pp at $\lambda=1$
+(\val{PSFourCCPropBufOne}). Study~5 (Section~\ref{sec:study5} of the main paper) was designed from these results.
+
+\begin{figure}[t]
+\centering
+\fig{fig_latepen}{\linewidth}
+\caption{Studies 3 and 4 re-scored with a late cost of $\lambda$ mean task rewards: score differences with 95\% intervals over 270 missions (exploratory, no new runs).}\label{fig:Slatepen}
+\end{figure}
+
+\section{Calibration of the predicted probability}\label{sec:Scalib}
+Every tier B run since study~4 bins its executed tasks by the probability of meeting the deadline that the error model
+of the disturbance level predicted at the last published plan, and counts how many of them met it. From these bins,
+Fig.~\ref{fig:Scalib} shows the reliability of the prediction for \mname{} in studies 4-6 and, in its right
+panel, under the shifted execution errors of study~7b. Over studies 4-6, the expected calibration error,
+$\mathrm{ECE}=\sum_i|k_i-p_i|/N$ with $k_i$ the tasks on time and $p_i$ the sum of the predicted probabilities in
+decile $i$, ranged from \val{VCalEceMin} to \val{VCalEceMax}\,pp. The upper tail, a predicted probability of at least
+0.8, is where a chance constraint acts. There, \val{VCalObsHiFiveMid}\% of the tasks were served on time under mid
+disturbances in study~5, against a predicted \val{VCalPredHiFiveMid}\%, and \val{VCalObsHiFiveHigh}\% under high
+disturbances, against \val{VCalPredHiFiveHigh}\%. Below the tail, the model was conservative under high disturbances,
+where it predicted a lower probability than was observed, and slightly optimistic under mid disturbances. Under the
+shifted errors of study~7b, the ECE was \val{VCalEceSGauss}\,pp for the calibrated Gaussian errors,
+\val{VCalEceSTthree}\,pp for Student-$t$ errors, \val{VCalEceSOutlier}\,pp with rare long delays,
+\val{VCalEceSBias}\,pp with a speed bias per UAV and \val{VCalEceSPareto}\,pp with Pareto latency, with Brier scores of
+\val{VCalBrierSGauss}, \val{VCalBrierSTthree}, \val{VCalBrierSOutlier}, \val{VCalBrierSBias} and
+\val{VCalBrierSPareto}. In the upper tail, the share on time under these conditions was \val{VCalObsHiSGauss},
+\val{VCalObsHiSTthree}, \val{VCalObsHiSOutlier}, \val{VCalObsHiSBias} and \val{VCalObsHiSPareto}\%, against predicted
+means of \val{VCalPredHiSGauss}, \val{VCalPredHiSTthree}, \val{VCalPredHiSOutlier}, \val{VCalPredHiSBias} and
+\val{VCalPredHiSPareto}\%.
+
+\begin{figure*}[t]
+\centering
+\fig{fig_calib}{\linewidth}
+\caption{Reliability of the predicted probability of meeting the deadline for \mname{}. (a) Mid and (b) high disturbances in studies 4-6. (c) Study 7b with the calibrated errors and four departures from the error model. The dotted line marks perfect calibration.}\label{fig:Scalib}
+\end{figure*}
+
+\section{Sensitivity to the resampling unit}\label{sec:Scluster}
+The primary tests resample missions. The nine missions of one seed have independent scenarios but share the execution
+disturbances, which are keyed to the seed, the UAV and the task. Table~\ref{tab:Scluster} repeats every tier B primary
+test of studies 2-7 with a paired bootstrap over the \val{VClNClusters} seeds. The intervals were \val{VClRatioMin} to
+\val{VClRatioMax} times as wide as over missions (median \val{VClRatioMed}). They were mostly narrower, because every
+seed contains one mission of each fleet scale and event profile, so that resampling seeds removes the variation between
+these strata. \val{VClNChanged} of the \val{VClNTests} outcomes changed. In H9, the advantage of the proportional buffer
+over \mname{}, which had missed significance over missions, became significant over seeds (interval
+\val{VClHNineCI}\,pp for \mname{} minus the buffer, Holm-adjusted $p={}$\val{VClHNineP}). The tier C
+hypotheses have one mission per seed and are not affected.
+
+\inputtable{tabm_cluster}
+
+\section{Study 7: further results}\label{sec:Sstudy7}
+\input{supp/s6_study7}
+
+% Reference list generated with BibTeX (style elsarticle-num, references_ast.bib with LTWA journal
+% abbreviations) and pasted here; regenerate with the scripts in _build/.
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{mccullagh1989glm}
+P.~McCullagh, J.~A. Nelder, Generalized Linear Models, 2nd Edition, Chapman and
+  Hall, London, 1989.
+\newblock \href {https://doi.org/10.1007/978-1-4899-3242-6}
+  {\path{doi:10.1007/978-1-4899-3242-6}}.
+
+\bibitem{savelsbergh1992vrptw}
+M.~W.~P. Savelsbergh, The vehicle routing problem with time windows: Minimizing
+  route duration, ORSA J. Comput. 4~(2) (1992) 146-154.
+\newblock \href {https://doi.org/10.1287/ijoc.4.2.146}
+  {\path{doi:10.1287/ijoc.4.2.146}}.
+
+\bibitem{ortools}
+L.~Perron, V.~Furnon, {OR-Tools},
+  \url{https://developers.google.com/optimization}, version 9.15 (2026).
+
+\bibitem{voudouris1999gls}
+C.~Voudouris, E.~Tsang, Guided local search and its application to the
+  traveling salesman problem, Eur. J. Oper. Res. 113~(2) (1999) 469-499.
+\newblock \href {https://doi.org/10.1016/S0377-2217(98)00099-X}
+  {\path{doi:10.1016/S0377-2217(98)00099-X}}.
+
+\bibitem{svegliato2018meta}
+J.~Svegliato, K.~H. Wray, S.~Zilberstein, Meta-level control of anytime
+  algorithms with online performance prediction, in: Proceedings of the
+  Twenty-Seventh International Joint Conference on Artificial Intelligence
+  (IJCAI-18), IJCAI Organization, 2018, pp. 1499-1505.
+\newblock \href {https://doi.org/10.24963/ijcai.2018/208}
+  {\path{doi:10.24963/ijcai.2018/208}}.
+
+\bibitem{clark1961greatest}
+C.~E. Clark, The greatest of a finite set of random variables, Oper. Res. 9~(2)
+  (1961) 145-162.
+\newblock \href {https://doi.org/10.1287/opre.9.2.145}
+  {\path{doi:10.1287/opre.9.2.145}}.
+
+\bibitem{johnson2012nonsubmodular}
+L.~B. Johnson, H.-L. Choi, S.~S. Ponda, J.~P. How, Allowing non-submodular
+  score functions in distributed task allocation, in: Proceedings of the 51st
+  IEEE Conference on Decision and Control (CDC), 2012, pp. 4702-4708.
+\newblock \href {https://doi.org/10.1109/CDC.2012.6425867}
+  {\path{doi:10.1109/CDC.2012.6425867}}.
+
+\bibitem{fawcett2006roc}
+T.~Fawcett, An introduction to {ROC} analysis, Pattern Recognit. Lett. 27~(8)
+  (2006) 861-874.
+\newblock \href {https://doi.org/10.1016/j.patrec.2005.10.010}
+  {\path{doi:10.1016/j.patrec.2005.10.010}}.
+
+\bibitem{ropke2006adaptive}
+S.~Ropke, D.~Pisinger, An adaptive large neighborhood search heuristic for the
+  pickup and delivery problem with time windows, Transp. Sci. 40~(4) (2006)
+  455-472.
+\newblock \href {https://doi.org/10.1287/trsc.1050.0135}
+  {\path{doi:10.1287/trsc.1050.0135}}.
+
+\bibitem{boddy1994deliberation}
+M.~Boddy, T.~L. Dean, Deliberation scheduling for problem solving in
+  time-constrained environments, Artif. Intell. 67~(2) (1994) 245-285.
+\newblock \href {https://doi.org/10.1016/0004-3702(94)90054-X}
+  {\path{doi:10.1016/0004-3702(94)90054-X}}.
+
+\bibitem{zilberstein1996using}
+S.~Zilberstein, Using anytime algorithms in intelligent systems, AI Mag. 17~(3)
+  (1996) 73-83.
+\newblock \href {https://doi.org/10.1609/aimag.v17i3.1232}
+  {\path{doi:10.1609/aimag.v17i3.1232}}.
+
+\bibitem{jabali2015selfimposed}
+O.~Jabali, R.~Leus, T.~Van~Woensel, T.~de~Kok, Self-imposed time windows in
+  vehicle routing problems, OR Spectrum 37~(2) (2015) 331-352.
+\newblock \href {https://doi.org/10.1007/s00291-013-0348-1}
+  {\path{doi:10.1007/s00291-013-0348-1}}.
+
+\end{thebibliography}
+\end{document}

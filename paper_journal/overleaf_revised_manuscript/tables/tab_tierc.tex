@@ -1,0 +1,14 @@
+\begin{table}[t]
+\caption{Tier C (PX4 SITL, Gazebo, ROS~2): 30 held-out missions per method, mid disturbances, $\kappa_B=50$. Utility, tasks lost to late plans and skipped at departure per mission, planning time per call; tier B utility on the same rescaled missions for comparison.}\label{tab:tierc}
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Method & Utility C (\%) & Lost to delay & Skipped & ms/call & Utility B (\%) \\
+\midrule
+ALNS, 250\,ms & 51.88 & 0.43 & 0.57 & 250.1 & 50.17 \\
+ALNS, 40\,ms & 54.69 & 0.03 & 0.50 & 40.1 & 51.72 \\
+AnytimeSwarm & 53.70 & 0.03 & 0.43 & 47.4 & 51.90 \\
+AnytimeSwarm-R (proposed) & 54.18 & 0.00 & 0.37 & 34.7 & 52.55 \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,19 @@
+\begin{table}[t]
+\caption{Study~5, tier B held-out results: mean score $u_\lambda$ (\%) for a late arrival that costs $\lambda$ mean task rewards ($\lambda = 0$ is the utility of studies 2-4), and tasks served late per mission at $\lambda = 1$. The cost-aware fallback and the tuned competitors use the late cost of the column. 270 missions, 12 configurations each.}\label{tab:s5}
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Method & $\lambda = 0$ & $0.5$ & $1$ & $2$ & Late \\
+\midrule
+Cost-aware fallback (proposed) & 54.33 & 49.49 & 45.81 & 39.71 & 4.96 \\
+Nominal fallback (study 4) & 54.33 & 48.86 & 43.40 & 32.46 & 7.39 \\
+Proportional buffer, tuned per $\lambda$ & - & 49.28 & 44.91 & 40.73 & 4.36 \\
+No fallback, $z$ tuned per $\lambda$ & - & 47.84 & 44.03 & 39.73 & 3.00 \\
+Moment propagation, fallback & 54.57 & 49.14 & 43.72 & 32.87 & 7.29 \\
+Moment propagation, no fallback & 45.06 & 44.00 & 42.94 & 40.81 & 1.50 \\
+Constant 60 s buffer & 50.33 & 45.66 & 40.98 & 31.64 & 6.49 \\
+Nominal model & 49.63 & 41.85 & 34.07 & 18.50 & 11.08 \\
+Conventional (event-only) & 47.84 & 40.56 & 33.27 & 18.71 & 10.25 \\
+\bottomrule
+\end{tabular}
+\end{table}

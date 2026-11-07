@@ -1,0 +1,55 @@
+% Study 7 further results (docs/16_PROTOCOL_V7.md; numbers from experiments/analyze_study7.py, macros \val{U...}).
+Study~7a ran the cost-aware fallback with both cost models for $\lambda\in\{0.5,1,2\}$ on seeds 13000-13029. The
+competitors were selected on development missions per score, late cost and disturbance level. For $u_\lambda$, the
+proportional buffer was \val{USelPropHalfFee}, \val{USelPropOneFee} and \val{USelPropTwoFee} for $\lambda=0.5$, 1 and
+2 (mid / high disturbances), the same selection as in study~5. For $u^w_\lambda$, it was \val{USelPropHalfW},
+\val{USelPropOneW} and \val{USelPropTwoW}. Table~\ref{tab:Ss7a} gives the scores of the main methods.
+
+\begin{table}[t]
+\caption{Study 7a: mean score (\%) of the two rules and of the tuned proportional buffer.}
+\label{tab:Ss7a}
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+& \multicolumn{3}{c}{$u_\lambda$ (fixed cost)} & \multicolumn{3}{c}{$u^w_\lambda$ (cost $\propto w_j$)} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Method & $\lambda=0.5$ & 1 & 2 & 0.5 & 1 & 2 \\
+\midrule
+Fixed-cost rule & \val{USCAFeeHalfFee} & \val{USCAFeeOneFee} & \val{USCAFeeTwoFee} & \val{USCAFeeHalfW} &
+\val{USCAFeeOneW} & \val{USCAFeeTwoW} \\
+Proportional rule & \val{USCAPropHalfFee} & \val{USCAPropOneFee} & \val{USCAPropTwoFee} & \val{USCAPropHalfW} &
+\val{USCAPropOneW} & \val{USCAPropTwoW} \\
+Tuned proportional buffer & \val{USPropHalfFee} & \val{USPropOneFee} & \val{USPropTwoFee} & \val{USPropHalfW} &
+\val{USPropOneW} & \val{USPropTwoW} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Against the nominal fallback, the fixed-cost rule scored \val{UDFeeCCfbOneFee}\,pp more with $u_1$ and
+\val{UDFeeCCfbTwoFee}\,pp more with $u_2$; the proportional rule scored \val{UDPropCCfbOneW}\,pp more with $u^w_1$.
+By regime at $\lambda=1$, the fixed-cost rule minus the tuned buffer with $u_1$ was \val{UXRFeeMidWOne}\,pp under mid
+disturbances with the original windows, \val{UXRFeeMidWHalf}\,pp with halved windows, and \val{UXRFeeHighWOne} and
+\val{UXRFeeHighWHalf}\,pp under high disturbances with the original and the halved windows. As in study~5, the
+advantage came from high disturbances and short windows, and with mid disturbances and the original windows the tuned
+buffer was ahead.
+
+The fixed-cost rule assumes a cost of $\lambda\bar w$ per late arrival with the mean reward $\bar w=2.1$ of the
+generator, whereas $u_\lambda$ charges $\lambda R/n$ with the realised mean reward of the mission, which ranged from
+\val{UCWnMin} to \val{UCWnMax} over the held-out missions. Table~\ref{tab:Ss7const} repeats the comparisons of the
+fixed-cost rule with $u'_\lambda=U-\lambda\bar w\,n_{\mathrm{late}}/R$, which charges exactly $\lambda\bar w$. All
+differences changed by at most a few hundredths of a point, and no conclusion changed. Using the realised $R/n$ in the
+rule itself is not possible during a mission, because $R$ includes the tasks that have not yet arrived.
+
+\inputtable{tabm_s7const}
+
+Study~7b ran on seeds 14000-14029 under high disturbances. Table~\ref{tab:s7} gives the utility and the score $u_1$ of
+every method under the calibrated Gaussian errors and the four departures. The mean finish-time error of the proposed
+model with the cost-aware fallback was \val{UBErrGauss}, \val{UBErrTthree}, \val{UBErrOutlier}, \val{UBErrBias} and
+\val{UBErrPareto}\,s, and its 95th percentile \val{UBErrPGauss}, \val{UBErrPTthree}, \val{UBErrPOutlier},
+\val{UBErrPBias} and \val{UBErrPPareto}\,s. On $u_1$, the fixed-cost rule scored \val{UDabsBCACAfeeTthree} to
+\val{UDabsBCACAfeeGauss}\,pp above the proportional rule, and moment propagation with the cost-aware fallback
+\val{UDabsBCAMPCAGauss} to \val{UDabsBCAMPCATthree}\,pp above the closed form, with every interval including zero in
+both cases. Moment propagation served less utility than the closed form under every condition.
+
+\inputtable{tabm_s7}

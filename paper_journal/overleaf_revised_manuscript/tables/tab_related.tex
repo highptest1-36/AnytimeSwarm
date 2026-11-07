@@ -1,0 +1,40 @@
+% Qualitative comparison with recent related work. Features as stated in each paper (abstract or full text); see
+% docs/09_RECENT_WORKS.md for the evidence per cell. Hand-written (not generated).
+\begin{table*}[t]
+\caption{Comparison with related approaches.}
+\label{tab:related}
+\centering\footnotesize
+\setlength{\tabcolsep}{3.0pt}
+\begin{threeparttable}
+\begin{tabular}{llcccccccl}
+\toprule
+Work & Problem & TW & Unc. & Late cost & Online & Trigger & Stop & SITL & Solver or architecture \\
+\midrule
+Ta\c{s} et al.~\cite{tas2013stochastic} & VRP, soft time windows & \checkmark & \checkmark & \checkmark & - & - & - & - & tabu search \\
+Ehmke et al.~\cite{ehmke2015ensuring} & VRPTW, service levels & \checkmark & \checkmark & - & - & - & - & - & heuristic, moments \\
+Zhou and Tokekar~\cite{zhou2022risk} & multi-robot assignment & - & \checkmark & - & \checkmark & $\circ$ & - & - & greedy, CVaR \\
+Cheng et al.~\cite{cheng2024weather} & drone scheduling, wind & \checkmark & \checkmark & \checkmark & $\circ$ & - & - & - & DRO, branch and cut \\
+Bruni et al.~\cite{bruni2023drone} & drone location routing & - & \checkmark & - & - & - & - & - & robust optimisation \\
+Gao et al.~\cite{gao2025drcc} & UAV assignment & \checkmark & \checkmark & - & - & - & - & - & MILP, DRCC \\
+Wang et al.~\cite{wang2024uncertain} & UAV task planning & \checkmark & \checkmark & - & - & - & - & - & completion-time estimate \\
+Choudhury et al.~\cite{choudhury2022dynamic} & MRTA, time windows & \checkmark & \checkmark & - & \checkmark & - & - & - & hierarchical \\
+Huang et al.~\cite{huang2024dynamic} & multi-UAV allocation & - & \checkmark & - & \checkmark & $\circ$ & - & - & - \\
+Calvo and Capit\'an~\cite{calvo2025heterogeneous} & long-endurance UAV MRTA & $\circ$ & - & - & \checkmark & - & - & \checkmark & centralised \\
+Hwang et al.~\cite{hwang2026apr} & multi-UAV replanning & \checkmark & - & - & \checkmark & - & - & - & - \\
+Shen et al.~\cite{shen2026localrepair} & UAV swarm allocation & $\circ$ & - & - & \checkmark & - & - & - & edge \\
+Qian and Fu~\cite{ucdg2026drones} & multi-UAV allocation & \checkmark & \checkmark & - & \checkmark & - & - & - & distributed \\
+Cong et al.~\cite{cong2026event} & multi-UAV allocation & \checkmark & - & - & \checkmark & \checkmark & - & $\circ$ & - \\
+Ali et al.~\cite{ali2026sitl} & multi-UAV allocation & - & - & - & \checkmark & - & - & \checkmark & decentralised \\
+Svegliato et al.~\cite{svegliato2018meta} & anytime metareasoning & - & - & - & - & - & \checkmark & - & - \\
+\midrule
+\mname{} (proposed) & multi-UAV replanning & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark & centralised \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\scriptsize
+\item[] TW: time windows or deadlines; Unc.: execution or duration uncertainty in the planning model; Late cost: a cost
+of late service in the planning decision; Online: replanning during the mission; Trigger: trigger policies compared;
+Stop: computation time treated as a decision; SITL: validation with an autopilot in software-in-the-loop or physics
+simulation. \checkmark: yes; $\circ$: partly; -: no or not reported.
+\end{tablenotes}
+\end{threeparttable}
+\end{table*}

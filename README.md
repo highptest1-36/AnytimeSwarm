@@ -1,11 +1,10 @@
-# LTCC: Lead-Time-Scaled Chance Constraints for Fast Multi-UAV Replanning
+# LTCC: Chance Constraints as Effective Deadlines for Fast UAV Replanning
 
-Code, protocols, raw results and manuscript sources of the paper
+Code, frozen protocols, raw results and manuscript sources of the paper
 
-> **Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-UAV Replanning Under Uncertain
-> Execution**
-> Cao-Phuc Ha, Anh Nguyen Vu Minh, Phu-Nguyen Le
-> FPT University and Vietnam Aerospace University, 2026 (manuscript under review)
+> **Chance Constraints as Effective Deadlines for Fast Replanning of UAV Fleets Under Uncertainty**
+> Cao-Phuc Ha, Vu Minh Anh Nguyen, Duong Thanh Tran, Phu-Nguyen Le
+> FPT University, Sungkyunkwan University and Vietnam Aerospace University, 2026 (manuscript under review)
 
 LTCC is a replanner for teams of UAVs that serve tasks with deadlines while wind, speed and service-time errors delay
 the plan. It keeps the fast heuristics of a nominal replanner (regret insertion, ALNS, CBBA) and changes only the
@@ -119,9 +118,8 @@ If you use this code or the results, please cite:
 
 ```bibtex
 @unpublished{ha2026ltcc,
-  author = {Ha, Cao-Phuc and Nguyen Vu Minh, Anh and Le, Phu-Nguyen},
-  title  = {Lead-Time-Scaled Chance Constraints With a Cost-Aware Fallback for Fast Multi-{UAV} Replanning Under
-            Uncertain Execution},
+  author = {Ha, Cao-Phuc and Nguyen, Vu Minh Anh and Tran, Duong Thanh and Le, Phu-Nguyen},
+  title  = {Chance Constraints as Effective Deadlines for Fast Replanning of {UAV} Fleets Under Uncertainty},
   note   = {Manuscript under review},
   year   = {2026}
 }

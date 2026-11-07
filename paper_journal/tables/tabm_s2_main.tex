@@ -8,7 +8,6 @@
 \toprule
 Method & Utility (\%) & Late & Lost & Calls & ms/call & \mname{} minus method (pp) \\
 \midrule
-\mname{}, no fallback & 52.15 & 5.72 & 0.00 & 23.3 & 61.0 & -- \\
 Conventional planner & 47.71 & 10.31 & 3.32 & 6.8 & 40.2 & +4.44 [+3.82, +5.05] \\
 Regret-2 repair (no search) & 47.95 & 11.19 & 2.34 & 23.2 & 0.5 & +4.21 [+3.57, +4.84] \\
 ALNS, fixed 250 ms~\cite{ropke2006adaptive} & 46.23 & 9.78 & 11.58 & 22.9 & 250.1 & +5.92 [+5.41, +6.44] \\
@@ -20,6 +19,7 @@ Online performance prediction~\cite{svegliato2018meta} & 49.45 & 11.17 & 2.75 & 
 AnytimeSwarm & 49.31 & 11.17 & 3.89 & 23.2 & 58.1 & +2.84 [+2.29, +3.40] \\
 AnytimeSwarm-R & 49.66 & 11.21 & 3.73 & 23.2 & 50.9 & +2.49 [+1.92, +3.06], $p$ $<$0.001$^{\ast}$ \\
 Constant buffer (60\,s)~\cite{jabali2015selfimposed} & 50.81 & 6.53 & 0.00 & 23.4 & 40.1 & +1.35 [+0.93, +1.77], $p$ $<$0.001$^{\ast}$ \\
+\mname{}, no fallback & 52.15 & 5.72 & 0.00 & 23.3 & 61.0 & -- \\
 \midrule
 \multicolumn{7}{l}{Ablations of \mname{}} \\
 \mname{}, event trigger only & 51.93 & 5.85 & 0.00 & 6.8 & 57.8 & +0.22 [+0.06, +0.38] \\
