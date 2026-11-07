@@ -1,12 +1,35 @@
-\section{Conclusion}\label{sec:conclusion}
+\section{Conclusion}\label{sec:conclusion}\label{sec:discussion}
 This paper proposed \mname{}, a multi-UAV replanner that plans against a chance constraint on the finish time of every
 task. In the tested missions, the spread of the finish-time error was well approximated by an affine function of the
 lead time, and with this error model the chance constraint reduces exactly to an effective deadline per task, so fast
 heuristics are reused unchanged. A cost-aware fallback uses the probability of meeting the deadline to decide which
-given-up tasks to attempt, again in closed form and without cost-specific tuning. In seven studies on held-out
-missions, \mname{} served more reward than the nominal model, a constant buffer, a conventional planner and CBBA, and as
-much as a tuned proportional buffer and moment propagation. With a late cost of one task reward, the cost-aware fallback
-scored above the nominal fallback and above a buffer tuned for that cost, on two sets of seeds. In PX4
-software-in-the-loop flights, the fallback raised the utility by \val{HURelNoFb}\%, as the kinematic tier had predicted.
-Future work will charge the delay that a fallback task causes on its route, fly the cost-aware fallback with PX4, run it
-inside a distributed allocator and test the replanner on embedded hardware.
+given-up tasks to attempt, again in closed form and without cost-specific tuning.
+
+Three findings run through the seven studies. First, the planning model mattered more than the control of computation.
+A margin that grows with the lead time served more reward than the nominal model, a constant buffer, a conventional
+planner and CBBA, on three independent sets of seeds, with repair only and with CBBA in place of ALNS. The stopping
+rule was equivalent to a matched fixed budget, probably because the improvement curve of this ALNS flattens within a
+few tens of milliseconds, and its value lay mainly in avoiding the late plans of long budgets on slow planners. Second,
+the shape of the margin mattered more than the way it is computed. A tuned proportional buffer and moment propagation
+reached a utility similar to that of the effective deadline, because the spread was close to affine in the lead time.
+The advantages of the closed form are practical. It needs one division per task, no model of the individual legs and
+no change to the feasibility checks of a heuristic, which allowed CBBA to use it unchanged. Where lateness is costly
+and the planner can afford to evaluate every leg, moment propagation scored higher. Third, a probability of meeting the
+deadline lets the replanner price lateness. A hard chance constraint discards tasks that are still worth attempting,
+and the nominal fallback recovers them but serves many of them late. The break-even rule decides which of them are
+worth attempting with another closed-form deadline. With a late cost of one task reward, it scored above the nominal
+fallback and above a buffer tuned for that cost, on two sets of seeds, and it behaved in the same way inside moment
+propagation. A proportional buffer reached a similar score only when it was tuned again for the cost at hand.
+
+The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over many
+missions, whereas a flight with autopilot and vehicle dynamics is costly. In PX4 software-in-the-loop flights, the
+fallback raised the utility by \val{HURelNoFb}\%, as the kinematic tier had predicted, whereas the advantage of
+\mname{} over the nominal model was not confirmed and rests on the kinematic tier. Because tier B predicted every tier C
+comparison on the same missions, further flight studies can be sized from the kinematic tier with a conservative
+effect.
+
+These results hold under the conditions studied. The error model is fitted per disturbance level, or online from the
+tasks of the mission, and the guarantees of Propositions~\ref{prop:cc} and~\ref{prop:costfb} rest on a Gaussian error
+model, although the advantages persisted under the four tested departures from it. Future work will charge the delay
+that a fallback task causes to the later tasks on its route, in particular for high late costs, fly the cost-aware
+fallback with PX4, run it inside a distributed allocator, and test the replanner on embedded hardware and in the field.

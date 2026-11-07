@@ -209,7 +209,7 @@ fallback and above competitors tuned for that cost. In software-in-the-loop flig
 
 Section~\ref{sec:related} reviews related work and Section~\ref{sec:problem} states the problem.
 Section~\ref{sec:method} presents \mname{}, Section~\ref{sec:setup} the evaluation and Section~\ref{sec:results} the
-results, which Section~\ref{sec:discussion} discusses.
+results, and Section~\ref{sec:conclusion} discusses them and concludes the paper.
 
 %%=============================================================%%
 \section{Related work}\label{sec:related}
@@ -229,7 +229,11 @@ have been compared for multi-UAV systems~\cite{cong2026event}, and online alloca
 demonstrated in PX4 and ArduPilot software-in-the-loop simulation~\cite{calvo2025heterogeneous,ali2026sitl}. Table~\ref{tab:related}
 places these approaches next to \mname{}. Most of the multi-UAV approaches replan online, but few combine deadlines,
 execution uncertainty and a cost of lateness, and only the metareasoning work treats the computation time as a
-decision.
+decision. This work decides how long a planner should
+compute~\cite{zilberstein1996using,herrmann2023metareasoning}, from performance profiles~\cite{boddy1994deliberation},
+online performance prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}, and situated
+temporal planning accounts for the time that passes during planning~\cite{cashmore2018clock,shperberg2021situated}. Two
+of these stopping rules serve as baselines.
 
 \begingroup\uprighttext
 % Qualitative comparison with recent related work. Features as stated in each paper (abstract or full text); see
@@ -298,14 +302,6 @@ prices lateness only in this fallback, through a break-even probability that aga
 keeps its objective and its feasibility checks. The closest use of a probability as an acceptance test is the
 uncertainty-gated allocation of Qian and Fu~\cite{ucdg2026drones}, which acts on single agent-task pairs of a
 one-task-per-UAV matching, whereas \mname{} acts on the deadline of every task along a route.
-
-\subsection{Metareasoning and anytime algorithms}
-Anytime algorithms and metareasoning decide how long a planner should
-compute~\cite{zilberstein1996using,herrmann2023metareasoning}, from performance profiles~\cite{boddy1994deliberation},
-online performance prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}. Situated
-temporal planning and deadline-aware metareasoning account for the time that passes during
-planning~\cite{cashmore2018clock,shperberg2021situated}. Two of these stopping rules serve as baselines, so that the
-value of controlling computation can be compared with the value of the planning model.
 
 %%=============================================================%%
 \section{Problem formulation}\label{sec:problem}
@@ -562,9 +558,7 @@ Method & Planning deadline & Fallback & Search & Studies \\
 \midrule
 Nominal model~\cite{ropke2006adaptive} & deadline & none & repair only, or ALNS with a fixed, scaled or stagnation budget & 1-7 \\
 Conventional planner & deadline, event trigger only & none & ALNS, 40\,ms & 2-5 \\
-AnytimeSwarm, AnytimeSwarm-R & deadline & none & stopping rule & 1, 2 \\
-Performance profile~\cite{boddy1994deliberation,zilberstein1996using} & deadline & none & stopping rule & 2 \\
-Online prediction~\cite{svegliato2018meta} & deadline & none & stopping rule & 2 \\
+AnytimeSwarm, AnytimeSwarm-R, performance profile~\cite{boddy1994deliberation,zilberstein1996using}, online prediction~\cite{svegliato2018meta} & deadline & none & stopping rule & 1, 2 \\
 Constant buffer~\cite{jabali2015selfimposed} & deadline minus 60\,s & none & ALNS, 40\,ms & 2-5, 7 \\
 Proportional buffer & deadline minus a tuned share of the lead time & none or nominal & ALNS, 40\,ms & 4, 5, 7 \\
 Moment propagation~\cite{ehmke2015ensuring} & mean plus $z$ standard deviations along the route & none, nominal or cost-aware & ALNS, 40\,ms & 4-7 \\
@@ -574,9 +568,9 @@ CBBA~\cite{choi2009consensus,johnson2012nonsubmodular} & deadline or \mname{} de
 \end{tabular}
 \end{table*}
 
-The nominal model plans against the true deadlines. Besides 40\,ms, it is run with regret-2 repair only, with 250\,ms,
-with 1\,ms per open task and with a rule that stops after 20\% of the budget without improvement. The two stopping rules from the metareasoning literature use the same delay cost as
-\mname{} and differ only in how they predict the gain of further search. The constant buffer, the simplest form of a time buffer in the
+The nominal model plans against the true deadlines. Besides 40\,ms, it is run with repair only and with other budgets
+and stopping rules, including two from the metareasoning literature (Supplementary Section~S4.2). The
+constant buffer, the simplest form of a time buffer in the
 schedule~\cite{jabali2015selfimposed}, subtracts 60\,s from every deadline, the best of 30, 60 and 120\,s on
 development missions. The proportional buffer subtracts a tuned share of the
 lead time, so it keeps the shape of the \mname{} margin but replaces the calibration by one slope. Moment propagation
@@ -599,18 +593,14 @@ development missions for every late cost and score, whereas the cost-aware fallb
 utility.
 
 \subsection{Studies and statistical protocol}\label{sec:protocol}
-The evaluation consists of seven studies. Each study has its own held-out seeds, a written protocol and frozen code,
-and each study after the first was designed after the held-out results of the earlier ones. Study~1 made only the
-stopping rule execution-aware. Study~2 compared \mname{} without fallback with the baselines, study~3 added the nominal
-fallback, and study~4 compared planning models on the same search. Study~5 introduced the cost-aware fallback, study~6
-compared it with CBBA and applied it to moment propagation, and study~7 tested the late-cost model of the rule (7a) and
-execution errors that the calibrated model does not describe (7b). Studies 5 and 6 ran the rule with a cost
-proportional to the reward but scored it with $u_\lambda$, which charges a fixed cost per late arrival. This mismatch
-between the cost model of the rule and the score was noticed after both studies had been frozen and run, so it could
-not be corrected without changing their protocols. Study~7a was designed to test it on new seeds. It runs both cost
-models, each scored with its own score. Study~7b draws speed and service errors from a Student-$t$ law, adds rare long delays, adds a persistent speed
-bias per UAV, or replaces the latency by a heavy-tailed Pareto delay. Tier C flights belong to studies 2 and 4, the
-latter called study~4C.
+The evaluation consists of seven studies, each with its own held-out seeds, written protocol and frozen code, and each
+designed after the held-out results of the earlier ones. Studies 1 to 4 test the stopping rule, the planning model and
+the nominal fallback, study~5 the cost-aware fallback, study~6 CBBA and moment propagation, and study~7 the late-cost
+model of the rule (7a) and execution errors outside the error model (7b). Studies 5 and 6 ran the rule with a cost
+proportional to the reward but scored it with $u_\lambda$, a mismatch noticed after both had been run, so study~7a runs
+both cost models on new seeds, each scored with its own score. Study~7b uses Student-$t$ speed and service errors, rare
+long delays, a persistent speed bias per UAV or a heavy-tailed Pareto latency. Tier C flights belong to studies 2 and
+4, the latter called study~4C.
 
 Development used seeds 0-9 in tier B and 0-2 in tier C. Before each study, the protocol with its hypotheses, the
 configurations, the models and the code were frozen with SHA-256 hashes and committed to the version history, and the
@@ -700,31 +690,21 @@ changed. Study~1 is reported in Supplementary Section~S6.
 \endgroup
 
 \subsection{Planning model and control of computation}\label{sec:study1}\label{sec:study2}
-Study~1 made only the stopping rule execution-aware and kept the nominal deadlines. In 34\,560 tier B runs,
-AnytimeSwarm-R needed 15\% less computation per call than AnytimeSwarm, but its advantage over ALNS with
-40\,ms, +0.32 [+0.01, +0.63]\,pp, was not significant after the Holm correction ($p={}$0.128). Periodic
-replanning raised the utility of every method by +1.29 to +1.56\,pp (Supplementary
-Section~S6). Study~2 therefore moved the error model from the stopping rule into the planning model.
-
-Study~2 compared \mname{} without fallback with the baselines in 48\,600 tier B runs (Supplementary
-Table~S6). \mname{} reached the highest utility, 52.15\%. Its advantage over the six baselines of H1
-ranged from +1.35 to +2.87\,pp, and over the conventional planner it was +4.44 [+3.82, +5.05]\,pp, or
-9.3\% (H2). It also served 49\% fewer tasks late than ALNS with 40\,ms. The stopping rules
-hardly mattered on the nominal model, with utilities between 49.28\% and 49.66\% although their
-computation ranged from 11.2 to 58.1\,ms per call. With the effective deadlines, the stopping rule was
-equivalent to a fixed budget of 40\,ms (H3). Its value lay in avoiding long budgets on slow planners: with a latency
-factor of 200, the full budget of 250\,ms lost 23.42 tasks per mission to late plans. Without
-fallback, however, \mname{} was too cautious under high disturbances with halved windows, where it served
-$-$2.01 [$-$2.80, $-$1.21]\,pp relative to the constant buffer. Many effective deadlines then fell before the earliest
-possible arrival, and this result led to the fallback.
+Study~1 made only the stopping rule execution-aware and kept the nominal deadlines. AnytimeSwarm-R needed
+15\% less computation per call than AnytimeSwarm, but its advantage over ALNS with 40\,ms was not
+significant after the Holm correction (Supplementary Section~S6). Study~2 therefore moved the error
+model from the stopping rule into the planning model. \mname{} without fallback reached the highest utility,
+52.15\%. Its advantage over the six baselines of H1 ranged from +1.35 to +2.87\,pp, and over the
+conventional planner it was +4.44 [+3.82, +5.05]\,pp, or 9.3\% (H2). With the effective deadlines, the stopping
+rule was equivalent to a fixed budget of 40\,ms (H3), and its value lay mainly in avoiding the late plans of long
+budgets on slow planners (Supplementary Section~S7). Without fallback, however, \mname{} was too
+cautious under high disturbances with halved windows, where it served $-$2.01 [$-$2.80, $-$1.21]\,pp relative to the constant
+buffer, because many effective deadlines fell before the earliest possible arrival. This result led to the fallback.
 
 \subsection{Margin shape and fallback}\label{sec:study3}\label{sec:study4}
-Study~3 tested the nominal fallback on new seeds. Its advantage over \mname{} without fallback was
-+1.97 [+1.61, +2.33]\,pp (H5), and over the constant buffer in the regime where study~2 had lost it was
-+3.31 [+2.58, +4.03]\,pp (H6). Over all configurations, its advantages over ALNS with 40\,ms and the constant buffer were
-+4.61 [+4.15, +5.06] and +3.59 [+3.17, +4.02]\,pp (H7, H8). The fallback has a price in punctuality, since a fallback task is planned against its true deadline and is
-often served late. It served 8.33 tasks late per mission, 46\% more than \mname{} without
-fallback.
+Study~3 tested the nominal fallback on new seeds. It added +1.97 [+1.61, +2.33]\,pp to \mname{} without fallback (H5) and
++3.31 [+2.58, +4.03]\,pp over the constant buffer in the regime where study~2 had lost (H6), at the price of more tasks
+served late, since a fallback task is planned against its true deadline (Supplementary Section~S8).
 
 Table~\ref{tab:s4} compares the planning models of study~4 on a third set of seeds. All models use the same search for
 40\,ms, so they differ only in the margin and the fallback. The columns give the utility over all configurations and
@@ -971,60 +951,41 @@ delays, the predicted probability became slightly optimistic in the upper tail, 
 tasks served on time against a predicted 93.6\% (Supplementary Section~S11).
 
 %%=============================================================%%
-\section{Discussion}\label{sec:discussion}
-Three findings run through the studies. The first is that the planning model matters more than the control of
-computation. A margin that grows with the lead time raised the utility by more than any stopping rule or trigger, on
-three independent sets of seeds, with repair only and with CBBA in place of ALNS. The stopping rule was equivalent to a
-matched fixed budget, probably because the improvement curve of this ALNS flattens within a few tens of milliseconds,
-and its main value lies in avoiding the losses of long budgets on slow planners. Periodic replanning helped every method
-on the nominal model, but only by 0.22\,pp with the effective deadlines. Both seem to correct the same
-accumulated deviations, one before and one after they occur.
-
-The second finding is that the shape of the margin matters more than the way it is computed. The constant buffer was
-worse than every margin that grows with the lead time, whereas the effective deadline, a tuned proportional buffer and
-moment propagation reached a similar utility. Because the spread was close to affine in the lead time, a margin
-proportional to the lead time captures most of it, and under high disturbances the tuned slope nearly equalled the one
-implied by the calibrated model. The advantages of the closed form are practical. It needs one division per task, no
-model of the individual legs and no change to the feasibility checks of a heuristic, which is what allowed CBBA to use
-it unchanged. Where lateness is costly and the planner can afford to evaluate every leg, moment propagation scored
-higher.
-
-The third finding is that a probability of meeting the deadline lets the replanner price lateness. A hard chance
-constraint discards tasks that are still worth attempting, and the nominal fallback recovers them but serves many of
-them late. Once a late arrival has a cost, the question is no longer only how large the margin should be but which tasks
-are worth attempting, and this question needs a probability. The break-even rule answers it with another closed-form
-deadline, without cost-specific tuning, and it behaved in the same way inside moment propagation. A proportional buffer
-matched it in utility, but once lateness had a cost, it reached a similar score only when it was tuned again for the
-cost at hand, and it fell behind when it was tuned for another cost.
-
-The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over tens of
-thousands of missions, whereas a flight with autopilot and vehicle dynamics is costly. Tier B predicted every tier C
-comparison on the same missions, so the flights support the transfer of the kinematic results. In the software-in-the-loop
-flights, however, the fallback was confirmed, whereas the advantage of \mname{} over the nominal model was not, and this
-advantage rests on the kinematic tier. Further flight studies can be sized from the kinematic tier with a conservative
-effect.
-
-These results hold under the conditions studied. The error model is fitted per disturbance level, or online from the
-tasks of the mission, and the guarantees of Propositions~\ref{prop:cc} and~\ref{prop:costfb} rest on a Gaussian error
-model, although the advantages persisted under the four tested departures from it. The cost-aware fallback prices each
-attempt on its own. A route-level version that also charges the delay a fallback task causes to the tasks after it, for
-example through a late cost that grows with their number, is a natural next step, in particular for high late costs.
-The flights used three simulated UAVs, so tests with the cost-aware fallback in the autopilot loop, on embedded hardware
-and in the field remain to be done.
-
-%%=============================================================%%
-\section{Conclusion}\label{sec:conclusion}
+\section{Conclusion}\label{sec:conclusion}\label{sec:discussion}
 This paper proposed \mname{}, a multi-UAV replanner that plans against a chance constraint on the finish time of every
 task. In the tested missions, the spread of the finish-time error was well approximated by an affine function of the
 lead time, and with this error model the chance constraint reduces exactly to an effective deadline per task, so fast
 heuristics are reused unchanged. A cost-aware fallback uses the probability of meeting the deadline to decide which
-given-up tasks to attempt, again in closed form and without cost-specific tuning. In seven studies on held-out
-missions, \mname{} served more reward than the nominal model, a constant buffer, a conventional planner and CBBA, and as
-much as a tuned proportional buffer and moment propagation. With a late cost of one task reward, the cost-aware fallback
-scored above the nominal fallback and above a buffer tuned for that cost, on two sets of seeds. In PX4
-software-in-the-loop flights, the fallback raised the utility by 56\%, as the kinematic tier had predicted.
-Future work will charge the delay that a fallback task causes on its route, fly the cost-aware fallback with PX4, run it
-inside a distributed allocator and test the replanner on embedded hardware.
+given-up tasks to attempt, again in closed form and without cost-specific tuning.
+
+Three findings run through the seven studies. First, the planning model mattered more than the control of computation.
+A margin that grows with the lead time served more reward than the nominal model, a constant buffer, a conventional
+planner and CBBA, on three independent sets of seeds, with repair only and with CBBA in place of ALNS. The stopping
+rule was equivalent to a matched fixed budget, probably because the improvement curve of this ALNS flattens within a
+few tens of milliseconds, and its value lay mainly in avoiding the late plans of long budgets on slow planners. Second,
+the shape of the margin mattered more than the way it is computed. A tuned proportional buffer and moment propagation
+reached a utility similar to that of the effective deadline, because the spread was close to affine in the lead time.
+The advantages of the closed form are practical. It needs one division per task, no model of the individual legs and
+no change to the feasibility checks of a heuristic, which allowed CBBA to use it unchanged. Where lateness is costly
+and the planner can afford to evaluate every leg, moment propagation scored higher. Third, a probability of meeting the
+deadline lets the replanner price lateness. A hard chance constraint discards tasks that are still worth attempting,
+and the nominal fallback recovers them but serves many of them late. The break-even rule decides which of them are
+worth attempting with another closed-form deadline. With a late cost of one task reward, it scored above the nominal
+fallback and above a buffer tuned for that cost, on two sets of seeds, and it behaved in the same way inside moment
+propagation. A proportional buffer reached a similar score only when it was tuned again for the cost at hand.
+
+The two tiers play different roles. The kinematic tier resolves differences of a few percentage points over many
+missions, whereas a flight with autopilot and vehicle dynamics is costly. In PX4 software-in-the-loop flights, the
+fallback raised the utility by 56\%, as the kinematic tier had predicted, whereas the advantage of
+\mname{} over the nominal model was not confirmed and rests on the kinematic tier. Because tier B predicted every tier C
+comparison on the same missions, further flight studies can be sized from the kinematic tier with a conservative
+effect.
+
+These results hold under the conditions studied. The error model is fitted per disturbance level, or online from the
+tasks of the mission, and the guarantees of Propositions~\ref{prop:cc} and~\ref{prop:costfb} rest on a Gaussian error
+model, although the advantages persisted under the four tested departures from it. Future work will charge the delay
+that a fallback task causes to the later tasks on its route, in particular for high late costs, fly the cost-aware
+fallback with PX4, run it inside a distributed allocator, and test the replanner on embedded hardware and in the field.
 
 \printcredits
 
@@ -1309,6 +1270,30 @@ M.~A. Ali, U.~Athar, A.~Maqsood, {SITL} validation of federated reinforcement
 \newblock \href {https://doi.org/10.1111/exsy.70459}
   {\path{doi:10.1111/exsy.70459}}.
 
+\bibitem{sung2021quit}
+Y.~Sung, L.~P. Kaelbling, T.~Lozano-P{\'e}rez, Learning when to quit:
+  Meta-reasoning for motion planning, in: Proceedings of the 2021 IEEE/RSJ
+  International Conference on Intelligent Robots and Systems (IROS), IEEE,
+  2021, pp. 4692-4699.
+\newblock \href {https://doi.org/10.1109/IROS51168.2021.9636864}
+  {\path{doi:10.1109/IROS51168.2021.9636864}}.
+
+\bibitem{cashmore2018clock}
+M.~Cashmore, A.~Coles, B.~Cserna, E.~Karpas, D.~Magazzeni, W.~Ruml, Temporal
+  planning while the clock ticks, in: Proceedings of the International
+  Conference on Automated Planning and Scheduling (ICAPS), Vol.~28, AAAI Press,
+  2018, pp. 39-46.
+\newblock \href {https://doi.org/10.1609/icaps.v28i1.13878}
+  {\path{doi:10.1609/icaps.v28i1.13878}}.
+
+\bibitem{shperberg2021situated}
+S.~S. Shperberg, A.~Coles, E.~Karpas, W.~Ruml, S.~E. Shimony, Situated temporal
+  planning using deadline-aware metareasoning, in: Proceedings of the
+  International Conference on Automated Planning and Scheduling (ICAPS),
+  Vol.~31, AAAI Press, 2021, pp. 340-348.
+\newblock \href {https://doi.org/10.1609/icaps.v31i1.15979}
+  {\path{doi:10.1609/icaps.v31i1.15979}}.
+
 \bibitem{zhou2022risk}
 L.~Zhou, P.~Tokekar, Risk-aware submodular optimization for multirobot
   coordination, IEEE Trans. Robot. 38~(5) (2022) 3064-3084.
@@ -1363,30 +1348,6 @@ O.~Dukkanci, B.~Y. Kara, T.~Bekta{\c{s}}, Minimizing energy and cost in
   Emerg. Technol. 125 (2021) 102985.
 \newblock \href {https://doi.org/10.1016/j.trc.2021.102985}
   {\path{doi:10.1016/j.trc.2021.102985}}.
-
-\bibitem{sung2021quit}
-Y.~Sung, L.~P. Kaelbling, T.~Lozano-P{\'e}rez, Learning when to quit:
-  Meta-reasoning for motion planning, in: Proceedings of the 2021 IEEE/RSJ
-  International Conference on Intelligent Robots and Systems (IROS), IEEE,
-  2021, pp. 4692-4699.
-\newblock \href {https://doi.org/10.1109/IROS51168.2021.9636864}
-  {\path{doi:10.1109/IROS51168.2021.9636864}}.
-
-\bibitem{cashmore2018clock}
-M.~Cashmore, A.~Coles, B.~Cserna, E.~Karpas, D.~Magazzeni, W.~Ruml, Temporal
-  planning while the clock ticks, in: Proceedings of the International
-  Conference on Automated Planning and Scheduling (ICAPS), Vol.~28, AAAI Press,
-  2018, pp. 39-46.
-\newblock \href {https://doi.org/10.1609/icaps.v28i1.13878}
-  {\path{doi:10.1609/icaps.v28i1.13878}}.
-
-\bibitem{shperberg2021situated}
-S.~S. Shperberg, A.~Coles, E.~Karpas, W.~Ruml, S.~E. Shimony, Situated temporal
-  planning using deadline-aware metareasoning, in: Proceedings of the
-  International Conference on Automated Planning and Scheduling (ICAPS),
-  Vol.~31, AAAI Press, 2021, pp. 340-348.
-\newblock \href {https://doi.org/10.1609/icaps.v31i1.15979}
-  {\path{doi:10.1609/icaps.v31i1.15979}}.
 
 \bibitem{savelsbergh1992vrptw}
 M.~W.~P. Savelsbergh, The vehicle routing problem with time windows: Minimizing

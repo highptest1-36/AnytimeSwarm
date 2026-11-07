@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parents[1]
 IEEE = HERE.parents[0] / "ieee" / "sections"
 BUILD = HERE / "_build"
 
-SECTIONS = ["introduction", "related", "problem", "method", "setup", "results", "discussion", "conclusion"]
+SECTIONS = ["introduction", "related", "problem", "method", "setup", "results", "conclusion"]
 WIDE_TABLES = ["tab_related", "tab_hyp", "tabm_s4", "tabm_s5", "tabm_s6"]
 
 REPLACE = [  # (old, new, expected count)

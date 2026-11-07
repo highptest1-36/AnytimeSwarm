@@ -67,9 +67,7 @@ Method & Planning deadline & Fallback & Search & Studies \\
 \midrule
 Nominal model~\cite{ropke2006adaptive} & deadline & none & repair only, or ALNS with a fixed, scaled or stagnation budget & 1--7 \\
 Conventional planner & deadline, event trigger only & none & ALNS, 40\,ms & 2--5 \\
-AnytimeSwarm, AnytimeSwarm-R & deadline & none & stopping rule & 1, 2 \\
-Performance profile~\cite{boddy1994deliberation,zilberstein1996using} & deadline & none & stopping rule & 2 \\
-Online prediction~\cite{svegliato2018meta} & deadline & none & stopping rule & 2 \\
+AnytimeSwarm, AnytimeSwarm-R, performance profile~\cite{boddy1994deliberation,zilberstein1996using}, online prediction~\cite{svegliato2018meta} & deadline & none & stopping rule & 1, 2 \\
 Constant buffer~\cite{jabali2015selfimposed} & deadline minus 60\,s & none & ALNS, 40\,ms & 2--5, 7 \\
 Proportional buffer & deadline minus a tuned share of the lead time & none or nominal & ALNS, 40\,ms & 4, 5, 7 \\
 Moment propagation~\cite{ehmke2015ensuring} & mean plus $z$ standard deviations along the route & none, nominal or cost-aware & ALNS, 40\,ms & 4--7 \\
@@ -79,9 +77,9 @@ CBBA~\cite{choi2009consensus,johnson2012nonsubmodular} & deadline or \mname{} de
 \end{tabular}
 \end{table*}
 
-The nominal model plans against the true deadlines. Besides 40\,ms, it is run with regret-2 repair only, with 250\,ms,
-with 1\,ms per open task and with a rule that stops after 20\% of the budget without improvement. The two stopping rules from the metareasoning literature use the same delay cost as
-\mname{} and differ only in how they predict the gain of further search. The constant buffer, the simplest form of a time buffer in the
+The nominal model plans against the true deadlines. Besides 40\,ms, it is run with repair only and with other budgets
+and stopping rules, including two from the metareasoning literature (Supplementary Section~\ref{S-sec:Sparams}). The
+constant buffer, the simplest form of a time buffer in the
 schedule~\cite{jabali2015selfimposed}, subtracts 60\,s from every deadline, the best of 30, 60 and 120\,s on
 development missions. The proportional buffer subtracts a tuned share of the
 lead time, so it keeps the shape of the \mname{} margin but replaces the calibration by one slope. Moment propagation
@@ -104,18 +102,14 @@ development missions for every late cost and score, whereas the cost-aware fallb
 utility.
 
 \subsection{Studies and statistical protocol}\label{sec:protocol}
-The evaluation consists of seven studies. Each study has its own held-out seeds, a written protocol and frozen code,
-and each study after the first was designed after the held-out results of the earlier ones. Study~1 made only the
-stopping rule execution-aware. Study~2 compared \mname{} without fallback with the baselines, study~3 added the nominal
-fallback, and study~4 compared planning models on the same search. Study~5 introduced the cost-aware fallback, study~6
-compared it with CBBA and applied it to moment propagation, and study~7 tested the late-cost model of the rule (7a) and
-execution errors that the calibrated model does not describe (7b). Studies 5 and 6 ran the rule with a cost
-proportional to the reward but scored it with $u_\lambda$, which charges a fixed cost per late arrival. This mismatch
-between the cost model of the rule and the score was noticed after both studies had been frozen and run, so it could
-not be corrected without changing their protocols. Study~7a was designed to test it on new seeds. It runs both cost
-models, each scored with its own score. Study~7b draws speed and service errors from a Student-$t$ law, adds rare long delays, adds a persistent speed
-bias per UAV, or replaces the latency by a heavy-tailed Pareto delay. Tier C flights belong to studies 2 and 4, the
-latter called study~4C.
+The evaluation consists of seven studies, each with its own held-out seeds, written protocol and frozen code, and each
+designed after the held-out results of the earlier ones. Studies 1 to 4 test the stopping rule, the planning model and
+the nominal fallback, study~5 the cost-aware fallback, study~6 CBBA and moment propagation, and study~7 the late-cost
+model of the rule (7a) and execution errors outside the error model (7b). Studies 5 and 6 ran the rule with a cost
+proportional to the reward but scored it with $u_\lambda$, a mismatch noticed after both had been run, so study~7a runs
+both cost models on new seeds, each scored with its own score. Study~7b uses Student-$t$ speed and service errors, rare
+long delays, a persistent speed bias per UAV or a heavy-tailed Pareto latency. Tier C flights belong to studies 2 and
+4, the latter called study~4C.
 
 Development used seeds 0--9 in tier B and 0--2 in tier C. Before each study, the protocol with its hypotheses, the
 configurations, the models and the code were frozen with SHA-256 hashes and committed to the version history, and the

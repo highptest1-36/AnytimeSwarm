@@ -8,7 +8,9 @@ variation of \val{EMpCvMid} and \val{EMpCvHigh} under mid and high disturbances,
 \val{EShareMissionMid}\% and \val{EShareMissionHigh}\% of the residual variance.
 
 \subsection{Parameters of the compared methods}\label{sec:Sparams}
-The performance profile rule predicts the gain of further search from a static profile over the elapsed time and the
+Besides 40\,ms of search, the nominal model is run with regret-2 repair only, with the full budget of 250\,ms, with a
+size-scaled budget and with a stagnation rule. The two stopping rules from the metareasoning literature use the same
+delay cost as \mname{} and differ only in how they predict the gain of further search. The performance profile rule predicts the gain of further search from a static profile over the elapsed time and the
 number of open tasks. The online prediction rule follows Svegliato et al.~\cite{svegliato2018meta}, but fits the
 saturating curve $q(t)=a-b\,e^{-ct}$ to the best objective found so far at every check, in place of the arctangent or
 logarithmic models of the original. Both use the delay cost and the price of computation of AnytimeSwarm-R. The size-scaled budget allows 1\,ms

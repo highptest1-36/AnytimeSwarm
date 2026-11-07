@@ -94,10 +94,21 @@ paired differences together with the computation of every method.
 \caption{Study 2, tier B. (a) Utility of \mname{} without fallback minus each method, with 95\% intervals over \val{KNMissions} missions. (b) Mean utility against mean computation per call.}\label{fig:Ss2main}
 \end{figure}
 
+Over all configurations, \mname{} without fallback served \val{KLateRedForty}\% fewer tasks late than ALNS with
+40\,ms. The stopping rules hardly mattered on the nominal model, with utilities between \val{KUForty}\% and
+\val{KURisk}\% although their computation ranged from \val{KMsOnl} to \val{KMsAS}\,ms per call. Their value lay in
+avoiding long budgets on slow planners: with a latency factor of 200, the full budget of 250\,ms lost
+\val{KLostFixKTwoHundred} tasks per mission to late plans. Periodic replanning helped every method on the nominal
+model, but added only \val{KDabsAblTrig}\,pp with the effective deadlines.
+
 \input{supp/s5_study2}
 
 \section{Study 3: regimes}\label{sec:Sstudy3}
 Table~\ref{tab:s3} lists the results of study~3, and Fig.~\ref{fig:Ss3} shows its paired differences per regime.
+Over all configurations, \mname{} with nominal fallback served \val{LDFortyAll} and \val{LDBufAll}\,pp more reward than
+ALNS with 40\,ms and the constant buffer (H7, H8). The fallback has a price in punctuality, since a fallback task is
+planned against its true deadline and is often served late. It served \val{LLateFB} tasks late per mission,
+\val{LLateIncProp}\% more than \mname{} without fallback.
 
 \inputtable{tabm_s3}
 

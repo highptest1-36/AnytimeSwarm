@@ -15,7 +15,11 @@ have been compared for multi-UAV systems~\cite{cong2026event}, and online alloca
 demonstrated in PX4 and ArduPilot software-in-the-loop simulation~\cite{calvo2025heterogeneous,ali2026sitl}. Table~\ref{tab:related}
 places these approaches next to \mname{}. Most of the multi-UAV approaches replan online, but few combine deadlines,
 execution uncertainty and a cost of lateness, and only the metareasoning work treats the computation time as a
-decision.
+decision. This work decides how long a planner should
+compute~\cite{zilberstein1996using,herrmann2023metareasoning}, from performance profiles~\cite{boddy1994deliberation},
+online performance prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}, and situated
+temporal planning accounts for the time that passes during planning~\cite{cashmore2018clock,shperberg2021situated}. Two
+of these stopping rules serve as baselines.
 
 \inputtable{tab_related}
 
@@ -43,11 +47,3 @@ prices lateness only in this fallback, through a break-even probability that aga
 keeps its objective and its feasibility checks. The closest use of a probability as an acceptance test is the
 uncertainty-gated allocation of Qian and Fu~\cite{ucdg2026drones}, which acts on single agent--task pairs of a
 one-task-per-UAV matching, whereas \mname{} acts on the deadline of every task along a route.
-
-\subsection{Metareasoning and anytime algorithms}
-Anytime algorithms and metareasoning decide how long a planner should
-compute~\cite{zilberstein1996using,herrmann2023metareasoning}, from performance profiles~\cite{boddy1994deliberation},
-online performance prediction~\cite{svegliato2018meta} or learned stopping policies~\cite{sung2021quit}. Situated
-temporal planning and deadline-aware metareasoning account for the time that passes during
-planning~\cite{cashmore2018clock,shperberg2021situated}. Two of these stopping rules serve as baselines, so that the
-value of controlling computation can be compared with the value of the planning model.
