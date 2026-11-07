@@ -27,10 +27,6 @@ kiểu elsarticle-num với tên tạp chí viết tắt LTWA và DOI, hình n�
 3. **CRediT:** đã chia vai trò hợp lý (Ha: ý tưởng, phương pháp, phần mềm, thí nghiệm, phân tích, dữ liệu, hình, bản
    thảo; Nguyen: kiểm chứng, thí nghiệm, hình, góp ý; Tran: phương pháp, phân tích, kiểm chứng, góp ý; Le: ý tưởng,
    phương pháp, hướng dẫn, nguồn lực, quản lý, góp ý). Anh/chị kiểm tra lại với các đồng tác giả.
-4. **GitHub (Data availability trỏ tới https://github.com/highptest1-36/LTCC):**
-   - repo cũ `AnytimeSwarm` hiện đang **public** và chứa toàn bộ lịch sử: bản thảo IEEE, tài liệu kế hoạch, phản hồi
-     reviewer. Nên chuyển nó về **private** (Settings → General → Danger Zone → Change visibility).
-   - tạo repo **trống, public** tên `LTCC` (không tạo README) rồi báo để push bản sạch đã chuẩn bị ở
-     `D:\paper\TAIMMA_2027\AnytimeSwarm\LTCC_public` (code, protocol, kết quả thô, không có bản thảo).
+4. **GitHub:** Data availability trỏ tới https://github.com/highptest1-36/AnytimeSwarm (repo public, đã cập nhật README và CITATION với tiêu đề mới và 4 tác giả).
 5. **Declaration of competing interest:** điền công cụ khai báo trực tuyến lúc nộp (sinh file Word).
 6. **Cover letter:** chưa soạn; cần thì tôi soạn.

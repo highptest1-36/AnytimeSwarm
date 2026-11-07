@@ -1,0 +1,46 @@
+% Shared panel style of Fig. 1 and Fig. 3 (panel layout inspired by the reference figure the authors liked):
+% framed panels with a coloured title tab, numbered pastel sub-panels, icons instead of text, chevron flow arrows.
+\input{figstyle}
+\definecolor{tabTeal}{HTML}{2A8C8C}
+\definecolor{tabOrange}{HTML}{E07B39}
+\definecolor{fBlue}{HTML}{E4EEF9}
+\definecolor{fGreen}{HTML}{E5F3E3}
+\definecolor{fPink}{HTML}{FBE6E6}
+\definecolor{fYellow}{HTML}{FFF4D9}
+\definecolor{fLav}{HTML}{ECE7F6}
+\definecolor{fGrey}{HTML}{F3F4F6}
+\definecolor{bBlue}{HTML}{8FB3DE}
+\definecolor{bGreen}{HTML}{8CC79A}
+\definecolor{bPink}{HTML}{E59A9A}
+\definecolor{bYellow}{HTML}{E8C670}
+\definecolor{bLav}{HTML}{B4A6DA}
+\tikzset{
+  H/.style={font=\fontsize{9.2}{11}\selectfont, text=white},
+  S/.style={font=\fontsize{8.4}{10}\selectfont, align=center},
+  L/.style={font=\fontsize{7.4}{8.8}\selectfont, align=center},
+  mod/.style={draw=#1!80!black, line width=0.6pt, rounded corners=3pt, fill=#1!35, align=center,
+              font=\fontsize{7.6}{9}\selectfont, inner sep=3pt, minimum height=0.6cm},
+  flow/.style={-{Triangle[length=5pt,width=4.5pt]}, line width=0.9pt, draw=black!75},
+  back/.style={-{Triangle[length=5pt,width=4.5pt]}, line width=0.9pt, draw=tabTeal, dash pattern=on 3pt off 2pt},
+}
+% \panel{x1}{y1}{x2}{y2}{colour}{tab text}{tab width}
+\newcommand{\panel}[7]{%
+  \draw[#5, line width=1.1pt, rounded corners=6pt, fill=white] (#1,#2) rectangle (#3,#4);
+  \node[H, fill=#5, rounded corners=4pt, minimum height=0.5cm, minimum width=#7cm, anchor=west]
+    at ({#1+0.25},#4) {#6};
+}
+% \sub{x1}{y1}{x2}{y2}{fill}{border}{number}{title}
+\newcommand{\sub}[8]{%
+  \filldraw[draw=#6, line width=0.5pt, rounded corners=5pt, fill=#5] (#1,#2) rectangle (#3,#4);
+  \node[circle, draw=black!70, fill=white, line width=0.6pt, inner sep=0pt, minimum size=0.42cm,
+        font=\fontsize{8}{8}\selectfont] at ({#1+0.33},{#4-0.32}) {#7};
+  \node[S, anchor=west] at ({#1+0.6},{#4-0.32}) {#8};
+}
+% big chevron arrow: x, y (left tip of the shaft), length, colour
+\newcommand{\chevron}[4]{%
+  \fill[#4] (#1,{#2-0.12}) -- ++({#3-0.3},0) -- ++(0,-0.12) -- ++(0.3,0.24) -- ++(-0.3,0.24) -- ++(0,-0.12)
+    -- ({#1},{#2+0.12}) -- cycle;}
+% task pin: x, y, colour
+\newcommand{\pin}[3]{%
+  \filldraw[draw=black!60, line width=0.35pt, fill=#3] (#1,#2) -- ++(-0.09,0.17) arc (180:0:0.09) -- cycle;
+  \fill[white] ({#1},{#2+0.19}) circle (0.035);}

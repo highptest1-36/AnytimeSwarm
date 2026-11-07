@@ -311,21 +311,24 @@ model gives up are still worth attempting. The stopping rule decides when to pub
 replan. The first two decisions are the contribution of this paper, and both reduce to one deadline per task, so the
 repair and the search of the nominal model run unchanged.
 
-Fig.~\ref{fig:overview} shows the architecture, read from left to right. An event, such as a new task or a failed UAV,
-or the periodic trigger starts a call on a snapshot of the open tasks, the UAV states and the previous plan (A). The
-planning model turns the calibrated finish-time error into an effective deadline for every task (B). The cost-aware
-fallback compares the probability of meeting the deadline of a given-up task with its break-even probability and keeps
-the protected deadline, a fallback deadline or none (C). Repair and ALNS then search on these deadlines until the
-stopping rule publishes the best plan (D). The UAVs execute it, and the finish times they report update the next
-snapshot (E). The error model, the safety factor and the gain predictor of the stopping rule are fitted once on
-development missions (F). Regions B and C are the proposed components, and A, D and E are standard. Two earlier variants of the same replanner, AnytimeSwarm and
+Fig.~\ref{fig:overview} shows the architecture in three panels. Panel A is done once, before any mission: the error
+model, the safety factor and the gain predictor of the stopping rule are fitted on the finish-time errors of
+development missions, per disturbance level. Panel B shows one replanning call in five steps. An event, such as a new
+task or a failed UAV, or the periodic trigger starts the call on a snapshot of the open tasks, the UAV states and the
+previous plan (step 1). The calibrated error model gives a margin that grows with the lead time (step 2), and this
+margin turns the deadline of every task into an effective deadline (step 3). The cost-aware fallback compares the
+probability of meeting the deadline of a given-up task with its break-even probability and keeps the task only if the
+attempt pays off (step 4). Repair and ALNS then search on these deadlines until the stopping rule publishes the best
+plan (step 5). Panel C shows the execution in tier B or tier C, whose telemetry starts the next call. Steps 2 to 4 are
+the proposed components, and the other steps are standard. Two earlier variants of the same replanner, AnytimeSwarm and
 AnytimeSwarm-R, keep the nominal deadlines and differ only in their stopping rule, and they serve as baselines.
 
 \begin{figure*}[pos=t]
 \centering
 \fig{fig_overview}{\linewidth}
-\caption{Architecture of \mname{}. Regions A-E form the online replanning loop, and region F the offline
-calibration on development missions. The proposed components are marked.}\label{fig:overview}
+\caption{Architecture of \mname{}. (A) Offline calibration on development missions. (B) The five steps of one
+replanning call, with the proposed components marked. (C) Execution of the plan, whose telemetry starts the next
+call.}\label{fig:overview}
 \end{figure*}
 
 \subsection{Repair and anytime search}
@@ -506,7 +509,7 @@ runs in lockstep with PX4 at twice real time, and mission time is simulation tim
 \begin{figure*}[pos=t]
 \centering
 \fig{fig_tierc}{\linewidth}
-\caption{Software-in-the-loop tier. Top: rescaling of a kinematic mission. Bottom: software
+\caption{Software-in-the-loop tier. (A) Rescaling of a kinematic mission. (B) Software
 architecture.}\label{fig:tierc}
 \end{figure*}
 
