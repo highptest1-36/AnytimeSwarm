@@ -108,7 +108,7 @@
 \node[mod=bLav, text width=2.0cm] (s) at (14.35,5.35) {stop when the gain\\ no longer pays};
 \node[mod=bLav, text width=1.25cm, fill=white] (b) at (16.6,5.35) {best plan};
 \draw[flow] (r) -- (a); \draw[flow] (a) -- (s); \draw[flow] (s) -- (b);
-\draw[flow] ([xshift=-6pt]a.north) arc (200:-20:0.32 and 0.28);
+\draw[flow] ([xshift=13pt]a.north) to[out=70, in=110, looseness=1.9] ([xshift=-13pt]a.north);
 \node[L] at (12.1,4.45) {destroy and repair};
 \node[L] at (14.35,4.45) {budget 250\,ms};
 
