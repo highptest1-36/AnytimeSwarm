@@ -21,8 +21,8 @@ deadlines they check:
 
 ![Overview of LTCC](docs/images/overview.png)
 
-*Architecture of LTCC. Regions A–E form the online replanning loop, region F the offline calibration on development
-missions. The proposed components (B, C) are marked.*
+*Architecture of LTCC. (A) Offline calibration on development missions. (B) The five steps of one replanning call,
+with the proposed components marked. (C) Execution of the plan, whose telemetry starts the next call.*
 
 <details>
 <summary>Conceptual overview (graphical abstract)</summary>
