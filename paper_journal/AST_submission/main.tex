@@ -28,13 +28,10 @@
 \renewcommand{\bottomfraction}{0.90}
 \renewcommand{\dbltopfraction}{0.95}
 
-
 \renewcommand{\textfraction}{0.05}
-
 
 \renewcommand{\floatpagefraction}{0.85}    % no half-empty float pages: floats go to the top of text pages
 \renewcommand{\dblfloatpagefraction}{0.85}
-
 
 \setcounter{topnumber}{5}
 \setcounter{bottomnumber}{5}
@@ -47,8 +44,6 @@
 \setlength{\@fpsep}{10pt plus 2pt minus 2pt}
 \setlength{\@dblfpsep}{10pt plus 2pt minus 2pt}
 \makeatother
-
-
 
 \setlength{\emergencystretch}{4em}
 \hbadness=10000
@@ -75,23 +70,18 @@
 \ExplSyntaxOff
 \makeatother
 
-% ---------------------------------------------------------------- manuscript macros
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
 \newcommand{\mname}{LTCC}  % name of the proposed method
-% tables: bold and italic text inside generated tables is set upright
 \newcommand{\uprighttext}{\def\textbf##1{##1}\def\textit##1{##1}}
-% figures are drawn at print size: natural size, shrunk only if wider than the line
 \newsavebox{\ltccfigbox}
 \newcommand{\fig}[2]{\sbox{\ltccfigbox}{\includegraphics{#1.pdf}}%
   \ifdim\wd\ltccfigbox>\linewidth\resizebox{\linewidth}{!}{\usebox{\ltccfigbox}}\else\usebox{\ltccfigbox}\fi}
-% propositions in upright type; the proofs are in the supplementary material
 \newcounter{prop}
 \newenvironment{prop}{\par\smallskip\refstepcounter{prop}\noindent Proposition~\theprop.\ }{\par\smallskip}
 
 \begin{document}
 
 \let\WriteBookmarks\relax
-
 
 \shorttitle{Chance Constraints as Effective Deadlines for UAV Replanning}
 \shortauthors{C.-P. Ha et al.}
@@ -127,10 +117,10 @@ Writing - original draft}
 
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution, so wind, speed and service-time errors make the tasks near the
-end of a route late. This paper proposes \mname{}, a replanner built on the observation that, in the tested missions, the
+end of a route late. This paper proposes \mname{} (lead-time-scaled chance constraints), a
+replanner built on the observation that, in the tested missions, the
 spread of the finish-time error was well approximated by an affine function of the lead time. With this error model, a
-chance constraint on every task reduces exactly to an effective deadline, so fast routing heuristics can be reused
-unchanged. A cost-aware fallback attempts a task that the constraint gives up only when its probability of meeting the
+chance constraint on every task reduces exactly to an effective deadline, so fast heuristics are reused unchanged. A cost-aware fallback attempts a task that the constraint gives up only when its probability of meeting the
 deadline outweighs the cost of a late arrival, in closed form and without cost-specific tuning. Seven studies on
 held-out missions, each with a protocol fixed in advance, compared \mname{} with time buffers, moment propagation and
 the consensus-based bundle algorithm (CBBA). \mname{} served 5.07 percentage points more reward than the
@@ -154,7 +144,6 @@ Software-in-the-loop simulation
 
 \maketitle
 
-%%=============================================================%%
 \section{Introduction}\label{sec:intro}
 Teams of unmanned aerial vehicles (UAVs) are used for inspection, delivery and monitoring. During a mission, new tasks
 appear, vehicles fail and deadlines are moved forward, and a central planner has to repair the routes of the whole fleet
@@ -211,7 +200,6 @@ Section~\ref{sec:related} reviews related work and Section~\ref{sec:problem} sta
 Section~\ref{sec:method} presents \mname{}, Section~\ref{sec:setup} the evaluation and Section~\ref{sec:results} the
 results, and Section~\ref{sec:conclusion} discusses them and concludes the paper.
 
-%%=============================================================%%
 \section{Related work}\label{sec:related}
 \subsection{Dynamic task allocation and routing}
 Multi-robot task allocation~\cite{gerkey2004formal,chakraa2023mrta} and dynamic vehicle
@@ -236,8 +224,6 @@ temporal planning accounts for the time that passes during planning~\cite{cashmo
 of these stopping rules serve as baselines.
 
 \begingroup\uprighttext
-% Qualitative comparison with recent related work. Features as stated in each paper (abstract or full text); see
-% docs/09_RECENT_WORKS.md for the evidence per cell. Hand-written (not generated).
 \begin{table*}[t]
 \caption{Comparison with related approaches.}
 \label{tab:related}
@@ -303,7 +289,6 @@ keeps its objective and its feasibility checks. The closest use of a probability
 uncertainty-gated allocation of Qian and Fu~\cite{ucdg2026drones}, which acts on single agent-task pairs of a
 one-task-per-UAV matching, whereas \mname{} acts on the deadline of every task along a route.
 
-%%=============================================================%%
 \section{Problem formulation}\label{sec:problem}
 A central planner is called whenever a replanning trigger fires. Each UAV keeps the task that it is currently flying to
 or serving, which fixes when and where it becomes available again and how much energy it has left. Each open task has a
@@ -331,7 +316,6 @@ and deadline changes, the periodic trigger also every 60\,s, and the deviation t
 deviates from the plan by more than a threshold. During planning, every UAV finishes its committed task and then
 waits, and events are queued.
 
-%%=============================================================%%
 \section{Proposed method}\label{sec:method}
 \mname{} takes four decisions in every replanning call (Fig.~\ref{fig:overview}). The planning model decides which
 plans are acceptable under the calibrated execution error. The cost-aware fallback decides which of the tasks that this
@@ -488,7 +472,6 @@ and the expected latency~\cite{savelsbergh1992vrptw}, plus a small price of comp
 Section~S2). A hard budget of 250\,ms bounds every call. \mname{} replans on every event and at least
 every 60\,s of mission time, a rolling-horizon policy in the terminology of dynamic routing~\cite{soeffker2022review}.
 
-%%=============================================================%%
 \section{Evaluation}\label{sec:setup}
 \subsection{Scenarios and kinematic tier}
 Missions are created by a seeded generator (Supplementary Table~S1). The map is a square with a side
@@ -619,7 +602,6 @@ superiority test in a fixed sequence. All other comparisons are descriptive. Bec
 their execution disturbances, every tier B primary test was repeated with a bootstrap over seeds (Supplementary
 Table~S10), which changed only the outcome of H9.
 
-%%=============================================================%%
 \section{Results}\label{sec:results}
 Table~\ref{tab:hyp} lists the primary hypotheses of studies 2 to 7, as fixed in their protocols, with the observed
 differences and outcomes. Each row compares two methods on the score named in the fourth column, and a positive
@@ -627,8 +609,6 @@ difference favours the first method. The subsections follow the order in which t
 design decision can be traced to the result that motivated it.
 
 \begingroup\uprighttext
-% Summary of the primary hypotheses of studies 2-7 (frozen protocols). Hand-written; every number is a \val macro from
-% the generated numbers_*.tex files, and every outcome follows the report of the study (results/study*/report*.md).
 \begin{table*}[t]
 \caption{Primary hypotheses and outcomes.}\label{tab:hyp}
 \centering\footnotesize
@@ -950,7 +930,6 @@ smallest advantage occurred with a speed bias per UAV, which correlates the erro
 delays, the predicted probability became slightly optimistic in the upper tail, with 92.6\% of the
 tasks served on time against a predicted 93.6\% (Supplementary Section~S11).
 
-%%=============================================================%%
 \section{Conclusion}\label{sec:conclusion}\label{sec:discussion}
 This paper proposed \mname{}, a multi-UAV replanner that turns a chance constraint on the finish time of every task
 into a closed-form effective deadline, so fast heuristics are reused unchanged, and that decides with a cost-aware
@@ -998,9 +977,6 @@ this paper are available at \url{https://github.com/highptest1-36/AnytimeSwarm}.
 The authors would like to express their sincere appreciation to the Vietnam Aerospace University for supporting this
 research during the 2026-2027 academic year.
 
-
-% Reference list generated with BibTeX (style elsarticle-num, references_ast.bib with LTWA journal
-% abbreviations) and pasted here; regenerate with the scripts in _build/.
 \begin{thebibliography}{10}
 \expandafter\ifx\csname url\endcsname\relax
   \def\url#1{\texttt{#1}}\fi

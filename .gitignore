@@ -42,6 +42,8 @@ results/tier_c/demo/.start_*
 # Elsevier manuscript: previous paper used only as template reference, author photos, LaTeX build files
 paper_journal/overleaf_revised_manuscript/_previous_paper_reference/
 paper_journal/AST_submission/Vitae.docx
+paper_journal/AST_submission/Cover_letter.docx
+paper_journal/AST_submission/Declaration_of_competing_interests.docx
 paper_journal/**/*.aux
 paper_journal/**/*.log
 paper_journal/**/*.out

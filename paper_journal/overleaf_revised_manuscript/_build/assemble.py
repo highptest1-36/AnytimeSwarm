@@ -18,11 +18,7 @@ BUILD = HERE / "_build"
 SECTIONS = ["introduction", "related", "problem", "method", "setup", "results", "conclusion"]
 WIDE_TABLES = ["tab_related", "tab_hyp", "tabm_s4", "tabm_s5", "tabm_s6"]
 
-REPLACE = [  # (old, new, expected count)
-    (r"p\ \ge\ \theta_j=\frac{c_j}{w_j+c_j}.", r"p\ \ge\ \theta_j=c_j/(w_j+c_j).", 1),
-    (r"u_\lambda=U-\lambda\,\frac{n_{\mathrm{late}}}{n},\qquad u^w_\lambda=U-\lambda\,\frac{R_{\mathrm{late}}}{R},",
-     r"u_\lambda=U-\lambda\,n_{\mathrm{late}}/n,\qquad u^w_\lambda=U-\lambda\,R_{\mathrm{late}}/R,", 1),
-]
+REPLACE = []  # (old, new, expected count); small fractions are written with a solidus in the sources
 
 
 def body():

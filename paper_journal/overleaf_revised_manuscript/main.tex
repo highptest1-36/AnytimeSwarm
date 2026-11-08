@@ -136,10 +136,10 @@ Writing - original draft}
 
 \begin{abstract}
 Multi-UAV replanners usually plan for nominal execution, so wind, speed and service-time errors make the tasks near the
-end of a route late. This paper proposes \mname{}, a replanner built on the observation that, in the tested missions, the
+end of a route late. This paper proposes \mname{} (lead-time-scaled chance constraints), a
+replanner built on the observation that, in the tested missions, the
 spread of the finish-time error was well approximated by an affine function of the lead time. With this error model, a
-chance constraint on every task reduces exactly to an effective deadline, so fast routing heuristics can be reused
-unchanged. A cost-aware fallback attempts a task that the constraint gives up only when its probability of meeting the
+chance constraint on every task reduces exactly to an effective deadline, so fast heuristics are reused unchanged. A cost-aware fallback attempts a task that the constraint gives up only when its probability of meeting the
 deadline outweighs the cost of a late arrival, in closed form and without cost-specific tuning. Seven studies on
 held-out missions, each with a protocol fixed in advance, compared \mname{} with time buffers, moment propagation and
 the consensus-based bundle algorithm (CBBA). \mname{} served \val{XDabsFortyAll} percentage points more reward than the
